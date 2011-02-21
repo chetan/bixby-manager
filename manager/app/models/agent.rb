@@ -1,9 +1,10 @@
 
 class Agent < ActiveRecord::Base
 	
-	def get_uptime
+	def run_cmd(name)
 		
-		puts Curl::Easy.http_get("http://#{ip}:4567/uptime").body_str
+        # puts Curl::Easy.http_get("http://#{ip}:4567/uptime").body_str
+        ret = Curl::Easy.http_get("http://#{ip}:4567/op/#{name}").body_str
 		
 	end
 	

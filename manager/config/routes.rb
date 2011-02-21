@@ -57,5 +57,7 @@ Devops::Application.routes.draw do
   # match ':controller(/:action(/:id(.:format)))'
 
     match '/agent/register' => "handshake#register"
+    
+    match '/repo/fetch' => 'repo#fetch'
 
 end
