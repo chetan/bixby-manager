@@ -22,8 +22,8 @@ class Agent
     attr_accessor :manager_ip, :manager_port
     attr_accessor :agent_uuid, :agent_ip, :agent_root, :agent_mac
 
-    def self.create
-        agent = load_config()
+    def self.create(use_config = true)
+        agent = load_config() if use_config
         return agent if not agent.nil?
         return new()
     end

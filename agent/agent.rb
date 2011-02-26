@@ -14,7 +14,11 @@ require AGENT_ROOT + '/lib/rpc'
 require AGENT_ROOT + '/lib/rpc-json'
 
 agent = Agent.create
-if agent.new? or agent.mac_changed? then
+if agent.new? then
+    if agent.mac_changed? then
+        agent.deregister_agent()
+        agent = Agent.create(false)
+    end
     agent.register_agent()
     agent.save_config()
 end
