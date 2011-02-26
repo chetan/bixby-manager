@@ -1,0 +1,76 @@
+
+require 'fileutils'
+
+module Config
+
+    module ClassMethods
+
+        def config_dir
+            File.join(self.agent_root, "etc")
+        end
+
+        def config_file
+            File.join(config_dir, "devops.yml")
+        end
+
+        def load_config
+            return nil if not File.exists? config_file
+
+            # load it!
+            begin
+                agent = YAML.load_file(config_file)
+                if not agent.kind_of? Agent then
+                    bad_config("corrupted file contents")
+                end
+                agent.new = false
+                return agent
+            rescue Exception => ex
+                bad_config(ex) if ex.message != "exit"
+            end
+        end
+
+        def bad_config(ex = nil)
+            # TODO should force a reinstall/handshake?
+            puts "error loading config from #{config_file}"
+            puts "(#{ex})" if ex
+            puts "exiting"
+            exit
+        end
+
+    end
+
+    def self.included(clazz)
+        clazz.extend(ClassMethods)
+    end
+
+    def new=(val)
+        @new = val
+    end
+
+    def new?
+        @new
+    end
+
+    def config_dir
+        self.class.config_dir
+    end
+
+    def config_file
+        self.class.config_file
+    end
+
+    def save_config
+
+        if not File.exists? config_dir then
+            begin
+                FileUtils.mkdir_p(config_dir)
+            rescue Exception => ex
+                raise IOError.new(ex.message)
+            end
+        end
+
+        File.open(config_file, 'w') { |out| out.write(self.to_yaml) }
+
+    end
+
+end

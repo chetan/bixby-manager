@@ -7,15 +7,17 @@ Bundler.setup(:default)
 require 'sinatra'
 require 'json'
 
-
 AGENT_ROOT = File.expand_path(File.dirname(__FILE__))
 
 require AGENT_ROOT + '/lib/agent'
 require AGENT_ROOT + '/lib/rpc'
 require AGENT_ROOT + '/lib/rpc-json'
 
-agent = Agent.new
-agent.register_agent()
+agent = Agent.create
+if agent.new? or agent.mac_changed? then
+    agent.register_agent()
+    agent.save_config()
+end
 
 get '/op/:operation' do
   operation_name = params[:operation]

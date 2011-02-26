@@ -9,6 +9,10 @@ module Handshake
         puts http_get(url)
     end
 
+    def mac_changed?
+        (not agent_mac.nil? and (agent_mac != get_mac_address()))
+    end
+
     def get_mac_address
         o = Ohai::System.new
         o.require_plugin("os")

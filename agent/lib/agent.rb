@@ -3,24 +3,43 @@ require File.dirname(__FILE__) + "/operation"
 require File.dirname(__FILE__) + "/http_client"
 require File.dirname(__FILE__) + "/handshake"
 require File.dirname(__FILE__) + "/provisioning"
+require File.dirname(__FILE__) + "/config"
 
 class Agent
 
-  include HttpClient
-  include Handshake
-  include Provisioning
+    DEFAULT_ROOT_DIR = "/opt/devops"
+    @agent_root = DEFAULT_ROOT_DIR # TODO set via command line
 
-  attr_accessor :manager_ip, :manager_port
-  attr_accessor :agent_uuid, :agent_ip, :agent_root
+    include HttpClient
+    include Config
+    include Handshake
+    include Provisioning
 
-  def initialize
-    @manager_ip = '192.168.44.99'
-    @manager_port = 3000
+    class << self
+        attr_accessor :agent_root
+    end
 
-    @agent_uuid = 12345
-    @agent_ip = '192.168.44.109'
-    @agent_root = '/opt/devops/'
-  end
+    attr_accessor :manager_ip, :manager_port
+    attr_accessor :agent_uuid, :agent_ip, :agent_root, :agent_mac
+
+    def self.create
+        agent = load_config()
+        return agent if not agent.nil?
+        return new()
+    end
+
+    private_class_method :new
+
+    def initialize
+        @manager_ip = '192.168.80.99'
+        @manager_port = 3000
+
+        @agent_uuid = 12345
+        @agent_ip = '192.168.80.99'
+
+        @agent_mac = get_mac_address()
+        @new = true
+    end
 
 end
 
