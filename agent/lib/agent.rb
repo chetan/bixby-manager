@@ -1,4 +1,6 @@
 
+require "operation"
+
 class Agent
   attr_accessor :manager_ip, :manager_port
   attr_accessor :agent_uuid, :agent_ip, :agent_root
@@ -46,21 +48,6 @@ class Agent
     FileUtils.mkdir_p(operation_dir)
     File.open(operation_script, 'w') {|f| f.write(script)}
     `chmod 755 #{operation_script}`
-  end
-
-  class Operation
-    attr_accessor :operation_script
-
-    def initialize(script)
-      @operation_script = script
-    end
-
-    def execute
-      data = `sh -c #{operation_script}`
-      returnCode = $?
-
-      return Response.new(returnCode, data).to_json
-    end
   end
 
 end
