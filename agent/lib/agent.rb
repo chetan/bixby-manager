@@ -1,5 +1,5 @@
 
-require "operation"
+require File.dirname(__FILE__) + "/operation"
 
 class Agent
   attr_accessor :manager_ip, :manager_port

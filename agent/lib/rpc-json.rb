@@ -1,4 +1,3 @@
-require './rpc'
 
 class Request
   def to_json(*a)
@@ -19,7 +18,7 @@ class Response
       'data' => data
     }.to_json(a)
   end
-  
+
   def self.json_create(o)
     new(o['return_code'], o['data'])
   end

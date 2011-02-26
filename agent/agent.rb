@@ -5,7 +5,11 @@ require 'sinatra'
 require 'json'
 require 'curb'
 
-require './rpc-json'
+AGENT_ROOT = File.expand_path(File.dirname(__FILE__))
+
+require AGENT_ROOT + '/lib/agent'
+require AGENT_ROOT + '/lib/rpc'
+require AGENT_ROOT + '/lib/rpc-json'
 
 agent = Agent.new
 agent.register_agent()
