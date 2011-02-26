@@ -1,6 +1,9 @@
 #!/usr/bin/ruby
 
 require 'rubygems'
+require 'bundler/setup'
+Bundler.setup(:default)
+
 require 'sinatra'
 require 'json'
 require 'curb'
