@@ -6,7 +6,7 @@ Bundler.setup(:default)
 
 require 'sinatra'
 require 'json'
-require 'curb'
+
 
 AGENT_ROOT = File.expand_path(File.dirname(__FILE__))
 

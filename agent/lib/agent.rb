@@ -1,7 +1,11 @@
 
 require File.dirname(__FILE__) + "/operation"
+require File.dirname(__FILE__) + "/http_client"
 
 class Agent
+
+  include HttpClient
+
   attr_accessor :manager_ip, :manager_port
   attr_accessor :agent_uuid, :agent_ip, :agent_root
 
@@ -15,8 +19,9 @@ class Agent
   end
 
   def register_agent
-    puts "http://#{manager_ip}:#{manager_port}/agent/register?ip=#{agent_ip}&uuid=#{agent_uuid}"
-    puts Curl::Easy.http_get("http://#{manager_ip}:#{manager_port}/agent/register?ip=#{agent_ip}&uuid=#{agent_uuid}").body_str
+    url = "http://#{manager_ip}:#{manager_port}/agent/register?ip=#{agent_ip}&uuid=#{agent_uuid}"
+    puts url
+    puts http_get(url)
   end
 
   def operation_dir(operation_name)
@@ -37,10 +42,9 @@ class Agent
   end
 
   def provision_operation(operation_name)
-    result = Curl::Easy.http_get("http://#{manager_ip}:#{manager_port}/repo/fetch?name=#{operation_name}").body_str
-    url = JSON.parse(result)['files'].first
-
-    script = Curl::Easy.http_get(url).body_str
+    ret = http_get_json("http://#{manager_ip}:#{manager_port}/repo/fetch?name=#{operation_name}")
+    url = ret['files'].first
+    script = http_get(url)
 
     operation_dir = operation_dir(operation_name)
     operation_script = operation_script(operation_name)
