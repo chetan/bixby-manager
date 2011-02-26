@@ -4,7 +4,6 @@ require 'rubygems'
 require 'bundler/setup'
 Bundler.setup(:default)
 
-require 'sinatra'
 require 'json'
 
 AGENT_ROOT = File.expand_path(File.dirname(__FILE__))
@@ -12,29 +11,6 @@ AGENT_ROOT = File.expand_path(File.dirname(__FILE__))
 require AGENT_ROOT + '/lib/agent'
 require AGENT_ROOT + '/lib/rpc'
 require AGENT_ROOT + '/lib/rpc-json'
+require AGENT_ROOT + '/lib/app'
 
-agent = Agent.create
-if agent.new? then
-    if agent.mac_changed? then
-        agent.deregister_agent()
-        agent = Agent.create(false)
-    end
-    agent.register_agent()
-    agent.save_config()
-end
-
-get '/op/:operation' do
-  operation_name = params[:operation]
-
-  operation = agent.get_operation(operation_name)
-  if operation == nil
-    agent.provision_operation(operation_name)
-    operation = agent.get_operation(operation_name)
-  end
-
-  if operation != nil
-    operation.execute
-  else
-    "Unknown operation #{params[:operation]}"
-  end
-end
+App.run!
