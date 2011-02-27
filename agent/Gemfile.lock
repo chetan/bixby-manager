@@ -20,6 +20,7 @@ GEM
       tilt (>= 1.2.2, < 2.0)
     systemu (1.2.0)
     tilt (1.2.2)
+    uuidtools (2.1.2)
 
 PLATFORMS
   ruby
@@ -29,3 +30,4 @@ DEPENDENCIES
   json
   ohai
   sinatra
+  uuidtools

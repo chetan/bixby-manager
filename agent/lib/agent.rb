@@ -1,4 +1,6 @@
 
+require 'uuidtools'
+
 require File.dirname(__FILE__) + "/operation"
 require File.dirname(__FILE__) + "/http_client"
 require File.dirname(__FILE__) + "/handshake"
@@ -34,7 +36,7 @@ class Agent
         @manager_ip = '192.168.80.99'
         @manager_port = 3000
 
-        @agent_uuid = 12345
+        @agent_uuid = UUIDTools::UUID.random_create.hexdigest
         @agent_ip = '192.168.80.99'
 
         @agent_mac = get_mac_address()
