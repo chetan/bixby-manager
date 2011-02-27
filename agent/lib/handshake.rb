@@ -1,23 +1,26 @@
 
 require 'ohai'
-require 'ezcrypto'
-require 'ezsig'
 require 'uuidtools'
 
+require File.dirname(__FILE__) + "/crypto"
+
 module Handshake
+
+    include Crypto
 
     def deregister_agent
         # TODO send dereg request
     end
 
     def register_agent
-        url = "http://#{manager_ip}:#{manager_port}/agent/register?ip=#{agent_ip}&uuid=#{agent_uuid}"
+        url = "http://#{manager_ip}:#{manager_port}/agent/register"
+        data = { :uuid => @uuid, :public_key => self.public_key.to_s }
         puts url
         puts http_get(url)
     end
 
     def mac_changed?
-        (not @agent_mac.nil? and (@agent_mac != get_mac_address()))
+        (not @mac_address.nil? and (@mac_address != get_mac_address()))
     end
 
     def get_mac_address
@@ -31,14 +34,8 @@ module Handshake
         ret.first # got it!
     end
 
-    # create crypto keypair and save in config folder
-    def create_keypair
-        pair = EzCrypto::Signer.generate
-        File.open(File.join(self.config_dir, "id_rsa"), 'w') { |out| out.write(pair.private_key.to_s) }
-        File.open(File.join(self.config_dir, "id_rsa.pub"), 'w') { |out| out.write(pair.public_key.to_s) }
-    end
-
     def create_uuid
         UUIDTools::UUID.random_create.hexdigest
     end
+
 end
