@@ -22,7 +22,7 @@ class Agent
     end
 
     attr_accessor :manager_ip, :manager_port
-    attr_accessor :agent_uuid, :agent_ip, :agent_root, :agent_mac
+    attr_accessor :uuid, :agent_ip, :agent_root, :mac_address
 
     def self.create(use_config = true)
         agent = load_config() if use_config
@@ -38,10 +38,10 @@ class Agent
         @manager_ip = '192.168.80.99'
         @manager_port = 3000
 
-        @agent_uuid = create_uuid()
+        @uuid = create_uuid()
         @agent_ip = '192.168.80.99'
 
-        @agent_mac = get_mac_address()
+        @mac_address = get_mac_address()
         create_keypair()
     end
 
