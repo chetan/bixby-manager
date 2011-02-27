@@ -33,14 +33,16 @@ class Agent
     private_class_method :new
 
     def initialize
+        @new = true
+
         @manager_ip = '192.168.80.99'
         @manager_port = 3000
 
-        @agent_uuid = UUIDTools::UUID.random_create.hexdigest
+        @agent_uuid = create_uuid()
         @agent_ip = '192.168.80.99'
 
         @agent_mac = get_mac_address()
-        @new = true
+        create_keypair()
     end
 
 end

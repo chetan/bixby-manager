@@ -1,5 +1,8 @@
 
 require 'ohai'
+require 'ezcrypto'
+require 'ezsig'
+require 'uuidtools'
 
 module Handshake
 
@@ -28,4 +31,14 @@ module Handshake
         ret.first # got it!
     end
 
+    # create crypto keypair and save in config folder
+    def create_keypair
+        pair = EzCrypto::Signer.generate
+        File.open(File.join(self.config_dir, "id_rsa"), 'w') { |out| out.write(pair.private_key.to_s) }
+        File.open(File.join(self.config_dir, "id_rsa.pub"), 'w') { |out| out.write(pair.public_key.to_s) }
+    end
+
+    def create_uuid
+        UUIDTools::UUID.random_create.hexdigest
+    end
 end
