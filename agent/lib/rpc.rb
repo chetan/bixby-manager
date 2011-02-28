@@ -1,7 +1,4 @@
 
-require 'rubygems'
-require 'json'
-
 require File.dirname(__FILE__) + "/jsonify"
 
 class Request
