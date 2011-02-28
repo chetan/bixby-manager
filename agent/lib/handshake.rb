@@ -3,6 +3,7 @@ require 'ohai'
 require 'uuidtools'
 
 require File.dirname(__FILE__) + "/crypto"
+require File.dirname(__FILE__) + "/rpc"
 
 module Handshake
 
@@ -13,10 +14,10 @@ module Handshake
     end
 
     def register_agent
-        url = "http://#{manager_ip}:#{manager_port}/agent/register"
-        data = { :uuid => @uuid, :public_key => self.public_key.to_s }
-        puts url
-        puts http_get(url)
+        req = JsonRequest.new("register", { :uuid => @uuid, :public_key => self.public_key.to_s })
+        url = create_url("/agent/register")
+        res = http_post_json(url, req.to_hash)
+        p res
     end
 
     def mac_changed?

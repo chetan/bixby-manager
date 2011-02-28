@@ -4,6 +4,11 @@ require 'json'
 
 module HttpClient
 
+    def create_url(path)
+        path = "/#{path}" if path[0,1] != '/'
+        "http://#{manager_ip}:#{manager_port}#{path}"
+    end
+
     def http_get(url)
         Curl::Easy.http_get(url).body_str
     end

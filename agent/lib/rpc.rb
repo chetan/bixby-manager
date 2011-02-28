@@ -1,7 +1,7 @@
 
 require File.dirname(__FILE__) + "/jsonify"
 
-class Request
+class JsonRequest
 
     include Jsonify
 
@@ -11,9 +11,13 @@ class Request
         @operation = operation
         @params = params
     end
+
+    def to_hash
+        { :request => self.to_json }
+    end
 end
 
-class Response
+class JsonResponse
 
     include Jsonify
 
