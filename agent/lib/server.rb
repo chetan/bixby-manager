@@ -1,6 +1,8 @@
 
 require 'sinatra/base'
 
+require File.dirname(__FILE__) + "/rpc"
+
 class Server < Sinatra::Base
 
     get '/op/:operation' do

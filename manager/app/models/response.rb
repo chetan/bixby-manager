@@ -1,6 +1,6 @@
 
 class Response
-   
-    attr_accessor :result, :message
-    
+
+    attr_accessor :result, :message, :data
+
 end

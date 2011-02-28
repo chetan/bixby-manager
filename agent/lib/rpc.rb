@@ -1,16 +1,30 @@
+
+require 'rubygems'
+require 'json'
+
+require File.dirname(__FILE__) + "/jsonify"
+
 class Request
-  attr_accessor :operation
-  
-  def initialize(operation)
-    @operation = operation
-  end
+
+    include Jsonify
+
+    attr_accessor :operation, :params
+
+    def initialize(operation, params)
+        @operation = operation
+        @params = params
+    end
 end
 
 class Response
-  attr_accessor :returnCode, :data
-  
-  def initialize(returnCode, data)
-    @returnCode = returnCode
-    @data = data
-  end
+
+    include Jsonify
+
+    attr_accessor :result, :message, :data
+
+    def initialize(result = nil, message = nil, data = nil)
+        @result = result
+        @message = message
+        @data = data
+    end
 end
