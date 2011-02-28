@@ -1,5 +1,5 @@
 
-class Response
+class JsonResponse
 
     attr_accessor :result, :message, :data
 
