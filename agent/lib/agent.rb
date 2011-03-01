@@ -21,8 +21,8 @@ class Agent
         attr_accessor :agent_root
     end
 
-    attr_accessor :manager_uri
-    attr_accessor :uuid, :agent_root, :mac_address
+    attr_accessor :agent_root
+    attr_accessor :manager_uri, :uuid, :mac_address
 
     def self.create(uri = nil, root_dir = nil, use_config = true)
 
