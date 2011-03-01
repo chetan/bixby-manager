@@ -6,7 +6,7 @@ module HttpClient
 
     def create_url(path)
         path = "/#{path}" if path[0,1] != '/'
-        "http://#{manager_ip}:#{manager_port}#{path}"
+        "#{manager_uri}#{path}"
     end
 
     def http_get(url)

@@ -13,7 +13,8 @@ module Config
             File.join(config_dir, "devops.yml")
         end
 
-        def load_config
+        def load_config(root_dir)
+            self.agent_root = root_dir
             return nil if not File.exists? config_file
 
             # load it!
@@ -59,8 +60,7 @@ module Config
         self.class.config_file
     end
 
-    def save_config
-
+    def init_config_dir
         if not File.exists? config_dir then
             begin
                 FileUtils.mkdir_p(config_dir)
@@ -68,13 +68,15 @@ module Config
                 raise IOError.new(ex.message)
             end
         end
+    end
 
+    def save_config
+        init_config_dir()
         File.open(config_file, 'w') { |out| out.write(self.to_yaml) }
-
     end
 
     def to_yaml_properties
-        [ "@manager_ip", "@manager_port", "@uuid", "@mac_address" ]
+        [ "@manager_uri", "@uuid", "@mac_address" ]
     end
 
 end

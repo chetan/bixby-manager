@@ -19,7 +19,7 @@ module Provisioning
     end
 
     def provision_operation(operation_name)
-        ret = http_get_json("http://#{manager_ip}:#{manager_port}/repo/fetch?name=#{operation_name}")
+        ret = http_get_json(create_url("/repo/fetch?name=#{operation_name}"))
         url = ret['files'].first
         script = http_get(url)
 

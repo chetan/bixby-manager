@@ -6,6 +6,7 @@ module Crypto
 
     # create crypto keypair and save in config folder
     def create_keypair
+        init_config_dir()
         pair = EzCrypto::Signer.generate
         File.open(private_key_file, 'w') { |out| out.write(pair.private_key.to_s) }
         File.open(public_key_file, 'w') { |out| out.write(pair.public_key.to_s) }

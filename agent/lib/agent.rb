@@ -1,5 +1,6 @@
 
 require 'uuidtools'
+require 'uri'
 
 require File.dirname(__FILE__) + "/operation"
 require File.dirname(__FILE__) + "/http_client"
@@ -10,7 +11,6 @@ require File.dirname(__FILE__) + "/config"
 class Agent
 
     DEFAULT_ROOT_DIR = "/opt/devops"
-    @agent_root = DEFAULT_ROOT_DIR # TODO set via command line
 
     include HttpClient
     include Config
@@ -21,26 +21,29 @@ class Agent
         attr_accessor :agent_root
     end
 
-    attr_accessor :manager_ip, :manager_port
-    attr_accessor :uuid, :agent_ip, :agent_root, :mac_address
+    attr_accessor :manager_uri
+    attr_accessor :uuid, :agent_root, :mac_address
 
-    def self.create(use_config = true)
-        agent = load_config() if use_config
+    def self.create(uri, root_dir, use_config = true)
+        agent = load_config(root_dir) if use_config
+        if agent.nil? and (uri.nil? or Uri.parse(uri).nil?) then
+            puts "manager uri is required the first time you call me!"
+            puts "usage: agent.rb [-d root dir] <manager uri>"
+            exit
+        end
         return agent if not agent.nil?
-        return new()
+        return new(uri, root_dir)
     end
 
     private_class_method :new
 
-    def initialize
+    def initialize(uri, root_dir = nil)
         @new = true
 
-        @manager_ip = '192.168.80.99'
-        @manager_port = 3000
+        @manager_uri = uri
+        @agent_root = root_dir.nil? ? DEFAULT_ROOT_DIR : root_dir
 
         @uuid = create_uuid()
-        @agent_ip = '192.168.80.99'
-
         @mac_address = get_mac_address()
         create_keypair()
     end

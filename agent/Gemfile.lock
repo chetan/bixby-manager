@@ -30,6 +30,7 @@ DEPENDENCIES
   curb
   ezcrypto
   json
+  mixlib-cli
   ohai
   sinatra
   uuidtools

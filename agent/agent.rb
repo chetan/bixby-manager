@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -wKU
+#!/usr/bin/env ruby -KU
 
 require 'rubygems'
 require 'bundler/setup'
@@ -11,4 +11,4 @@ AGENT_ROOT = File.expand_path(File.dirname(__FILE__))
 require AGENT_ROOT + '/lib/agent'
 require AGENT_ROOT + '/lib/app'
 
-App.run!
+App.new.run!
