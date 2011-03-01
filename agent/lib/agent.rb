@@ -24,13 +24,17 @@ class Agent
     attr_accessor :manager_uri
     attr_accessor :uuid, :agent_root, :mac_address
 
-    def self.create(uri, root_dir, use_config = true)
+    def self.create(uri = nil, root_dir = nil, use_config = true)
+
         agent = load_config(root_dir) if use_config
+
         if agent.nil? and (uri.nil? or Uri.parse(uri).nil?) then
+            # if unable to load from config and no uri passed, bail!
             puts "manager uri is required the first time you call me!"
             puts "usage: agent.rb [-d root dir] <manager uri>"
             exit
         end
+
         return agent if not agent.nil?
         return new(uri, root_dir)
     end
