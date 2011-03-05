@@ -28,7 +28,7 @@ class Agent
 
         agent = load_config(root_dir) if use_config
 
-        if agent.nil? and (uri.nil? or Uri.parse(uri).nil?) then
+        if agent.nil? and (uri.nil? or URI.parse(uri).nil?) then
             # if unable to load from config and no uri passed, bail!
             puts "manager uri is required the first time you call me!"
             puts "usage: agent.rb [-d root dir] <manager uri>"
