@@ -8,10 +8,17 @@ module Jsonify
     def to_json_properties
         self.instance_variables
     end
-    def self.from_json(str)
-        json = JSON.parse(str)
-        obj = new
-        json.each{ |k,v| obj.send("#{k}=".to_sym, v) }
-        obj
+
+    module ClassMethods
+        def from_json(str)
+            json = JSON.parse(str)
+            obj = self.allocate
+            json.each{ |k,v| obj.send("#{k}=".to_sym, v) }
+            obj
+        end
+    end
+
+    def self.included(receiver)
+        receiver.extend(ClassMethods)
     end
 end
