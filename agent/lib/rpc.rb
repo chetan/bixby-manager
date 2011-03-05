@@ -17,11 +17,16 @@ class JsonResponse
 
     include Jsonify
 
-    attr_accessor :result, :message, :data
+    attr_accessor :status, :message, :data, :code
 
-    def initialize(result = nil, message = nil, data = nil)
-        @result = result
+    def initialize(status = nil, message = nil, data = nil, code = nil)
+        @status = status
         @message = message
         @data = data
+        @code = code
+    end
+
+    def self.invalid_request
+        new("fail", "invalid request", nil, 400)
     end
 end

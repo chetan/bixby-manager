@@ -13,20 +13,30 @@ class Server < Sinatra::Base
         self.class.agent
     end
 
-    get '/op/:operation' do
-        operation_name = params[:operation]
+    get '/*' do
+        return JsonResponse.invalid_request.to_json
+    end
 
-        operation = agent.get_operation(operation_name)
-        if operation == nil
-            agent.provision_operation(operation_name)
-            operation = agent.get_operation(operation_name)
+    post '/*' do
+
+        body = request.body.read.strip
+        if body.blank? then
+            # invalid request
+            return JsonResponse.invalid_request.to_json
         end
 
-        if operation != nil
-            operation.execute
-        else
-            "Unknown operation #{params[:operation]}"
+        begin
+            req = JsonRequest.from_json(body)
+        rescue Exception => ex
+            return JsonResponse.invalid_request.to_json
         end
+
+        if req.operation != "exec" then
+
+        end
+
+        ret = agent.exec(req.params)
+        return ret.to_s
     end
 
 end

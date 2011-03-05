@@ -3,7 +3,7 @@ require 'json'
 
 class JsonResponse
 
-    attr_accessor :result, :message, :data
+    attr_accessor :result, :message, :data, :code
 
     def self.from_json(str)
         json = JSON.parse(str)
