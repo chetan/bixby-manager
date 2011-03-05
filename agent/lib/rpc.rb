@@ -26,7 +26,7 @@ class JsonResponse
         @code = code
     end
 
-    def self.invalid_request
-        new("fail", "invalid request", nil, 400)
+    def self.invalid_request(msg = nil)
+        new("fail", (msg || "invalid request"), nil, 400)
     end
 end
