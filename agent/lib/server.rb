@@ -21,7 +21,6 @@ class Server < Sinatra::Base
 
         body = request.body.read.strip
         if body.blank? then
-            # invalid request
             return JsonResponse.invalid_request.to_json
         end
 
@@ -32,7 +31,7 @@ class Server < Sinatra::Base
         end
 
         if req.operation != "exec" then
-
+            return JsonResponse.invalid_request("unsupported operation").to_json
         end
 
         ret = agent.exec(req.params)
