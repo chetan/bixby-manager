@@ -11,10 +11,6 @@ class JsonRequest
         @operation = operation
         @params = params
     end
-
-    def to_hash
-        { :request => self.to_json }
-    end
 end
 
 class JsonResponse

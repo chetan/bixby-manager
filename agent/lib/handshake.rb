@@ -16,7 +16,7 @@ module Handshake
     def register_agent
         req = JsonRequest.new("register", { :uuid => @uuid, :public_key => self.public_key.to_s })
         url = create_url("/agent/register")
-        res = http_post_json(url, req.to_hash)
+        res = http_post_json(url, req.to_json)
         p res
     end
 

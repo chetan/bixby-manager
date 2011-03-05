@@ -19,7 +19,10 @@ module HttpClient
     end
 
     def http_post(url, data)
-        return Curl::Easy.http_post(url, data.map{ |k,v| Curl::PostField.content(k, v) }).body_str
+        if data.kind_of? Hash then
+            data = data.map{ |k,v| Curl::PostField.content(k, v) }
+        end
+        return Curl::Easy.http_post(url, data).body_str
     end
 
     # make an HTTP POST request and parse the JSON response

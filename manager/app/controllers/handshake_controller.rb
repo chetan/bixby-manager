@@ -3,8 +3,14 @@ class HandshakeController < ApplicationController
 
 	def register
 
-	    req = JsonRequest.from_json(params.delete(:request))
-	    params.merge!(req.params)
+	    body = request.body.read.strip
+	    if body.blank? then
+	        # TODO error
+            return render :text => "error\n"
+        end
+
+	    req = JsonRequest.from_json(body)
+	    params = HashWithIndifferentAccess.new(req.params)
 
 		public_key = params[:public_key]
 		if public_key.blank? then
