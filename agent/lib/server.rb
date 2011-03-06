@@ -34,8 +34,9 @@ class Server < Sinatra::Base
             return JsonResponse.invalid_request("unsupported operation").to_json
         end
 
-        ret = agent.exec(req.params)
-        return ret.to_s
+        status, stdout, stderr = agent.exec(req.params)
+        data = { :result => status, :stdout => stdout, :stderr => stderr }
+        return JsonResponse.new("success", nil, data).to_json
     end
 
 end

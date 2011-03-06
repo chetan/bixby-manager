@@ -5,7 +5,7 @@ require 'uri'
 require File.dirname(__FILE__) + "/operation"
 require File.dirname(__FILE__) + "/http_client"
 require File.dirname(__FILE__) + "/handshake"
-require File.dirname(__FILE__) + "/provisioning"
+require File.dirname(__FILE__) + "/remote_exec"
 require File.dirname(__FILE__) + "/config"
 
 class Agent
@@ -15,7 +15,7 @@ class Agent
     include HttpClient
     include Config
     include Handshake
-    include Provisioning
+    include RemoteExec
 
     class << self
         attr_accessor :agent_root
