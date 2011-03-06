@@ -5,6 +5,8 @@ require File.dirname(__FILE__) + "/rpc"
 
 class Server < Sinatra::Base
 
+    SUPPORTED_OPERATIONS = [ "exec" ]
+
     class << self
         attr_accessor :agent
     end
@@ -30,10 +32,14 @@ class Server < Sinatra::Base
             return JsonResponse.invalid_request.to_json
         end
 
-        if req.operation != "exec" then
-            return JsonResponse.invalid_request("unsupported operation").to_json
+        if not SUPPORTED_OPERATIONS.include? req.operation then
+            return JsonResponse.invalid_request("unsupported operation: #{req.operation}").to_json
         end
 
+        return handle_exec(req)
+    end
+
+    def handle_exec(req)
         status, stdout, stderr = agent.exec(req.params)
         data = { :result => status, :stdout => stdout, :stderr => stderr }
         return JsonResponse.new("success", nil, data).to_json
