@@ -9,7 +9,18 @@ class App
         uri = @argv.empty? ? nil : @argv.shift
         root_dir = @config[:directory]
 
-        agent = Agent.create(uri, root_dir)
+        begin
+            agent = Agent.create(uri, root_dir)
+        rescue Exception => ex
+           if ex.message == "Missing manager URI" then
+               # if unable to load from config and no uri passed, bail!
+               puts "manager uri is required the first time you call me!"
+               puts "usage: agent.rb [-d root dir] <manager uri>"
+               exit
+           end
+           raise ex
+        end
+
         if not agent.new? and agent.mac_changed? then
             # loaded from config and mac has changed
             agent.deregister_agent()
