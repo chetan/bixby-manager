@@ -42,6 +42,8 @@ class Server < Sinatra::Base
         if not SUPPORTED_OPERATIONS.include? req.operation then
             return JsonResponse.invalid_request("unsupported operation: #{req.operation}").to_json
         end
+
+        return req
     end
 
     def handle_exec(req)
