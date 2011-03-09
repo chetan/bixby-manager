@@ -20,7 +20,14 @@ class Server < Sinatra::Base
     end
 
     post '/*' do
+        req = extract_valid_request()
+        if req.kind_of? String then
+            return req
+        end
+        return handle_exec(req)
+    end
 
+    def extract_valid_request
         body = request.body.read.strip
         if body.blank? then
             return JsonResponse.invalid_request.to_json
@@ -35,8 +42,6 @@ class Server < Sinatra::Base
         if not SUPPORTED_OPERATIONS.include? req.operation then
             return JsonResponse.invalid_request("unsupported operation: #{req.operation}").to_json
         end
-
-        return handle_exec(req)
     end
 
     def handle_exec(req)
