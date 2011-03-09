@@ -37,7 +37,7 @@ class Command
     end
 
     def command_file
-        File.join(self.package_dir, @command)
+        File.join(self.package_dir, "bin", @command)
     end
 
     def command_exists?
