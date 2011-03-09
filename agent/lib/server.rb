@@ -45,6 +45,8 @@ class Server < Sinatra::Base
         rescue Exception => ex
             if ex.kind_of? PackageNotFound then
                 return JsonResponse.package_not_found(ex.message).to_json
+            elsif ex.kind_of? CommandNotFound then
+                return JsonResponse.command_not_found(ex.message).to_json
             end
             raise ex
         end

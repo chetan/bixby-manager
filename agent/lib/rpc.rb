@@ -33,4 +33,8 @@ class JsonResponse
     def self.package_not_found(package)
         new("fail", "package not found: #{package}", nil, 404)
     end
+
+    def self.command_not_found(command)
+        new("fail", "command not found: #{command}", nil, 404)
+    end
 end
