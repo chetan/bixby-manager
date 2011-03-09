@@ -21,7 +21,14 @@ class Agent
         attr_accessor :agent_root
     end
 
-    attr_accessor :agent_root
+    def agent_root
+        self.class.agent_root
+    end
+
+    def agent_root=(path)
+        self.class.agent_root = path
+    end
+
     attr_accessor :manager_uri, :uuid, :mac_address
 
     def self.create(uri = nil, root_dir = nil, use_config = true)
