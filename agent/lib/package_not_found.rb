@@ -1,0 +1,4 @@
+
+class PackageNotFound < Exception
+
+end

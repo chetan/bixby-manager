@@ -40,7 +40,14 @@ class Server < Sinatra::Base
     end
 
     def handle_exec(req)
-        status, stdout, stderr = agent.exec(req.params)
+        begin
+            status, stdout, stderr = agent.exec(req.params)
+        rescue Exception => ex
+            if ex.kind_of? PackageNotFound then
+                return JsonResponse.package_not_found(ex.message).to_json
+            end
+            raise ex
+        end
         data = { :result => status, :stdout => stdout, :stderr => stderr }
         return JsonResponse.new("success", nil, data).to_json
     end
