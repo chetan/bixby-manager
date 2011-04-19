@@ -1,15 +1,24 @@
 
+require 'http_client'
+
 class Agent < ActiveRecord::Base
 
     # validations
     validates_presence_of :port, :uuid, :public_key
     validates_uniqueness_of :uuid, :public_key
 
-    def run_cmd(name)
+    include HttpClient
 
-        # puts Curl::Easy.http_get("http://#{ip}:4567/uptime").body_str
-        ret = Curl::Easy.http_get("http://#{ip}:4567/op/#{name}").body_str
+    def run_cmd(cmd)
 
+        req = JsonRequest.new("exec", cmd.to_hash)
+        res = http_post_json(agent_uri, req.to_json)
+        # p res
+
+    end
+
+    def agent_uri
+        "http://#{self.ip}:#{self.port}/"
     end
 
 end
