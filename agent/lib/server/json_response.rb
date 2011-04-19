@@ -1,5 +1,5 @@
 
-require AGENT_ROOT + "/jsonify"
+require AGENT_ROOT + "/util/jsonify"
 
 class JsonResponse
 
