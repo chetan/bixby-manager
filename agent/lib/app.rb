@@ -1,4 +1,5 @@
 
+require AGENT_ROOT + '/agent'
 require AGENT_ROOT + "/cli"
 
 class App
