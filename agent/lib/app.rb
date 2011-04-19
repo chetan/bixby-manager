@@ -1,5 +1,5 @@
 
-require File.dirname(__FILE__) + "/cli"
+require AGENT_ROOT + "/cli"
 
 class App
 
@@ -37,7 +37,7 @@ class App
 
         agent = load_agent()
 
-        require AGENT_ROOT + "/lib/server"
+        require AGENT_ROOT + "/server"
         Server.agent = agent
         Server.run!
 

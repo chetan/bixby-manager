@@ -1,5 +1,5 @@
 
-require File.dirname(__FILE__) + "/jsonify"
+require AGENT_ROOT + "/jsonify"
 
 class JsonRequest
 

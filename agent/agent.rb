@@ -6,9 +6,9 @@ Bundler.setup(:default)
 
 require 'json'
 
-AGENT_ROOT = File.expand_path(File.dirname(__FILE__))
+AGENT_ROOT = File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 
-require AGENT_ROOT + '/lib/agent'
-require AGENT_ROOT + '/lib/app'
+require AGENT_ROOT + '/agent'
+require AGENT_ROOT + '/app'
 
 App.new.run!

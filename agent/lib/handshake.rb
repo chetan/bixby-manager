@@ -2,8 +2,8 @@
 require 'ohai'
 require 'uuidtools'
 
-require File.dirname(__FILE__) + "/crypto"
-require File.dirname(__FILE__) + "/rpc"
+require AGENT_ROOT + "/crypto"
+require AGENT_ROOT + "/rpc"
 
 module Handshake
 

@@ -1,7 +1,7 @@
 
 require 'sinatra/base'
 
-require File.dirname(__FILE__) + "/rpc"
+require AGENT_ROOT + "/rpc"
 
 class Server < Sinatra::Base
 

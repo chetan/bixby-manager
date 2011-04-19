@@ -1,7 +1,7 @@
 
-require File.dirname(__FILE__) + "/command"
-require File.dirname(__FILE__) + "/package_not_found"
-require File.dirname(__FILE__) + "/command_not_found"
+require AGENT_ROOT + "/command"
+require AGENT_ROOT + "/exception/package_not_found"
+require AGENT_ROOT + "/exception/command_not_found"
 
 require 'systemu'
 

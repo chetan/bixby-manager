@@ -2,11 +2,11 @@
 require 'uuidtools'
 require 'uri'
 
-require File.dirname(__FILE__) + "/operation"
-require File.dirname(__FILE__) + "/http_client"
-require File.dirname(__FILE__) + "/handshake"
-require File.dirname(__FILE__) + "/remote_exec"
-require File.dirname(__FILE__) + "/config"
+require AGENT_ROOT + "/operation"
+require AGENT_ROOT + "/http_client"
+require AGENT_ROOT + "/handshake"
+require AGENT_ROOT + "/remote_exec"
+require AGENT_ROOT + "/config"
 
 class Agent
 
