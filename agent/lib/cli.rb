@@ -43,9 +43,24 @@ module CLI
     end
 
     option :directory,
-        :short       => "-d DIRECTORY",
-        :long        => "--directory DIRECTORY",
-        :description => "Root directory for devops (default: /opt/devops)"
+        :short          => "-d DIRECTORY",
+        :long           => "--directory DIRECTORY",
+        :default        => "/opt/devops",
+        :description    => "Root directory for devops (default: /opt/devops)"
+
+    option :port,
+        :short          => "-p PORT",
+        :long           => "--port PORT",
+        :default        => ::Server::DEFAULT_PORT,
+        :description    => "Port agent will listen on (default: #{::Server::DEFAULT_PORT})"
+
+    option :help,
+        :short          => "-h",
+        :long           => "--help",
+        :description    => "Print this help",
+        :boolean        => true,
+        :show_options   => true,
+        :exit           => 0
 
     def initialize
         super

@@ -11,7 +11,7 @@ class Server < Sinatra::Base
     DEFAULT_PORT = 18000
 
     class << self
-        attr_accessor :agent, :port
+        attr_accessor :agent
     end
 
     def agent

@@ -27,9 +27,9 @@ class Agent
         self.class.agent_root = path
     end
 
-    attr_accessor :manager_uri, :uuid, :mac_address
+    attr_accessor :port, :manager_uri, :uuid, :mac_address
 
-    def self.create(uri = nil, root_dir = nil, use_config = true)
+    def self.create(uri = nil, root_dir = nil, port = nil, use_config = true)
 
         agent = load_config(root_dir) if use_config
 
@@ -38,14 +38,15 @@ class Agent
         end
 
         return agent if not agent.nil?
-        return new(uri, root_dir)
+        return new(uri, root_dir, port)
     end
 
     private_class_method :new
 
-    def initialize(uri, root_dir = nil)
+    def initialize(uri, root_dir = nil, port = nil)
         @new = true
 
+        @port = port
         @manager_uri = uri
         @agent_root = root_dir.nil? ? DEFAULT_ROOT_DIR : root_dir
 

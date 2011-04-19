@@ -1,6 +1,7 @@
 
 require AGENT_ROOT + '/agent'
-require AGENT_ROOT + "/cli"
+require AGENT_ROOT + '/server'
+require AGENT_ROOT + '/cli'
 
 class App
 
@@ -9,9 +10,10 @@ class App
     def load_agent
         uri = @argv.empty? ? nil : @argv.shift
         root_dir = @config[:directory]
+        port = @config[:port]
 
         begin
-            agent = Agent.create(uri, root_dir)
+            agent = Agent.create(uri, root_dir, port)
         rescue Exception => ex
            if ex.message == "Missing manager URI" then
                # if unable to load from config and no uri passed, bail!
@@ -38,9 +40,8 @@ class App
 
         agent = load_agent()
 
-        require AGENT_ROOT + "/server"
         Server.agent = agent
-        Server.set :port, (Server.port = Server::DEFAULT_PORT)
+        Server.set :port, agent.port
         Server.run!
 
     end

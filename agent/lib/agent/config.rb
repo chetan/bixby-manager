@@ -76,7 +76,7 @@ module Config
     end
 
     def to_yaml_properties
-        [ "@manager_uri", "@uuid", "@mac_address" ]
+        [ "@port", "@manager_uri", "@uuid", "@mac_address" ]
     end
 
 end
