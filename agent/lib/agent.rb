@@ -1,12 +1,10 @@
 
-require 'uuidtools'
 require 'uri'
 
-require AGENT_ROOT + "/operation"
-require AGENT_ROOT + "/http_client"
-require AGENT_ROOT + "/handshake"
-require AGENT_ROOT + "/remote_exec"
-require AGENT_ROOT + "/config"
+require AGENT_ROOT + "/agent/http_client"
+require AGENT_ROOT + "/agent/handshake"
+require AGENT_ROOT + "/agent/remote_exec"
+require AGENT_ROOT + "/agent/config"
 
 class Agent
 

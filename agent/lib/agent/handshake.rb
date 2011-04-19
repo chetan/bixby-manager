@@ -2,7 +2,7 @@
 require 'ohai'
 require 'uuidtools'
 
-require AGENT_ROOT + "/crypto"
+require AGENT_ROOT + "/agent/crypto"
 require AGENT_ROOT + "/rpc"
 
 module Handshake
