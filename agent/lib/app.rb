@@ -40,6 +40,7 @@ class App
 
         require AGENT_ROOT + "/server"
         Server.agent = agent
+        Server.set :port, Server::DEFAULT_PORT
         Server.run!
 
     end
