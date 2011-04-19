@@ -12,42 +12,22 @@ class HandshakeController < ApplicationController
         req = JsonRequest.from_json(body)
         params = HashWithIndifferentAccess.new(req.params)
 
-        port = params[:port]
-        if port.blank? then
-            r = JsonResponse.new
-            r.result = :error
-            r.message = "port is required"
-            return render :json => r
-        end
-
-        public_key = params[:public_key]
-        if public_key.blank? then
-            r = JsonResponse.new
-            r.result = :error
-            r.message = "public_key is required"
-            return render :json => r
-        end
-
-        uuid = params[:uuid]
-        if uuid.blank? then
-            r = JsonResponse.new
-            r.result = :error
-            r.message = "uuid is required"
-            return render :json => r
-        end
-
-        if not (Agent.where(:public_key => public_key).empty? and Agent.where(:uuid => uuid).empty?) then
-            r = JsonResponse.new
-            r.result = :error
-            r.message = "agent already exists"
-            return render :json => r
-        end
-
         a = Agent.new
         a.ip = request.remote_ip
-        a.port = port
-        a.uuid = uuid
-        a.public_key = public_key
+        a.port = params[:port]
+        a.uuid = params[:uuid]
+        a.public_key = params[:public_key]
+
+        if not a.valid? then
+            # validate this agent first
+            msg = ""
+            a.errors.keys.each { |k| msg += "; " if not msg.empty?; msg += "#{k}: #{a.errors[k]}" }
+            r = JsonResponse.new
+            r.result = :error
+            r.message = msg
+            return render :json => r
+        end
+
         a.save!
 
         r = JsonResponse.new
