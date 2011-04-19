@@ -22,18 +22,13 @@ class HandshakeController < ApplicationController
             # validate this agent first
             msg = ""
             a.errors.keys.each { |k| msg += "; " if not msg.empty?; msg += "#{k}: #{a.errors[k]}" }
-            r = JsonResponse.new
-            r.result = :error
-            r.message = msg
+            r = JsonResponse.new(:error, msg)
             return render :json => r
         end
 
         a.save!
 
-        r = JsonResponse.new
-        r.result = :success
-
-        render :json => r
+        render :json => JsonResponse.new(:success).to_json
     end
 
 end
