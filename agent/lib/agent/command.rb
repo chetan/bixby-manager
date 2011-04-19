@@ -9,7 +9,8 @@ class Command
     #   command
     #   args (optional)
     #   env (optional)
-    def initialize(params)
+    def initialize(params = nil)
+        return if params.nil? or params.empty?
         params.each{ |k,v| self.send("#{k}=", v) }
     end
 
