@@ -1,7 +1,7 @@
 
 require 'sinatra/base'
 
-require AGENT_ROOT + "/rpc"
+require AGENT_ROOT + "/server/rpc"
 
 class Server < Sinatra::Base
 
