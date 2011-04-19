@@ -12,6 +12,14 @@ class HandshakeController < ApplicationController
         req = JsonRequest.from_json(body)
         params = HashWithIndifferentAccess.new(req.params)
 
+        port = params[:port]
+        if port.blank? then
+            r = JsonResponse.new
+            r.result = :error
+            r.message = "port is required"
+            return render :json => r
+        end
+
         public_key = params[:public_key]
         if public_key.blank? then
             r = JsonResponse.new
@@ -37,6 +45,7 @@ class HandshakeController < ApplicationController
 
         a = Agent.new
         a.ip = request.remote_ip
+        a.port = port
         a.uuid = uuid
         a.public_key = public_key
         a.save!
