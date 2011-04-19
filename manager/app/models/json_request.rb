@@ -1,15 +1,14 @@
 
-require 'json'
+require "jsonify"
 
 class JsonRequest
 
+    include Jsonify
+
     attr_accessor :operation, :params
 
-    def self.from_json(str)
-        json = JSON.parse(str)
-        obj = new
-        json.each{ |k,v| obj.send("#{k}=".to_sym, v) }
-        obj
+    def initialize(operation, params)
+        @operation = operation
+        @params = params
     end
-
 end
