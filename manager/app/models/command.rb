@@ -1,7 +1,7 @@
 
 class Command
 
-    attr_accessor :repo, :bundlebundle, :command, :args, :env
+    attr_accessor :repo, :bundle, :command, :args, :env
 
     # params hash contains:
     #   repo
