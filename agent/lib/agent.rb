@@ -1,4 +1,6 @@
 
+require File.join(File.expand_path(File.dirname(__FILE__)), "/bootstrap")
+
 require 'uri'
 
 require AGENT_ROOT + "/agent/http_client"
