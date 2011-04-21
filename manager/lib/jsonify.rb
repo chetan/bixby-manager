@@ -10,8 +10,8 @@ module Jsonify
     end
 
     module ClassMethods
-        def from_json(str)
-            json = JSON.parse(str)
+        def from_json(json)
+            json = JSON.parse(json) if json.kind_of? String
             obj = self.allocate
             json.each{ |k,v| obj.send("#{k}=".to_sym, v) }
             obj
