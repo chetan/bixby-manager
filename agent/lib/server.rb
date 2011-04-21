@@ -53,8 +53,8 @@ class Server < Sinatra::Base
         begin
             status, stdout, stderr = agent.exec(req.params)
         rescue Exception => ex
-            if ex.kind_of? PackageNotFound then
-                return JsonResponse.package_not_found(ex.message).to_json
+            if ex.kind_of? BundleNotFound then
+                return JsonResponse.bundle_not_found(ex.message).to_json
             elsif ex.kind_of? CommandNotFound then
                 return JsonResponse.command_not_found(ex.message).to_json
             end

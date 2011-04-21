@@ -1,4 +1,4 @@
 
-class PackageNotFound < Exception
+class BundleNotFound < Exception
 
 end

@@ -1,11 +1,11 @@
 
 class Command
 
-    attr_accessor :repo, :package, :command, :args, :env
+    attr_accessor :repo, :bundle, :command, :args, :env
 
     # params hash contains:
     #   repo
-    #   package
+    #   bundle
     #   command
     #   args (optional)
     #   env (optional)
@@ -20,25 +20,25 @@ class Command
     end
 
     def validate
-        if not package_exists? then
-            raise PackageNotFound.new("repo = #{@repo}; package = #{@package}")
+        if not bundle_exists? then
+            raise BundleNotFound.new("repo = #{@repo}; bundle = #{@bundle}")
         end
 
         if not command_exists? then
-            raise CommandNotFound.new("repo = #{@repo}; package = #{@package}; command = #{@command}")
+            raise CommandNotFound.new("repo = #{@repo}; bundle = #{@bundle}; command = #{@command}")
         end
     end
 
-    def package_dir
-        File.join(Agent.agent_root, "repo", @repo, @package)
+    def bundle_dir
+        File.join(Agent.agent_root, "repo", @repo, @bundle)
     end
 
-    def package_exists?
-        File.exists? self.package_dir
+    def bundle_exists?
+        File.exists? self.bundle_dir
     end
 
     def command_file
-        File.join(self.package_dir, "bin", @command)
+        File.join(self.bundle_dir, "bin", @command)
     end
 
     def command_exists?

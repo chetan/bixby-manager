@@ -18,8 +18,8 @@ class JsonResponse
         new("fail", (msg || "invalid request"), nil, 400)
     end
 
-    def self.package_not_found(package)
-        new("fail", "package not found: #{package}", nil, 404)
+    def self.bundle_not_found(bundle)
+        new("fail", "bundle not found: #{bundle}", nil, 404)
     end
 
     def self.command_not_found(command)

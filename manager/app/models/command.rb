@@ -1,11 +1,11 @@
 
 class Command
 
-    attr_accessor :repo, :package, :command, :args, :env
+    attr_accessor :repo, :bundlebundle, :command, :args, :env
 
     # params hash contains:
     #   repo
-    #   package
+    #   bundle
     #   command
     #   args (optional)
     #   env (optional)
@@ -15,7 +15,7 @@ class Command
     end
 
     def to_hash
-        { :repo => self.repo, :package => self.package, :command => self.command,
+        { :repo => self.repo, :bundle => self.bundle, :command => self.command,
           :args => self.args, :env => self.env }
     end
 

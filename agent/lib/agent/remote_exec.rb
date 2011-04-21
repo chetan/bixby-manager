@@ -1,6 +1,6 @@
 
 require AGENT_ROOT + "/agent/command"
-require AGENT_ROOT + "/exception/package_not_found"
+require AGENT_ROOT + "/exception/bundle_not_found"
 require AGENT_ROOT + "/exception/command_not_found"
 
 require 'systemu'
@@ -9,7 +9,7 @@ module RemoteExec
 
     # params hash contains:
     #   repo
-    #   package
+    #   bundle
     #   command
     #   args (optional)
     #   env (optional)
