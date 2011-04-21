@@ -1,3 +1,7 @@
 
+MINOR
 * Agent doesn't correctly handle registration failure
+* Don't allow escaping from package bin/ dir
+
+MAJOR
 * Provisioning of packages
