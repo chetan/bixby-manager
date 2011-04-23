@@ -2,6 +2,8 @@
 require 'find'
 require 'digest'
 
+require 'command'
+
 module Provisioning
 
     class << self

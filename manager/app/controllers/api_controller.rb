@@ -1,4 +1,7 @@
 
+require 'api/json_request'
+require 'api/json_response'
+
 require 'modules/provisioning'
 
 class ApiController < ApplicationController
