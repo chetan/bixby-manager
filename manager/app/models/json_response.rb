@@ -14,6 +14,14 @@ class JsonResponse
         @code = code
     end
 
+    def success?
+        @status && @status == "success"
+    end
+
+    def fail?
+        @status && @status == "fail"
+    end
+
     def self.invalid_request(msg = nil)
         new("fail", (msg || "invalid request"), nil, 400)
     end

@@ -1,5 +1,9 @@
 
+require AGENT_ROOT + '/util/jsonify'
+
 class Command
+
+    include Jsonify
 
     attr_accessor :repo, :bundle, :command, :args, :env
 
@@ -14,9 +18,17 @@ class Command
         params.each{ |k,v| self.send("#{k}=", v) }
     end
 
+    def to_hash
+        { :repo => self.repo, :bundle => self.bundle, :command => self.command,
+          :args => self.args, :env => self.env }
+    end
+
     # returns triplet of [ status, stdout, stderr ]
     def execute
-        status, stdout, stderr = systemu("sh -c '#{self.command_file} #{@args}'")
+        puts @args
+        cmd = "sh -c '#{self.command_file} #{@args}'"
+        puts cmd
+        status, stdout, stderr = systemu(cmd)
     end
 
     def validate
@@ -29,7 +41,11 @@ class Command
         end
     end
 
+    # resolve the given bundle
     def bundle_dir
+        if @repo == "local" then
+            return File.expand_path(File.join(AGENT_ROOT, "../repo", @bundle))
+        end
         File.join(Agent.agent_root, "repo", @repo, @bundle)
     end
 
