@@ -1,8 +1,9 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), "/bootstrap")
 
-require 'uri'
+require "uri"
 
+require "bundle_repository"
 require "util/http_client"
 
 require "agent/handshake"
@@ -40,8 +41,10 @@ class Agent
             raise "Missing manager URI"
         end
 
-        return agent if not agent.nil?
-        return new(uri, root_dir, port)
+        agent = new(uri, root_dir, port) if agent.nil? # create a new one if unable to load
+        BundleRepository.repository_path = File.join(agent.agent_root, "/repo")
+
+        return agent
     end
 
     private_class_method :new

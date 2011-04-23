@@ -4,3 +4,8 @@ if File.exists? COMMON_ROOT then
     # means we're runnin in a dev environment
     $:.unshift(COMMON_ROOT)
 end
+
+require 'manager'
+require 'bundle_repository'
+
+BundleRepository.repository_path = File.join(Manager.root, "/repo")
