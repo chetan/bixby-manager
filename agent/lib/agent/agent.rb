@@ -3,10 +3,11 @@ require File.join(File.expand_path(File.dirname(__FILE__)), "/bootstrap")
 
 require 'uri'
 
-require AGENT_ROOT + "/agent/http_client"
-require AGENT_ROOT + "/agent/handshake"
-require AGENT_ROOT + "/agent/remote_exec"
-require AGENT_ROOT + "/agent/config"
+require "util/http_client"
+
+require "agent/handshake"
+require "agent/remote_exec"
+require "agent/config"
 
 class Agent
 

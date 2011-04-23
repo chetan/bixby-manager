@@ -1,7 +1,7 @@
 
-require AGENT_ROOT + "/agent/command"
-require AGENT_ROOT + "/exception/bundle_not_found"
-require AGENT_ROOT + "/exception/command_not_found"
+require "command"
+require "exception/bundle_not_found"
+require "exception/command_not_found"
 
 require 'systemu'
 

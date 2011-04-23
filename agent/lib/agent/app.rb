@@ -1,7 +1,6 @@
 
-require AGENT_ROOT + '/agent'
-require AGENT_ROOT + '/server'
-require AGENT_ROOT + '/cli'
+require 'server'
+require 'cli'
 
 class App
 

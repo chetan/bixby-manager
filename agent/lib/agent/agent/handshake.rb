@@ -2,8 +2,9 @@
 require 'ohai'
 require 'uuidtools'
 
-require AGENT_ROOT + "/agent/crypto"
-require AGENT_ROOT + "/server/json_request"
+require "api/json_request"
+
+require "agent/crypto"
 
 module Handshake
 

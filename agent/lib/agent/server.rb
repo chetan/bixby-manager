@@ -1,8 +1,8 @@
 
 require 'sinatra/base'
 
-require AGENT_ROOT + "/server/json_request"
-require AGENT_ROOT + "/server/json_response"
+require "api/json_request"
+require "api/json_response"
 
 class Server < Sinatra::Base
 

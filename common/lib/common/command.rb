@@ -1,5 +1,5 @@
 
-require AGENT_ROOT + '/util/jsonify'
+require 'util/jsonify'
 
 class Command
 
