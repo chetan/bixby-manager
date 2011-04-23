@@ -1,5 +1,5 @@
 
-require "jsonify"
+require "util/jsonify"
 
 class JsonRequest
 
