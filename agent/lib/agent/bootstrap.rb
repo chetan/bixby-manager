@@ -8,8 +8,9 @@ if File.exists? COMMON_ROOT then
     $:.unshift(COMMON_ROOT)
 end
 
-require 'rubygems'
-require 'bundler/setup'
-Bundler.setup(:default)
+if require 'rubygems' then
+    require 'bundler/setup'
+    Bundler.setup(:default)
+end
 
 require AGENT_ROOT + '/model/bundle_command'
