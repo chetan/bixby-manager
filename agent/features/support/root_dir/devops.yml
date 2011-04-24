@@ -1,0 +1,5 @@
+--- !ruby/object:Agent 
+port: 18000
+manager_uri: http://localhost:3000
+uuid: 839b20d8aab74902bd4aa846567abe23
+mac_address: 00:1f:5b:3d:6b:08

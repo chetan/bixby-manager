@@ -10,4 +10,6 @@ gem 'ezcrypto'
 
 group :development, :test do
     gem 'cucumber'
+    gem 'minitest'
+    gem 'rcov'
 end
