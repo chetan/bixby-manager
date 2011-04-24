@@ -7,3 +7,7 @@ gem 'ohai'
 gem 'mixlib-cli'
 gem 'uuidtools'
 gem 'ezcrypto'
+
+group :development, :test do
+    gem 'cucumber'
+end
