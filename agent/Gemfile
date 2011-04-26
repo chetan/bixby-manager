@@ -13,4 +13,5 @@ group :development, :test do
     gem 'cucumber'
     gem 'minitest'
     gem 'rcov'
+    gem 'rspec'
 end

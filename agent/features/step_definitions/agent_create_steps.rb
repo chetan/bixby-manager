@@ -30,3 +30,9 @@ end
 Then /^a config file should be written$/ do
     assert( File.exists? File.join(@root_dir, "etc", "devops.yml") )
 end
+
+Then /^it should raise (.+?) when (.+)$/ do |exception,when_step|
+  lambda {
+    When when_step
+  }.should raise_error(eval(exception))
+end

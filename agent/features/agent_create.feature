@@ -22,3 +22,8 @@ Feature: Create Agent
     And there is "no" existing agent
     When I create an agent
     Then a config file should be written
+
+  Scenario: Create new agent without manager uri
+    Given a root dir of "/tmp/devops/test"
+    And there is "no" existing agent
+    Then it should raise Exception when I create an agent

@@ -19,6 +19,14 @@ GEM
     mixlib-cli (1.2.0)
     rack (1.2.2)
     rcov (0.9.9)
+    rspec (2.1.0)
+      rspec-core (~> 2.1.0)
+      rspec-expectations (~> 2.1.0)
+      rspec-mocks (~> 2.1.0)
+    rspec-core (2.1.0)
+    rspec-expectations (2.1.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.1.0)
     sinatra (1.2.3)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -39,6 +47,7 @@ DEPENDENCIES
   minitest
   mixlib-cli
   rcov
+  rspec
   sinatra
   systemu
   uuidtools
