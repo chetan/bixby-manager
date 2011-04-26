@@ -11,6 +11,7 @@ gem 'systemu'
 
 group :development, :test do
     gem 'cucumber'
+    gem 'aruba'
     gem 'minitest'
     gem 'rcov'
     gem 'rspec'

@@ -27,3 +27,12 @@ Feature: Create Agent
     Given a root dir of "/tmp/devops/test"
     And there is "no" existing agent
     Then it should raise Exception when I create an agent
+
+  @stdout
+  Scenario: Corrupted configuration throws error
+    Given a manager at "http://localhost:3000"
+    And a root dir of "/tmp/devops/test"
+    And there is "a" existing agent
+    And a corrupted configuration
+    When I create an agent
+    Then stdout should contain "exiting"

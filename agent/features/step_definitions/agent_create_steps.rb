@@ -1,4 +1,8 @@
 
+##################################
+#   GIVEN
+##################################
+
 Given /^there is "(.*?)" existing agent$/ do |arg|
     existing = (arg != "no")
     if existing then
@@ -17,10 +21,29 @@ Given /^a root dir of "(.*)"$/ do |path|
     @root_dir = path
 end
 
+Given /^a corrupted configuration$/ do
+    if File.exists? @root_dir then
+        File.open(File.join(@root_dir, "etc", "devops.yml"), 'w')
+    end
+end
+
+
+
+##################################
+#   WHEN
+##################################
+
 When /^I create an agent$/ do
     @agent = Agent.create(@manager_uri, @root_dir)
     @agent.save_config()
 end
+
+
+
+##################################
+#   THEN
+##################################
+
 
 Then /^I should have "(.*?)" Agent$/ do |arg|
     bool = ("a new" == arg)
@@ -35,4 +58,8 @@ Then /^it should raise (.+?) when (.+)$/ do |exception,when_step|
   lambda {
     When when_step
   }.should raise_error(eval(exception))
+end
+
+Then /^stdout should contain "([^"]*)"$/ do |str|
+    assert_includes( @stdout.string, str )
 end
