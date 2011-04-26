@@ -1,5 +1,5 @@
 
-require 'ohai'
+require 'facter'
 require 'uuidtools'
 
 require "api/json_request"
@@ -26,14 +26,16 @@ module Handshake
     end
 
     def get_mac_address
-        o = Ohai::System.new
-        o.require_plugin("os")
-        o.require_plugin("network")
-        addrs = o[:network][:interfaces][ o[:network][:default_interface] ]["addresses"]
-        raise "Unable to find MAC address" if addrs.nil?
-        ret = addrs.find{ |k,v| v["family"] == "lladdr" }
-        raise "Unable to find MAC address" if ret.nil? or ret.empty?
-        ret.first # got it!
+        return @mac if not @mac.nil?
+        Facter.collection.loader.load(:ipaddress)
+        Facter.collection.loader.load(:interfaces)
+        Facter.collection.loader.load(:macaddress)
+        vals = Facter.collection.to_hash
+        ip = vals["ipaddress"]
+        raise "Unable to find MAC address" if ip.nil?
+        int = vals.find{ |k,v| v == ip }[0].split(/_/)[1]
+        raise "Unable to find MAC address" if int.nil? or int.empty?
+        @mac = vals.find{ |k,v| k == "macaddress_#{int}" }[1]
     end
 
     def create_uuid

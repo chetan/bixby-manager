@@ -3,10 +3,11 @@ source 'http://rubygems.org'
 gem 'sinatra'
 gem 'json'
 gem 'curb'
-gem 'ohai'
+gem 'facter'
 gem 'mixlib-cli'
 gem 'uuidtools'
 gem 'ezcrypto'
+gem 'systemu'
 
 group :development, :test do
     gem 'cucumber'
