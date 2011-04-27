@@ -9,7 +9,7 @@ module Provisioning
     class << self
 
         # returns an array of hashes: [{ :file, :sha1 }]
-        def list_files(params)
+        def list_files(request, params)
 
             cmd = Command.from_json(params)
             sha = Digest::SHA1.new
@@ -24,7 +24,7 @@ module Provisioning
             return files
         end
 
-        def fetch_file(params)
+        def fetch_file(request, params)
 
             cmd = Command.from_json(params["cmd"])
             file = params["file"]
