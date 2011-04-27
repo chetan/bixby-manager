@@ -29,7 +29,12 @@ class App
             agent = Agent.create(uri, root_dir, false)
         end
         if agent.new? then
-            agent.register_agent()
+            if (ret = agent.register_agent()).fail? then
+                puts "error: failed to register with manager!"
+                puts "reason:"
+                puts "  #{ret.message}"
+                exit(1)
+            end
             agent.save_config()
         end
         agent

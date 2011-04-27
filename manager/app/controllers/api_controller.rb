@@ -3,6 +3,7 @@ require 'api/json_request'
 require 'api/json_response'
 
 require 'modules/provisioning'
+require 'modules/inventory'
 
 class ApiController < ApplicationController
 
@@ -41,14 +42,20 @@ class ApiController < ApplicationController
         end
 
         begin
-            ret = mod.send(op, req.params)
+            ret = mod.send(op, request, HashWithIndifferentAccess.new(req.params))
             if ret.kind_of? FileDownload then
                 return send_file(ret.filename, :filename => File.basename(ret.filename))
+
+            elsif ret.kind_of? JsonResponse then
+                return render :json => ret
             end
-            return render :json => JsonResponse.new("success", nil, ret).to_json
+
+            return render :json => JsonResponse.new(:success, nil, ret)
 
         rescue Exception => ex
-            return render :json => JsonResponse.new("fail", ex.message, ex, 500).to_json
+            puts ex
+            puts ex.backtrace
+            return render :json => JsonResponse.new(:fail, ex.message, ex, 500)
         end
     end
 
