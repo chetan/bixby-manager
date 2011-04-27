@@ -1,5 +1,5 @@
 
-require 'http_client'
+require 'util/http_client'
 
 class Agent < ActiveRecord::Base
 
