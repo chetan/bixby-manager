@@ -3,6 +3,7 @@ require 'facter'
 require 'uuidtools'
 
 require "api/json_request"
+require "api/json_response"
 
 require "agent/crypto"
 
