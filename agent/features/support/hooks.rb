@@ -27,3 +27,7 @@ Before("@stderr") do
     @stderr = StringIO.new
     eval("$stderr = @stderr")
 end
+
+After("@stdout") do
+    eval("$stdout = REAL_STDOUT")
+end
