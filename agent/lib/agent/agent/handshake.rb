@@ -16,10 +16,7 @@ module Handshake
     end
 
     def register_agent
-        req = JsonRequest.new("inventory:register_agent", { :uuid => @uuid, :public_key => self.public_key.to_s, :port => @port })
-        url = create_url("/api")
-        return JsonResponse.from_json(http_post_json(url, req.to_json))
-        # TODO should we raise an exception instead?
+        return Inventory.register_agent(@uuid, self.public_key.to_s, @port)
     end
 
     def mac_changed?

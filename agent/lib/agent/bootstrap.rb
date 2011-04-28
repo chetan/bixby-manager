@@ -13,4 +13,7 @@ if require 'rubygems' then
     Bundler.setup(:default)
 end
 
-require AGENT_ROOT + '/model/bundle_command'
+require 'model/bundle_command'
+
+# load modules
+require 'api/modules/inventory'
