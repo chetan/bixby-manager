@@ -15,4 +15,5 @@ group :development, :test do
     gem 'minitest'
     gem 'rcov'
     gem 'rspec'
+    gem 'webmock'
 end

@@ -27,6 +27,9 @@ Given /^a corrupted configuration$/ do
     end
 end
 
+Given /^a port of "(.*?)"$/ do |str|
+    @port = str
+end
 
 
 ##################################
@@ -34,8 +37,14 @@ end
 ##################################
 
 When /^I create an agent$/ do
-    @agent = Agent.create(@manager_uri, @root_dir)
+    @agent = Agent.create(@manager_uri, @root_dir, @port)
     @agent.save_config()
+end
+
+When /^I register the agent$/ do
+    stub_request(:post, "http://localhost:3000/api").
+      to_return(:body => '{"data":null,"code":null,"status":"success","message":null}', :status => 200)
+    @response = @agent.register_agent
 end
 
 
@@ -60,6 +69,10 @@ Then /^it should raise (.+?) when (.+)$/ do |exception,when_step|
   }.should raise_error(eval(exception))
 end
 
-Then /^stdout should contain "([^"]*)"$/ do |str|
+Then /^stdout should contain "(.*?)"$/ do |str|
     assert_includes( @stdout.string, str )
+end
+
+Then /^it should return "(.*?)"$/ do |str|
+    assert @response.status == str
 end

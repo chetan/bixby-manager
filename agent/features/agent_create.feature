@@ -36,3 +36,12 @@ Feature: Create Agent
     And a corrupted configuration
     When I create an agent
     Then stdout should contain "exiting"
+
+  Scenario: Agent should register itself with the manager
+    Given a manager at "http://localhost:3000"
+    And a root dir of "/tmp/devops/test"
+    And a port of "18000"
+    And there is "no" existing agent
+    When I create an agent
+    And I register the agent
+    Then it should return "success"
