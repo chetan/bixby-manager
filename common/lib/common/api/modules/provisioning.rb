@@ -17,7 +17,7 @@ class Provisioning < BaseModule
         def download_files(cmd, files)
             local_path = cmd.bundle_dir
             sha = Digest::SHA1.new
-            p local_path
+            #p local_path
             files.each do |f|
                 # see if the file already exists
                 path = File.join(local_path, f['file'])
