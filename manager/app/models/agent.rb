@@ -1,5 +1,6 @@
 
 require 'util/http_client'
+require 'api/json_request'
 
 class Agent < ActiveRecord::Base
 
@@ -16,7 +17,7 @@ class Agent < ActiveRecord::Base
     # execute the given command and return the response
     def run_cmd(cmd)
         req = JsonRequest.new("exec", cmd.to_hash)
-        return req.exec()
+        return req.exec(agent_uri)
     end
 
     def agent_uri

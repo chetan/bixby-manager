@@ -1,6 +1,8 @@
 
 require "util/http_client"
 require "util/jsonify"
+require "api/json_response"
+require "api/modules/base_module"
 
 class JsonRequest
 
@@ -14,11 +16,13 @@ class JsonRequest
         @params = params
     end
 
-    def exec
-        return JsonResponse.from_json(http_post_json(BaseModule.create_url("/api"), self.to_json))
+    def exec(uri = nil)
+        uri ||= api_uri
+        return JsonResponse.from_json(http_post_json(uri, self.to_json))
     end
 
-    def exec_download(download_path)
-        http_post_download(BaseModule.create_url("/api"), self.to_json, download_path)
+    def exec_download(download_path, uri = nil)
+        uri ||= api_uri
+        http_post_download(uri, self.to_json, download_path)
     end
 end

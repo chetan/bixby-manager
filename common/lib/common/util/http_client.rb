@@ -6,6 +6,7 @@ module HttpClient
 
     def create_url(path)
         path = "/#{path}" if path[0,1] != '/'
+        manager_uri = get_manager_uri()
         "#{manager_uri}#{path}"
     end
 
@@ -40,6 +41,14 @@ module HttpClient
             c.on_body { |d| io << d; d.length }
             c.http_post(data)
         end
+    end
+
+    def get_manager_uri
+        BaseModule.manager_uri
+    end
+
+    def api_uri
+        create_url("/api")
     end
 
 end
