@@ -10,8 +10,7 @@ class Inventory < BaseModule
 
         def register_agent(uuid, public_key, port)
             req = JsonRequest.new("inventory:register_agent", { :uuid => uuid, :public_key => public_key, :port => port })
-            url = create_url("/api")
-            return JsonResponse.from_json(http_post_json(url, req.to_json))
+            return req.exec()
         end
 
     end # self

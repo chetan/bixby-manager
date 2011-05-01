@@ -30,9 +30,8 @@ class Provision < BundleCommand
     end
 
     def list_files(cmd)
-
         req = JsonRequest.new("provisioning:list_files", cmd.to_hash)
-        res = JsonResponse.from_json(http_post_json(api_url, req.to_json))
+        res = req.exec()
         return res.data
     end
 
@@ -48,16 +47,12 @@ class Provision < BundleCommand
             next if File.file? path and f['sha1'] == sha.hexdigest(File.read(path))
             # puts "downloading file"
             req = JsonRequest.new("provisioning:fetch_file", { :cmd => cmd.to_hash, :file => f['file'] })
-            http_post_download(api_url, req.to_json, path)
+            req.exec_download(path)
             if f['file'] =~ /^bin/ then
                 # correct permissions for executables
                 FileUtils.chmod(0755, path)
             end
         end
-    end
-
-    def api_url
-        @agent.manager_uri + "/api"
     end
 
 end

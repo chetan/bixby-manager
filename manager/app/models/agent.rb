@@ -16,7 +16,7 @@ class Agent < ActiveRecord::Base
     # execute the given command and return the response
     def run_cmd(cmd)
         req = JsonRequest.new("exec", cmd.to_hash)
-        res = JsonResponse.from_json(http_post_json(agent_uri, req.to_json))
+        return req.exec()
     end
 
     def agent_uri
