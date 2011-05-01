@@ -32,7 +32,7 @@ class Server < Sinatra::Base
 
     def extract_valid_request
         body = request.body.read.strip
-        if body.blank? then
+        if body.nil? or body.empty? then
             return JsonResponse.invalid_request.to_json
         end
 
