@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
-require File.expand_path(File.join(File.dirname(__FILE__), "/../../../../lib/agent"))
+require File.expand_path(File.join(File.dirname(__FILE__), "/../../../../lib/agent/agent"))
 
-require "server/json_request"
-require "server/json_response"
+require "api/json_request"
+require "api/json_response"
 require "api/modules/provisioning"
 
 require "digest"
