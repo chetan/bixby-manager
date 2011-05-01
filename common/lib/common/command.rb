@@ -44,11 +44,11 @@ class Command
 
     # resolve the given bundle
     def bundle_dir
-        if @repo == "local" and Module.constants.include? AGENT_ROOT then
+        if @repo == "local" and Module.constants.include? "AGENT_ROOT" then
             # only resolve the special "local" repo for Agents
-            return File.expand_path(File.join(AGENT_ROOT, "../repo", @bundle))
+            return File.expand_path(File.join(AGENT_ROOT, "../../repo", @bundle))
         end
-        File.join(BundleRepository.repository_path, "repo", @repo, @bundle)
+        File.join(BundleRepository.repository_path, @repo, @bundle)
     end
 
     def bundle_exists?
