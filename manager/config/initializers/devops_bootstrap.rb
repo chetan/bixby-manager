@@ -7,5 +7,7 @@ end
 
 require 'manager'
 require 'bundle_repository'
+require 'api/modules/base_module'
 
 BundleRepository.repository_path = File.join(Manager.root, "/repo")
+BaseModule.manager_uri = "http://localhost:3000/"

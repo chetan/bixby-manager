@@ -46,6 +46,7 @@ class Agent
         # pass config to some modules
         BundleRepository.repository_path = File.join(agent.agent_root, "/repo")
         BaseModule.agent = agent
+        BaseModule.manager_uri = agent.manager_uri
 
         return agent
     end
