@@ -1,11 +1,20 @@
 
 development:
   redis: "localhost:6379"
+  manager:
+    root: "/opt/mgr"
+    uri:  "http://localhost:3000"
 
 
 test:
   redis: "localhost:6379"
+  manager:
+    root: "/opt/mgr"
+    uri:  "http://localhost:3000"
 
 
 production:
   redis: "localhost:6379"
+  manager:
+    root: "/opt/mgr"
+    uri:  "http://localhost:3000"

@@ -21,8 +21,9 @@ end
 DEVOPS_CONFIG = devops_config[::Rails.env].with_indifferent_access
 
 # setup bundle repo, manager uri
+Manager.root = DEVOPS_CONFIG[:manager][:root]
 BundleRepository.repository_path = File.join(Manager.root, "/repo")
-BaseModule.manager_uri = "http://localhost:3000/"
+BaseModule.manager_uri = DEVOPS_CONFIG[:manager][:uri]
 
 # setup the scheduler
 if DEVOPS_CONFIG[:scheduler] then

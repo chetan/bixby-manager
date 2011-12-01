@@ -6,5 +6,3 @@ class Manager
     end
 
 end
-
-Manager.root = "/opt/mgr"
