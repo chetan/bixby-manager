@@ -6,6 +6,15 @@ gem "mysql"
 gem "curb"
 gem "json"
 gem "ruby-debug"
+gem "SystemTimer"
+
+gem "hiredis"
+gem "redis", ">= 2.2.0", :require => ["redis/connection/hiredis", "redis"]
+gem "resque"
+gem "resque-scheduler",
+  :git => "git://github.com/chetan/resque-scheduler.git",
+  :require => ["resque_scheduler"]
+gem "redis-lock"
 
 group :development do
     gem "cucumber"
