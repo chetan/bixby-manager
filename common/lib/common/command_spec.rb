@@ -2,7 +2,7 @@
 require 'util/jsonify'
 require 'bundle_repository'
 
-class Command
+class CommandSpec
 
     include Jsonify
 

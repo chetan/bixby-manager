@@ -2,7 +2,7 @@
 require 'find'
 require 'digest'
 
-require 'command'
+require 'command_spec'
 require 'file_download'
 
 module Provisioning
@@ -12,7 +12,7 @@ module Provisioning
         # returns an array of hashes: [{ :file, :sha1 }]
         def list_files(request, params)
 
-            cmd = Command.from_json(params)
+            cmd = CommandSpec.from_json(params)
             sha = Digest::SHA1.new
 
             files = []
@@ -27,7 +27,7 @@ module Provisioning
 
         def fetch_file(request, params)
 
-            cmd = Command.from_json(params["cmd"])
+            cmd = CommandSpec.from_json(params["cmd"])
             file = params["file"]
 
             path = File.join(cmd.bundle_dir, file)

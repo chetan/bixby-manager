@@ -20,7 +20,7 @@ class Provision < BundleCommand
     def run!
 
         begin
-            cmd = Command.from_json(ARGV.join(" "))
+            cmd = CommandSpec.from_json(ARGV.join(" "))
         rescue Exception => ex
             puts "failed"
             exit

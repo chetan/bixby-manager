@@ -1,5 +1,5 @@
 
-require "command"
+require "command_spec"
 require "exception/bundle_not_found"
 require "exception/command_not_found"
 
@@ -14,7 +14,7 @@ module RemoteExec
     #   args (optional)
     #   env (optional)
     def exec(params)
-        cmd = Command.new(params)
+        cmd = CommandSpec.new(params)
         cmd.validate()
         return cmd.execute()
     end
