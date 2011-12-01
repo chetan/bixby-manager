@@ -31,9 +31,9 @@ class Agent
         self.class.agent_root = path
     end
 
-    attr_accessor :port, :manager_uri, :uuid, :mac_address
+    attr_accessor :port, :manager_uri, :uuid, :mac_address, :password
 
-    def self.create(uri = nil, root_dir = nil, port = nil, use_config = true)
+    def self.create(uri = nil, password = nil, root_dir = nil, port = nil, use_config = true)
 
         agent = load_config(root_dir) if use_config
 
@@ -41,7 +41,7 @@ class Agent
             raise "Missing manager URI"
         end
 
-        agent = new(uri, root_dir, port) if agent.nil? # create a new one if unable to load
+        agent = new(uri, password, root_dir, port) if agent.nil? # create a new one if unable to load
 
         # pass config to some modules
         BundleRepository.repository_path = File.join(agent.agent_root, "/repo")
@@ -53,11 +53,12 @@ class Agent
 
     private_class_method :new
 
-    def initialize(uri, root_dir = nil, port = nil)
+    def initialize(uri, password = nil, root_dir = nil, port = nil)
         @new = true
 
         @port = port
         @manager_uri = uri
+        @password = password
         @agent_root = root_dir.nil? ? DEFAULT_ROOT_DIR : root_dir
 
         @uuid = create_uuid()

@@ -4,6 +4,8 @@ require 'api/json_request'
 
 class Agent < ActiveRecord::Base
 
+    belongs_to :host
+
     STATUS_NEW      = 0
     STATUS_ACTIVE   = 1
     STATUS_INACTIVE = 2

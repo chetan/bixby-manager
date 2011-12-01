@@ -9,10 +9,11 @@ class App
     def load_agent
         uri = @argv.empty? ? nil : @argv.shift
         root_dir = @config[:directory]
-        port = @config[:port]
+        port     = @config[:port]
+        password = @config[:password]
 
         begin
-            agent = Agent.create(uri, root_dir, port)
+            agent = Agent.create(uri, password, root_dir, port)
         rescue Exception => ex
            if ex.message == "Missing manager URI" then
                # if unable to load from config and no uri passed, bail!
@@ -26,7 +27,7 @@ class App
         if not agent.new? and agent.mac_changed? then
             # loaded from config and mac has changed
             agent.deregister_agent()
-            agent = Agent.create(uri, root_dir, false)
+            agent = Agent.create(uri, password, root_dir, false)
         end
         if agent.new? then
             if (ret = agent.register_agent()).fail? then

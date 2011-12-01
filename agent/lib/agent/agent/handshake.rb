@@ -16,7 +16,7 @@ module Handshake
     end
 
     def register_agent
-        return Inventory.register_agent(@uuid, self.public_key.to_s, @port)
+        return Inventory.register_agent(@uuid, self.public_key.to_s, @port, @password)
     end
 
     def mac_changed?

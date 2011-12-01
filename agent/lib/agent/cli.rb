@@ -42,6 +42,11 @@ module CLI
       receiver.instance_variable_set(:@options, @options)
     end
 
+    option :password,
+        :short          => "-P PASSWORD",
+        :long           => "--password PASSWORD",
+        :description    => "Agent registration password"
+
     option :directory,
         :short          => "-d DIRECTORY",
         :long           => "--directory DIRECTORY",
