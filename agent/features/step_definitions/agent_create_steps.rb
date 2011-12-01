@@ -65,7 +65,7 @@ end
 
 Then /^it should raise (.+?) when (.+)$/ do |exception,when_step|
   lambda {
-    When when_step
+    step when_step
   }.should raise_error(eval(exception))
 end
 
