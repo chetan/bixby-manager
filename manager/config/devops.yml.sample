@@ -1,6 +1,7 @@
 
 development:
   redis: "localhost:6379"
+  #scheduler: "resque"
   manager:
     root: "/opt/mgr"
     uri:  "http://localhost:3000"
@@ -8,6 +9,7 @@ development:
 
 test:
   redis: "localhost:6379"
+  #scheduler: "resque"
   manager:
     root: "/opt/mgr"
     uri:  "http://localhost:3000"
@@ -15,6 +17,7 @@ test:
 
 production:
   redis: "localhost:6379"
+  #scheduler: "resque"
   manager:
     root: "/opt/mgr"
     uri:  "http://localhost:3000"
