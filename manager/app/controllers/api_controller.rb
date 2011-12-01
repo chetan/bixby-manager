@@ -5,6 +5,8 @@ require 'api/json_response'
 require 'modules/provisioning'
 require 'modules/inventory'
 
+require 'file_download'
+
 class ApiController < ApplicationController
 
     def handle
