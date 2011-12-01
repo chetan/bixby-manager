@@ -18,7 +18,9 @@ GEM
       json (>= 1.4.6)
       term-ansicolor (>= 1.0.6)
     curb (0.7.16)
+    daemons (1.1.4)
     diff-lcs (1.1.3)
+    eventmachine (0.12.10)
     ezcrypto (0.7.2)
     facter (1.6.3)
     ffi (1.0.9)
@@ -45,6 +47,10 @@ GEM
       tilt (~> 1.3, >= 1.3.3)
     systemu (2.4.1)
     term-ansicolor (1.0.7)
+    thin (1.3.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
     tilt (1.3.3)
     uuidtools (2.1.2)
     webmock (1.7.8)
@@ -67,5 +73,6 @@ DEPENDENCIES
   rspec
   sinatra
   systemu
+  thin
   uuidtools
   webmock

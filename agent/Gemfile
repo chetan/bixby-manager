@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'sinatra'
+gem 'thin'
 gem 'json'
 gem 'curb'
 gem 'facter'
