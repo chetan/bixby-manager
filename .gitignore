@@ -1,2 +1,3 @@
+/.rb*
 .DS_Store
 features_rcov
