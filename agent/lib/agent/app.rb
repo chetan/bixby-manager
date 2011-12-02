@@ -47,6 +47,11 @@ class App
 
         Server.agent = agent
         Server.set :port, agent.port
+        Server.disable :protection
+        # should probably just redirect these somewhere,
+        # like "#{Agent.root}/logs/access|error.log"
+        # Server.disable :logging
+        # Server.disable :dump_errors
         Server.run!
 
     end
