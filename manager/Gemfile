@@ -9,6 +9,9 @@ gem "ruby-debug", :platforms => :mri_18
 gem "ruby-debug19", :platforms => :mri_19
 gem "SystemTimer", :platforms => :mri_18
 
+gem 'haml'
+gem 'less-rails-bootstrap'
+
 gem "hiredis"
 gem "redis", ">= 2.2.0", :require => ["redis/connection/hiredis", "redis"]
 gem "resque"
@@ -18,6 +21,8 @@ gem "resque-scheduler",
 gem "redis-lock"
 
 group :development do
+    gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
+
     gem "cucumber"
     gem "cucumber-rails"
     gem "rcov"
