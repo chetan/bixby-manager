@@ -3,25 +3,34 @@
   %head
     %title devops!
     = stylesheet_link_tag "main"
-    = javascript_include_tag "application"
-    = csrf_meta_tag
 
   %body
 
-    %div.topbar
-      %div.topbar-inner
-        %div.container-fluid
-          %a.brand{ :href => "/inventory" } Devops!
-          %ul.nav
-            %li.active
-              %a{ :href => "/inventory" } Inventory
-            %li
-              %a{ :href => "/inventory" } About
-            %li
-              %a{ :href => "/inventory" } Contact
-          %p.pull-right
-            Logged in as
-            %a{ :href => "/inventory" } Chetan
+    %div.topbar-wrapper
+      %div.topbar{ "data-dropdown" => "dropdown" }
+        %div.topbar-inner
+          %div.container-fluid
+            %a.brand{ :href => "/inventory" } Devops!
+            %ul.nav
+              %li.active
+                %a{ :href => "/inventory" } Inventory
+              %li
+                %a{ :href => "/inventory" } About
+              %li
+                %a{ :href => "/inventory" } Contact
+
+            %form.pull-left
+              %input{ :type => "text", "placeholder" => "Search" }
+
+            %ul.nav.secondary-nav
+              %li.dropdown
+
+                %a.dropdown-toggle{ :href => "/inventory", "data-dropdown" => "dropdown" } Chetan
+                %ul.dropdown-menu
+                  %li
+                    %a{ :href => "#" } Preferences
+                  %li
+                    %a{ :href => "#" } Logout
 
 
     %div.container-fluid
@@ -35,3 +44,8 @@
       %div.content
         = yield
 
+
+    %div.scripts
+      = javascript_include_tag "jquery"
+      = javascript_include_tag "application"
+      = csrf_meta_tag
