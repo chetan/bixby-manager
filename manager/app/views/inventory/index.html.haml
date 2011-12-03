@@ -1,3 +1,29 @@
 %div.content-inner
-  %h2 Hello World!
+  %h2 Inventory
   = lorem_ipsum
+
+
+  %table.zebra-striped
+    %thead
+      %tr
+        %th
+        %th Name
+        %th Hostname
+        %th IP
+
+    %tbody
+      - @hosts.each do |host|
+        %tr
+          %td.button.dropdown{ "data-dropdown" => "dropdown" }
+            %ul.button
+              %li
+                %a.dropdown-toggle{ :href => "/inventory", "data-dropdown" => "dropdown" } Actions
+                %ul.dropdown-menu
+                  %li
+                    %a{ :href => "#" } Monitoring
+                  %li
+                    %a{ :href => "#" } Delete Host
+
+          %td= host.ip
+          %td
+          %td= host.ip
