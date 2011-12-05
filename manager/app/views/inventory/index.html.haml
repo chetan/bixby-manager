@@ -6,24 +6,30 @@
   %table.zebra-striped
     %thead
       %tr
-        %th
         %th Name
         %th Hostname
         %th IP
 
     %tbody
       - @hosts.each do |host|
-        %tr
+        %tr.actionable
           %td.button.dropdown{ "data-dropdown" => "dropdown" }
-            %ul.button
-              %li
-                %a.dropdown-toggle{ :href => "/inventory", "data-dropdown" => "dropdown" } Actions
-                %ul.dropdown-menu
-                  %li
-                    %a{ :href => "#" } Monitoring
-                  %li
-                    %a{ :href => "#" } Delete Host
+            = link_to host.ip, inventory_path(host.id)
 
-          %td= host.ip
+            %div
+              %ul.button
+                %li
+                  %a.btn.action_btn.dropdown-toggle{ :href => "#", "data-dropdown" => "dropdown" }
+                    = image_tag "wrench_orange.png"
+                  %ul.dropdown-menu
+                    %li
+                      %a{ :href => "#" } Monitoring
+                    %li
+                      %a{ :href => "#" } Delete Host
+
+
+
+
+
           %td
           %td= host.ip
