@@ -21,5 +21,10 @@ Devops::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+
+  # Enable Rack::Bug middleware
+  config.middleware.use "Rack::Bug",
+    :secret_key => "3Ap~{?:'<FrAh!/+|-:J/n@ht6S\c[|&WC-~c:d|[e<RdJ(o7|iJWO3fD5w2`)wV"
+
 end
 
