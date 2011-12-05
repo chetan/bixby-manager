@@ -12,12 +12,10 @@
           %div.container-fluid
             %a.brand{ :href => "/inventory" } Devops!
             %ul.nav
-              %li.active
-                %a{ :href => "/inventory" } Inventory
-              %li
-                %a{ :href => "/inventory" } About
-              %li
-                %a{ :href => "/inventory" } Contact
+              - navtab "Inventory", inventory_index_path
+              - navtab "Monitoring", monitoring_path
+              - navtab "About", inventory_index_path
+              - navtab "Contact", inventory_index_path
 
             %form.pull-left
               %input{ :type => "text", "placeholder" => "Search" }
