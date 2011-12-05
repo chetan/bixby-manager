@@ -1,9 +1,9 @@
 
 class Check < ActiveRecord::Base
 
-    belongs_to :agent
+  belongs_to :agent
 
-    has_one :command
-    has_one :service
+  has_one :command
+  has_one :service
 
 end

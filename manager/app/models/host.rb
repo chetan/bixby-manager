@@ -1,7 +1,7 @@
 
 class Host < ActiveRecord::Base
 
-    belongs_to :org
-    has_one :agent
+  belongs_to :org
+  has_one :agent
 
 end
