@@ -23,7 +23,7 @@
                     = image_tag "wrench_orange.png"
                   %ul.dropdown-menu
                     %li
-                      %a{ :href => "#" } Monitoring
+                      = link_to "Monitoring", monitoring_host_path(host.id)
                     %li
                       %a{ :href => "#" } Delete Host
 

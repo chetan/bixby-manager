@@ -1,0 +1,13 @@
+%div.content-inner
+  %h2 Monitoring
+  = lorem_ipsum
+
+  %h3= @host.ip
+
+  - if @services.empty? then
+    %p No services have been configured
+    %p
+      = link_to "Add Service", new_monitoring_host_service_path(@host.id), { :class => "btn primary" }
+
+  - else
+
