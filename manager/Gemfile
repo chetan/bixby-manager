@@ -22,6 +22,7 @@ gem "redis-lock"
 
 group :development do
     gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
+    gem 'newrelic_rpm'
 
     gem "cucumber"
     gem "cucumber-rails"
