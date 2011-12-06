@@ -44,7 +44,7 @@ class Agent
         agent = new(uri, password, root_dir, port) if agent.nil? # create a new one if unable to load
 
         # pass config to some modules
-        BundleRepository.repository_path = File.join(agent.agent_root, "/repo")
+        BundleRepository.path = File.join(agent.agent_root, "/repo")
         BaseModule.agent = agent
         BaseModule.manager_uri = agent.manager_uri
 

@@ -6,8 +6,8 @@ if File.exists? COMMON_ROOT then
 end
 
 require 'manager'
-require 'bundle_repository'
 require 'api/modules/base_module'
+require 'api/modules/bundle_repository'
 
 # load devops.yml
 devops_config_filename = File.open(File.join(::Rails.root.to_s, "config", "devops.yml"))
@@ -22,7 +22,7 @@ DEVOPS_CONFIG = devops_config[::Rails.env].with_indifferent_access
 
 # setup bundle repo, manager uri
 Manager.root = DEVOPS_CONFIG[:manager][:root]
-BundleRepository.repository_path = File.join(Manager.root, "/repo")
+BundleRepository.path = File.join(Manager.root, "/repo")
 BaseModule.manager_uri = DEVOPS_CONFIG[:manager][:uri]
 
 # setup the scheduler
