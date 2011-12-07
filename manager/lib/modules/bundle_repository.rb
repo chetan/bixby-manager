@@ -68,8 +68,9 @@ class BundleRepository
     end
 
     def update_git_repo(repo)
-      g = Git.open(repo.path)
-      g.pull
+      logger = (RakeFileUtils.verbose_flag ? Logger.new(STDOUT) : nil)
+      g = Git.open(repo.path, :log => logger)
+      g.pull("origin", "origin/master")
     end
 
     def update_svn_repo(repo)
