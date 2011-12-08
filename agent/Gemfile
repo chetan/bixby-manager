@@ -11,9 +11,11 @@ gem 'ezcrypto'
 gem 'systemu'
 
 group :development, :test do
+    gem 'test-unit'
+    gem 'awesome_print'
     gem 'cucumber'
     gem 'aruba', '0.4.7'
-    gem 'minitest'
+    #gem 'minitest'
     gem 'rcov'
     gem 'rspec'
     gem 'webmock'
