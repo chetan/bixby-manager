@@ -3,7 +3,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), "/bootstrap")
 
 require "uri"
 
-require "bundle_repository"
+require "api/modules/bundle_repository"
 require "util/http_client"
 
 require "agent/handshake"
