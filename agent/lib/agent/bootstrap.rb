@@ -9,7 +9,7 @@ if File.exists? COMMON_ROOT then
 end
 
 if require 'rubygems' then
-    require 'bundler/setup'
+    require 'bundler'
     Bundler.setup(:default)
 end
 
