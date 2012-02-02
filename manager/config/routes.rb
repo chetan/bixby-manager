@@ -63,7 +63,7 @@ Devops::Application.routes.draw do
   match "/monitoring" => "monitoring#index"
   namespace :monitoring do
     resources :hosts do
-      resources :services
+      resources :resources
     end
   end
 
