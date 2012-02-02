@@ -1,5 +1,5 @@
 
-class Monitoring::ServicesController < Monitoring::BaseController
+class Monitoring::ResourcesController < Monitoring::BaseController
 
   def new
     @host = Host.find(params[:host_id])
