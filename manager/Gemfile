@@ -12,6 +12,7 @@ gem "git"
 
 gem 'haml'
 gem 'less'
+gem 'less-rails'
 #gem 'less-rails-bootstrap'
 
 gem "hiredis"
