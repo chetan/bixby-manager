@@ -6,5 +6,26 @@
 
   %h3 Select a command/service below:
 
+  %form{ :id => "form_select_check", :method => "get", :action => new_monitoring_host_service_path(@host.id) }
+    %table.zebra-striped
+      %thead
+        %tr
+          %th
+          %th Bundle
+          %th Script
+      %tbody
+      - @commands.each do |cmd|
+        %tr
+          %td= radio_button_tag(:command_id, cmd.id)
+          %td
+            %label{ :for => "command_id_#{cmd.id}" }
+              = cmd.bundle
+          %td
+            %label{ :for => "command_id_#{cmd.id}" }
+              = cmd.command
 
+    = link_to "Add Check", "#", { :id => "submit_check", :class => "btn primary" }
 
+  - if @command then
+    %form{ :id => "form_add_check", :method => "post" }
+    
