@@ -11,7 +11,7 @@ gem "SystemTimer", :platforms => :mri_18
 gem "git"
 
 gem 'haml'
-gem 'less-rails-bootstrap'
+#gem 'less-rails-bootstrap'
 
 gem "hiredis"
 gem "redis", ">= 2.2.0", :require => ["redis/connection/hiredis", "redis"]
@@ -28,6 +28,7 @@ group :development do
 
     gem "cucumber"
     gem "cucumber-rails"
-    gem "rcov"
-    gem "rcov_rails"
+    #gem "rcov"
+    #gem "rcov_rails"
+    gem "simplecov"
 end
