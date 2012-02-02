@@ -6,41 +6,43 @@
 
   %body
 
-    %div.topbar-wrapper
-      %div.topbar{ "data-dropdown" => "dropdown" }
-        %div.topbar-inner
-          %div.container-fluid
-            %a.brand{ :href => "/inventory" } Devops!
-            %ul.nav
-              - navtab "Inventory", inventory_index_path
-              - navtab "Monitoring", monitoring_path
-              - navtab "About", inventory_index_path
-              - navtab "Contact", inventory_index_path
+    %div.navbar.navbar-fixed-top
+      %div.navbar-inner
+        %div.container-fluid
+          %a.brand{ :href => "/inventory" } Devops!
+          %ul.nav
+            - navtab "Inventory", inventory_index_path
+            - navtab "Monitoring", monitoring_path
+            - navtab "About", inventory_index_path
+            - navtab "Contact", inventory_index_path
 
-            %form.pull-left
-              %input{ :type => "text", "placeholder" => "Search" }
 
-            %ul.nav.secondary-nav
-              %li.dropdown
+          %ul.nav.secondary-nav.pull-right
+            %li.dropdown
 
-                %a.dropdown-toggle{ :href => "/inventory", "data-dropdown" => "dropdown" } Chetan
-                %ul.dropdown-menu
-                  %li
-                    %a{ :href => "#" } Preferences
-                  %li
-                    %a{ :href => "#" } Logout
+              %a.dropdown-toggle{ :href => "/inventory", "data-dropdown" => "dropdown" } Chetan
+              %ul.dropdown-menu
+                %li
+                  %a{ :href => "#" } Preferences
+                %li
+                  %a{ :href => "#" } Logout
+
+
+          %form.navbar-search.pull-right
+            %input{ :type => "text", "placeholder" => "Search" }
 
 
     %div.container-fluid
-      %div.sidebar
-        %div.well
-          %h5 Sidebar
-          %ul
-            %li Foobar
-            %li asdf
+      %div.row-fluid
+        %div.span2
+          %div.well
+            %h5 Sidebar
+            %ul
+              %li Foobar
+              %li asdf
 
-      %div.content
-        = yield
+        %div.span10
+          = yield
 
 
     %div.scripts
