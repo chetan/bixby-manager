@@ -1,12 +1,12 @@
 %div.content-inner
-  %h2 Add Service
+  %h2 Add Resource 
   %p
     Host:
     = @host
 
-  %h3 Select a command/service below:
+  %h3 Select a resource check from the list below:
 
-  %form{ :id => "form_select_check", :method => "get", :action => new_monitoring_host_service_path(@host.id) }
+  %form{ :id => "form_select_check", :method => "get", :action => new_monitoring_host_resource_path(@host.id) }
     %table.zebra-striped
       %thead
         %tr
