@@ -4,10 +4,10 @@
 
   %h3= @host.ip
 
-  - if @services.empty? then
-    %p No services have been configured
+  - if @resources.empty? then
+    %p No resources have been configured
     %p
-      = link_to "Add Service", new_monitoring_host_service_path(@host.id), { :class => "btn primary" }
+      = link_to "Add Resource", new_monitoring_host_resource_path(@host.id), { :class => "btn primary" }
 
   - else
 

@@ -9,6 +9,7 @@
         %th Name
         %th Hostname
         %th IP
+        %th Actions
 
     %tbody
       - @hosts.each do |host|
@@ -16,16 +17,15 @@
           %td.button.dropdown{ "data-dropdown" => "dropdown" }
             = link_to host.ip, inventory_path(host.id)
 
-            %div
-              %ul.button
-                %li
-                  %a.btn.action_btn.dropdown-toggle{ :href => "#", "data-dropdown" => "dropdown" }
-                    = image_tag "wrench_orange.png"
-                  %ul.dropdown-menu
-                    %li
-                      = link_to "Monitoring", monitoring_host_path(host.id)
-                    %li
-                      %a{ :href => "#" } Delete Host
+
+            / %div.btn-group
+            /   %a.btn.action_btn.dropdown-toggle{ :href => "#", "data-toggle" => "dropdown" }
+            /     = image_tag "wrench_orange.png"
+            /   %ul.dropdown-menu
+            /     %li
+            /       = link_to "Monitoring", monitoring_host_path(host.id)
+            /     %li
+            /       %a{ :href => "#" } Delete Host
 
 
 
@@ -33,3 +33,5 @@
 
           %td
           %td= host.ip
+          %td
+            = link_to "Monitoring", monitoring_host_path(host.id)
