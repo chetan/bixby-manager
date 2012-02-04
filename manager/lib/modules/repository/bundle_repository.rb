@@ -1,4 +1,6 @@
 
+module Repository
+
 class BundleRepository
 
   VENDOR_URI = "https://github.com/chetan/devops_repo.git"
@@ -79,3 +81,5 @@ class BundleRepository
 
   end
 end
+
+end # module Repository

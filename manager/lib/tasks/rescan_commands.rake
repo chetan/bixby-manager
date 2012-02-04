@@ -58,7 +58,7 @@ namespace :devops do
     require 'manager'
     require 'api/modules/base_module'
     require 'api/modules/bundle_repository'
-    require 'modules/bundle_repository'
+    require 'modules/repository'
 
     Repo.all.each do |repo|
       rescan_repo(repo)
