@@ -5,7 +5,7 @@ class BundleRepository
 
   class << self
 
-    def update!
+    def update
       repos = Repo.all
       if repos.empty? then
         init_vendor_repo()

@@ -11,7 +11,7 @@ namespace :devops do
     require 'api/modules/bundle_repository'
     require 'modules/bundle_repository'
 
-    BundleRepository.update!
+    BundleRepository.update
 
   end
 end
