@@ -171,6 +171,9 @@ GEM
       ffi (~> 1.0.9)
       multi_json (~> 1.0.4)
       rubyzip
+    simple_form (1.5.2)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     simplecov (0.5.4)
       multi_json (~> 1.0.3)
       simplecov-html (~> 0.5.3)
@@ -222,4 +225,5 @@ DEPENDENCIES
   resque-scheduler!
   ruby-debug
   ruby-debug19
+  simple_form
   simplecov
