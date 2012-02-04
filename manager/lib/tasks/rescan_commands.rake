@@ -1,4 +1,7 @@
 
+# rake devops:rescan_commands
+# search repos for new commands
+
 require 'find'
 
 def log(str)
@@ -50,7 +53,7 @@ end
 
 namespace :devops do
 
-  desc "rescan commands"
+  desc "rescan commands in all repos"
   task :rescan_commands => :environment do
     require 'manager'
     require 'api/modules/base_module'
