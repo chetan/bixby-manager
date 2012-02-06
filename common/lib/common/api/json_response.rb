@@ -1,5 +1,5 @@
 
-require "util/jsonify"
+require "common/util/jsonify"
 
 class JsonResponse
 

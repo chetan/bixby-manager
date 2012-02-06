@@ -1,6 +1,6 @@
 
-require 'util/jsonify'
-require 'api/modules/bundle_repository'
+require 'common/util/jsonify'
+require 'common/api/modules/bundle_repository'
 
 class CommandSpec
 
