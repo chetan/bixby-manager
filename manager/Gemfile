@@ -11,11 +11,9 @@ gem "SystemTimer", :platforms => :mri_18
 gem "git"
 
 gem 'haml'
-gem 'less'
-gem 'less-rails'
 gem 'simple_form'
-#gem 'less-rails-bootstrap'
 
+# scheduler module
 gem "hiredis"
 gem "redis", ">= 2.2.0", :require => ["redis/connection/hiredis", "redis"]
 gem "resque"
@@ -23,6 +21,11 @@ gem "resque-scheduler",
   :git => "git://github.com/chetan/resque-scheduler.git",
   :require => ["resque_scheduler"]
 gem "redis-lock"
+
+group :assets do
+    gem 'less'
+    gem 'less-rails'
+end
 
 group :development do
     gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
