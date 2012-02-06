@@ -27,5 +27,11 @@
     = link_to "Add Check", "#", { :id => "submit_check", :class => "btn primary" }
 
   - if @command then
-    %form{ :id => "form_add_check", :method => "post" }
+    %h3
+      Configure check:
+      = @command.command
+    %form{ :id => "form_add_check", :method => "post", :action => monitoring_host_checks_path(@host_id) }
+      = hidden_field(:command, :id)
+      = form_for_command(@command)
+      = submit_tag("Create check")
     

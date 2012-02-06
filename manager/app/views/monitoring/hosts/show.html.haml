@@ -2,12 +2,18 @@
   %h2 Monitoring
   = lorem_ipsum
 
-  %h3= @host.ip
+  %h3
+    Resources for
+    = @host.ip
 
   - if @resources.empty? then
     %p No resources have been configured
-    %p
-      = link_to "Add Resource", new_monitoring_host_resource_path(@host.id), { :class => "btn primary" }
 
   - else
 
+    - @resources.each do |resource|
+      = render(:partial => "resource", :locals => { :resource => resource })
+
+  %br
+  %p
+    = link_to "Add Resource", new_monitoring_host_resource_path(@host.id), { :class => "btn primary" }

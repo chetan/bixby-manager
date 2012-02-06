@@ -11,7 +11,7 @@ module ApplicationHelper
       li += ".active"
     end
 
-    return haml_tag li do
+    haml_tag li do
       haml_concat link_to(*args)
     end
   end

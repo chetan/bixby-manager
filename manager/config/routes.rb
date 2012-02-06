@@ -64,6 +64,7 @@ Devops::Application.routes.draw do
   namespace :monitoring do
     resources :hosts do
       resources :resources
+      resources :checks
     end
   end
 

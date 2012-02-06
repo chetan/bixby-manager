@@ -1,0 +1,9 @@
+%div.resource
+  %h5.title
+    = resource.check.command.name + ":"
+    = resource.name
+  %div.graph
+    - render_graph(resource)
+  %h6.footer
+    Last Value:
+    n/a

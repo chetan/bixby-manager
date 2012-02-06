@@ -9,6 +9,9 @@ require 'manager'
 require 'api/modules/base_module'
 require 'api/modules/bundle_repository'
 
+require 'modules'
+require 'rails_ext/json_column'
+
 # load devops.yml
 devops_config_filename = File.open(File.join(::Rails.root.to_s, "config", "devops.yml"))
 if not File.exists? devops_config_filename then
@@ -30,5 +33,4 @@ if DEVOPS_CONFIG[:scheduler] then
   # load a specific scheduler
   require "modules/scheduler/#{DEVOPS_CONFIG[:scheduler]}"
 end
-require 'modules/scheduler'
 Scheduler.configure(DEVOPS_CONFIG)

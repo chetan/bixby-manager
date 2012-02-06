@@ -28,6 +28,7 @@ def rescan_repo(repo)
     bundle = paths[0..1].join("/")
     paths = paths[2..paths.length]
     next if paths.shift != "bin"
+    next if paths.last =~ /\.json$/
 
     # add it
     add_command(repo, bundle, paths.join("/"))
@@ -44,6 +45,16 @@ def add_command(repo, bundle, script)
   cmd.repo = repo
   cmd.bundle = bundle
   cmd.command = script
+
+  config = cmd.path() + ".json"
+  if File.exists? config then
+    conf = JSON.parse(File.read(config))
+    cmd.name = conf["name"] || script
+    cmd.options = conf["options"]
+  else
+    cmd.name = script
+  end
+
   cmd.save!
 end
 
