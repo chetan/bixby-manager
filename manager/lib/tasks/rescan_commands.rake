@@ -35,18 +35,26 @@ def rescan_repo(repo)
   end
 end
 
+# create or update the command
 def add_command(repo, bundle, script)
   log("* found #{bundle} :: #{script}")
-  return if not Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script).blank?
 
-  # create new command
-  log("* creating new Command")
-  cmd = Command.new
-  cmd.repo = repo
-  cmd.bundle = bundle
-  cmd.command = script
+  cmds = Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script)
+  if not cmds.blank? then
+    cmd = cmds.first
+    if cmd.updated_at > File.mtime(cmd.path) then
+      return
+    end
+    log("* updating existing Command")
+  else
+    log("* creating new Command")
+    cmd = Command.new
+    cmd.repo = repo
+    cmd.bundle = bundle
+    cmd.command = script
+  end
 
-  config = cmd.path() + ".json"
+  config = cmd.path + ".json"
   if File.exists? config then
     conf = JSON.parse(File.read(config))
     cmd.name = conf["name"] || script
