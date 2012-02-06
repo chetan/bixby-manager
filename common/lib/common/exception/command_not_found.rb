@@ -1,4 +1,0 @@
-
-class CommandNotFound < Exception
-
-end

@@ -1,4 +1,0 @@
-
-class BundleNotFound < Exception
-
-end
