@@ -1,6 +1,7 @@
 
 class Resource < ActiveRecord::Base
 
-  has_one :host
+  belongs_to :host
+  has_one :check
 
 end

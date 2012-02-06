@@ -1,9 +1,10 @@
 
 class Check < ActiveRecord::Base
 
+  belongs_to :resource
   belongs_to :agent
+  belongs_to :command
 
-  has_one :command
-  has_one :resource
+  serialize :args, JSONColumn.new
 
 end
