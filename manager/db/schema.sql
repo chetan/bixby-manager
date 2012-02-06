@@ -109,39 +109,64 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `devops`.`repos`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `devops`.`repos` ;
+
+CREATE  TABLE IF NOT EXISTS `devops`.`repos` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `org_id` INT UNSIGNED NULL ,
+  `name` VARCHAR(255) NULL ,
+  `uri` VARCHAR(255) NULL ,
+  `branch` VARCHAR(255) NULL ,
+  `created_at` DATETIME NULL ,
+  `updated_at` DATETIME NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  INDEX `fk_repos_orgs1` (`org_id` ASC) ,
+  CONSTRAINT `fk_repos_orgs1`
+    FOREIGN KEY (`org_id` )
+    REFERENCES `devops`.`orgs` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `devops`.`commands`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `devops`.`commands` ;
 
 CREATE  TABLE IF NOT EXISTS `devops`.`commands` (
-  `id` INT UNSIGNED NOT NULL ,
-  `org_id` INT UNSIGNED NOT NULL ,
-  `repo` VARCHAR(255) NULL ,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `repo_id` INT UNSIGNED NULL ,
+  `name` VARCHAR(255) NULL ,
   `bundle` VARCHAR(255) NULL ,
   `command` VARCHAR(255) NULL ,
+  `options` TEXT NULL ,
+  `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_commands_orgs1` (`org_id` ASC) ,
-  CONSTRAINT `fk_commands_orgs1`
-    FOREIGN KEY (`org_id` )
-    REFERENCES `devops`.`orgs` (`id` )
+  INDEX `fk_commands_repos1` (`repo_id` ASC) ,
+  CONSTRAINT `fk_commands_repos1`
+    FOREIGN KEY (`repo_id` )
+    REFERENCES `devops`.`repos` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = 'command definition' ;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `devops`.`services`
+-- Table `devops`.`resources`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `devops`.`services` ;
+DROP TABLE IF EXISTS `devops`.`resources` ;
 
-CREATE  TABLE IF NOT EXISTS `devops`.`services` (
+CREATE  TABLE IF NOT EXISTS `devops`.`resources` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `host_id` INT UNSIGNED NOT NULL ,
   `name` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_services_hosts1` (`host_id` ASC) ,
-  CONSTRAINT `fk_services_hosts1`
+  INDEX `fk_resources_hosts1` (`host_id` ASC) ,
+  CONSTRAINT `fk_resources_hosts1`
     FOREIGN KEY (`host_id` )
     REFERENCES `devops`.`hosts` (`id` )
     ON DELETE NO ACTION
@@ -156,7 +181,7 @@ DROP TABLE IF EXISTS `devops`.`checks` ;
 
 CREATE  TABLE IF NOT EXISTS `devops`.`checks` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `service_id` INT UNSIGNED NOT NULL ,
+  `resource_id` INT UNSIGNED NOT NULL ,
   `agent_id` INT UNSIGNED NOT NULL ,
   `command_id` INT UNSIGNED NOT NULL ,
   `args` VARCHAR(255) NULL ,
@@ -167,7 +192,7 @@ CREATE  TABLE IF NOT EXISTS `devops`.`checks` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_checks_agents1` (`agent_id` ASC) ,
   INDEX `fk_checks_commands1` (`command_id` ASC) ,
-  INDEX `fk_checks_services1` (`service_id` ASC) ,
+  INDEX `fk_checks_resources1` (`resource_id` ASC) ,
   CONSTRAINT `fk_checks_agents1`
     FOREIGN KEY (`agent_id` )
     REFERENCES `devops`.`agents` (`id` )
@@ -178,9 +203,9 @@ CREATE  TABLE IF NOT EXISTS `devops`.`checks` (
     REFERENCES `devops`.`commands` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_checks_services1`
-    FOREIGN KEY (`service_id` )
-    REFERENCES `devops`.`services` (`id` )
+  CONSTRAINT `fk_checks_resources1`
+    FOREIGN KEY (`resource_id` )
+    REFERENCES `devops`.`resources` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
