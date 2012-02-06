@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/chetan/devops_common.git
+  revision: 042b1eef685fd6f9f7072879d32e0d2b930e4b51
+  specs:
+    devops_common (0.1.0)
+
+GIT
   remote: https://github.com/taf2/curb.git
   revision: 02d1a21fb32301e64eed7835ccaf0a82e5c3d23c
   specs:
@@ -24,7 +30,7 @@ GEM
       gherkin (~> 2.7.1)
       json (>= 1.4.6)
       term-ansicolor (>= 1.0.6)
-    daemons (1.1.6)
+    daemons (1.1.7)
     diff-lcs (1.1.3)
     eventmachine (0.12.10)
     ezcrypto (0.7.2)
@@ -85,9 +91,10 @@ DEPENDENCIES
   awesome_print
   cucumber
   curb!
+  devops_common!
   ezcrypto
   facter
-  jeweler
+  jeweler (~> 1.8.3)
   json
   mixlib-cli
   rspec
@@ -98,4 +105,4 @@ DEPENDENCIES
   thin
   uuidtools
   webmock
-  yard
+  yard (~> 0.7)

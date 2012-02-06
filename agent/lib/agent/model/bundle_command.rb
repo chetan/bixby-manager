@@ -1,8 +1,9 @@
 
-require "api/json_request"
-require "api/json_response"
-require "api/modules/provisioning"
-require "model/bundle_util"
+require "common/api/json_request"
+require "common/api/json_response"
+require "common/api/modules/provisioning"
+
+require "agent/model/bundle_util"
 
 require "digest"
 require "fileutils"

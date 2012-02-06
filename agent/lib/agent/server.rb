@@ -1,8 +1,8 @@
 
 require 'sinatra/base'
 
-require "api/json_request"
-require "api/json_response"
+require "common/api/json_request"
+require "common/api/json_response"
 
 class Server < Sinatra::Base
 

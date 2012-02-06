@@ -1,6 +1,6 @@
 
-require 'server'
-require 'cli'
+require 'agent/server'
+require 'agent/cli'
 
 class App
 

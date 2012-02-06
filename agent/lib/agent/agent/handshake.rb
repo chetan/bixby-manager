@@ -2,10 +2,10 @@
 require 'facter'
 require 'uuidtools'
 
-require "api/json_request"
-require "api/json_response"
+require "common/api/json_request"
+require "common/api/json_response"
 
-require "agent/crypto"
+require "agent/agent/crypto"
 
 module Handshake
 

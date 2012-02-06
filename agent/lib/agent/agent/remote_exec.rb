@@ -1,7 +1,7 @@
 
-require "command_spec"
-require "exception/bundle_not_found"
-require "exception/command_not_found"
+require "common/command_spec"
+require "common/exception/bundle_not_found"
+require "common/exception/command_not_found"
 
 require 'systemu'
 

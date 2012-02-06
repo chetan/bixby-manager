@@ -1,5 +1,9 @@
 source 'http://rubygems.org'
 
+#gem "bundler", "~> 1.0"
+
+gem 'devops_common', :git => "https://github.com/chetan/devops_common.git"
+
 gem 'sinatra'
 gem 'thin'
 gem 'json'
@@ -11,8 +15,8 @@ gem 'ezcrypto'
 gem 'systemu'
 
 group :development, :test do
-    gem 'jeweler'
-    gem 'yard'
+    gem 'jeweler', '~> 1.8.3'
+    gem 'yard', '~> 0.7'
     gem 'test-unit'
     gem 'awesome_print'
     gem 'cucumber'
