@@ -16,7 +16,7 @@ group :development, :test do
     gem 'cucumber'
     gem 'aruba', '0.4.7'
     #gem 'minitest'
-    gem 'rcov'
+    gem 'simplecov'
     gem 'rspec'
     gem 'webmock'
 end
