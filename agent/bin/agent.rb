@@ -5,6 +5,6 @@ require 'bundler/setup'
 Bundler.setup(:default)
 
 require File.expand_path(File.join(File.dirname(__FILE__), "../lib/agent/agent"))
-require 'app'
+require 'agent/app'
 
 App.new.run!
