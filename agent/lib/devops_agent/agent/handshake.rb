@@ -2,6 +2,7 @@
 require 'facter'
 require 'uuidtools'
 
+require "devops_agent/api/modules/inventory"
 require "devops_agent/agent/crypto"
 
 module Handshake
