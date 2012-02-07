@@ -28,12 +28,13 @@ module Handshake
         Facter.collection.loader.load(:ipaddress)
         Facter.collection.loader.load(:interfaces)
         Facter.collection.loader.load(:macaddress)
-        vals = Facter.collection.to_hash
-        ip = vals["ipaddress"]
-        raise "Unable to find MAC address" if ip.nil?
-        int = vals.find{ |k,v| v == ip }[0].split(/_/)[1]
-        raise "Unable to find MAC address" if int.nil? or int.empty?
-        @mac = vals.find{ |k,v| k == "macaddress_#{int}" }[1]
+        vals = {}
+        Facter.collection.list.each { |n| vals[n] = Facter.collection[n] }
+        ip = vals[:ipaddress]
+        raise "Unable to find IP address" if ip.nil?
+        int = vals.find{ |k,v| v == ip && k != :ipaddress }.first.to_s.split(/_/)[1]
+        raise "Unable to find primary interface" if int.nil? or int.empty?
+        @mac = vals["macaddress_#{int}".to_sym]
     end
 
     def create_uuid
