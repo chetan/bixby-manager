@@ -2,10 +2,6 @@
 
 require File.expand_path(File.join(File.dirname(__FILE__), "/../../../../lib/agent/agent"))
 
-require "common/api/json_request"
-require "common/api/json_response"
-require "common/api/modules/provisioning"
-
 require "digest"
 require "fileutils"
 

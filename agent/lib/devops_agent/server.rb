@@ -1,9 +1,6 @@
 
 require 'sinatra/base'
 
-require "common/api/json_request"
-require "common/api/json_response"
-
 class Server < Sinatra::Base
 
     SUPPORTED_OPERATIONS = [ "exec" ]
