@@ -31,7 +31,6 @@
 
 require 'mixlib/cli'
 require 'optparse'
-require 'rdoc/usage'
 
 module CLI
 
