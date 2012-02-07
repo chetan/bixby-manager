@@ -2,9 +2,6 @@
 require 'facter'
 require 'uuidtools'
 
-require "devops_common/api/json_request"
-require "devops_common/api/json_response"
-
 require "devops_agent/agent/crypto"
 
 module Handshake
