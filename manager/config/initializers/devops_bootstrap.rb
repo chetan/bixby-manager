@@ -6,8 +6,6 @@ if File.exists? COMMON_ROOT then
 end
 
 require 'manager'
-require 'api/modules/base_module'
-require 'api/modules/bundle_repository'
 
 require 'modules'
 require 'rails_ext/json_column'

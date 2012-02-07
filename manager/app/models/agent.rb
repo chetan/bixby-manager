@@ -1,7 +1,4 @@
 
-require 'util/http_client'
-require 'api/json_request'
-
 class Agent < ActiveRecord::Base
 
   belongs_to :host

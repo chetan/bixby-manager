@@ -7,8 +7,6 @@ namespace :devops do
   desc "update repositories from upstream sources (git pull/svn up)"
   task :update_repos => :environment do
     require 'manager'
-    require 'api/modules/base_module'
-    require 'api/modules/bundle_repository'
     require 'modules/repository'
 
     Repository::BundleRepository.update

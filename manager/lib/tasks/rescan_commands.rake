@@ -75,8 +75,6 @@ namespace :devops do
   desc "rescan commands in all repos"
   task :rescan_commands => :environment do
     require 'manager'
-    require 'api/modules/base_module'
-    require 'api/modules/bundle_repository'
     require 'modules/repository'
 
     Repo.all.each do |repo|

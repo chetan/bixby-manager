@@ -1,7 +1,4 @@
 
-require 'api/json_request'
-require 'api/json_response'
-
 module Inventory
 
     class << self

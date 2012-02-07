@@ -2,7 +2,6 @@
 require 'find'
 require 'digest'
 
-require 'command_spec'
 require 'file_download'
 
 module Provisioning
