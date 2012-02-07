@@ -7,7 +7,7 @@ gem 'devops_common', :git => "https://github.com/chetan/devops_common.git"
 gem 'sinatra'
 gem 'thin'
 gem 'json'
-gem 'curb', :git => 'https://github.com/taf2/curb.git'
+gem 'curb'
 gem 'facter'
 gem 'mixlib-cli'
 gem 'uuidtools'
