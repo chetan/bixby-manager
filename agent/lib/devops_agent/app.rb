@@ -1,6 +1,6 @@
 
-require 'agent/server'
-require 'agent/cli'
+require 'devops_agent/server'
+require 'devops_agent/cli'
 
 class App
 
