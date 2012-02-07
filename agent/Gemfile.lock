@@ -10,6 +10,21 @@ GIT
   specs:
     curb (0.8.0)
 
+PATH
+  remote: .
+  specs:
+    devops_agent (0.1.0)
+      curb
+      devops_common
+      ezcrypto
+      facter
+      json
+      mixlib-cli
+      sinatra
+      systemu
+      thin
+      uuidtools
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -91,18 +106,11 @@ DEPENDENCIES
   awesome_print
   cucumber
   curb!
+  devops_agent!
   devops_common!
-  ezcrypto
-  facter
   jeweler (~> 1.8.3)
-  json
-  mixlib-cli
   rspec
   simplecov
-  sinatra
-  systemu
   test-unit
-  thin
-  uuidtools
   webmock
   yard (~> 0.7)
