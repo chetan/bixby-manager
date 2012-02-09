@@ -9,7 +9,7 @@ require 'curb'
 require 'webmock/cucumber'
 include WebMock::API
 
-
-
 require 'fileutils'
-require File.expand_path(File.join(File.dirname(__FILE__), "../../lib/agent/agent"))
+
+$: << File.expand_path(File.join(File.dirname(__FILE__), "../../lib"))
+require 'devops_agent'
