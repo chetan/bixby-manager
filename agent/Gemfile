@@ -22,7 +22,7 @@ group :development, :test do
     gem 'webmock'
     gem "simplecov",:platforms => :mri_19
     gem "rcov", :platforms => :mri_18
-    gem "minitest", :platforms => :mri_19
-    gem "test-unit", :platforms => :mri_18
+    gem "minitest"
     gem "turn"
+    gem "bahia"
 end

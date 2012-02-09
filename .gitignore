@@ -2,3 +2,4 @@
 .DS_Store
 features_rcov
 pkg/
+coverage/

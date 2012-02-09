@@ -3,6 +3,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), "/bootstrap")
 
 require "uri"
 
+require "devops_agent/config_exception"
 require "devops_agent/agent/handshake"
 require "devops_agent/agent/remote_exec"
 require "devops_agent/agent/config"
@@ -35,7 +36,7 @@ class Agent
         agent = load_config(root_dir) if use_config
 
         if agent.nil? and (uri.nil? or URI.parse(uri).nil?) then
-            raise "Missing manager URI"
+            raise ConfigException, "Missing manager URI", caller
         end
 
         agent = new(uri, password, root_dir, port) if agent.nil? # create a new one if unable to load
