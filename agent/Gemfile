@@ -1,7 +1,5 @@
 source 'http://rubygems.org'
 
-#gem "bundler", "~> 1.0"
-
 gem 'devops_common', :git => "https://github.com/chetan/devops_common.git"
 
 gem 'sinatra'
@@ -17,12 +15,14 @@ gem 'systemu'
 group :development, :test do
     gem 'jeweler', '~> 1.8.3'
     gem 'yard', '~> 0.7'
-    gem 'test-unit'
     gem 'awesome_print'
     gem 'cucumber'
     gem 'aruba', '0.4.7'
-    #gem 'minitest'
-    gem 'simplecov'
     gem 'rspec'
     gem 'webmock'
+    gem "simplecov",:platforms => :mri_19
+    gem "rcov", :platforms => :mri_18
+    gem "minitest", :platforms => :mri_19
+    gem "test-unit", :platforms => :mri_18
+    gem "turn"
 end
