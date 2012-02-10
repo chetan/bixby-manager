@@ -39,6 +39,9 @@ class Agent
             raise ConfigException, "Missing manager URI", caller
         end
 
+        # remove trailing slash
+        uri.gsub!(%r{/$}, '')
+
         agent = new(uri, password, root_dir, port) if agent.nil? # create a new one if unable to load
 
         # pass config to some modules
