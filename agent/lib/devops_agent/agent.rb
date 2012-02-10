@@ -39,10 +39,11 @@ class Agent
             raise ConfigException, "Missing manager URI", caller
         end
 
-        # remove trailing slash
-        uri.gsub!(%r{/$}, '')
-
-        agent = new(uri, password, root_dir, port) if agent.nil? # create a new one if unable to load
+        if agent.nil? then
+            # create a new one if unable to load
+            uri.gsub!(%r{/$}, '') # remove trailing slash
+            agent = new(uri, password, root_dir, port)
+        end
 
         # pass config to some modules
         BundleRepository.path = File.join(agent.agent_root, "/repo")
