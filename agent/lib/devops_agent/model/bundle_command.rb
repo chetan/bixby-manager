@@ -7,6 +7,7 @@ require "fileutils"
 class BundleCommand
 
   include BundleUtil
+  include Jsonify
 
   def initialize
     @agent = Agent.create
