@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-require File.expand_path(File.join(File.dirname(__FILE__), "/../../../../lib/agent/agent"))
+$: << File.expand_path(File.join(File.dirname(__FILE__), "../../../../lib"))
+require "devops_agent"
 
 require "digest"
 require "fileutils"
@@ -16,10 +17,11 @@ class Provision < BundleCommand
     def run!
 
         begin
-            cmd = CommandSpec.from_json(ARGV.join(" "))
+            cmd = CommandSpec.from_json(get_json_input())
         rescue Exception => ex
-            puts "failed"
-            exit
+            puts ex.message
+            puts ex.backtrace.join("\n")
+            exit 1
         end
 
         files = Provisioning.list_files(cmd)

@@ -21,6 +21,30 @@ class BundleCommand
     @subclasses
   end
 
+  # Reads JSON data from STDIN
+  #
+  # @return [Object] data found on STDIN (can be Hash, Array, String, etc)
+  def get_json_input
+    input = read_stdin()
+    input.strip! if input
+    (input.nil? or input.empty?) ? {} : JSON.parse(input)
+  end
+
+  # Read all available data on STDIN without blocking
+  # (i.e., if no data is available, none will be returned)
+  #
+  # @return [String] data
+  def read_stdin
+    buff = []
+    while true do
+      begin
+        buff << STDIN.read_nonblock(64000)
+      rescue => ex
+        break
+      end
+    end
+    return buff.join('')
+  end
 
   private
 
