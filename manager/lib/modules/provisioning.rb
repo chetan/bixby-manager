@@ -6,37 +6,37 @@ require 'file_download'
 
 module Provisioning
 
-    class << self
+  class << self
 
-        # returns an array of hashes: [{ :file, :sha1 }]
-        def list_files(request, params)
+    # returns an array of hashes: [{ :file, :sha1 }]
+    def list_files(request, params)
 
-            cmd = CommandSpec.from_json(params)
-            sha = Digest::SHA1.new
+      cmd = CommandSpec.from_json(params)
+      sha = Digest::SHA1.new
 
-            files = []
-            root = File.join(cmd.bundle_dir, "")
-            Find.find(root) do |path|
-                next if path == root or not File.file? path
-                files << { :file => path.gsub(root, ""), :sha1 => sha.hexdigest(File.read(path)) }
-            end
+      files = []
+      root = File.join(cmd.bundle_dir, "")
+      Find.find(root) do |path|
+        next if path == root or not File.file? path
+        files << { :file => path.gsub(root, ""), :sha1 => sha.hexdigest(File.read(path)) }
+      end
 
-            return files
-        end
-
-        def fetch_file(request, params)
-
-            cmd = CommandSpec.from_json(params["cmd"])
-            file = params["file"]
-
-            path = File.join(cmd.bundle_dir, file)
-            if File.file? path then
-                return FileDownload.new(path)
-            end
-
-            return nil
-        end
-
+      return files
     end
+
+    def fetch_file(request, params)
+
+      cmd = CommandSpec.from_json(params["cmd"])
+      file = params["file"]
+
+      path = File.join(cmd.bundle_dir, file)
+      if File.file? path then
+        return FileDownload.new(path)
+      end
+
+      return nil
+    end
+
+  end
 
 end
