@@ -5,7 +5,7 @@ class TestDevopsAgentExec < MiniTest::Unit::TestCase
 
   def setup
     @bundle_path = File.expand_path(File.dirname(__FILE__)) + "/support/test_bundle"
-    h = { :repo => "support", :bundle => "test_bundle", 'command' => "echo", :foobar => "baz" }
+    h = { :repo => "support", :bundle => "test_bundle", 'command' => "echo" }
     @c = CommandSpec.new(h)
 
     @manager_uri = "http://localhost:3000"
