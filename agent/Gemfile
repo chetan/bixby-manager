@@ -21,6 +21,7 @@ group :development, :test do
     gem 'aruba', '0.4.7'
     gem 'rspec'
     gem 'webmock'
+    gem 'mocha'
     gem "simplecov",:platforms => :mri_19
     gem "rcov", :platforms => :mri_18
     gem "minitest"
