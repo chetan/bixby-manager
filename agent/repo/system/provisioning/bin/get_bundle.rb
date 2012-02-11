@@ -36,4 +36,6 @@ class Provision < BundleCommand
 
 end
 
-Provision.new.run!
+if $0 == __FILE__ then
+    Provision.new.run!
+end
