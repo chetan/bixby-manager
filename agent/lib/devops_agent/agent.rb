@@ -3,6 +3,8 @@ require File.join(File.expand_path(File.dirname(__FILE__)), "/bootstrap")
 
 require "uri"
 
+require "logging"
+
 require "devops_agent/config_exception"
 require "devops_agent/agent/handshake"
 require "devops_agent/agent/remote_exec"
@@ -29,7 +31,7 @@ class Agent
         self.class.agent_root = path
     end
 
-    attr_accessor :port, :manager_uri, :uuid, :mac_address, :password
+    attr_accessor :port, :manager_uri, :uuid, :mac_address, :password, :log
 
     def self.create(uri = nil, password = nil, root_dir = nil, port = nil, use_config = true)
 
@@ -57,6 +59,8 @@ class Agent
 
     def initialize(uri, password = nil, root_dir = nil, port = nil)
         @new = true
+
+        @log = Logging.logger[self]
 
         @port = port
         @manager_uri = uri

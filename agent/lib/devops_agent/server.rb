@@ -1,6 +1,5 @@
 
 require 'sinatra/base'
-require 'logging'
 
 class Server < Sinatra::Base
 
@@ -28,16 +27,18 @@ class Server < Sinatra::Base
 
     post '/*' do
         @log.debug { "POST: #{request.path}" }
+
         req = extract_valid_request()
         if req.kind_of? String then
             @log.debug { "received a String; returning" }
             return req
         end
-        @log.debug{ "request: " }
-        @log.debug{ req.to_json }
+        @log.debug{ "request: \n#{req.to_json}" }
+
         ret = handle_exec(req)
-        @log.debug{ "response: " }
-        @log.debug{ ret.to_json }
+        @log.debug{ "response: \n#{ret}" }
+
+        return ret
     end
 
     def extract_valid_request
@@ -59,6 +60,9 @@ class Server < Sinatra::Base
         return req
     end
 
+    # Handle the exec request and return the response
+    #
+    # @return [String] JsonResponse.to_json
     def handle_exec(req)
         begin
             status, stdout, stderr = agent.exec(req.params)
@@ -68,7 +72,8 @@ class Server < Sinatra::Base
             elsif ex.kind_of? CommandNotFound then
                 return JsonResponse.command_not_found(ex.message).to_json
             end
-            raise ex
+            @log.error(ex)
+            return JsonResponse.new("fail", ex.message, nil, 500).to_json
         end
         data = { :result => status, :stdout => stdout, :stderr => stderr }
         return JsonResponse.new("success", nil, data).to_json

@@ -59,8 +59,8 @@ class App
         # like "#{Agent.root}/logs/access|error.log"
         # Server.disable :logging
         # Server.disable :dump_errors
-        Server.run!
 
+        Server.run!
     end
 
 end

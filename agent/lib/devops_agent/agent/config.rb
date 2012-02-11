@@ -25,6 +25,7 @@ module Config
                     bad_config("corrupted file contents")
                 end
                 agent.new = false
+                agent.log = Logging.logger[agent]
                 return agent
             rescue Exception => ex
                 bad_config(ex) if ex.message != "exit"
