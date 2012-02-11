@@ -6,7 +6,34 @@ require 'file_download'
 
 module Provisioning
 
+  include RemoteExec
+
   class << self
+
+    # Manager API
+    def provision(agent, command)
+
+      command = create_spec(command)
+
+      if not (command.bundle_exists? and command.command_exists?) then
+        # complain
+        raise "hey! *WE* don't even have that command!"
+      end
+
+      noargs = command.dup
+      noargs.args = nil
+      noargs.env = nil
+
+      provision = CommandSpec.new({
+                    :repo => "local", # only command that exists in "local" repo
+                    :bundle => "system/provisioning", :command => "get_bundle.rb",
+                    :stdin => noargs.to_json })
+
+      pret = agent.run_cmd(provision)
+      p pret
+      return pret
+
+    end
 
     # returns an array of hashes: [{ :file, :sha1 }]
     def list_files(request, params)
