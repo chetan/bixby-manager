@@ -1,5 +1,6 @@
 
 require 'sinatra/base'
+require 'logging'
 
 class Server < Sinatra::Base
 
@@ -11,20 +12,32 @@ class Server < Sinatra::Base
         attr_accessor :agent
     end
 
+    def initialize
+        super
+        @log = Logging.logger[self]
+    end
+
     def agent
         self.class.agent
     end
 
     get '/*' do
+        @log.debug { "Disposing of GET request: #{request.path}" }
         return JsonResponse.invalid_request.to_json
     end
 
     post '/*' do
+        @log.debug { "POST: #{request.path}" }
         req = extract_valid_request()
         if req.kind_of? String then
+            @log.debug { "received a String; returning" }
             return req
         end
-        return handle_exec(req)
+        @log.debug{ "request: " }
+        @log.debug{ req.to_json }
+        ret = handle_exec(req)
+        @log.debug{ "response: " }
+        @log.debug{ ret.to_json }
     end
 
     def extract_valid_request

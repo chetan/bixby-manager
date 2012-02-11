@@ -41,7 +41,14 @@ class App
         agent
     end
 
+    def setup_logger
+        Logging::Logger.root.level = @config[:debug] ? :debug : :warn
+        Logging::Logger.root.add_appenders(Logging.appenders.stdout)
+    end
+
     def run!
+
+        setup_logger()
 
         agent = load_agent()
 

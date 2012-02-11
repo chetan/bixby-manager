@@ -58,6 +58,11 @@ module CLI
         :default        => ::Server::DEFAULT_PORT,
         :description    => "Port agent will listen on (default: #{::Server::DEFAULT_PORT})"
 
+    option :debug,
+        :long           => "--debug",
+        :description    => "Enable debugging messages",
+        :boolean        => true
+
     option :help,
         :short          => "-h",
         :long           => "--help",
