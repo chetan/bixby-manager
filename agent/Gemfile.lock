@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/bblimke/webmock.git
+  revision: 5cd5aaf73489d7d50fb3ad3b4460b5b272caddd2
+  specs:
+    webmock (1.7.10)
+      addressable (~> 2.2, > 2.2.5)
+      crack (>= 0.1.7)
+
+GIT
   remote: https://github.com/chetan/devops_common.git
   revision: 15567be7c2ab69a8260b32196b49b68630085738
   specs:
@@ -87,9 +95,6 @@ GEM
     turn (0.9.2)
       ansi
     uuidtools (2.1.2)
-    webmock (1.7.10)
-      addressable (~> 2.2, > 2.2.5)
-      crack (>= 0.1.7)
     yard (0.7.5)
 
 PLATFORMS
@@ -118,5 +123,5 @@ DEPENDENCIES
   thin
   turn
   uuidtools
-  webmock
+  webmock!
   yard (~> 0.7)

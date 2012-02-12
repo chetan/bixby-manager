@@ -20,7 +20,7 @@ group :development, :test do
     gem 'cucumber'
     gem 'aruba', '0.4.7'
     gem 'rspec'
-    gem 'webmock'
+    gem 'webmock', :git => 'https://github.com/bblimke/webmock.git'
     gem 'mocha'
     gem "simplecov",:platforms => :mri_19
     gem "rcov", :platforms => :mri_18

@@ -4,6 +4,8 @@ require 'helper'
 class TestDevopsAgent < MiniTest::Unit::TestCase
 
 	def setup
+    WebMock.reset!
+
     @manager_uri = "http://localhost:3000"
     @password = "foobar"
     @root_dir = "/tmp/agent_test_temp"
@@ -64,7 +66,7 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
     response = @agent.register_agent
     assert response.status == "success"
   end
-  
+
   # @stdout
   # Scenario: Corrupted configuration throws error
   #   Given a manager at "http://localhost:3000"
