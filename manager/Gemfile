@@ -18,7 +18,7 @@ gem 'simple_form'
 # scheduler module
 gem "hiredis"
 gem "redis", ">= 2.2.0", :require => ["redis/connection/hiredis", "redis"]
-gem "resque"
+gem "resque", :git => "https://github.com/defunkt/resque.git"
 gem "resque-scheduler",
   :git => "git://github.com/chetan/resque-scheduler.git",
   :require => ["resque_scheduler"]
@@ -33,10 +33,15 @@ group :development do
     gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
     gem 'newrelic_rpm'
     gem "awesome_print"
-
-    gem "cucumber"
-    gem "cucumber-rails"
     gem "rcov", :platforms => :mri_18
     gem "rcov_rails", :platforms => :mri_18
     gem "simplecov", :platforms => :mri_19
+    gem 'webmock', :git => 'https://github.com/bblimke/webmock.git'
+    gem 'mocha'
+    gem "minitest"
+    gem "turn"
+    gem "bahia"
+    gem 'spork', :git => "https://github.com/sporkrb/spork.git"
+    gem "spork-rails"
+    gem "hirb"
 end

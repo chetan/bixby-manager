@@ -1,5 +1,5 @@
 
-require 'test_helper'
+# require 'test_helper'
 
 class SchedulerTest < ActiveSupport::TestCase
 
