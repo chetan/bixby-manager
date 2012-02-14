@@ -8,10 +8,6 @@ class ApiController < ApplicationController
 
     def handle
 
-        # p request
-        # puts request.body
-        # puts params.to_s
-
         req = extract_valid_request()
         if req.kind_of? String then
             return render :json => req
@@ -73,11 +69,6 @@ class ApiController < ApplicationController
         rescue Exception => ex
             return JsonResponse.invalid_request.to_json
         end
-
-        # TODO need some sort of pluggable system here..
-        # if not SUPPORTED_OPERATIONS.include? req.operation then
-        #     return JsonResponse.invalid_request("unsupported operation: #{req.operation}").to_json
-        # end
 
         return req
     end
