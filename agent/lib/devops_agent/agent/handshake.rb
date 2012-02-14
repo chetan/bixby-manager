@@ -14,11 +14,15 @@ module Handshake
     end
 
     def register_agent
-        return Inventory.register_agent(@uuid, self.public_key.to_s, @port, @password)
+        return Inventory.register_agent(@uuid, self.public_key.to_s, get_hostname(), @port, @password)
     end
 
     def mac_changed?
         (not @mac_address.nil? and (@mac_address != get_mac_address()))
+    end
+
+    def get_hostname
+        `hostname`.strip
     end
 
     def get_mac_address
