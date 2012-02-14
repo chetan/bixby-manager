@@ -29,6 +29,7 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
     # load a specific scheduler
     require "modules/scheduler/#{DEVOPS_CONFIG[:scheduler]}"
   end
+  require "modules/scheduler"
   Scheduler.configure(DEVOPS_CONFIG)
 
 end

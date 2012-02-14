@@ -18,7 +18,7 @@ module RemoteExec
       end
 
       # try to provision it, then try again
-      pret = Provisioning.provision(agent, command)
+      pret = Provisioning.new.provision(agent, command)
 
       if not pret.success? then
         # failed to provision, bail out
@@ -39,8 +39,6 @@ module RemoteExec
     include Methods
   end
 
-  def self.included(o)
-    o.extend(Methods)
-  end
+  include Methods
 
 end

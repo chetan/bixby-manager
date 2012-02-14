@@ -1,5 +1,5 @@
 
-module Scheduler
+module Scheduling
 
   class Driver
 

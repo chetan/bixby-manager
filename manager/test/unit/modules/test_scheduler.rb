@@ -10,12 +10,12 @@ class SchedulerTest < ActiveSupport::TestCase
 
   test "has default driver" do
     assert Scheduler.driver
-    assert (Scheduler.driver == Scheduler::Resque)
+    assert (Scheduler.driver == Scheduling::Resque)
   end
 
   test "schedule a job" do
     Resque.reset_delayed_queue
-    Scheduler.schedule_at((Time.new+30), Scheduler::Job.new("foobar", {}))
+    Scheduler.new.schedule_at((Time.new+30), Scheduling::Job.new("foobar", {}))
     assert (Resque.redis.zcard("delayed_queue_schedule") == 1) # key is namespaced
   end
 

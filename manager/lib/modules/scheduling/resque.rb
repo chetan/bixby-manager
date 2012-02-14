@@ -1,9 +1,9 @@
 
-require 'modules/scheduler/drivers'
+require 'modules/scheduling/driver'
 
-module Scheduler
+module Scheduling
 
-  class Resque < Scheduler::Driver
+  class Resque < Scheduling::Driver
 
     class << self
 
@@ -23,4 +23,4 @@ module Scheduler
 
 end
 
-Scheduler.drivers << Scheduler::Resque
+Scheduler.drivers << Scheduling::Resque
