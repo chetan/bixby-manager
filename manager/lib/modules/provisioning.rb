@@ -30,9 +30,7 @@ module Provisioning
                     :stdin => noargs.to_json })
 
       pret = agent.run_cmd(provision)
-      p pret
       return pret
-
     end
 
     # returns an array of hashes: [{ :file, :sha1 }]

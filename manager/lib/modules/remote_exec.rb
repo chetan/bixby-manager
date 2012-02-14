@@ -5,23 +5,19 @@ module RemoteExec
 
     def exec(agent, command)
 
-      ret = agent.run_cmd(create_spec(command))
+      command = create_spec(command)
+
+      ret = agent.run_cmd(command)
       if ret.success? then
         return ret
       end
 
-      if ret.success? or ret.code != 404 then
-        # either success or an error we can't handle, return
+      if ret.code != 404 then
+        # error we can't handle, return
         return ret
       end
 
       # try to provision it, then try again
-
-      # try to provision it
-      puts "bundle not found... "
-      puts "going to provision it"
-
-
       pret = Provisioning.provision(agent, command)
 
       if not pret.success? then
@@ -29,13 +25,7 @@ module RemoteExec
         return pret # TODO raise err?
       end
 
-      puts "provisioned successfully, running command again..."
-      puts
-      rret = agent.run_cmd(command)
-      p rret
-      puts rret.data["stdout"]
-      return rret
-
+      return agent.run_cmd(command)
     end
 
     def create_spec(command)
