@@ -8,26 +8,27 @@ class ApiController < ApplicationController
 
     def handle
 
-        req = extract_valid_request()
-        if req.kind_of? String then
-            return render :json => req
+        # extract JsonRequest
+
+        req = extract_request()
+        if req.kind_of? JsonResponse then
+            return render :json => req.to_json
         end
 
-        mod = nil
-        op = req.operation
-        if op.include? ":" then
-            (mod, op) = op.split(/:/)
+
+        # validate request of form: operation = "module_name:method_name"
+
+        mod = op = nil
+        if req.operation.include? ":" then
+            (mod, op) = req.operation.split(/:/)
         end
 
         if mod.blank? or op.blank? then
             return unsupported_operation(req)
         end
 
-        p mod
-        p op
-
         begin
-            mod = mod.camelize.constantize
+            mod = mod.camelize.constantize.new(request, req)
             op = op.to_sym
             if not (mod and mod.respond_to? op) then
                 return unsupported_operation(req)
@@ -36,8 +37,18 @@ class ApiController < ApplicationController
             return unsupported_operation(req)
         end
 
+
+        # execute request
+
         begin
-            ret = mod.send(op, request, HashWithIndifferentAccess.new(req.params))
+            # request = http request object
+            if req.params.kind_of? Hash then
+                ret = mod.send(op, HashWithIndifferentAccess.new(req.params))
+            elsif req.params.kind_of? Array then
+                ret = mod.send(op, *req.params)
+            else
+                ret = mod.send(op, req.params)
+            end
             if ret.kind_of? FileDownload then
                 return send_file(ret.filename, :filename => File.basename(ret.filename))
 
@@ -54,20 +65,30 @@ class ApiController < ApplicationController
         end
     end
 
+
+    # Helper for creating JsonResponse
     def unsupported_operation(req)
-        render :json => JsonResponse.invalid_request("unsupported operation: #{req.operation}").to_json
+        JsonResponse.invalid_request("unsupported operation: '#{req.operation}'")
     end
 
-    def extract_valid_request
+    # Extract JsonRequest
+    def extract_request
+
+        # extract JsonRequest
+
         body = request.body.read.strip
         if body.blank? then
-            return JsonResponse.invalid_request.to_json
+            return JsonResponse.invalid_request
         end
 
         begin
             req = JsonRequest.from_json(body)
         rescue Exception => ex
-            return JsonResponse.invalid_request.to_json
+            return JsonResponse.invalid_request
+        end
+
+        if req.operation.blank? then
+            return JsonResponse.invalid_request
         end
 
         return req
