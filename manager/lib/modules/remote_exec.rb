@@ -28,9 +28,20 @@ module RemoteExec
       return agent.run_cmd(command)
     end
 
+    # Convert various inputs to a CommandSpec wrapper
+    #
+    # @param [Object] command Can be a Hash/Command/String/CommandSpec
+    # @return [CommandSpec]
     def create_spec(command)
-      command = command.to_command_spec if command.kind_of? Command
-      return command
+      if command.kind_of? Command then
+        command.to_command_spec
+      elsif command.kind_of? Hash then
+        CommandSpec.new(command)
+      elsif command.kind_of? String then
+        CommandSpec.from_json(command)
+      else
+        command
+      end
     end
 
   end

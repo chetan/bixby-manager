@@ -29,33 +29,41 @@ class Provisioning < API
     return pret
   end
 
-  # returns an array of hashes: [{ :file, :sha1 }]
-  def list_files(params)
+  # List files in bundle specified by CommandSpec
+  #
+  # @param [CommandSpec] command  Command/Bundle to list files for
+  # @return [Array<Hash>] ret
+  #   * :file [String] Relative path of file
+  #   * :digest [String] SHA1 digest of file
+  def list_files(command)
 
-    cmd = CommandSpec.from_json(params)
+    command = create_spec(command)
     sha = Digest::SHA1.new
 
     files = []
-    root = File.join(cmd.bundle_dir, "")
+    root = File.join(command.bundle_dir, "")
     Find.find(root) do |path|
       next if path == root or not File.file? path
-      files << { :file => path.gsub(root, ""), :sha1 => sha.hexdigest(File.read(path)) }
+      files << { :file => path.gsub(root, ""), :digest => sha.hexdigest(File.read(path)) }
     end
 
     return files
   end
 
-  def fetch_file(params)
+  # Download the given command file
+  #
+  # @param [CommandSpec] command
+  # @param [String] file  relative path to file
+    # @return [FileDownload]
+  def fetch_file(command, file)
 
-    cmd = CommandSpec.from_json(params["cmd"])
-    file = params["file"]
-
-    path = File.join(cmd.bundle_dir, file)
+    command = create_spec(command)
+    path = File.join(command.bundle_dir, file)
     if File.file? path then
       return FileDownload.new(path)
     end
 
-    return nil
+    return nil # TODO raise err
   end
 
 end
