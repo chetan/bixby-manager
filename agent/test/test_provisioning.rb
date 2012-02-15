@@ -49,8 +49,8 @@ class TestProvisioning < MiniTest::Unit::TestCase
       { "file" => "bin/cat", "sha1" => sha.hexdigest(File.read("#{path}/cat")) }
     ]
 
-    body1 = '{"operation":"provisioning:fetch_file","params":{"cmd":{"repo":"support","bundle":"test_bundle","command":"echo"},"file":"bin/echo"}}'
-    body2 = '{"operation":"provisioning:fetch_file","params":{"cmd":{"repo":"support","bundle":"test_bundle","command":"echo"},"file":"bin/cat"}}'
+    body1 = '{"operation":"provisioning:fetch_file","params":[{"repo":"support","bundle":"test_bundle","command":"echo"},"bin/echo"]}'
+    body2 = '{"operation":"provisioning:fetch_file","params":[{"repo":"support","bundle":"test_bundle","command":"echo"},"bin/cat"]}'
 
     req1 = stub_request(:post, @api_url).with(:body => body1).to_return(:status => 200, :body => File.new("#{path}/echo"))
     req2 = stub_request(:post, @api_url).with(:body => body2).to_return(:status => 200, :body => File.new("#{path}/cat"))

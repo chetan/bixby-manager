@@ -20,7 +20,7 @@ class Provisioning < BaseModule
                 # puts path
                 next if File.file? path and f['sha1'] == sha.hexdigest(File.read(path))
                 # puts "downloading file"
-                req = JsonRequest.new("provisioning:fetch_file", { :cmd => cmd.to_hash, :file => f['file'] })
+                req = JsonRequest.new("provisioning:fetch_file", [ cmd.to_hash, f['file'] ])
                 req.exec_download(path)
                 if f['file'] =~ /^bin/ then
                     # correct permissions for executables
