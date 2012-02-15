@@ -5,3 +5,5 @@ tmp/
 config/database.yml
 config/devops.yml
 db/devops_schema.mwb.bak
+.yardoc/
+yardoc/
