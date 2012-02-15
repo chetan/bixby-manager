@@ -30,6 +30,7 @@ group :assets do
 end
 
 group :development do
+    gem "yard"
     gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
     gem 'newrelic_rpm'
     gem "awesome_print"

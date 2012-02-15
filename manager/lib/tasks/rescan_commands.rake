@@ -4,70 +4,77 @@
 
 require 'find'
 
-def log(str)
-  return if not RakeFileUtils.verbose_flag
-  puts str
-end
+module Devops
 
-def rescan_repo(repo)
-  log("* rescanning commands in #{repo.name} repository (#{repo.path})")
-  Find.find(repo.path) do |path|
+  class << self
 
-    # skip everything except for /bin/ scripts in bundle dirs
-    if File.basename(path) == ".git" then
-      Find.prune
-      next
-    end
-    if File.directory? path or path !~ /bin/ then
-      next
+    def log(str)
+      return if not RakeFileUtils.verbose_flag
+      puts str
     end
 
-    # bin check
-    rel_path = extract_rel_path(repo, path)
-    paths = rel_path.split(%r{/})
-    bundle = paths[0..1].join("/")
-    paths = paths[2..paths.length]
-    next if paths.shift != "bin"
-    next if paths.last =~ /\.json$/
+    def rescan_repo(repo)
+      log("* rescanning commands in #{repo.name} repository (#{repo.path})")
+      Find.find(repo.path) do |path|
 
-    # add it
-    add_command(repo, bundle, paths.join("/"))
-  end
-end
+        # skip everything except for /bin/ scripts in bundle dirs
+        if File.basename(path) == ".git" then
+          Find.prune
+          next
+        end
+        if File.directory? path or path !~ /bin/ then
+          next
+        end
 
-# create or update the command
-def add_command(repo, bundle, script)
-  log("* found #{bundle} :: #{script}")
+        # bin check
+        rel_path = extract_rel_path(repo, path)
+        paths = rel_path.split(%r{/})
+        bundle = paths[0..1].join("/")
+        paths = paths[2..paths.length]
+        next if paths.shift != "bin"
+        next if paths.last =~ /\.json$/
 
-  cmds = Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script)
-  if not cmds.blank? then
-    cmd = cmds.first
-    if cmd.updated_at > File.mtime(cmd.path) then
-      return
+        # add it
+        add_command(repo, bundle, paths.join("/"))
+      end
     end
-    log("* updating existing Command")
-  else
-    log("* creating new Command")
-    cmd = Command.new
-    cmd.repo = repo
-    cmd.bundle = bundle
-    cmd.command = script
+
+    # create or update the command
+    def add_command(repo, bundle, script)
+      log("* found #{bundle} :: #{script}")
+
+      cmds = Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script)
+      if not cmds.blank? then
+        cmd = cmds.first
+        if cmd.updated_at > File.mtime(cmd.path) then
+          return
+        end
+        log("* updating existing Command")
+      else
+        log("* creating new Command")
+        cmd = Command.new
+        cmd.repo = repo
+        cmd.bundle = bundle
+        cmd.command = script
+      end
+
+      config = cmd.path + ".json"
+      if File.exists? config then
+        conf = JSON.parse(File.read(config))
+        cmd.name = conf["name"] || script
+        cmd.options = conf["options"]
+      else
+        cmd.name = script
+      end
+
+      cmd.save!
+    end
+
+    def extract_rel_path(repo, str)
+      str.gsub(/#{repo.path}/, '').gsub(/^\/?/, '')
+    end
+
   end
-
-  config = cmd.path + ".json"
-  if File.exists? config then
-    conf = JSON.parse(File.read(config))
-    cmd.name = conf["name"] || script
-    cmd.options = conf["options"]
-  else
-    cmd.name = script
-  end
-
-  cmd.save!
-end
-
-def extract_rel_path(repo, str)
-  str.gsub(/#{repo.path}/, '').gsub(/^\/?/, '')
 end
 
 namespace :devops do
@@ -78,7 +85,7 @@ namespace :devops do
     require 'modules/repository'
 
     Repo.all.each do |repo|
-      rescan_repo(repo)
+      Devops.rescan_repo(repo)
     end
 
   end

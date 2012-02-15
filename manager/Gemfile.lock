@@ -24,7 +24,7 @@ GIT
 
 GIT
   remote: https://github.com/chetan/devops_common.git
-  revision: 31676d3cd45787567e54cd508f5d272fb42216f2
+  revision: 8be9a819b2271c80813fa5b87bc9c1b232ec0be4
   specs:
     devops_common (0.1.0)
       curb
@@ -207,6 +207,7 @@ GEM
     tzinfo (0.3.31)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    yard (0.7.5)
 
 PLATFORMS
   ruby
@@ -244,3 +245,4 @@ DEPENDENCIES
   spork-rails
   turn
   webmock!
+  yard
