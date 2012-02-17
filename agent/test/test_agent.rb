@@ -25,6 +25,8 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
     @agent.save_config()
     assert(@agent.new?)
     assert( File.exists? File.join(@root_dir, "etc", "devops.yml") )
+    assert ENV["DEVOPS_ROOT"]
+    assert_equal ENV["DEVOPS_ROOT"], @root_dir
   end
 
   def test_load_existing_agent
@@ -32,6 +34,8 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
     @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
     @agent.save_config()
     assert(!@agent.new?)
+    assert ENV["DEVOPS_ROOT"]
+    assert_equal ENV["DEVOPS_ROOT"], @root_dir
   end
 
   def test_create_missing_manager_uri

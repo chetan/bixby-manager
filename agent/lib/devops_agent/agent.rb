@@ -51,6 +51,7 @@ class Agent
         BundleRepository.path = File.join(agent.agent_root, "/repo")
         BaseModule.agent = agent
         BaseModule.manager_uri = agent.manager_uri
+        ENV["DEVOPS_ROOT"] = agent.agent_root
 
         return agent
     end
