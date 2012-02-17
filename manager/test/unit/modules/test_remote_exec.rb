@@ -9,6 +9,11 @@ class TestRemoteExec < ActiveSupport::TestCase
       c = CommandSpec.new(:repo => "support", :bundle => "foobar")
       assert_equal c, RemoteExec.create_spec(c)
 
+      c = CommandSpec.new(:repo => "support", :bundle => "foobar")
+      s = RemoteExec.create_spec(c.to_json)
+      assert_equal c.repo, s.repo
+      assert_equal c.bundle, s.bundle
+
       repo = Repo.new(:name => "vendor")
       cmd = Command.new(:bundle => "foobar", :command => "baz", :repo => repo)
       cs = RemoteExec.create_spec(cmd)
