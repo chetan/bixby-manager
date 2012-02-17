@@ -1,20 +1,30 @@
 
 class Inventory < API
 
+  # Register and Agent with the server. Also creates an associated Host record
+  #
+  # @param [String] uuid
+  # @param [String] public_key
+  # @param [String] hostname
+  # @param [FixNum] port
+  # @param [String] password  Password for registering an Agent with the server
   def register_agent(uuid, public_key, hostname, port, password)
 
     tenant = Tenant.where("password = md5(?)", password).first
     if tenant.blank? then
-      return JsonResponse.new(:fail, "password didn't match any known tenants")
+      raise API::Error, "password didn't match any known tenants", caller
     end
 
     # TODO pass org as param
     org = Org.where(:tenant_id => tenant.id, :name => 'default').first
+    if org.nil? then
+      raise API::Error, "org not found", caller
+    end
 
     h = Host.new
     h.org_id = org.id
     h.ip = @http_request.remote_ip
-    h.hostname = nil # TODO reverse lookup ip
+    h.hostname = hostname
     h.save!
 
     a = Agent.new
@@ -28,12 +38,12 @@ class Inventory < API
       # validate this agent first
       msg = ""
       a.errors.keys.each { |k| msg += "; " if not msg.empty?; msg += "#{k}: #{a.errors[k]}" }
-      return JsonResponse.new(:fail, msg)
+      raise API::Error, msg, caller
     end
 
     a.save!
 
-    return nil
+    a
   end
 
 end
