@@ -20,22 +20,6 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
     FileUtils.copy_entry(src, dest)
   end
 
-  # minitest assert_throws doesn't seem to work properly
-  def assert_throws(clazz, msg = nil, &block)
-    begin
-      yield
-    rescue Exception => ex
-      if clazz.to_s == ex.class.name then
-        if msg.nil?
-          return
-        elsif msg == ex.message then
-          return
-        end
-      end
-    end
-    flunk("Expected #{mu_pp(clazz)} to have been thrown")
-  end
-
   def test_create_new_agent
     @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
     @agent.save_config()
