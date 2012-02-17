@@ -24,9 +24,11 @@ class TestRemoteExec < ActiveSupport::TestCase
     agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
     cmd   = Command.new(:bundle => "foobar", :command => "baz", :repo => repo)
 
-    stub = stub_request(:post, "http://2.2.2.2:18000/").
-              with(:body => '{"operation":"exec","params":{"repo":"vendor","bundle":"foobar","command":"baz"}}').
-              to_return(:status => 200, :body => JsonResponse.new("success").to_json)
+    stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
+      j = JSON.parse(req.body)
+      jp = j["params"]
+      j["operation"] == "exec" and jp["repo"] == "vendor" and jp["bundle"] == "foobar" and jp["command"] == "baz"
+    }.to_return(:status => 200, :body => JsonResponse.new("success").to_json)
 
     ret = RemoteExec.exec(agent, cmd)
 
@@ -45,9 +47,11 @@ class TestRemoteExec < ActiveSupport::TestCase
     res = []
     res << JsonResponse.bundle_not_found(cmd).to_json
     res << JsonResponse.new("success", "", {:stdout => "frobnicator echoed"}).to_json
-    stub = stub_request(:post, url).
-              with(:body => '{"operation":"exec","params":{"repo":"support","bundle":"test_bundle","command":"echo"}}').
-              to_return { { :status => 200, :body => res.shift } }
+    stub = stub_request(:post, url).with { |req|
+      j = JSON.parse(req.body)
+      jp = j["params"]
+      j["operation"] == "exec" and jp["repo"] == "support" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
+    }.to_return { { :status => 200, :body => res.shift } }
 
     stub2 = stub_request(:post, url).with { |req|
       req.body =~ %r{system/provisioning} and req.body =~ /get_bundle.rb/
