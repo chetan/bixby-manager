@@ -30,6 +30,7 @@ Spork.each_run do
 
   ENV["BOOTSTRAPNOW"] = "1"
   require "#{Rails.root.to_s}/config/initializers/devops_bootstrap"
+  Dir.glob(Rails.root + "/lib/**/*.rb").each{ |f| require f }
 
 end
 
