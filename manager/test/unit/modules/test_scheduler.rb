@@ -3,23 +3,23 @@
 
 class SchedulerTest < ActiveSupport::TestCase
 
-  test "require class" do
+  def test_require_class
     require "modules/scheduler"
     assert Object.const_defined? :Scheduler
   end
 
-  test "has default driver" do
+  def test_has_default_driver
     assert Scheduler.driver
-    assert (Scheduler.driver == Scheduling::Resque)
+    assert Scheduler.driver == Scheduling::Resque
   end
 
-  test "schedule a job" do
+  def test_schedule_a_job
     Resque.reset_delayed_queue
     Scheduler.new.schedule_at((Time.new+30), Scheduling::Job.new("foobar", {}))
-    assert (Resque.redis.zcard("delayed_queue_schedule") == 1) # key is namespaced
+    assert Resque.redis.zcard("delayed_queue_schedule") == 1 # key is namespaced
   end
 
-  test "must override methods" do
+  def test_driver_must_override_methods
     assert_throws(NotImplementedError) do
       FooDriver.configure(nil)
     end
