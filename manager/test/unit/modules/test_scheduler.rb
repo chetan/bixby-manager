@@ -19,4 +19,16 @@ class SchedulerTest < ActiveSupport::TestCase
     assert (Resque.redis.zcard("delayed_queue_schedule") == 1) # key is namespaced
   end
 
+  test "must override methods" do
+    assert_throws(NotImplementedError) do
+      FooDriver.configure(nil)
+    end
+    assert_throws(NotImplementedError) do
+      FooDriver.schedule_at_with_queue(nil, nil)
+    end
+  end
+
+  class FooDriver < Scheduling::Driver
+  end
+
 end
