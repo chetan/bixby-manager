@@ -96,6 +96,7 @@ GEM
       therubyracer (~> 0.9.9)
     crack (0.3.1)
     curb (0.8.0)
+    database_cleaner (0.7.1)
     erubis (2.7.0)
     git (1.2.5)
     haml (3.1.4)
@@ -222,6 +223,7 @@ DEPENDENCIES
   awesome_print
   bahia
   curb
+  database_cleaner
   devops_common!
   git
   haml

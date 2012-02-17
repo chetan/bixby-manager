@@ -80,4 +80,8 @@ class MiniTest::Unit::TestCase
 
 end
 
+# setup database_cleaner
+require 'database_cleaner'
+DatabaseCleaner.strategy = :truncation
+
 MiniTest::Unit.autorun

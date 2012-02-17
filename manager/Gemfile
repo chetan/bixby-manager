@@ -46,4 +46,5 @@ group :development do
     gem 'spork', :git => "https://github.com/sporkrb/spork.git"
     gem "spork-rails"
     gem "hirb"
+    gem "database_cleaner"
 end
