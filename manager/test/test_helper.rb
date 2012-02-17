@@ -14,6 +14,8 @@ Spork.each_run do
   begin
     require 'simplecov'
     SimpleCov.start do
+      merge_timeout 7200
+
       add_filter '/test/'
       add_filter '/config/'
 
