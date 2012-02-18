@@ -6,6 +6,7 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
 	def setup
     WebMock.reset!
 
+    ENV["DEVOPS_ROOT"] = nil
     @manager_uri = "http://localhost:3000"
     @password = "foobar"
     @root_dir = "/tmp/agent_test_temp"
@@ -32,10 +33,21 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
   def test_load_existing_agent
     setup_existing_agent()
     @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
-    @agent.save_config()
     assert(!@agent.new?)
     assert ENV["DEVOPS_ROOT"]
     assert_equal ENV["DEVOPS_ROOT"], @root_dir
+  end
+
+  def test_load_existing_agent_using_env
+    setup_existing_agent()
+    ENV["DEVOPS_ROOT"] = @root_dir
+
+    @agent = Agent.create()
+    assert @agent
+    assert(!@agent.new?)
+    assert ENV["DEVOPS_ROOT"]
+    assert_equal ENV["DEVOPS_ROOT"], @root_dir
+    assert_equal @root_dir, @agent.agent_root
   end
 
   def test_create_missing_manager_uri

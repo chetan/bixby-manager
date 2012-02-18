@@ -15,7 +15,7 @@ module Config
         end
 
         def load_config(root_dir)
-            self.agent_root = (root_dir.nil? ? Agent::DEFAULT_ROOT_DIR : root_dir)
+            self.agent_root = (root_dir.nil? ? (ENV["DEVOPS_ROOT"] || Agent::DEFAULT_ROOT_DIR) : root_dir)
             return nil if not File.exists? config_file
 
             # load it!
