@@ -3,6 +3,12 @@ module RemoteExec
 
   module Methods
 
+    # Execute a command on an Agent, automatically provisioning it if necessary
+    #
+    # @param [Agent] agent
+    # @param [CommandSpec] command
+    #
+    # @return [JsonResponse, CommandResponse]
     def exec(agent, command)
 
       command = create_spec(command)
@@ -25,7 +31,13 @@ module RemoteExec
         return pret # TODO raise err?
       end
 
-      return agent.run_cmd(command)
+      ret = agent.run_cmd(command)
+      if not ret.success? then
+        # TODO raise err?
+        return ret
+      end
+
+      return CommandResponse.new(ret.data)
     end
 
     # Convert various inputs to a CommandSpec wrapper

@@ -51,7 +51,7 @@ class TestRemoteExec < ActiveSupport::TestCase
     url = "http://2.2.2.2:18000/"
     res = []
     res << JsonResponse.bundle_not_found(cmd).to_json
-    res << JsonResponse.new("success", "", {:stdout => "frobnicator echoed"}).to_json
+    res << JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json
     stub = stub_request(:post, url).with { |req|
       j = JSON.parse(req.body)
       jp = j["params"]
@@ -66,8 +66,11 @@ class TestRemoteExec < ActiveSupport::TestCase
 
     assert_requested(stub, :times => 2)
     assert_requested(stub2, :times => 1)
-    assert_equal "success", ret.status
-    assert_equal "frobnicator echoed", ret.data["stdout"]
+
+    assert_equal CommandResponse, ret.class
+    assert_equal 0, ret.status
+    assert_equal "frobnicator echoed", ret.stdout
+    assert ret.success?
   end
 
 end
