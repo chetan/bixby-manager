@@ -15,7 +15,7 @@ module RemoteExec
 
       ret = agent.run_cmd(command)
       if ret.success? then
-        return ret
+        return CommandResponse.new(ret.data)
       end
 
       if ret.code != 404 then
@@ -25,6 +25,46 @@ module RemoteExec
 
       # try to provision it, then try again
       pret = Provisioning.new.provision(agent, command)
+
+      if not pret.success? then
+        # failed to provision, bail out
+        return pret # TODO raise err?
+      end
+
+      ret = agent.run_cmd(command)
+      if not ret.success? then
+        # TODO raise err?
+        return ret
+      end
+
+      return CommandResponse.new(ret.data)
+    end
+
+    # Execute a command via a wrapper. Will try to provision both the wrapper itself
+    # and the wrapped command.
+    #
+    # @param [Agent] agent
+    # @param [CommandSpec] command
+    # @param [CommandSpec] sub_command
+    #
+    # @return [JsonResponse, CommandResponse]
+    def exec_with_wrapper(agent, command, sub_command)
+
+      ret = exec(agent, command)
+      if not ret.kind_of? CommandResponse then
+        return ret # TODO raise err
+      end
+
+      if ret.success? then
+        return ret
+      end
+
+      if ret.stdout !~ /(Bundle|Command)NotFound/ then
+        # some other error
+        return ret
+      end
+
+      pret = Provisioning.new.provision(agent, sub_command)
 
       if not pret.success? then
         # failed to provision, bail out
