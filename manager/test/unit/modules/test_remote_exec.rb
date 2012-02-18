@@ -33,12 +33,12 @@ class TestRemoteExec < ActiveSupport::TestCase
       j = JSON.parse(req.body)
       jp = j["params"]
       j["operation"] == "exec" and jp["repo"] == "vendor" and jp["bundle"] == "foobar" and jp["command"] == "baz"
-    }.to_return(:status => 200, :body => JsonResponse.new("success").to_json)
+    }.to_return(:status => 200, :body => JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json)
 
     ret = RemoteExec.exec(agent, cmd)
 
     assert_requested(stub)
-    assert_equal "success", ret.status
+    assert ret.success?
   end
 
   def test_exec_with_provision
