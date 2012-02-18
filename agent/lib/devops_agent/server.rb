@@ -75,7 +75,7 @@ class Server < Sinatra::Base
             @log.error(ex)
             return JsonResponse.new("fail", ex.message, nil, 500).to_json
         end
-        data = { :result => status.exitstatus, :stdout => stdout, :stderr => stderr }
+        data = { :status => status.exitstatus, :stdout => stdout, :stderr => stderr }
         return JsonResponse.new("success", nil, data).to_json
     end
 
