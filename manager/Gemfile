@@ -24,6 +24,9 @@ gem "resque-scheduler",
   :require => ["resque_scheduler"]
 gem "redis-lock"
 
+# metrics module
+gem 'continuum', :git => "https://github.com/netshade/continuum.git"
+
 group :assets do
     gem 'less'
     gem 'less-rails'
@@ -36,15 +39,15 @@ group :development do
     gem "awesome_print"
     gem "rcov", :platforms => :mri_18
     gem "rcov_rails", :platforms => :mri_18
-    gem "simplecov", :platforms => :mri_19
+    gem "simplecov", :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git"
     gem "simplecov-html", :platforms => :mri_19, :git => "git://github.com/chetan/simplecov-html.git"
-    gem 'webmock', :git => 'https://github.com/bblimke/webmock.git'
+    gem 'webmock', :git => 'https://github.com/bblimke/webmock.git', :require => false
     gem 'mocha'
     gem "minitest"
     gem "turn"
     gem "bahia"
-    gem 'spork', :git => "https://github.com/sporkrb/spork.git"
-    gem "spork-rails"
+    gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
+    gem "spork-rails", :require => false
     gem "hirb"
     gem "database_cleaner"
 end
