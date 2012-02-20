@@ -1,4 +1,3 @@
-
 # this is mainly to skip loading devops-related coded when using 'spork'
 # instead, we load this after forking to run our tests
 if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
@@ -27,9 +26,16 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
   # setup the scheduler
   if DEVOPS_CONFIG[:scheduler] then
     # load a specific scheduler
-    require "modules/scheduler/#{DEVOPS_CONFIG[:scheduler]}"
+    require "modules/scheduling/#{DEVOPS_CONFIG[:scheduler]}"
   end
   require "modules/scheduler"
   Scheduler.configure(DEVOPS_CONFIG)
+
+  # setup metrics
+  if DEVOPS_CONFIG[:metrics] then
+    require "modules/metrics"
+    require "modules/metrics/#{DEVOPS_CONFIG[:metrics]}"
+    Metrics.configure(DEVOPS_CONFIG)
+  end
 
 end
