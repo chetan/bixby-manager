@@ -2,12 +2,34 @@
 class Monitoring < API
 
   GET_OPTIONS = "--options"
+  GET_METRICS = "--monitor"
 
-  # Agent API
+  # Get command options specific to the specified agent
+  #
+  # @param [Agent] agent
+  # @param [CommandSpec] command
+  # @return [Hash] list of options with their possible values
   def get_command_options(agent, command)
 
     #c = CommandSpec.new({ :repo => "vendor", :bundle => "baz", :command => "ls", :args => "/tmp" })
     return exec_mon(agent, command, GET_OPTIONS)
+  end
+
+  # Manually initiate a Check and return the response Hash
+  #
+  # @param [Check] check
+  # @return [Hash]
+  #   * :timestamp [FixNum]
+  #   * :metrics [Hash] key/value pairs of metrics
+  #   * :errors [Array<String>] list of errors, if any
+  #   * :status [String] OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT
+  #   * :key [String] base key name
+  def run_check(check)
+
+    command = create_spec(check.command)
+    command.stdin = check.args.to_json
+
+    return exec_mon(check.agent, command, GET_METRICS)
   end
 
   private
@@ -26,16 +48,15 @@ class Monitoring < API
       lang = "ruby"
     end
     cmd.command = "#{lang}_wrapper.rb"
-
-    p cmd
-    puts cmd.bundle_dir
-    puts cmd.relative_path
-    puts cmd.command_file
+    cmd.stdin = command.stdin
     cmd.validate
 
-    # exit
+    ret = exec_with_wrapper(agent, cmd, command)
+    if not ret.success? then
+      # raise error
+    end
 
-    return exec(agent, cmd)
+    JSON.parse(ret.stdout)
   end
 
 end
