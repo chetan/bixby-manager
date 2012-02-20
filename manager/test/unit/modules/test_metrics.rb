@@ -21,10 +21,8 @@ class TestMetrics < ActiveSupport::TestCase
 
   def test_put
     t = Time.new
+    mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /foobar/ and v.include? t.to_i.to_s }.once()
     Metrics.new.put("foobar", 37, t, {})
-    sleep 2 # takes a couple sec to update
-    q = Continuum::Client.new("dantooine").query({:format => "ascii", :start => t-5, :m => "sum:foobar"})
-    assert q.include? t.to_i.to_s
   end
 
   def test_driver_must_override_methods
