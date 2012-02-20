@@ -5,8 +5,6 @@ class Command < ActiveRecord::Base
 
   serialize :options, JSONColumn.new
 
-  include Repository::Command
-
   def path
     File.join(repo.path, bundle, "bin", command)
   end
