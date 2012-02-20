@@ -84,4 +84,9 @@ end
 require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
 
+begin
+  require "#{Rails.root}/test/factories"
+rescue
+end
+
 MiniTest::Unit.autorun

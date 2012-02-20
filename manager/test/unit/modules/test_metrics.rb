@@ -3,6 +3,7 @@ class TestMetrics < ActiveSupport::TestCase
 
   def setup
     WebMock.disable!
+    @check = Check.new
   end
 
   def teardown
@@ -23,6 +24,21 @@ class TestMetrics < ActiveSupport::TestCase
     t = Time.new
     mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /foobar/ and v.include? t.to_i.to_s }.once()
     Metrics.new.put("foobar", 37, t, {})
+  end
+
+  def test_put_check_result
+
+    c = FactoryGirl.create(:check)
+
+    m = {"timestamp"=>1329775841, "metrics"=>[
+        {"metrics"=>{"size"=>297, "used"=>202, "free"=>94, "usage"=>69},
+         "metadata"=>{"mount"=>"/", "type"=>"hfs"}}],
+      "errors"=>[], "status"=>"OK", "check_id"=>c.id,
+      "key"=>"hardware.storage.disk"}
+
+    mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /hardware/ and v.include? 1329775841.to_s }.times(4)
+
+    Metrics.new.put_check_result(m)
   end
 
   def test_driver_must_override_methods

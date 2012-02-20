@@ -29,6 +29,13 @@ GIT
       crack (>= 0.1.7)
 
 GIT
+  remote: https://github.com/chetan/continuum.git
+  revision: dd521a1aa0f34b8a4c3eae6df3dbe56050a72c0e
+  specs:
+    continuum (0.0.1)
+      rake
+
+GIT
   remote: https://github.com/chetan/devops_common.git
   revision: de408bf1a47477b2ba658b23d64f6567485745e8
   specs:
@@ -54,14 +61,6 @@ GIT
       redis-namespace (~> 1.0.2)
       sinatra (>= 0.9.2)
       vegas (~> 0.1.2)
-
-GIT
-  remote: https://github.com/netshade/continuum.git
-  revision: 41852e31797c8604376b3243b4d6308ffaeb520b
-  specs:
-    continuum (0.0.1)
-      eventmachine
-      rake
 
 GIT
   remote: https://github.com/sporkrb/spork.git
@@ -114,14 +113,18 @@ GEM
     curb (0.8.0)
     database_cleaner (0.7.1)
     erubis (2.7.0)
-    eventmachine (0.12.10)
+    factory_girl (2.6.0)
+      activesupport (>= 2.3.9)
+    factory_girl_rails (1.7.0)
+      factory_girl (~> 2.6.0)
+      railties (>= 3.0.0)
     git (1.2.5)
     haml (3.1.4)
     hike (1.2.1)
     hirb (0.6.0)
     hiredis (0.4.4)
     i18n (0.6.0)
-    journey (1.0.1)
+    journey (1.0.2)
     json (1.6.5)
     less (2.0.9)
       commonjs (~> 0.2.0)
@@ -240,6 +243,7 @@ DEPENDENCIES
   curb
   database_cleaner
   devops_common!
+  factory_girl_rails
   git
   haml
   hirb

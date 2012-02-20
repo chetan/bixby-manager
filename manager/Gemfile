@@ -25,7 +25,7 @@ gem "resque-scheduler",
 gem "redis-lock"
 
 # metrics module
-gem 'continuum', :git => "https://github.com/netshade/continuum.git"
+gem 'continuum', :git => "https://github.com/chetan/continuum.git"
 
 group :assets do
     gem 'less'
@@ -50,4 +50,5 @@ group :development do
     gem "spork-rails", :require => false
     gem "hirb"
     gem "database_cleaner"
+    gem "factory_girl_rails"
 end
