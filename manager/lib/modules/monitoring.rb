@@ -19,14 +19,15 @@ class Monitoring < API
   #
   # @param [Check] check
   # @return [Hash]
+  #   * :key [String] base key name
+  #   * :status [String] OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT
   #   * :timestamp [FixNum]
   #   * :metrics [Hash] key/value pairs of metrics
   #   * :errors [Array<String>] list of errors, if any
-  #   * :status [String] OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT
-  #   * :key [String] base key name
   def run_check(check)
 
     command = create_spec(check.command)
+    check.args[:check_id] = check.id
     command.stdin = check.args.to_json
 
     return exec_mon(check.agent, command, GET_METRICS)

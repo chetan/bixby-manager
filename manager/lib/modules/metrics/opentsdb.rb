@@ -15,7 +15,7 @@ class Metrics
       end
 
       def put(key, value, timestamp, metadata = {})
-        @client.metric(key, value)
+        @client.metric(key.strip, value, timestamp, metadata)
       end
 
     end
