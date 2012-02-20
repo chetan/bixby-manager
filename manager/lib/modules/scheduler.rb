@@ -5,6 +5,7 @@ require 'modules/scheduling/job'
 class Scheduler < API
 
   class << self
+
     def drivers
       @drivers ||= []
     end
