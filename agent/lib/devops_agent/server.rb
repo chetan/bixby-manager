@@ -26,8 +26,6 @@ class Server < Sinatra::Base
     end
 
     post '/*' do
-        @log.debug { "POST: #{request.path}" }
-
         req = extract_valid_request()
         if req.kind_of? String then
             @log.debug { "received a String; returning" }
