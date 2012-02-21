@@ -1,4 +1,6 @@
 
+require 'helper'
+
 class TestApp < MiniTest::Unit::TestCase
 
   def setup

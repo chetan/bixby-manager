@@ -1,4 +1,6 @@
 
+require 'helper'
+
 class TestBundleCommand < MiniTest::Unit::TestCase
 
   def setup

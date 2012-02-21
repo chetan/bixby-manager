@@ -11,16 +11,26 @@ class Provisioning < BaseModule
 
         def download_files(cmd, files)
             local_path = cmd.bundle_dir
-            sha = Digest::SHA1.new
-            #p local_path
+            digest = cmd.load_digest
             files.each do |f|
-                # see if the file already exists
+
+                fetch = true
+                if not digest then
+                    fetch = true
+                elsif df = digest["files"].find{ |h| h["file"] == f["file"] } then
+                    # compare digest w/ stored one if we have it
+                    fetch = (df["digest"] != f["digest"])
+                else
+                    fetch = true
+                end
+
+                next if not fetch
+
+                params = cmd.to_hash
+                params.delete(:digest)
+
                 path = File.join(local_path, f['file'])
-                FileUtils.mkdir_p(File.dirname(path))
-                # puts path
-                next if File.file? path and f['sha1'] == sha.hexdigest(File.read(path))
-                # puts "downloading file"
-                req = JsonRequest.new("provisioning:fetch_file", [ cmd.to_hash, f['file'] ])
+                req = JsonRequest.new("provisioning:fetch_file", [ params, f['file'] ])
                 req.exec_download(path)
                 if f['file'] =~ /^bin/ then
                     # correct permissions for executables

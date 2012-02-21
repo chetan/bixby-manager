@@ -1,6 +1,5 @@
 
 require 'helper'
-require 'mocha'
 
 class TestGetBundle < MiniTest::Unit::TestCase
 
