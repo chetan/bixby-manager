@@ -21,10 +21,12 @@ class BundleCommand
       :show_options   => true,
       :exit           => 0
 
-  def initialize(*args)
-    super
+  def initialize(parse_options = true, *args)
     @agent = Agent.create
-    @argv = parse_options()
+    if parse_options then
+      super
+      @argv = parse_options()
+    end
   end
 
   def load_config
