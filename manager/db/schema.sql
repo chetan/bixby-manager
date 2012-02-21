@@ -26,16 +26,14 @@ CREATE  TABLE IF NOT EXISTS `orgs` (
   `tenant_id` INT UNSIGNED NULL ,
   `name` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  INDEX `fk_orgs_tenants1` (`tenant_id` ASC) ,
   CONSTRAINT `fk_orgs_tenants1`
     FOREIGN KEY (`tenant_id` )
     REFERENCES `tenants` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE UNIQUE INDEX `id_UNIQUE` ON `orgs` (`id` ASC) ;
-
-CREATE INDEX `fk_orgs_tenants1` ON `orgs` (`tenant_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -51,14 +49,13 @@ CREATE  TABLE IF NOT EXISTS `hosts` (
   `alias` VARCHAR(255) NULL ,
   `desc` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_hosts_orgs1` (`org_id` ASC) ,
   CONSTRAINT `fk_hosts_orgs1`
     FOREIGN KEY (`org_id` )
     REFERENCES `orgs` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_hosts_orgs1` ON `hosts` (`org_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -77,16 +74,14 @@ CREATE  TABLE IF NOT EXISTS `agents` (
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  INDEX `fk_agents_hosts1` (`host_id` ASC) ,
   CONSTRAINT `fk_agents_hosts1`
     FOREIGN KEY (`host_id` )
     REFERENCES `hosts` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE UNIQUE INDEX `id_UNIQUE` ON `agents` (`id` ASC) ;
-
-CREATE INDEX `fk_agents_hosts1` ON `agents` (`host_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -101,14 +96,13 @@ CREATE  TABLE IF NOT EXISTS `users` (
   `name` VARCHAR(255) NULL ,
   `email` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_users_orgs1` (`org_id` ASC) ,
   CONSTRAINT `fk_users_orgs1`
     FOREIGN KEY (`org_id` )
     REFERENCES `orgs` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_users_orgs1` ON `users` (`org_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -125,16 +119,14 @@ CREATE  TABLE IF NOT EXISTS `repos` (
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  INDEX `fk_repos_orgs1` (`org_id` ASC) ,
   CONSTRAINT `fk_repos_orgs1`
     FOREIGN KEY (`org_id` )
     REFERENCES `orgs` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE UNIQUE INDEX `id_UNIQUE` ON `repos` (`id` ASC) ;
-
-CREATE INDEX `fk_repos_orgs1` ON `repos` (`org_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -151,14 +143,13 @@ CREATE  TABLE IF NOT EXISTS `commands` (
   `options` TEXT NULL ,
   `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_commands_repos1` (`repo_id` ASC) ,
   CONSTRAINT `fk_commands_repos1`
     FOREIGN KEY (`repo_id` )
     REFERENCES `repos` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_commands_repos1` ON `commands` (`repo_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -171,14 +162,13 @@ CREATE  TABLE IF NOT EXISTS `resources` (
   `host_id` INT UNSIGNED NOT NULL ,
   `name` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_resources_hosts1` (`host_id` ASC) ,
   CONSTRAINT `fk_resources_hosts1`
     FOREIGN KEY (`host_id` )
     REFERENCES `hosts` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_resources_hosts1` ON `resources` (`host_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -194,9 +184,13 @@ CREATE  TABLE IF NOT EXISTS `checks` (
   `args` TEXT NULL ,
   `normal_interval` SMALLINT UNSIGNED NULL ,
   `retry_interval` SMALLINT UNSIGNED NULL ,
+  `timeout` SMALLINT NULL ,
   `plot` TINYINT(1)  NULL ,
   `enabled` TINYINT(1)  NULL DEFAULT false ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_checks_agents1` (`agent_id` ASC) ,
+  INDEX `fk_checks_commands1` (`command_id` ASC) ,
+  INDEX `fk_checks_resources1` (`resource_id` ASC) ,
   CONSTRAINT `fk_checks_agents1`
     FOREIGN KEY (`agent_id` )
     REFERENCES `agents` (`id` )
@@ -213,12 +207,6 @@ CREATE  TABLE IF NOT EXISTS `checks` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_checks_agents1` ON `checks` (`agent_id` ASC) ;
-
-CREATE INDEX `fk_checks_commands1` ON `checks` (`command_id` ASC) ;
-
-CREATE INDEX `fk_checks_resources1` ON `checks` (`resource_id` ASC) ;
 
 
 
