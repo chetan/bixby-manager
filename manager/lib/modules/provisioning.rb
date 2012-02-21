@@ -33,21 +33,11 @@ class Provisioning < API
   #
   # @param [CommandSpec] command  Command/Bundle to list files for
   # @return [Array<Hash>] ret
-  #   * :file [String] Relative path of file
-  #   * :digest [String] SHA1 digest of file
+  #   * file [String] Relative path of file
+  #   * digest [String] SHA256 digest of file
   def list_files(command)
-
     command = create_spec(command)
-    sha = Digest::SHA1.new
-
-    files = []
-    root = File.join(command.bundle_dir, "")
-    Find.find(root) do |path|
-      next if path == root or not File.file? path
-      files << { :file => path.gsub(root, ""), :digest => sha.hexdigest(File.read(path)) }
-    end
-
-    return files
+    return command.load_digest["files"]
   end
 
   # Download the given command file
