@@ -11,13 +11,15 @@ module RemoteExec
     #   env (optional)
     def exec(params)
         @log.debug{ "exec: #{params}" }
+
+        digest = params.delete("digest") || params.delete(:digest)
+
         cmd = CommandSpec.new(params)
         cmd.validate()
-
-        digest = params["digest"] || params[:digest]
         if digest and cmd.digest != digest then
             raise BundleNotFound, "digest does not match", caller
         end
+
         ret = cmd.execute()
         @log.debug{ "ret: " + ret.to_json }
         return ret
