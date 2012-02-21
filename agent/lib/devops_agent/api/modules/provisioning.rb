@@ -36,7 +36,9 @@ class Provisioning < BaseModule
                     # correct permissions for executables
                     FileUtils.chmod(0755, path)
                 end
-            end
+            end # files.each
+
+            cmd.update_digest
         end
 
     end # self
