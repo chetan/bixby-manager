@@ -14,6 +14,8 @@ class TestGetBundle < MiniTest::Unit::TestCase
     @port = 9999
     `rm -rf #{@root_dir}`
     @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
+
+    ARGV.clear
   end
 
   def test_get_bundle

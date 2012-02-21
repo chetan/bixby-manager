@@ -11,6 +11,8 @@ class TestBundleCommand < MiniTest::Unit::TestCase
     `rm -rf #{@root_dir}`
     ENV["DEVOPS_ROOT"] = @root_dir
     setup_existing_agent()
+
+    ARGV.clear
   end
 
   def setup_existing_agent
