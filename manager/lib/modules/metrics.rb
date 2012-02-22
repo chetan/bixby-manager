@@ -28,6 +28,8 @@ class Metrics < API
   # @option results [FixNum] :timestamp
   # @option results [Hash] :metrics key/value pairs of metrics
   # @option results [Array<String>] :errors list of errors, if any
+  #
+  # @return [void]
   def put_check_result(results)
 
     if not results.kind_of? Array then
@@ -54,6 +56,7 @@ class Metrics < API
 
       end
 
+      nil
     end
 
   end
