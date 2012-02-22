@@ -43,7 +43,9 @@ class Metrics < API
       result["metrics"].each do |metric|
 
         metadata = metric["metadata"] || {}
-        metadata[:host] = check.agent.host.hostname if metadata[:host] or metadata["host"]
+        if not (metadata[:host] or metadata["host"]) then
+          metadata[:host] = check.agent.host.hostname || check.agent.host.ip
+        end
         metadata[:host_id] = check.agent.host.id
         metadata[:org_id] = check.agent.host.org.id
         metadata[:tenant_id] = check.agent.host.org.tenant.id
