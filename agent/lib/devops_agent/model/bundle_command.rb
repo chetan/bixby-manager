@@ -29,10 +29,6 @@ class BundleCommand
     end
   end
 
-  def load_config
-    CommandSpec.new(JSON.parse(ENV["DEVOPS_COMMAND_SPEC"])).load_config()
-  end
-
   # retrieve all loaded subclasses of this classs
   #
   # @return [Array<Class>] List of subclasses
