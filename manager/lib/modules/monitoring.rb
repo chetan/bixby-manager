@@ -10,8 +10,6 @@ class Monitoring < API
   # @param [CommandSpec] command
   # @return [Hash] list of options with their possible values
   def get_command_options(agent, command)
-
-    #c = CommandSpec.new({ :repo => "vendor", :bundle => "baz", :command => "ls", :args => "/tmp" })
     return exec_mon(agent, command, GET_OPTIONS)
   end
 
@@ -25,24 +23,51 @@ class Monitoring < API
   #   * :metrics [Hash] key/value pairs of metrics
   #   * :errors [Array<String>] list of errors, if any
   def run_check(check)
-
-    command = create_spec(check.command)
-    check.args[:check_id] = check.id
-    command.stdin = check.args.to_json
-
+    command = command_for_check(check)
     return exec_mon(check.agent, command, GET_METRICS)
+  end
+
+  # Update the check configuration for the specified Agent
+  #
+  # @param [Agent] agent
+  def update_check_config(agent)
+
+    config = []
+    checks = Check.where("agent_id = ?", agent.id)
+    checks.each do |check|
+      command = command_for_check(check)
+      config << { :interval => check.normal_interval, :retry => check.retry_interval,
+                  :timeout => check.timeout, :command => command }
+    end
+
+    command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",
+                               :command => "update_check_config.rb", :stdin => config.to_json )
+
+    exec_mon(agent, command)
+
   end
 
   private
 
+  # Create a CommandSpec for the given Check
+  #
+  # @param [Check] check
+  # @return [CommandSpec]
+  def command_for_check(check)
+    command = create_spec(check.command)
+    check.args[:check_id] = check.id
+    command.stdin = check.args.to_json
+    return command
+  end
+
   # run with wrapper cmd
-  def exec_mon(agent, command, args)
+  def exec_mon(agent, command, args = "")
 
     command = create_spec(command)
 
     cmd = CommandSpec.new(:repo => "vendor",
             :bundle => "system/monitoring",
-            :args => args + " " + File.join(command.relative_path, "bin", command.command))
+            :args => " -- #{args} " + File.join(command.relative_path, "bin", command.command))
 
     lang = "ruby"
     if command.command =~ /\.rb$/ then
@@ -57,7 +82,14 @@ class Monitoring < API
       # raise error
     end
 
-    JSON.parse(ret.stdout)
+    if ret.stdout then
+      begin
+        return JSON.parse(ret.stdout)
+      rescue Exception => ex
+      end
+    end
+
+    return ret
   end
 
 end
