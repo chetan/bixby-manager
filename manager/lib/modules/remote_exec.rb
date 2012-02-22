@@ -85,7 +85,9 @@ module RemoteExec
     # @param [Object] command Can be a Hash/Command/String/CommandSpec
     # @return [CommandSpec]
     def create_spec(command)
-      if command.kind_of? Command then
+      if command.kind_of? CommandSpec then
+        command
+      elsif command.kind_of? Command then
         command.to_command_spec
       elsif command.kind_of? Hash then
         CommandSpec.new(command)
