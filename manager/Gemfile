@@ -12,7 +12,11 @@ gem "ruby-debug19", :platforms => :mri_19
 gem "SystemTimer", :platforms => :mri_18
 gem "git"
 
+gem "coffee-script"
+# adds :coffeescript filter to haml
+# gem "coffee-filter"
 gem 'haml'
+gem 'haml_assets'
 gem 'simple_form'
 
 # scheduler module

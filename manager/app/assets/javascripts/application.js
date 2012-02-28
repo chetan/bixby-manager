@@ -1,5 +1,21 @@
 
-//= require twitter/bootstrap
+// all vendor assets will be pulled in via this file
+//= require "vendor"
+
+
+// application JS files
+
+//= require "bootstrap"
+
+//= require_tree "./inventory"
+//= require_tree "./monitoring"
+
+//= require "start_router"
+
+
+
+
+// TODO cleanup
 
 // $("a.action_btn").click(function() {
 //   $(this).siblings(".dropdown-menu").toggle();

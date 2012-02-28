@@ -41,12 +41,11 @@
               %li Foobar
               %li asdf
 
-        %div.span10
+        %div#content.span10
           = yield
 
 
     %div.scripts
-      = javascript_include_tag "jquery"
-      = javascript_include_tag "application"
-      = javascript_include_tag params[:controller]
       = csrf_meta_tag
+      = javascript_include_tag "application"
+      = yield :bootstrap
