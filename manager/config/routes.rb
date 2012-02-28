@@ -1,4 +1,19 @@
 Devops::Application.routes.draw do
+
+  root :to => "inventory#index"
+
+  match '/api' => 'api#handle'
+
+  resources :inventory
+
+  match "/monitoring" => "monitoring#index"
+  namespace :monitoring do
+    resources :hosts do
+      resources :resources
+      resources :checks
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -55,17 +70,5 @@ Devops::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
-
-  match '/api' => 'api#handle'
-
-  resources :inventory
-
-  match "/monitoring" => "monitoring#index"
-  namespace :monitoring do
-    resources :hosts do
-      resources :resources
-      resources :checks
-    end
-  end
 
 end
