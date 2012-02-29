@@ -29,3 +29,23 @@ namespace 'Bixby', (exports, top) ->
     routes: {}
 
   exports.router = new Bixby.Router
+
+
+# Helper function for calling fetch() on multiple models/collections and then
+# calling a callback when all have completed (or there was an error)
+#
+# Callback is of form: function(err, results)
+# Where:
+#   err = response object from fetch error, or NULL if no error
+#   results = models/collections that were fetched
+Backbone.multi_fetch = (fetches, callback) ->
+  if fetches not instanceof Array
+    fetches = [ fetches ]
+
+  tasks = _.map fetches, (f) ->
+    (cb) -> f.fetch({
+        success: (m, r) -> cb(null, m), # if success, collect the model
+        error: (m, r) -> cb(r, m) # if error, collect the response, then the model
+      })
+
+  async.parallel(tasks, callback)

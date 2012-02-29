@@ -4,3 +4,4 @@
 //= require "backbone"
 //= require "template"
 //= require "twitter/bootstrap"
+//= require "async"
