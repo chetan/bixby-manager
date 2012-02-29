@@ -5,6 +5,7 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.Command extends Backbone.Model
 
   class exports.Host extends Backbone.Model
+    urlRoot: "/inventory"
 
     # not sure I need defaults at all...
     # defaults:

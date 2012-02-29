@@ -1,19 +1,5 @@
-%div.content-inner
-  %h2 Monitoring
-  = lorem_ipsum
 
-  %h3
-    Resources for
-    = @host.ip
-
-  - if @resources.empty? then
-    %p No resources have been configured
-
-  - else
-
-    - @resources.each do |resource|
-      = render(:partial => "resource", :locals => { :resource => resource })
-
-  %br
-  %p
-    = link_to "Add Resource", new_monitoring_host_resource_path(@host.id), { :class => "btn primary" }
+= content_for :bootstrap do
+  :javascript
+    Bixby.data.Host = new Bixby.model.Host(#{@hosts.to_json})
+    Bixby.data.Resources.reset(#{@resources.to_json(:collaborators => true)})

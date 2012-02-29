@@ -13,6 +13,3 @@ jQuery ->
     $(".monitoring_host_link").click( ->
       Bixby.router.navigate( "monitoring/hosts/#{$(@).attr("host_id")}", {trigger: true} )
       )
-
-  Bixby.router.route "monitoring/hosts/:host_id", "monitoring_hosts", (host_id) ->
-    console.log("monitoring_hosts() route called")

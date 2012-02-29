@@ -11,4 +11,14 @@ class Monitoring::ResourcesController < Monitoring::BaseController
 
   end
 
+  def index
+    @host = Host.find(params[:host_id])
+    @resources = Resource.where("host_id = ?", @host.id)
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @resources }
+    end
+  end
+
 end
