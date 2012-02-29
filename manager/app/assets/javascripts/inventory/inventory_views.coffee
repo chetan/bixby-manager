@@ -3,17 +3,23 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
   class exports.Layout extends Backbone.View
     el: $("#content")
-    template: new Template(Bixby.tmpl.inventory.layout)
+
+    initialize: ->
+      _.bindAll @
+      @template = new Template(JST["inventory/layout"])
+
     render: ->
       $(@el).html(@template.render(@))
       @
 
   class exports.HostTable extends Backbone.View
-    template: new Template(Bixby.tmpl.inventory.host_table)
 
-    initialize: ->
+    initialize: (el) ->
       _.bindAll @
+      @el = el
+      @template = new Template(JST["inventory/host_table"])
       @hosts = Bixby.data.Hosts
+      @render()
 
     render: ->
       $(@el).html(@template.render(@))

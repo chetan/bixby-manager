@@ -19,7 +19,6 @@ window.namespace = (target, name, block) ->
   target = target[item] or= {} for item in name.split '.'
   block target, top
 
-
 namespace 'Bixby.model', (exports, top) ->
 namespace 'Bixby.data', (exports, top) ->
 namespace 'Bixby.view', (exports, top) ->

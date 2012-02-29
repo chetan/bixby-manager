@@ -1,23 +1,5 @@
 :plain
-  namespace 'Bixby.tmpl.inventory', (exports, top) ->
-
-
--#------------------------------------------------------------------------------
--# layout template
-:plain
-    exports.layout = """
-%div.content-inner
-  %h2 Inventory
-  / = lorem_ipsum()
-
-  %div.host_table
-:plain
-    """
-
--#------------------------------------------------------------------------------
--# host_table template
-:plain
-    exports.host_table = """
+  return """
 %table.table.table-bordered.table-striped
   %thead
     %tr
@@ -49,4 +31,4 @@
         %a.monitoring_host_link{ :host_id => "<%= host.get('id') %>" } Monitoring
     <% }); %>
 :plain
-    """
+  """

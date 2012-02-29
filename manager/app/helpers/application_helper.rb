@@ -17,3 +17,8 @@ module ApplicationHelper
   end
 
 end
+
+# hack to get this to work in haml
+module Haml::Helpers
+  include LoremIpsum::Base
+end

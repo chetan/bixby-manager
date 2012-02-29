@@ -1,6 +1,9 @@
 
 namespace 'Bixby.model', (exports, top) ->
 
+  class exports.Agent extends Backbone.Model
+  class exports.Command extends Backbone.Model
+
   class exports.Host extends Backbone.Model
 
     # not sure I need defaults at all...
