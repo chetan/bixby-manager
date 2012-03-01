@@ -13,9 +13,7 @@ jQuery ->
         mon_layout = new Bixby.view.monitoring.Layout(host, resources)
         mon_layout.render()
 
-        $(".add_resource_link").click( ->
-          Bixby.router.navigate( "monitoring/hosts/#{$(@).attr("host_id")}/resources/new", {trigger: true} )
-          )
 
   Bixby.router.route "monitoring/hosts/:host_id/resources/new", "monitoring_hosts_resources_new", (host_id) ->
     console.log("monitoring_hosts_resources_new() route called")
+

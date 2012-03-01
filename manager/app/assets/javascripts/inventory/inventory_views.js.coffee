@@ -14,9 +14,14 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
   class exports.HostTable extends Backbone.View
 
+    events: {
+      "click .monitoring_host_link": (e) ->
+        Bixby.router.navigate( "monitoring/hosts/#{$(e.target).attr("host_id")}", {trigger: true} )
+    }
+
     initialize: (el) ->
       _.bindAll @
-      @el = el
+      @setElement(el)
       @template = new Template(JST["inventory/host_table"])
       @hosts = Bixby.data.Hosts
       @render()
@@ -24,4 +29,3 @@ namespace "Bixby.view.inventory", (exports, top) ->
     render: ->
       $(@el).html(@template.render(@))
       @
-
