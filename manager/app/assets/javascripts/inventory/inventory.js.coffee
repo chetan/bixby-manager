@@ -1,11 +1,29 @@
 
 jQuery ->
+  console.log "firing inventory ready"
 
-  Bixby.router.route "inventory", "inventory", ->
+  class InventoryState extends Stark.State
+    name: "inventory" #  canonical name used for state transitions
+                      #  e.g., it is referred to in events hash of other states
 
-    console.log("inventory() route called")
+    url:  "inventory" #  match() pattern
 
-    inventory_layout = new Bixby.view.inventory.Layout
-    inventory_layout.render()
+    views:      [ Bixby.view.inventory.Layout, Bixby.view.inventory.HostTable ]
+    no_redraw:  [ Bixby.view.inventory.Layout ]
+    models:     { hosts: Bixby.model.HostList }
 
-    host_table = new Bixby.view.inventory.HostTable( $("div.host_table") )
+    events: {
+      mon_view_host: { models: [ Bixby.model.Host ] }
+    }
+
+  Bixby.app.add_state(InventoryState)
+
+
+  # Bixby.router.route "inventory", "inventory", ->
+
+  #   console.log("inventory() route called")
+
+  #   inventory_layout = new Bixby.view.inventory.Layout
+  #   inventory_layout.render()
+
+  #   host_table = new Bixby.view.inventory.HostTable

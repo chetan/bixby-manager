@@ -1,4 +1,6 @@
 
 jQuery ->
+  console.log("starting history engine")
   if (!Backbone.history.start({ pushState: true }))
-    Backbone.history.navigate("#inventory")
+    console.log("nothing matched, triggering inventory")
+    Backbone.history.navigate("inventory")
