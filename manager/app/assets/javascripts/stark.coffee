@@ -62,7 +62,7 @@ class Stark.App
     # make sure we have needed data, somewhere
     state_data = {}
     _.each state.models, (m, key) ->
-      if m::fetch?
+      if new m() instanceof Backbone.Collection
         # console.log m.name
         model = data[m.name]
         # if m.length == 0
