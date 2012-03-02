@@ -39,7 +39,7 @@ class Stark.App
 
   add_state: (state) ->
     # console.log "add_state"
-    s = new state
+    s = new state()
     @states[s.name] = state
     state.app = @
     @router.match(s.url, s.name)
