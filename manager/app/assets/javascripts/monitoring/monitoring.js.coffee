@@ -1,21 +1,22 @@
 
 jQuery ->
 
-  class MonViewHostState extends Stark.State
-    name: "mon_view_host" #  canonical name used for state transitions
-                      #  e.g., it is referred to in events hash of other states
+  Bixby.app.add_state(
+    class MonViewHostState extends Stark.State
+      name: "mon_view_host" #  canonical name used for state transitions
+                            #  e.g., it is referred to in events hash of other states
 
-    url:  "monitoring/hosts/:host_id" #  match() pattern [optional]
+      url:  "monitoring/hosts/:host_id" #  match() pattern [optional]
 
-    views:      [ Bixby.view.monitoring.Layout ]
-    no_redraw:  [ Bixby.view.monitoring.Layout ]
-    models:     { host: Bixby.model.Host, resources: Bixby.model.ResourceList }
+      views:      [ Bixby.view.monitoring.Layout ]
+      no_redraw:  [ Bixby.view.monitoring.Layout ]
+      models:     { host: Bixby.model.Host, resources: Bixby.model.ResourceList }
 
-    events: {
-      mon_hosts_resources_new: { models: [ Bixby.model.Host ] }
-    }
+      events: {
+        mon_hosts_resources_new: { models: [ Bixby.model.Host ] }
+      }
+  )
 
-  Bixby.app.add_state(MonViewHostState)
 
   # Bixby.router.route "monitoring/hosts/:host_id", "monitoring_hosts", (host_id) ->
 
