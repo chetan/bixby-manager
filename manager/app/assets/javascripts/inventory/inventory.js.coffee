@@ -6,7 +6,7 @@ jQuery ->
     name: "inventory" #  canonical name used for state transitions
                       #  e.g., it is referred to in events hash of other states
 
-    url:  "inventory" #  match() pattern
+    url:  "inventory" #  match() pattern [optional]
 
     views:      [ Bixby.view.inventory.Layout, Bixby.view.inventory.HostTable ]
     no_redraw:  [ Bixby.view.inventory.Layout ]

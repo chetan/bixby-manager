@@ -52,11 +52,13 @@ class Stark.App
     @transition_to route.state_name
 
   transition_to: (state_name, models...) ->
-    console.log "transition_to", state_name
+    console.log "transition_to", state_name, models...
 
     data = @data
     prev = @current_state
+
     state = new @states[state_name]
+    state.app = @
 
 
     # make sure we have needed data, somewhere
@@ -81,6 +83,7 @@ class Stark.App
     console.log "got state_data", state_data
 
 
+    # TODO implement no_redraw
     # create views
     _.each state.views, (v) ->
       console.log "creating view #{v.name}"
@@ -168,7 +171,8 @@ class Stark.State extends Stark.Obj
 
   # transition TO the given state
   transition: (to_state, models...) ->
-    # TODO tell the app
+    console.log @
+    @app.transition_to(to_state, models...)
 
   # this is called by Stark when this state becomes active (transitioning TO)
   # optional, if extra setup is needed
