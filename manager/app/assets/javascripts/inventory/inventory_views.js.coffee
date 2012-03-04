@@ -10,9 +10,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
     template: "inventory/host_table"
     events: {
       "click .monitoring_host_link": (e) ->
-        host_id = parseInt($(e.target).attr("host_id"))
-        host = @hosts.find (h) ->
-          h.id == host_id
+        host = @hosts.get $(e.target).attr("host_id")
         @transition "mon_view_host", { host: host }
-        # Bixby.router.navigate( "monitoring/hosts/#{}", {trigger: true} )
     }

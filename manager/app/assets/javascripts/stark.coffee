@@ -84,7 +84,7 @@ class Stark.App
     # TODO implement no_redraw
     # create views
     _.each state.views, (v) ->
-      console.log "creating view #{v.name}"
+      console.log "creating view #{state.name}::#{v.name}"
       view = new v()
       @copy_data_from_state state, view
       view.app = @
