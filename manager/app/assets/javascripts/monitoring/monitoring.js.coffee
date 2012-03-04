@@ -15,6 +15,9 @@ jQuery ->
       events: {
         mon_hosts_resources_new: { models: [ Bixby.model.Host ] }
       }
+
+      create_url: ->
+        @url.repalce /:host_id/, @host.id
   )
 
 

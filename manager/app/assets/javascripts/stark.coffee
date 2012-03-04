@@ -61,7 +61,7 @@ class Stark.App
     state.app = @
 
 
-    # make sure we have needed data, somewhere
+    # make sure we have the needed data, somewhere
     state_data = {}
     _.each state.models, (m, key) ->
       if new m() instanceof Backbone.Collection
@@ -81,6 +81,7 @@ class Stark.App
 
 
     console.log "got state_data", state_data
+    _.extend(state, state_data)
 
 
     # TODO implement no_redraw
@@ -94,6 +95,14 @@ class Stark.App
 
       # console.log "view: ", view
       view.render()
+
+    # TODO update URL from state
+    console.log state.create_url()
+    if prev? && state.url?
+      # there was a previous state, update browser url
+      @router.changeURL state.create_url()
+
+    @current_state = state
 
 
 
@@ -183,6 +192,9 @@ class Stark.State extends Stark.Obj
   # optional, if extra teardown is needed
   deactivate: ->
     # NO-OP
+
+  create_url: ->
+    @url
 
 
 
