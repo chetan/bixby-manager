@@ -21,7 +21,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
         host_id = parseInt($(e.target).attr("host_id"))
         host = @hosts.find (h) ->
           h.id == host_id
-        @transition "mon_view_host", host
+        @transition "mon_view_host", { host: host }
         # Bixby.router.navigate( "monitoring/hosts/#{}", {trigger: true} )
     }
 

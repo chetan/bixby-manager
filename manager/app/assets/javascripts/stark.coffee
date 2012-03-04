@@ -47,58 +47,53 @@ class Stark.App
 
   # bound to app:route event
   matchRoute: (route, params) ->
-    # console.log "matchRoute()", route.state_name
-    # console.log route, params
-    @transition_to route.state_name
+    console.log ""
+    console.log "matchRoute()", route.state_name
+    console.log route, params
+    @transition route.state_name, { params: params }
 
-  transition_to: (state_name, models...) ->
-    console.log "transition_to", state_name, models...
+  transition: (state_name, state_data) ->
+    console.log ""
+    console.log "transition", state_name, state_data
 
-    data = @data
-    prev = @current_state
+    state_data or= @data
+    @data = {} # clear any bootstrapped data
 
-    state = new @states[state_name]
+    state = new @states[state_name]()
     state.app = @
-
-
-    # make sure we have the needed data, somewhere
-    state_data = {}
-    _.each state.models, (m, key) ->
-      if new m() instanceof Backbone.Collection
-        # console.log m.name
-        model = data[m.name]
-        # if m.length == 0
-          # console.log "going to fetch: #{m}"
-          # m.fetch
-
-      else
-        # single object required, should have been passed
-        # lets validate that we got it in models
-        console.log("TODO single obj")
-
-      # TODO this should be a callback since fetches above will be async
-      state_data[key] = model
-
 
     console.log "got state_data", state_data
     _.extend(state, state_data)
 
+    # get data that's still needed
+    needed = state.load_data()
 
+    if needed? && needed.length > 0
+      app = @
+      Backbone.multi_fetch needed, (err, results) ->
+        app.render_views(state)
+    else
+      @render_views(state)
+
+  copy_data_from_state: (state, view) ->
+    _.each _.keys(state.models), (key) ->
+      view[key] = state[key]
+
+  render_views: (state) ->
+    console.log "render_views ", @
     # TODO implement no_redraw
     # create views
     _.each state.views, (v) ->
       console.log "creating view #{v.name}"
-      view = new v($("div.inventory_content"))
-      _.extend(view, state_data)
+      view = new v()
+      @copy_data_from_state state, view
       view.app = @
       view.state = state
-
-      # console.log "view: ", view
       view.render()
+    , @ # context for _.each
 
     # TODO update URL from state
-    console.log state.create_url()
-    if prev? && state.url?
+    if @current_state? && state.url?
       # there was a previous state, update browser url
       @router.changeURL state.create_url()
 
@@ -110,23 +105,10 @@ class Stark.App
   # method used by Server-side template to bootstrap any models
   # on the first hit
   #
-  # @param [String] model  Model to bootstrap
-  # @param [Object] data   Data to boostrap with, single Object or Array
-  bootstrap: (model, data) ->
-    # console.log "bootstrapping data #{model}"
-    fn = if _.isString(model) then @locate_model_by_name(model) else model
-    if ! fn? and _.isFunction(fn)
-      # TODO raise err
-      console.log "failed to find model for #{model}", fn
-
-    if ! _.isArray(data)
-      data = [ data ]
-
-    obj = new fn()
-    obj.reset(data)
-    @data[fn.name] = obj
-    # console.log "loaded data", @data
-
+  # @param [Object] data   Data to boostrap with, hash of models
+  bootstrap: (data) ->
+    data or= {}
+    @data = data
 
   # helper for converting string to function
   locate_model_by_name: (model) ->
@@ -179,9 +161,13 @@ class Stark.State extends Stark.Obj
   events: {}
 
   # transition TO the given state
-  transition: (to_state, models...) ->
-    console.log @
-    @app.transition_to(to_state, models...)
+  transition: (state_name, state_data) ->
+    @app.transition(state_name, state_data)
+
+  # this is where model objects should be resolved by the state
+  load_data: ->
+    # NO-OP
+    null
 
   # this is called by Stark when this state becomes active (transitioning TO)
   # optional, if extra setup is needed
@@ -193,6 +179,7 @@ class Stark.State extends Stark.Obj
   deactivate: ->
     # NO-OP
 
+  # return the URL that represents this state (substituting any params in @url)
   create_url: ->
     @url
 
@@ -205,6 +192,5 @@ class Stark.View extends Backbone.View
   state: null
 
   # proxy for Stark.state#transition
-  transition: (to_state, models...) ->
-    @state.transition(to_state, models...)
-
+  transition: (state_name, state_data) ->
+    @state.transition(state_name, state_data)

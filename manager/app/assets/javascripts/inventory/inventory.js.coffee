@@ -15,4 +15,12 @@ jQuery ->
       events: {
         mon_view_host: { models: [ Bixby.model.Host ] }
       }
+
+      load_data: ->
+        needed = []
+        if ! @hosts?
+          @hosts = new Bixby.model.HostList()
+          needed.push @hosts
+
+        return needed
   )

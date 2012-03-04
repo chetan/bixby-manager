@@ -17,7 +17,20 @@ jQuery ->
       }
 
       create_url: ->
-        @url.repalce /:host_id/, @host.id
+        @url.replace /:host_id/, @host.id
+
+      load_data: ->
+        needed = []
+        if ! @host?
+          @host = new Bixby.model.Host({ id: @params.host_id })
+          needed.push @host
+
+        if ! @resources?
+          host_id = (@params? && @params.host_id) || @host.id
+          @resources = new Bixby.model.ResourceList(host_id)
+          needed.push @resources
+
+        return needed
   )
 
 
