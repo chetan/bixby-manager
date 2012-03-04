@@ -190,6 +190,15 @@ class Stark.View extends Backbone.View
   _.extend @, Stark.Obj
 
   state: null
+  template: null
+
+  initialize: ->
+    _.bindAll @
+    @_template = new Template(JST[@template])
+
+  render: ->
+    $(@el).html(@_template.render(@))
+    @
 
   # proxy for Stark.state#transition
   transition: (state_name, state_data) ->
