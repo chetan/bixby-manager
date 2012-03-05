@@ -42,7 +42,10 @@ class App
     end
 
     def setup_logger
-        Logging::Logger.root.level = @config[:debug] ? :debug : :warn
+        Logging.appenders.stdout(
+            :level  => @config[:debug] ? :debug : :warn,
+            :layout => Logging.layouts.pattern(:pattern => '[%d] %-5l: %m\n')
+        )
         Logging::Logger.root.add_appenders(Logging.appenders.stdout)
     end
 
