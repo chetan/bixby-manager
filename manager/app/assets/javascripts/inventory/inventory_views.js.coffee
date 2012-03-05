@@ -2,7 +2,7 @@
 namespace "Bixby.view.inventory", (exports, top) ->
 
   class exports.Layout extends Stark.View
-    el: $("#content")
+    el: "#content"
     template: "inventory/layout"
 
   class exports.HostTable extends Stark.View

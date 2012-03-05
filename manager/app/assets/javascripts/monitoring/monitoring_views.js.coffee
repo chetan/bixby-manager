@@ -2,7 +2,7 @@
 namespace "Bixby.view.monitoring", (exports, top) ->
 
   class exports.Layout extends Stark.View
-    el: $("#content")
+    el: "#content"
     template: "monitoring/layout"
     events: {
       "click .add_resource_link": (e) ->

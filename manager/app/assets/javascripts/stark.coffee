@@ -8,26 +8,13 @@
 window.Stark or= {}
 
 # -----------------------------------------------------------------------------
-Stark.Obj = class Obj
-
-  # attributes
-  # app - reference to app we belong to
-  app: null
-
-  constructor: (app) ->
-    @app = app
-
-
-
-# -----------------------------------------------------------------------------
 class Stark.App
-  _.extend @, Backbone.Events
 
   # attributes
   current_state: null
   states: {}
 
-  # manages all app data
+  # for collecting bootstrapped
   data: {}
 
   router: new Stark.Router
@@ -55,12 +42,16 @@ class Stark.App
   transition: (state_name, state_data) ->
     console.log ""
     console.log "transition", state_name, state_data
+    if @current_state instanceof @states[state_name]
+      console.log "same state, canceling"
+      return
 
     state_data or= @data
     @data = {} # clear any bootstrapped data
 
     state = new @states[state_name]()
     state.app = @
+    state.bind_app_events()
 
     console.log "got state_data", state_data
     _.extend(state, state_data)
@@ -80,7 +71,12 @@ class Stark.App
       view[key] = state[key]
 
   render_views: (state) ->
-    console.log "render_views ", @
+    console.log "render_views "
+
+    if @current_state?
+      @current_state.deactivate()
+      @current_state.dispose()
+
     # TODO implement no_redraw
     # create views
     _.each state.views, (v) ->
@@ -89,7 +85,9 @@ class Stark.App
       @copy_data_from_state state, view
       view.app = @
       view.state = state
+      view.bind_app_events()
       view.render()
+      state._views.push view
     , @ # context for _.each
 
     # TODO update URL from state
@@ -97,7 +95,9 @@ class Stark.App
       # there was a previous state, update browser url
       @router.changeURL state.create_url()
 
+    state.activate()
     @current_state = state
+
 
 
 
@@ -140,6 +140,8 @@ class Stark.App
     return null
 
 
+  # Setup pub/sub
+  _.extend @.prototype, Backbone.Events
 
   # Create Publish/Subscribe aliases
   subscribe   : Backbone.Events.on
@@ -147,11 +149,9 @@ class Stark.App
   publish     : Backbone.Events.trigger
 
 
-
-
 # -----------------------------------------------------------------------------
-class Stark.State extends Stark.Obj
-  _.extend @, Backbone.Events
+class Stark.State
+  _.extend @.prototype, Backbone.Events
 
   # attributes
   name:   null
@@ -159,6 +159,9 @@ class Stark.State extends Stark.Obj
   views:  []
   models: []
   events: {}
+
+  # internal attributes
+  _views: []
 
   # transition TO the given state
   transition: (state_name, state_data) ->
@@ -183,14 +186,24 @@ class Stark.State extends Stark.Obj
   create_url: ->
     @url
 
+  dispose: ->
+    console.log "disposing of current state", @
+    _.each @_views, (v) ->
+      v.$el.html("")
+      v.undelegateEvents()
+
+  bind_app_events: ->
+    _.each @app_events, (cb, key) ->
+      @app.subscribe(key, cb)
+    , @
 
 
 # -----------------------------------------------------------------------------
 class Stark.View extends Backbone.View
-  _.extend @, Stark.Obj
 
   state: null
   template: null
+  app_events: null
 
   initialize: ->
     _.bindAll @
@@ -203,3 +216,8 @@ class Stark.View extends Backbone.View
   # proxy for Stark.state#transition
   transition: (state_name, state_data) ->
     @state.transition(state_name, state_data)
+
+  bind_app_events: ->
+    _.each @app_events, (cb, key) ->
+      @app.subscribe(key, cb)
+    , @

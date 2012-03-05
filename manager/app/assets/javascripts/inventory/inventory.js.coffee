@@ -8,8 +8,8 @@ jQuery ->
 
       url:  "inventory" #  match() pattern [optional]
 
-      views:      [ Bixby.view.inventory.Layout, Bixby.view.inventory.HostTable ]
-      no_redraw:  [ Bixby.view.inventory.Layout ]
+      views:      [ Bixby.view.PageLayout, Bixby.view.inventory.Layout, Bixby.view.inventory.HostTable ]
+      no_redraw:  [ Bixby.view.PageLayout, Bixby.view.inventory.Layout ]
       models:     { hosts: Bixby.model.HostList }
 
       events: {
@@ -23,4 +23,7 @@ jQuery ->
           needed.push @hosts
 
         return needed
+
+      activate: ->
+        @app.trigger("nav:select_tab", "inventory")
   )

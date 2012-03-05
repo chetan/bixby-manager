@@ -6,44 +6,8 @@
     = stylesheet_link_tag params[:controller]
 
   %body
-
-    %div.navbar.navbar-fixed-top
-      %div.navbar-inner
-        %div.container-fluid
-          %a.brand{ :href => "/inventory" } Devops!
-          %ul.nav
-            - navtab "Inventory", inventory_index_path
-            - navtab "Monitoring", monitoring_path
-            - navtab "About", inventory_index_path
-            - navtab "Contact", inventory_index_path
-
-
-          %ul.nav.secondary-nav.pull-right
-            %li.dropdown
-              %a.dropdown-toggle{ :href => "#href1", "data-toggle" => "dropdown" } Chetan
-              %ul.dropdown-menu
-                %li
-                  %a{ :href => "#" } Preferences
-                %li
-                  %a{ :href => "#" } Logout
-
-
-          %form.navbar-search.pull-right
-            %input{ :type => "text", "placeholder" => "Search" }
-
-
-    %div.container-fluid
-      %div.row-fluid
-        %div.span2
-          %div.well
-            %h5 Sidebar
-            %ul
-              %li Foobar
-              %li asdf
-
-        %div#content.span10
-          = yield
-
+    %div#body
+      -# main content (JS layout) will go here
 
     %div.scripts
       = csrf_meta_tag

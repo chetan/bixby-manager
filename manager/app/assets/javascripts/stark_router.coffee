@@ -28,8 +28,6 @@ window.Stark or= {}
 # -----------------------------------------------------------------------------
 class Stark.Route
 
-  _.extend @, Stark.Obj
-
   @reservedParams: 'path changeURL'.split(' ')
 
   # attributes
@@ -132,21 +130,11 @@ class Stark.Route
 # This class does not inherit from Backbone’s router
 class Stark.Router
 
-  _.extend @, Stark.Obj
-
   constructor: ->
     Backbone.history or= new Backbone.History
     # jQuery ->
     #   console.log "starting history"
     #   Backbone.history.start({ pushState: true })
-
-  # registerRoutes: ->
-    # ---- THE INTREDASTING PART STARTS: ---- #
-    # @match '', 'likes#index'
-    # @match 'likes/:id', 'likes#show'
-
-    # @match 'posts', 'posts#index'
-    # ---- THE INTREDASTING PART ENDS. ---- #
 
 
   # Connect an address with a particular state
