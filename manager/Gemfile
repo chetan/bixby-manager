@@ -38,11 +38,8 @@ gem "redis-lock"
 gem 'continuum', :git => "https://github.com/chetan/continuum.git"
 
 group :assets do
-    gem 'less'
-    gem 'less-rails'
-    gem 'therubyracer', :platforms => :mri
-    gem 'libv8',        :platforms => :mri
-    gem 'therubyrhino', :platforms => :jruby
+    gem 'sass'
+    gem 'sass-rails'
 end
 
 group :development do

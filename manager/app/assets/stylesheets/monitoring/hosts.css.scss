@@ -1,0 +1,22 @@
+
+@import "twitter/variables";
+@import "twitter/mixins";
+
+div.resource {
+  // #gridSystem > .columns(@gridGutterWidth, @gridColumnWidth, @gridRowWidth, 4);
+  @include gridSystem-columns($gridGutterWidth, $gridColumnWidth, $gridRowWidth, 4);
+  padding: 10px;
+  border: 1px solid black;
+
+  h5.title {
+    text-transform: uppercase;
+  }
+  div.graph {
+    .na {
+      height: 50px;
+    }
+  }
+  h6.footer {
+
+  }
+}
