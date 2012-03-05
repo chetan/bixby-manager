@@ -4,12 +4,18 @@ gem 'rails', '3.2.1'
 
 gem 'devops_common', :git => "https://github.com/chetan/devops_common.git"
 
+group :threads do
+  gem "rainbows", :platforms => :mri
+  gem "rev",      :platforms => :mri
+  gem "cool.io"
+end
+
 gem "mysql"
 gem "curb"
 gem "json"
-gem "ruby-debug", :platforms => :mri_18
+gem "ruby-debug",   :platforms => :mri_18
 gem "ruby-debug19", :platforms => :mri_19
-gem "SystemTimer", :platforms => :mri_18
+gem "SystemTimer",  :platforms => :mri_18
 gem "git"
 
 gem "coffee-script"
@@ -34,6 +40,9 @@ gem 'continuum', :git => "https://github.com/chetan/continuum.git"
 group :assets do
     gem 'less'
     gem 'less-rails'
+    gem 'therubyracer', :platforms => :mri
+    gem 'libv8',        :platforms => :mri
+    gem 'therubyrhino', :platforms => :jruby
 end
 
 group :development do
@@ -41,9 +50,9 @@ group :development do
     gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
     gem 'newrelic_rpm'
     gem "awesome_print"
-    gem "rcov", :platforms => :mri_18
+    gem "rcov",       :platforms => :mri_18
     gem "rcov_rails", :platforms => :mri_18
-    gem "simplecov", :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git"
+    gem "simplecov",  :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git"
     gem "simplecov-html", :platforms => :mri_19, :git => "git://github.com/chetan/simplecov-html.git"
     gem 'webmock', :git => 'https://github.com/bblimke/webmock.git', :require => false
     gem 'mocha'
