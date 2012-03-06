@@ -21,6 +21,8 @@
 # Gems:
 # gem install guard growl simplecov hirb colorize
 #
+# For spork:
+# gem install spork spork-testunit
 
 require 'rubygems'
 require 'guard'
