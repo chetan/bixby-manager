@@ -2,23 +2,37 @@
 namespace 'Bixby.model', (exports, top) ->
 
   class exports.Resource extends Backbone.Model
-    url: ->
-      "/monitoring/hosts/" + @get("host_id") + "/resources/" + @get("id")
+    url: -> "/monitoring/hosts/#{@get("host_id")}/resources/#{@get("id")}"
 
   class exports.ResourceList extends Backbone.Collection
-    model: Bixby.model.Resource
-    url: ->
-      "/monitoring/hosts/#{@host_id}/resources"
-    initialize: (host_id) ->
-      @host_id = host_id
+    model: exports.Resource
+    url: -> "/monitoring/hosts/#{@host_id}/resources"
+    initialize: (host_id) -> @host_id = host_id
 
+  # MonitoringCommand
+  class exports.MonitoringCommand extends Backbone.Model
+    urlRoot: "/monitoring/commands"
+    command: ->
+      cmd = @get("command")
+      cmd.replace(/monitoring\//, "")
+    has_options: ->
+      opts = @get("options")
+      if ! opts? || _.keys(opts).length == 0
+        return false
+
+      return true
+
+  class exports.MonitoringCommandList extends Backbone.Collection
+    model: exports.MonitoringCommand
+    url: "/monitoring/commands"
+
+  # MonitoringCommandOpts
+  class exports.MonitoringCommandOpts extends exports.MonitoringCommand
+    url: -> "/monitoring/hosts/#{@host.id}/command/#{@id}/opts"
+
+  # Check
   class exports.Check extends Backbone.Model
-    url: ->
-      "/monitoring/hosts/" + @get("host_id") + "/checks/" + @get("id")
-
+    urlRoot: -> "/monitoring/hosts/#{@host.id}/checks" # id is appended if avail for update
   class exports.CheckList extends Backbone.Collection
-    model: Bixby.model.Check
-    url: ->
-      "/monitoring/hosts/#{@host_id}/checks"
-    initialize: (host_id) ->
-      @host_id = host_id
+    model: exports.Check
+    url: -> "/monitoring/hosts/#{@host.id}/checks"

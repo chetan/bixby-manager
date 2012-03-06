@@ -1,0 +1,40 @@
+:plain
+  return """
+
+%h3 Configure check(s):
+
+:plain
+  <% _.each(commands, function(command) { %>
+
+%h4 <%= command.get("name") %>
+%form.form-horizontal
+
+  :plain
+    <%
+    if (!command.has_options()) { %>
+  %div no options
+
+  :plain
+    <%
+    } else {
+    _.each(command.get("options"), function(opt_hash, opt_key) {
+    if (opt_hash["type"] == "enum") {
+    %>
+
+  %div.control-group
+    %label.control-label{ :for => "<%= opt_key %>" } <%= opt_key %>
+    %div.controls
+      %select{ :id => "<%= opt_key %>" }
+        <% _.each(opt_hash["values"], function(v, k) { %>
+        %option{ :value => "<%= v %>"} <%= v %>
+        <% }); %>
+
+  <% } %>
+  <% }); %>
+
+  <% } %>
+
+<% }); %>
+
+:plain
+  """

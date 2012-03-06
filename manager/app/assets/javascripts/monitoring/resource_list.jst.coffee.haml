@@ -1,0 +1,30 @@
+
+:plain
+  return """
+
+%h3
+  Resources for <%= host.get("ip") %>
+
+<% if (resources.length == 0) { %>
+%p No resources have been configured
+
+<% } else { %>
+<% resources.each(function(resource) { %>
+%div.resource
+  %h5.title
+    -#<%= resource.check.command.get("name") + ":" %>
+    <%= resource.get("name") %>
+  %div.graph
+    -# - render_graph(resource)
+  %h6.footer
+    Last Value:
+    n/a
+<% }); %>
+<% } %>
+
+%br
+%p
+  %a.btn.primary.add_resource_link{ :host_id => "<%= host.get('id') %>" } Add Resource
+
+:plain
+  """

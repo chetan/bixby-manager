@@ -6,3 +6,4 @@
 //= require "template"
 //= require "twitter/bootstrap"
 //= require "async"
+//= require "spin.min"

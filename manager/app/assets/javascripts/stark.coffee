@@ -25,11 +25,11 @@ class Stark.App
     @subscribe('app:route', @matchRoute)
 
   add_state: (state) ->
-    # console.log "add_state"
     s = new state()
     @states[s.name] = state
     state.app = @
-    @router.match(s.url, s.name)
+    if s.url?
+      @router.match(s.url, s.name)
     state
 
   # bound to app:route event
@@ -46,8 +46,10 @@ class Stark.App
       console.log "same state, canceling"
       return
 
-    state_data or= @data
-    @data = {} # clear any bootstrapped data
+    state_data or= {}
+    if @data?
+      _.extend state_data, @data
+      @data = null # clear any bootstrapped data
 
     state = new @states[state_name]()
     state.app = @
@@ -75,11 +77,14 @@ class Stark.App
 
     if @current_state?
       @current_state.deactivate()
-      @current_state.dispose()
+      @current_state.dispose(state)
 
-    # TODO implement no_redraw
     # create views
     _.each state.views, (v) ->
+      if @current_state? && _.include(state.no_redraw, v) && _.include(@current_state.views, v)
+        console.log "not going to redraw #{v.name}"
+        return
+
       console.log "creating view #{state.name}::#{v.name}"
       view = new v()
       @copy_data_from_state state, view
@@ -89,6 +94,7 @@ class Stark.App
       view.render()
       state._views.push view
     , @ # context for _.each
+
 
     # TODO update URL from state
     if @current_state? && state.url?
@@ -103,12 +109,12 @@ class Stark.App
 
 
   # method used by Server-side template to bootstrap any models
-  # on the first hit
+  # on the first hit. can be called multiple times
   #
   # @param [Object] data   Data to boostrap with, hash of models
   bootstrap: (data) ->
     data or= {}
-    @data = data
+    _.extend @data, data
 
   # helper for converting string to function
   locate_model_by_name: (model) ->
@@ -186,11 +192,14 @@ class Stark.State
   create_url: ->
     @url
 
-  dispose: ->
+  dispose: (new_state) ->
     console.log "disposing of current state", @
     _.each @_views, (v) ->
-      v.$el.html("")
-      v.undelegateEvents()
+      if ! (_.any(new_state.views, (n)-> v instanceof n) && _.any(new_state.no_redraw, (n)-> v instanceof n))
+        # only dispose of view IF NOT required by new state
+        console.log "disposing of", v
+        v.$el.html("")
+        v.undelegateEvents()
 
   bind_app_events: ->
     _.each @app_events, (cb, key) ->
@@ -210,6 +219,7 @@ class Stark.View extends Backbone.View
     @_template = new Template(JST[@template])
 
   render: ->
+    console.log "rendering view", @
     $(@el).html(@_template.render(@))
     @
 
