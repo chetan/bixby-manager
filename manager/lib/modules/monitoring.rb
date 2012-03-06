@@ -47,6 +47,45 @@ class Monitoring < API
 
   end
 
+  # Add a check to a host
+  #
+  # @param [Host] host
+  # @param [Command] command
+  # @param [Hash] args  Arguments for the check
+  #
+  # @return [Check]
+  def add_check(host, command, args)
+
+    config = create_spec(command).load_config()
+
+    # create resource name
+    # TODO check if command *has* any options - look at defaults, etc
+    name = config["key"] || ""
+    args = nil if args and args.empty?
+    if args then
+      name += "." if not name.empty?
+      name += args.values.first
+    end
+
+    res = Resource.new
+    res.host = host
+    res.name = name
+    res.save!
+
+    check = Check.new
+    check.resource        = res
+    check.agent           = host.agent
+    check.command         = command
+    check.args            = args
+    check.normal_interval = 60
+    check.retry_interval  = 60
+    check.plot            = true
+    check.enabled         = true
+    check.save!
+
+    return check
+  end
+
   private
 
   # Create a CommandSpec for the given Check
@@ -67,7 +106,7 @@ class Monitoring < API
 
     cmd = CommandSpec.new(:repo => "vendor",
             :bundle => "system/monitoring",
-            :args => " -- #{args} " + File.join(command.relative_path, "bin", command.command))
+            :args => File.join(command.relative_path, "bin", command.command) + " -- #{args}")
 
     lang = "ruby"
     if command.command =~ /\.rb$/ then
@@ -80,6 +119,8 @@ class Monitoring < API
     ret = exec_with_wrapper(agent, cmd, command)
     if not ret.success? then
       # raise error
+      p ret
+      raise "exec failed"
     end
 
     if ret.stdout then
