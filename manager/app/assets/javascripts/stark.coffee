@@ -13,6 +13,7 @@ class Stark.App
   # attributes
   current_state: null
   states: {}
+  template_root: ""
 
   # for collecting bootstrapped
   data: {}
@@ -34,15 +35,20 @@ class Stark.App
 
   # bound to app:route event
   matchRoute: (route, params) ->
-    console.log ""
     console.log "matchRoute()", route.state_name
     console.log route, params
     @transition route.state_name, { params: params }
 
   transition: (state_name, state_data) ->
-    console.log ""
     console.log "transition", state_name, state_data
-    if @current_state instanceof @states[state_name]
+    target_state = @states[state_name]
+
+    if ! target_state?
+      return
+
+    if @current_state instanceof target_state
+      # TODO - verify params? models? some other way to make sure
+      # its really the *same* state
       console.log "same state, canceling"
       return
 
@@ -216,10 +222,13 @@ class Stark.View extends Backbone.View
 
   initialize: ->
     _.bindAll @
-    @_template = new Template(JST[@template])
+
+  tpl_path: ->
+    @app.template_root + @template
 
   render: ->
     console.log "rendering view", @
+    @_template = new Template(JST[ @tpl_path() ])
     $(@el).html(@_template.render(@))
     @
 

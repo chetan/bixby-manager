@@ -9,10 +9,11 @@
 //= require "bootstrap"
 
 //= require "main_views"
-//= require "page_layout"
 
 //= require_tree "./inventory"
 //= require_tree "./monitoring"
+
+//= require "templates"
 
 //= require "start_router"
 

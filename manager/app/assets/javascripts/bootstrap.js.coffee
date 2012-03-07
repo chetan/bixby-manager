@@ -24,11 +24,8 @@ namespace 'Bixby.data', (exports, top) ->
 namespace 'Bixby.view', (exports, top) ->
 
 namespace 'Bixby', (exports, top) ->
-  class exports.Router extends Backbone.Router
-    routes: {}
-
-  exports.router = new Bixby.Router
   exports.app = new Stark.App()
+  exports.app.template_root = "templates/"
 
 
 # Helper function for calling fetch() on multiple models/collections and then
