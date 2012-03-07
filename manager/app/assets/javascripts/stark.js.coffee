@@ -15,7 +15,7 @@ class Stark.App
   states: {}
   template_root: ""
 
-  # for collecting bootstrapped
+  # for collecting bootstrapped data
   data: {}
 
   router: new Stark.Router
@@ -165,15 +165,16 @@ class Stark.App
 class Stark.State
   _.extend @.prototype, Backbone.Events
 
-  # attributes
+  # static attributes
   name:   null
   url:    null
   views:  []
   models: []
   events: {}
 
-  # internal attributes
-  _views: []
+  constructor: ->
+    # internal attributes
+    @_views = []
 
   # transition TO the given state
   transition: (state_name, state_data) ->
