@@ -46,9 +46,11 @@ class Metrics < API
         if not (metadata[:host] or metadata["host"]) then
           metadata[:host] = check.agent.host.hostname || check.agent.host.ip
         end
-        metadata[:host_id] = check.agent.host.id
-        metadata[:org_id] = check.agent.host.org.id
-        metadata[:tenant_id] = check.agent.host.org.tenant.id
+        metadata[:host_id]     = check.agent.host.id
+        metadata[:check_id]    = check.id
+        metadata[:resource_id] = check.resource.id
+        metadata[:org_id]      = check.agent.host.org.id
+        metadata[:tenant_id]   = check.agent.host.org.tenant.id
 
         time = Time.at(result["timestamp"])
         base = result["key"] ? result["key"]+"." : ""
