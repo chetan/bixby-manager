@@ -1,7 +1,9 @@
 
 jQuery ->
 
-  _vn = Bixby.view.monitoring
+  _bv = Bixby.view
+  _vn = _bv.monitoring
+  _bm = Bixby.model
   Bixby.app.add_state(
     class MonViewHostState extends Stark.State
       name: "mon_view_host" #  canonical name used for state transitions
@@ -9,12 +11,12 @@ jQuery ->
 
       url:  "monitoring/hosts/:host_id" #  match() pattern [optional]
 
-      views:      [ Bixby.view.PageLayout, _vn.Layout, _vn.ResourceList ]
-      no_redraw:  [ Bixby.view.PageLayout, _vn.Layout ]
-      models:     { host: Bixby.model.Host, resources: Bixby.model.ResourceList }
+      views:      [ _bv.PageLayout, _vn.Layout, _vn.ResourceList ]
+      no_redraw:  [ _bv.PageLayout, _vn.Layout ]
+      models:     { host: _bm.Host, resources: _bm.ResourceList }
 
       events: {
-        mon_hosts_resources_new: { models: [ Bixby.model.Host ] }
+        mon_hosts_resources_new: { models: [ _bm.Host ] }
       }
 
       create_url: ->
@@ -23,12 +25,12 @@ jQuery ->
       load_data: ->
         needed = []
         if ! @host?
-          @host = new Bixby.model.Host({ id: @params.host_id })
+          @host = new _bm.Host({ id: @params.host_id })
           needed.push @host
 
         if ! @resources?
           host_id = (@params? && @params.host_id) || @host.id
-          @resources = new Bixby.model.ResourceList(host_id)
+          @resources = new _bm.ResourceList(host_id)
           needed.push @resources
 
         return needed
@@ -42,9 +44,9 @@ jQuery ->
       name: "mon_hosts_resources_new"
       url:  "monitoring/hosts/:host_id/resources/new"
 
-      views:      [ Bixby.view.PageLayout, _vn.Layout, _vn.AddCommand ]
-      no_redraw:  [ Bixby.view.PageLayout, _vn.Layout ]
-      models:     { host: Bixby.model.Host, commands: Bixby.model.MonitoringCommandList }
+      views:      [ _bv.PageLayout, _vn.Layout, _vn.AddCommand ]
+      no_redraw:  [ _bv.PageLayout, _vn.Layout ]
+      models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
 
       create_url: ->
         @url.replace /:host_id/, @host.id
@@ -52,11 +54,11 @@ jQuery ->
       load_data: ->
         needed = []
         if ! @host?
-          @host = new Bixby.model.Host({ id: @params.host_id })
+          @host = new _bm.Host({ id: @params.host_id })
           needed.push @host
 
         if ! @commands
-          @commands = new Bixby.model.MonitoringCommandList()
+          @commands = new _bm.MonitoringCommandList()
           needed.push @commands
 
         return needed
@@ -65,11 +67,11 @@ jQuery ->
   Bixby.app.add_state(
     class extends Stark.State
       name: "mon_hosts_resources_new_opts"
-      views:      [ Bixby.view.PageLayout, _vn.Layout, _vn.AddCommand, _vn.AddCommandOpts ]
-      no_redraw:  [ Bixby.view.PageLayout, _vn.Layout, _vn.AddCommand ]
-      models:     { host: Bixby.model.Host, commands: Bixby.model.MonitoringCommandList }
+      views:      [ _bv.PageLayout, _vn.Layout, _vn.AddCommand, _vn.AddCommandOpts ]
+      no_redraw:  [ _bv.PageLayout, _vn.Layout, _vn.AddCommand ]
+      models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
       load_data: ->
-        @spinner = new Bixby.view.Spinner($("div.command_opts"))
+        @spinner = new _bv.Spinner($("div.command_opts"))
         return @commands
 
       activate: ->
