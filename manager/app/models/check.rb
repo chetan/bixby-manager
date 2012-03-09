@@ -7,4 +7,9 @@ class Check < ActiveRecord::Base
 
   serialize :args, JSONColumn.new
 
+  # Get a list of CommandMetrics that this check provides
+  def metrics
+    @metrics ||= CommandMetric.where("command_id = ?", self.command_id)
+  end
+
 end

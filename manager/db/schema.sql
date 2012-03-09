@@ -209,6 +209,26 @@ CREATE  TABLE IF NOT EXISTS `checks` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `command_metrics`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `command_metrics` ;
+
+CREATE  TABLE IF NOT EXISTS `command_metrics` (
+  `command_id` INT UNSIGNED NOT NULL ,
+  `metric` VARCHAR(255) NOT NULL ,
+  `unit` VARCHAR(255) NULL ,
+  `desc` VARCHAR(255) NULL ,
+  PRIMARY KEY (`command_id`, `metric`) ,
+  INDEX `fk_command_keys_commands1` (`command_id` ASC) ,
+  CONSTRAINT `fk_command_keys_commands1`
+    FOREIGN KEY (`command_id` )
+    REFERENCES `commands` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

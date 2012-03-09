@@ -38,4 +38,7 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
     Metrics.configure(DEVOPS_CONFIG)
   end
 
+  # rescan plugins
+  Repository::BundleRepository.rescan_plugins << Metrics::RescanPlugin
+
 end

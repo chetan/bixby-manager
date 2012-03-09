@@ -7,6 +7,10 @@ class BundleRepository
 
   class << self
 
+    def rescan_plugins
+      @rescan_plugins ||= []
+    end
+
     # Update all repos (svn up or git pull) and rescan commands
     def update
       repos = Repo.all
@@ -71,8 +75,7 @@ class BundleRepository
     end
 
     def update_git_repo(repo)
-      # logger = (RakeFileUtils.verbose_flag ? Logger.new(STDOUT) : nil)
-      logger = nil
+      logger = (RakeFileUtils.verbose_flag == true ? Logger.new(STDOUT) : nil)
       g = Git.open(repo.path, :log => logger)
       g.pull("origin", "origin/master")
     end
@@ -85,7 +88,7 @@ class BundleRepository
     #
     # @param [Repo] repo
     def rescan_repo(repo)
-      # log("* rescanning commands in #{repo.name} repository (#{repo.path})")
+      Rails.logger.info("* rescanning commands in #{repo.name} repository (#{repo.path})")
       Find.find(repo.path) do |path|
 
         # skip everything except for /bin/ scripts in bundle dirs
@@ -112,17 +115,19 @@ class BundleRepository
 
     # create or update the command
     def add_command(repo, bundle, script)
-      # log("* found #{bundle} :: #{script}")
+      Rails.logger.info("* found #{bundle} :: #{script}")
 
       cmds = Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script)
       if not cmds.blank? then
         cmd = cmds.first
-        if cmd.updated_at > File.mtime(cmd.path) then
+        spec = cmd.to_command_spec
+        if cmd.updated_at >= File.mtime(spec.command_file) and (!File.exists?(spec.config_file) or cmd.updated_at >= File.mtime(spec.config_file)) then
+          Rails.logger.info "* skipping (not updated)"
           return
         end
-        # log("* updating existing Command")
+        Rails.logger.info("* updating existing Command")
       else
-        # log("* creating new Command")
+        Rails.logger.info("* creating new Command")
         cmd = Command.new
         cmd.repo = repo
         cmd.bundle = bundle
@@ -139,6 +144,10 @@ class BundleRepository
       end
 
       cmd.save!
+
+      self.rescan_plugins.each do |plugin|
+        plugin.update_command(cmd)
+      end
     end
 
     def extract_rel_path(repo, str)
