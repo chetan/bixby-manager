@@ -13,6 +13,10 @@ class Metrics
         raise NotImplementedError.new("put must be overridden!")
       end
 
+      def get(key, start_time, end_time, tags = {}, agg = "sum")
+        raise NotImplementedError.new("get must be overridden!")
+      end
+
     end
 
   end
