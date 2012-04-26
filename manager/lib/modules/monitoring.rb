@@ -43,8 +43,20 @@ class Monitoring < API
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",
                                :command => "update_check_config.rb", :stdin => config.to_json )
 
-    exec_mon(agent, command)
+    ret = exec_mon(agent, command)
+    if ret.error? then
+      return ret
+    end
 
+    restart_mon_daemon(agent)
+  end
+
+  def restart_mon_daemon(agent)
+
+    command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",
+                               :command => "mon_daemon.rb", :args => "restart" )
+
+    exec_mon(agent, command)
   end
 
   # Add a check to a host
@@ -103,6 +115,7 @@ class Monitoring < API
   def exec_mon(agent, command, args = "")
 
     command = create_spec(command)
+    args = command.args if args.blank?
 
     cmd = CommandSpec.new(:repo => "vendor",
             :bundle => "system/monitoring",
