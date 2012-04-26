@@ -52,11 +52,47 @@ class Metrics < API
     driver.get(key, start_time, end_time, tags, agg)
   end
 
-  def get_for_check(check)
-    if not check.kind_of? Fixnum
-      check = check.id
+  # Get the metrics for the given Check
+  #
+  # @param [Check] check
+  # @param [Time] start_time
+  # @param [Time] end_time
+  # @param [Hash] tags        Tags to filter by, only check-related filters by default
+  # @param [String] agg
+  def get_for_check(check, start_time, end_time, tags = {}, agg = "sum")
+
+    if check.kind_of? Fixnum
+      check = Check.find(check)
     end
+
     # foo = Metrics.new.get("hardware.cpu.loadavg.1m", Time.new-(86400*14), Time.new)
+    # TODO add in other relevant keys like org, tenant
+    tags[:check_id]    = check.id
+    tags[:resource_id] = check.resource.id
+    tags[:host_id]     = check.resource.host.id
+    # tags[:org_id]    = @org_id
+    # tags[:tenant_id] = @tenant_id
+
+    return collect_metrics(check.metrics, start_time, end_time, tags, agg)
+  end
+
+  # Get the metrics for the given Command
+  #
+  # @param [Command] command
+  # @param [Time] start_time
+  # @param [Time] end_time
+  # @param [Hash] tags        Tags to filter by, only check-related filters by default
+  # @param [String] agg
+  def get_for_command(command, start_time, end_time, tags = {}, agg = "sum")
+    if command.kind_of? Fixnum
+      command = Command.find(command)
+    end
+
+    # TODO add in other relevant keys like org, tenant
+    # tags[:org_id]    = @org_id
+    # tags[:tenant_id] = @tenant_id
+
+    return collect_metrics(CommandMetric.for(command), start_time, end_time, tags, agg)
   end
 
 
@@ -108,6 +144,17 @@ class Metrics < API
       nil
     end
 
+  end
+
+
+  private
+
+  def collect_metrics(command_metrics, start_time, end_time, tags, agg)
+    metrics = {}
+    command_metrics.each do |m|
+      metrics[m.metric] = get(m.metric, start_time, end_time, tags, agg)
+    end
+    return metrics
   end
 
 end
