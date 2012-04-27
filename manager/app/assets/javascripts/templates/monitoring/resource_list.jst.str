@@ -1,6 +1,4 @@
 
-return """
-
 <h3>Resources for <%= host.get("ip") %></h3>
 
 <% if (resources.length == 0) { %>
@@ -35,5 +33,3 @@ return """
 <p>
   <a class="btn primary add_resource_link" host_id="<%= host.get('id') %>">Add Resource</a>
 </p>
-
-"""

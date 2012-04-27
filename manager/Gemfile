@@ -19,6 +19,7 @@ gem "SystemTimer",  :platforms => :mri_18
 gem "git"
 
 gem "coffee-script"
+ gem "coffee-script-source", :git => "https://github.com/chetan/coffee-script.git", :branch => "gem"
 # adds :coffeescript filter to haml
 # gem "coffee-filter"
 gem 'haml'
@@ -40,6 +41,7 @@ gem 'continuum', :git => "https://github.com/chetan/continuum.git"
 group :assets do
     gem 'sass'
     gem 'sass-rails'
+    gem 'jst_str', :git => "git://github.com/chetan/jst_str.git"
 end
 
 group :development do
