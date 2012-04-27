@@ -1,7 +1,0 @@
-
-= content_for :bootstrap do
-  :javascript
-    Bixby.app.bootstrap({
-      host: new Bixby.model.Host(#{@host.to_json}),
-      resources: (new Bixby.model.ResourceList()).reset(#{@resources.to_json(:collaborators => true)})
-    })

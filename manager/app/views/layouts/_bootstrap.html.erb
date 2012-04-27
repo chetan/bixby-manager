@@ -1,0 +1,18 @@
+<% @bootstrap and @bootstrap.each do |boot| %>
+
+  <script type="text/javascript">
+    Bixby.app.bootstrap({
+      <%
+      if boot[:model] =~ /List$/ or boot[:data].kind_of? Array then
+      %>
+        <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>()).reset(<%= boot[:data].to_json(:collaborators => true).html_safe %>)
+      <%
+      else
+      %>
+        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(<%= boot[:data].to_json(:collaborators => true).html_safe %>)
+      <%
+      end
+      %>
+     });
+  </script>
+<% end %>
