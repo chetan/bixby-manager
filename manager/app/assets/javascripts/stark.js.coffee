@@ -205,8 +205,7 @@ class Stark.State
       if ! (_.any(new_state.views, (n)-> v instanceof n) && _.any(new_state.no_redraw, (n)-> v instanceof n))
         # only dispose of view IF NOT required by new state
         console.log "disposing of", v
-        v.$el.html("")
-        v.undelegateEvents()
+        v.dispose()
 
   bind_app_events: ->
     _.each @app_events, (cb, key) ->
@@ -220,6 +219,8 @@ class Stark.View extends Backbone.View
   state: null
   template: null
   app_events: null
+  selector: null
+  views: [] # sub-views
 
   initialize: ->
     _.bindAll @
@@ -230,7 +231,19 @@ class Stark.View extends Backbone.View
   render: ->
     console.log "rendering view", @
     @_template = new Template(JST[ @tpl_path() ])
-    $(@el).html(@_template.render(@))
+
+    # use an optional [dynamic] selector
+    el = null
+    if @selector?
+      if _.isFunction(@selector)
+        el = @selector()
+      else
+        el = el
+    else
+      el = @el
+
+    @setElement(el)
+    @$el.html(@_template.render(@))
     @
 
   # proxy for Stark.state#transition
@@ -241,3 +254,10 @@ class Stark.View extends Backbone.View
     _.each @app_events, (cb, key) ->
       @app.subscribe(key, cb)
     , @
+
+  dispose: ->
+    @$el.html("")
+    @undelegateEvents()
+    for v in @views
+      v.dispose()
+
