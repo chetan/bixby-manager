@@ -3,13 +3,19 @@
   <script type="text/javascript">
     Bixby.app.bootstrap({
       <%
+      if boot[:rabl] then
+        json = render("models/resource", :object => boot[:data])
+      else
+        json = boot[:data].to_json(:collaborators => true).html_safe
+      end
+
       if boot[:model] =~ /List$/ or boot[:data].kind_of? Array then
       %>
-        <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>()).reset(<%= boot[:data].to_json(:collaborators => true).html_safe %>)
+        <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>()).reset(<%= json %>)
       <%
       else
       %>
-        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(<%= boot[:data].to_json(:collaborators => true).html_safe %>)
+        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(<%= json %>)
       <%
       end
       %>
