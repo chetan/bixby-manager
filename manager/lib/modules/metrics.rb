@@ -48,8 +48,13 @@ class Metrics < API
     self.class.driver()
   end
 
-  def get(key, start_time, end_time, tags = {}, agg = "sum")
-    driver.get(key, start_time, end_time, tags, agg)
+  # downsample format:
+  # time-agg
+  # time = 1s, 1m, 1h, 1d
+  # agg = min, max, sum, avg
+  # ex: 10m-avg
+  def get(key, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
+    driver.get(key, start_time, end_time, tags, agg, downsample)
   end
 
   # Get the metrics for the given Check
@@ -59,7 +64,7 @@ class Metrics < API
   # @param [Time] end_time
   # @param [Hash] tags        Tags to filter by, only check-related filters by default
   # @param [String] agg
-  def get_for_check(check, start_time, end_time, tags = {}, agg = "sum")
+  def get_for_check(check, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
 
     if check.kind_of? Fixnum
       check = Check.find(check)
@@ -73,7 +78,7 @@ class Metrics < API
     # tags[:org_id]    = @org_id
     # tags[:tenant_id] = @tenant_id
 
-    return collect_metrics(check.metrics, start_time, end_time, tags, agg)
+    return collect_metrics(check.metrics, start_time, end_time, tags, agg, downsample)
   end
 
   # Get the metrics for the given Command
@@ -83,7 +88,7 @@ class Metrics < API
   # @param [Time] end_time
   # @param [Hash] tags        Tags to filter by, only check-related filters by default
   # @param [String] agg
-  def get_for_command(command, start_time, end_time, tags = {}, agg = "sum")
+  def get_for_command(command, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
     if command.kind_of? Fixnum
       command = Command.find(command)
     end
@@ -92,7 +97,7 @@ class Metrics < API
     # tags[:org_id]    = @org_id
     # tags[:tenant_id] = @tenant_id
 
-    return collect_metrics(CommandMetric.for(command), start_time, end_time, tags, agg)
+    return collect_metrics(CommandMetric.for(command), start_time, end_time, tags, agg, downsample)
   end
 
 
@@ -149,10 +154,14 @@ class Metrics < API
 
   private
 
-  def collect_metrics(command_metrics, start_time, end_time, tags, agg)
+  def collect_metrics(command_metrics, start_time, end_time, tags, agg, downsample)
     metrics = {}
     command_metrics.each do |m|
-      metrics[m.metric] = get(m.metric, start_time, end_time, tags, agg)
+      # tags should all be the same, so factor them out
+      vals = get(m.metric, start_time, end_time, tags, agg, downsample)
+      ret = { :key => m.metric, :tags => vals.first[:tags] }
+      ret[:vals] = vals.map{ |v| { :time => v[:time], :val => v[:val] } }
+      metrics[m.metric] = ret
     end
     return metrics
   end

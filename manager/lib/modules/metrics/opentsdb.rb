@@ -18,15 +18,18 @@ class Metrics
         @client.metric(key.strip, value, timestamp, metadata)
       end
 
-      def get(key, start_time, end_time, tags = {}, agg = "sum")
+      def get(key, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
 
         # create opts hash
 
         # rate of change needed??
-        m = "#{agg}:#{key}"
+        m = "#{agg}"
+        m += ":" + downsample if not downsample.blank?
+        m += ":#{key}"
         if tags and not tags.empty? then
           m += "{" + tags.to_a.map{ |a| "#{a[0]}=#{a[1]}" }.join(",") + "}"
         end
+        m = URI.escape(m)
         start_time = Time.at(start_time) if start_time.kind_of? Fixnum
         end_time = Time.at(end_time) if end_time.kind_of? Fixnum
         opts = {
