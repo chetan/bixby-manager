@@ -15,6 +15,7 @@ Devops::Application.routes.draw do
     resources :hosts do
       resources :resources
       resources :checks
+      resources :metrics
 
       match "/command/:command_id/opts" => "commands#opts"
     end

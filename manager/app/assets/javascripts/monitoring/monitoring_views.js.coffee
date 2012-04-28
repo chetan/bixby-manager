@@ -14,6 +14,26 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         @transition "mon_hosts_resources_new", { host: @host }
     }
 
+  class exports.MiniGraph extends Stark.View
+    selector: ->
+      "div.resource[resource_id=" + @resource.id + "] div.graph"
+
+    render: ->
+      super()
+      console.log "custom render!"
+      metrics = @resource.metrics.metrics();
+      console.log(@el)
+      graph = new Rickshaw.Graph( {
+        element: @el,
+        # width: 300,
+        height: 100,
+        series: [ {
+          color: 'steelblue',
+          data: metrics[0].vals
+        } ]
+      } );
+
+      graph.render();
 
   class exports.AddCommand extends Stark.View
     el: "div.monitoring_content"

@@ -10,13 +10,12 @@
   resources.each(function(resource) {
 %>
 
-<div class="resource">
+<div class="resource" resource_id="<%= resource.id %>">
   <h5 class="title">
     <!-- -#< %= resource.check.command.get("name") + ":" %> -->
     <%= resource.get("name") %>
   </h5>
   <div class="graph">
-    <!-- -# - render_graph(resource) -->
   </div>
   <h6 class="footer">
     Last Value:

@@ -37,6 +37,31 @@ jQuery ->
 
       activate: ->
         @app.trigger("nav:select_tab", "monitoring")
+        load = []
+        app = @app
+        state = @
+        @resources.each (res) ->
+          # create model
+          metric = new _bm.Metric()
+          metric.set({ id: res.id, host_id: res.get("host_id") })
+          res.metrics = metric
+
+          # create view
+          graph = new _vn.MiniGraph()
+          graph.resource = res
+          app.copy_data_from_state state, graph
+          graph.app = app
+          graph.state = state
+          graph.bind_app_events()
+          metric.on "change", ->
+            graph.render()
+
+          load.push metric
+          state._views.push graph
+
+        # load metrics from server
+        Backbone.multi_fetch load
+
   )
 
   Bixby.app.add_state(

@@ -9,6 +9,19 @@ namespace 'Bixby.model', (exports, top) ->
     url: -> "/monitoring/hosts/#{@host_id}/resources"
     initialize: (host_id) -> @host_id = host_id
 
+  class exports.Metric extends Backbone.Model
+    url: -> "/monitoring/hosts/#{@get("host_id")}/metrics/#{@get("id")}"
+
+    # get only the metric attributes (the actual data elements)
+    # { key, tags, vals: [ {time, val}, ... ]}
+    metrics: ->
+      metrics = []
+      _.each @attributes, (v, k) ->
+        if _.isObject(v)
+          metrics.push(v)
+
+      return metrics
+
   # MonitoringCommand
   class exports.MonitoringCommand extends Backbone.Model
     urlRoot: "/monitoring/commands"
