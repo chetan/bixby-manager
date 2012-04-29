@@ -1,6 +1,8 @@
+.rvmrc
 .bundle
 db/*.sqlite3
 log/*.log
+script/log/
 tmp/
 config/database.yml
 config/devops.yml
