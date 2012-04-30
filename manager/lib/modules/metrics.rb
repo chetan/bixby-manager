@@ -159,6 +159,7 @@ class Metrics < API
     command_metrics.each do |m|
       # tags should all be the same, so factor them out
       vals = get(m.metric, start_time, end_time, tags, agg, downsample)
+      next if not vals or vals.empty?
       ret = { :key => m.metric, :tags => vals.first[:tags] }
       ret[:vals] = vals.map{ |v| { :time => v[:time], :val => v[:val] } }
       metrics[m.metric] = ret
