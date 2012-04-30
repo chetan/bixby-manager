@@ -37,24 +37,6 @@ jQuery ->
 
       activate: ->
         @app.trigger("nav:select_tab", "monitoring")
-
-        @resources.each (res) ->
-          metrics = res.get("metrics");
-          _.each metrics, (val, key) ->
-            s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
-            el = $(s + " .graph")[0]
-            graph = new Rickshaw.Graph( {
-              element: el,
-              width: 300,
-              height: 100,
-              series: [ {
-                color: 'steelblue',
-                data: val.vals
-              } ]
-            } );
-            graph.render();
-            $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
-
   )
 
   Bixby.app.add_state(

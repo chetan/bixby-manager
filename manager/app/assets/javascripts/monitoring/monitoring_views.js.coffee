@@ -14,6 +14,42 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         @transition "mon_hosts_resources_new", { host: @host }
     }
 
+    render: ->
+      super()
+
+      # display graphs
+      @resources.each (res) ->
+        metrics = res.get("metrics");
+        _.each metrics, (val, key) ->
+          s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
+          el = $(s + " .graph")[0]
+          graph = new Rickshaw.Graph( {
+            element: el,
+            width: 300,
+            height: 100,
+            renderer: 'line',
+            series: [{
+              # name: "foo",
+              color: 'steelblue',
+              data: val.vals
+            }]
+          } );
+          x_axis = new Rickshaw.Graph.Axis.Time({
+            graph: graph,
+            # element: $(s + ' .x_axis')[0]
+          });
+          y_axis = new Rickshaw.Graph.Axis.Y({
+            graph: graph,
+            orientation: 'left',
+            # tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+            element: $(s + ' .y_axis')[0],
+          });
+          hoverDetail = new Rickshaw.Graph.HoverDetail({
+            graph: graph
+          });
+          graph.render();
+          $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
+
   class exports.MiniGraph extends Stark.View
     selector: ->
       "div.resource[resource_id=" + @resource.id + "] div.graph"

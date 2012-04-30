@@ -10,17 +10,36 @@ div.resource {
 }
 div.metric {
   float: left;
-  width: 300px;
+  width: 330px;
   margin-top: 10px;
   margin-right: 10px;
   padding: 10px;
+  // padding-left: 20px;
   border: 1px solid #999999;
+
+  .graph_container {
+    // position: relative;
+    .y_axis {
+      float: left;
+      // position: absolute;
+      left: -10px;
+      // width: 40px;
+      // top: 0;
+    }
+    .x_tick {
+      div.title {
+        // top: 100px;
+      }
+    }
+  }
 
   h5.title {
     text-transform: uppercase;
   }
 
   .graph {
+    // position: relative;
+    left: 0;
     .na {
       height: 50px;
     }
