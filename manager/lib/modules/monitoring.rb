@@ -48,7 +48,7 @@ class Monitoring < API
       return ret
     end
 
-    restart_mon_daemon(agent)
+    # restart_mon_daemon(agent)
   end
 
   def restart_mon_daemon(agent)
