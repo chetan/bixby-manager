@@ -14,9 +14,14 @@ gem "thin"
 
 gem "mysql"
 gem "curb"
+
 gem "json"
+gem "multi_json"
+gem "oj"
+
 gem "SystemTimer",  :platforms => :mri_18
 gem "git"
+gem "rabl"
 
 gem "coffee-script"
  gem "coffee-script-source", :git => "https://github.com/chetan/coffee-script.git", :branch => "gem"
