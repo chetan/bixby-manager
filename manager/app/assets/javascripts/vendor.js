@@ -7,6 +7,7 @@
 //= require "twitter/bootstrap"
 //= require "async"
 //= require "spin.min"
+//= require "sprintf"
 
 // charting libs
 //= require "chart/d3.v2"

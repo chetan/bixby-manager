@@ -9,14 +9,19 @@
 } else {
   resources.each(function(resource) {
 %>
+    <div class="resource">
+      <h4><%= resource.get("name") %></h4>
+      <div class="spacer">&nbsp;</div>
+<%
+    _.each(resource.get("metrics"), function(val, key) {
+%>
 
-<div class="resource" resource_id="<%= resource.id %>">
+<div class="metric" metric="<%= key %>">
   <h5 class="title">
-    <!-- -#< %= resource.check.command.get("name") + ":" %> -->
-    <%= resource.get("name") %>
+    <%= key %>
   </h5>
-  <div class="graph">
-  </div>
+  <span class="graph">
+  </span>
   <h6 class="footer">
     Last Value:
     n/a
@@ -24,7 +29,12 @@
 </div>
 
 <%
-  });
+    }); // each metric
+%>
+    <div class="spacer">&nbsp;</div>
+  </div>
+<%
+  }); // each resource
 }
 %>
 

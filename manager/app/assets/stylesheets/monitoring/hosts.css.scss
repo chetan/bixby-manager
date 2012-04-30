@@ -3,20 +3,35 @@
 @import "twitter/mixins";
 
 div.resource {
-  // #gridSystem > .columns(@gridGutterWidth, @gridColumnWidth, @gridRowWidth, 4);
-  @include gridSystem-columns($gridGutterWidth, $gridColumnWidth, $gridRowWidth, 4);
+  // @include gridSystem-columns($gridGutterWidth, $gridColumnWidth, $gridRowWidth, 4);
+  h4 {
+    padding-top: 15px;
+  }
+}
+div.metric {
+  float: left;
+  width: 300px;
+  margin-top: 10px;
+  margin-right: 10px;
   padding: 10px;
-  border: 1px solid black;
+  border: 1px solid #999999;
 
   h5.title {
     text-transform: uppercase;
   }
-  div.graph {
+
+  .graph {
     .na {
       height: 50px;
     }
   }
-  h6.footer {
 
+  h6.footer {
+    margin-top: 5px;
   }
+}
+
+div.spacer {
+  clear: both;
+  height: 0px;
 }

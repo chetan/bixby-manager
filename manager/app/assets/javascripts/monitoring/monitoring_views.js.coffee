@@ -20,7 +20,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     render: ->
       super()
-      console.log "custom render!"
       metrics = @resource.metrics.metrics();
       console.log(@el)
       graph = new Rickshaw.Graph( {
