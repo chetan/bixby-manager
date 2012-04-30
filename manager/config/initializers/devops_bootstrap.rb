@@ -6,6 +6,7 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
 
   require 'modules'
   require 'rails_ext/json_column'
+  require 'rails_ext/to_api'
 
   # load devops.yml
   devops_config_filename = File.open(File.join(::Rails.root.to_s, "config", "devops.yml"))
