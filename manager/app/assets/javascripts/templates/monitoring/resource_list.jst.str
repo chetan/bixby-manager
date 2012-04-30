@@ -9,7 +9,7 @@
 } else {
   resources.each(function(resource) {
 %>
-    <div class="resource">
+    <div class="resource" resource_id="<%= resource.id %>">
       <h4><%= resource.get("name") %></h4>
       <div class="spacer">&nbsp;</div>
 <%

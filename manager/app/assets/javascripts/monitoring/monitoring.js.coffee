@@ -41,7 +41,8 @@ jQuery ->
         @resources.each (res) ->
           metrics = res.get("metrics");
           _.each metrics, (val, key) ->
-            el = $(".metric[metric='" + key + "'] .graph")[0]
+            s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
+            el = $(s + " .graph")[0]
             graph = new Rickshaw.Graph( {
               element: el,
               width: 300,
@@ -52,7 +53,7 @@ jQuery ->
               } ]
             } );
             graph.render();
-            $(".metric[metric='" + key + "'] .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
+            $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
 
   )
 
