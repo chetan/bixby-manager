@@ -1409,7 +1409,9 @@ Rickshaw.Graph.HoverDetail = function(args) {
 			if (stackedData[0][i + 1] < domainX) { i++ } else { i-- }
 		}
 
-		domainX = stackedData[0][dataIndex].x;
+		if (stackedData[0][dataIndex]) {
+			domainX = stackedData[0][dataIndex].x;
+		}
 
 		var detail = graph.series.active()
 			.map( function(s) { return { name: s.name, value: s.stack[dataIndex] } } );
@@ -1468,13 +1470,17 @@ Rickshaw.Graph.HoverDetail = function(args) {
 
 		detail.sort(sortFn).forEach( function(d) {
 
+			if (!d.value) {
+				return;
+			}
+
 			var formattedYValue = (yFormatter.constructor == Array) ?
 				yFormatter[detail.indexOf(d)](d.value.y) :
 				yFormatter(d.value.y);
 
 			var item = document.createElement('div');
 			item.className = 'item';
-			item.innerHTML = d.name + ':&nbsp;' + formattedYValue;
+			item.innerHTML = (d.name ? d.name + ':&nbsp;' : '') + formattedYValue;
 			item.style.top = graph.y(d.value.y0 + d.value.y) + 'px';
 
 			var domainMouseY = graph.y.magnitude.invert(graph.element.offsetHeight - mouseY);
