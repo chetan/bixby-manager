@@ -13,6 +13,10 @@ class Resource < ActiveRecord::Base
     resources = Resource.where(:host_id => host_id).to_api({ :inject =>
       proc { |obj, hash|
         hash[:metrics] = for_ui(obj.metrics(nil, nil, nil, nil, "1h-avg"))
+
+        # add metric info
+        arr = CommandMetric.for(obj.check.command).to_api(nil, false)
+        arr.each{ |a| %w(desc unit).each{ |k| hash[:metrics][ a["metric"] ][k] = a[k] } }
       }
     }, false)
 

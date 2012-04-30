@@ -18,7 +18,7 @@
 
 <div class="metric" metric="<%= key %>">
   <h5 class="title">
-    <%= key %>
+    <%= val.desc %><% if (val.unit) { %> (<%= val.unit %>)<% } %>
   </h5>
   <div class="graph_container">
     <div class="y_axis"></div>
@@ -26,8 +26,7 @@
     <div class="x_axis"></div>
   </div>
   <h6 class="footer">
-    Last Value:
-    n/a
+    Last Value: n/a
   </h6>
 </div>
 

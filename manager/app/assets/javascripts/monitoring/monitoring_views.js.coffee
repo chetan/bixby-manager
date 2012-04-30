@@ -20,22 +20,33 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       # display graphs
       @resources.each (res) ->
         metrics = res.get("metrics");
-        _.each metrics, (val, key) ->
+        _.each metrics, (metric, key) ->
           s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
           el = $(s + " .graph")[0]
 
-          vals = _.map val.vals, (v) ->
+          vals = _.map metric.vals, (v) ->
             [ new Date(v.x * 1000), v.y ]
 
-          g = new Dygraph(
-            el, vals,
-            {
-              labels: [ "Date/Time", "val" ]
-              strokeWidth: 2
-            }
-            );
+          opts = {
+            labels: [ "Date/Time", "v" ]
+            strokeWidth: 2
+          }
 
-          $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
+          if metric.unit == "%"
+            # set range if known
+            opts.valueRange = [ 0, 100 ]
+
+          # draw
+          g = new Dygraph(el, vals, opts)
+
+          unit = ""
+          if metric.unit?
+            if metric.unit != "%"
+              unit = " " + metric.unit
+            else
+              unit = "%"
+
+          $(s + " .footer").text(sprintf("Last Value: %0.2f%s", metric.vals[metric.vals.length-1].y, unit))
 
     render_with_rickshaw: ->
       render()
