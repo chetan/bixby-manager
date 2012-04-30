@@ -10,6 +10,7 @@ class ActiveRecord::Base
 
   def to_api(opts = {}, as_json = true)
 
+    opts ||= {}
     opts[:collaborators] = true
     hash = serializable_hash(opts)
 
