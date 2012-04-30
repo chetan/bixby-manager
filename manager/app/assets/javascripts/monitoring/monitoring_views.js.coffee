@@ -23,6 +23,30 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         _.each metrics, (val, key) ->
           s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
           el = $(s + " .graph")[0]
+
+          vals = _.map val.vals, (v) ->
+            [ new Date(v.x * 1000), v.y ]
+
+          g = new Dygraph(
+            el, vals,
+            {
+              labels: [ "Date/Time", "val" ]
+              strokeWidth: 2
+            }
+            );
+
+          $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
+
+    render_with_rickshaw: ->
+      render()
+
+      # display graphs
+      @resources.each (res) ->
+        metrics = res.get("metrics");
+        _.each metrics, (val, key) ->
+          s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
+          el = $(s + " .graph")[0]
+
           graph = new Rickshaw.Graph( {
             element: el,
             width: 300,
@@ -50,25 +74,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           graph.render();
           $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
 
-  class exports.MiniGraph extends Stark.View
-    selector: ->
-      "div.resource[resource_id=" + @resource.id + "] div.graph"
-
-    render: ->
-      super()
-      metrics = @resource.metrics.metrics();
-      console.log(@el)
-      graph = new Rickshaw.Graph( {
-        element: @el,
-        # width: 300,
-        height: 100,
-        series: [ {
-          color: 'steelblue',
-          data: metrics[0].vals
-        } ]
-      } );
-
-      graph.render();
 
   class exports.AddCommand extends Stark.View
     el: "div.monitoring_content"

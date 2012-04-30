@@ -19,6 +19,7 @@ div.metric {
 
   .graph_container {
     // position: relative;
+    padding-top: 10px;
     .y_axis {
       float: left;
       // position: absolute;
@@ -31,19 +32,21 @@ div.metric {
         // top: 100px;
       }
     }
+    .graph {
+      position: relative;
+      left: -25px;
+      width: 330px;
+      height: 100px;
+      .na {
+        height: 50px;
+      }
+    }
   }
 
   h5.title {
     text-transform: uppercase;
   }
 
-  .graph {
-    // position: relative;
-    left: 0;
-    .na {
-      height: 50px;
-    }
-  }
 
   h6.footer {
     margin-top: 5px;

@@ -14,3 +14,4 @@
 //= require "chart/cubism.v1"
 //= require "chart/rickshaw"
 //= require "chart/rickshaw.extensions"
+//= require "chart/dygraph"
