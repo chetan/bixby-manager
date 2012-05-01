@@ -101,6 +101,16 @@ class Metrics < API
     return collect_metrics(CommandMetric.for(command), start_time, end_time, tags, agg, downsample)
   end
 
+  # Get the metrics for the given keys
+  def get_for_keys(keys, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
+
+    # TODO add in other relevant keys like org, tenant
+    # tags[:org_id]    = @org_id
+    # tags[:tenant_id] = @tenant_id
+
+    return collect_metrics(keys, start_time, end_time, tags, agg, downsample)
+  end
+
 
   def put(key, value, timestamp = Time.new, metadata = {})
     driver.put(key, value, timestamp, metadata)
@@ -155,16 +165,25 @@ class Metrics < API
 
   private
 
+  # Fetch a list of metrics by metric name
+  #
+  # @param [Object] command_metrics   Array of metric Strings or CommandMetric objects
   def collect_metrics(command_metrics, start_time, end_time, tags, agg, downsample)
+
+    if command_metrics.first.kind_of? CommandMetric then
+      command_metrics = command_metrics.map{ |m| m.metric }
+    end
+
     metrics = {}
     command_metrics.each do |m|
       # tags should all be the same, so factor them out
-      vals = get(m.metric, start_time, end_time, tags, agg, downsample)
+      vals = get(m, start_time, end_time, tags, agg, downsample)
       next if not vals or vals.empty?
-      ret = { :key => m.metric, :tags => vals.first[:tags] }
+      ret = { :key => m, :tags => vals.first[:tags] }
       ret[:vals] = vals.map{ |v| { :time => v[:time], :val => v[:val] } }
-      metrics[m.metric] = ret
+      metrics[m] = ret
     end
+
     return metrics
   end
 

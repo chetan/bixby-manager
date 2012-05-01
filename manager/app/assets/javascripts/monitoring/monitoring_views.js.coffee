@@ -18,6 +18,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       super()
 
       # display graphs
+      state = @
+      resources = @resources
+
       @resources.each (res) ->
         metrics = res.get("metrics");
 
@@ -63,6 +66,32 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
             unhighlightCallback: (e) ->
               footer.text(footer_text)
+
+            zoomCallback: (minX, maxX, yRanges) ->
+              if g.is_granular
+                if minX == g.rawData_[0][0] && maxX == g.rawData_[g.rawData_.length-1][0]
+                  g.updateOptions({ file: g.less_granular })
+                  g.less_granular = null
+                  g.is_granular = null
+                return
+
+              r = (maxX - minX) / 1000
+              if r < 43200
+                # load more granular data
+                g.less_granular = g.file_
+                g.is_granular = true
+                new_met = new Bixby.model.Metric({
+                  id: res.id
+                  host_id: res.get("host_id")
+                  metric: key
+                  start: parseInt(minX / 1000)
+                  end: parseInt(maxX / 1000)
+                })
+                Backbone.multi_fetch [ new_met ], (err, results) ->
+                  vals = _.map new_met.get(key).vals, (v) ->
+                    [ new Date(v.x * 1000), v.y ]
+                  g.updateOptions({ file: vals })
+
           }
           g.updateOptions(opts);
 

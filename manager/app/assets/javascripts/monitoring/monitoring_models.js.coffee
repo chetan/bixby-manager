@@ -10,7 +10,13 @@ namespace 'Bixby.model', (exports, top) ->
     initialize: (host_id) -> @host_id = host_id
 
   class exports.Metric extends Backbone.Model
-    url: -> "/monitoring/hosts/#{@get("host_id")}/metrics/#{@get("id")}"
+    url: ->
+      s = "/monitoring/hosts/#{@get("host_id")}/metrics/#{@get("id")}?"
+      if @get("start") and @get("end")
+        s += "&start=#{@get("start")}&end=#{@get("end")}"
+      if @get("metric")
+        s += "&metric=" + @get("metric")
+      return s
 
     # get only the metric attributes (the actual data elements)
     # { key, tags, vals: [ {time, val}, ... ]}
