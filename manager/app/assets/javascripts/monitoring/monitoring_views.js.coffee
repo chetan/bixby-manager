@@ -20,9 +20,21 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       # display graphs
       @resources.each (res) ->
         metrics = res.get("metrics");
+
         _.each metrics, (metric, key) ->
           s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
           el = $(s + " .graph")[0]
+
+          # draw footer
+          footer = $(s + " .footer")
+          unit = ""
+          if metric.unit?
+            if metric.unit != "%"
+              unit = " " + metric.unit
+            else
+              unit = "%"
+          footer_text = sprintf("Last Value: %0.2f%s", metric.vals[metric.vals.length-1].y, unit)
+          footer.text(footer_text)
 
           vals = _.map metric.vals, (v) ->
             [ new Date(v.x * 1000), v.y ]
@@ -30,6 +42,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           opts = {
             labels: [ "Date/Time", "v" ]
             strokeWidth: 2
+            showLabelsOnHighlight: false
+            legend: "never"
           }
 
           if metric.unit == "%"
@@ -39,14 +53,18 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           # draw
           g = new Dygraph(el, vals, opts)
 
-          unit = ""
-          if metric.unit?
-            if metric.unit != "%"
-              unit = " " + metric.unit
-            else
-              unit = "%"
+          # set callbacks
+          xOptView = g.optionsViewForAxis_('x');
+          xvf = xOptView('valueFormatter');
+          opts = {
+            highlightCallback: (e, x, pts, row) ->
+              date = xvf(x, xOptView, "", g) + ", " + sprintf("val = %0.2f%s", pts[0].yval, unit)
+              footer.text(date)
 
-          $(s + " .footer").text(sprintf("Last Value: %0.2f%s", metric.vals[metric.vals.length-1].y, unit))
+            unhighlightCallback: (e) ->
+              footer.text(footer_text)
+          }
+          g.updateOptions(opts);
 
     render_with_rickshaw: ->
       render()
