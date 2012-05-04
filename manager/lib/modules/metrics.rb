@@ -53,8 +53,12 @@ class Metrics < API
   # time = 1s, 1m, 1h, 1d
   # agg = min, max, sum, avg
   # ex: 10m-avg
-  def get(key, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
-    driver.get(key, start_time, end_time, tags, agg, downsample)
+  def get(opts={})
+    driver.get(opts)
+  end
+
+  def multi_get(reqs=[])
+    driver.multi_get(reqs)
   end
 
   # Get the metrics for the given Check
@@ -174,11 +178,19 @@ class Metrics < API
       command_metrics = command_metrics.map{ |m| m.metric }
     end
 
-    metrics = {}
+    reqs = []
     command_metrics.each do |m|
       # tags should all be the same, so factor them out
-      vals = get(m, start_time, end_time, tags, agg, downsample)
+      reqs << { :key => m, :start_time => start_time, :end_time => end_time, :tags => tags, :agg => agg, :downsample => downsample }
+    end
+
+    results = multi_get(reqs)
+
+    metrics = {}
+    command_metrics.each_with_index do |m, i|
+      vals = results[i]
       next if not vals or vals.empty?
+
       ret = { :key => m, :tags => vals.first[:tags] }
       ret[:vals] = vals.map{ |v| { :time => v[:time], :val => v[:val] } }
       metrics[m] = ret
