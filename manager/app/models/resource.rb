@@ -13,10 +13,7 @@ class Resource < ActiveRecord::Base
     resources = Resource.where(:host_id => host_id).to_api({ :inject =>
       proc { |obj, hash|
         hash[:metrics] = for_ui(obj.metrics(nil, nil, nil, nil, "1h-avg"))
-
-        # add metric info
-        arr = CommandMetric.for(obj.check.command).to_api(nil, false)
-        arr.each{ |a| %w(desc unit).each{ |k| hash[:metrics][ a["metric"] ][k] = a[k] } }
+        add_metric_info(obj.check, hash)
       }
     }, false)
 
@@ -25,7 +22,9 @@ class Resource < ActiveRecord::Base
       # make sure we have at least 2 values so we can graph them
       if res[:metrics].values.first[:vals].size == 1 then
         check_id = res[:metrics].values.first[:tags]["check_id"]
-        res[:metrics] = for_ui(metrics(check_id)) # no downsampling
+        check = Check.find(check_id.to_i)
+        res[:metrics] = for_ui(metrics(check)) # no downsampling
+        add_metric_info(check, res)
       end
     end
 
@@ -34,6 +33,14 @@ class Resource < ActiveRecord::Base
 
 
   private
+
+  def self.add_metric_info(check, hash)
+    arr = CommandMetric.for(check.command)
+    arr.each { |a|
+      hash[:metrics][a.metric]["desc"] = a.desc
+      hash[:metrics][a.metric]["unit"] = a.unit
+    }
+  end
 
   def self.for_ui(metrics)
     metrics.each do |k, met|
