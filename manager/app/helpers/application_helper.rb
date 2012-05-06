@@ -19,6 +19,8 @@ module ApplicationHelper
 end
 
 # hack to get this to work in haml
-module Haml::Helpers
-  include LoremIpsum::Base
+if Object.const_defined? "LoremIpsum" then
+  module Haml::Helpers
+    include ::LoremIpsum::Base
+  end
 end
