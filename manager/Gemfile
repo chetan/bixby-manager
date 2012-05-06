@@ -11,6 +11,7 @@ group :threads do
 end
 
 gem "thin"
+gem "memcache-client"
 
 gem "mysql"
 gem "curb"
