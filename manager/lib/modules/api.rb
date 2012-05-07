@@ -10,8 +10,6 @@ class API
   class Error < Exception
   end
 
-  include RemoteExec
-
   attr_accessor :http_request, :json_request
 
   # @param [ActionDispatch::Request] http_request  HTTP Request object

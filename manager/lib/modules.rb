@@ -1,6 +1,6 @@
 
-require 'modules/remote_exec'
 require 'modules/api'
+require 'modules/remote_exec'
 require 'modules/inventory'
 require 'modules/metrics'
 require 'modules/monitoring'

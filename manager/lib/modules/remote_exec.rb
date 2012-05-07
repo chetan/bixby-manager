@@ -1,5 +1,5 @@
 
-module RemoteExec
+class RemoteExec < API
 
   module Methods
 
@@ -104,6 +104,8 @@ module RemoteExec
     include Methods
   end
 
-  include Methods
+end
 
+class API
+  include RemoteExec::Methods
 end
