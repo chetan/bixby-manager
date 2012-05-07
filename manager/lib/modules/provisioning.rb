@@ -44,7 +44,7 @@ class Provisioning < API
   #
   # @param [CommandSpec] command
   # @param [String] file  relative path to file
-    # @return [FileDownload]
+  # @return [FileDownload]
   def fetch_file(command, file)
 
     command = create_spec(command)
