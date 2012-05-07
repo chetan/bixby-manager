@@ -2,8 +2,6 @@
 # instead, we load this after forking to run our tests
 if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
 
-  require 'manager'
-
   require 'modules'
   require 'rails_ext/json_column'
   require 'rails_ext/to_api'
@@ -20,8 +18,8 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
   DEVOPS_CONFIG = devops_config[::Rails.env].with_indifferent_access
 
   # setup bundle repo, manager uri
-  Manager.root = DEVOPS_CONFIG[:manager][:root]
-  BundleRepository.path = File.join(Manager.root, "/repo")
+  manager_root = File.expand_path(DEVOPS_CONFIG[:manager][:root])
+  BundleRepository.path = File.join(manager_root, "repo")
   BaseModule.manager_uri = DEVOPS_CONFIG[:manager][:uri]
 
   # setup the scheduler
