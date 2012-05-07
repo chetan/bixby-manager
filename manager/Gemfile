@@ -53,9 +53,11 @@ end
 group :development do
     gem "ruby-debug",   :platforms => :mri_18
     gem "debugger",     :platforms => :mri_19
+    gem 'newrelic_rpm'
+    gem 'rpm_contrib'
+    gem 'newrelic-redis'
     gem "yard"
     gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
-    gem 'newrelic_rpm'
     gem "awesome_print"
     gem "rcov",       :platforms => :mri_18
     gem "rcov_rails", :platforms => :mri_18
