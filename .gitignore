@@ -3,3 +3,4 @@
 features_rcov
 pkg/
 coverage/
+.rvmrc
