@@ -130,7 +130,7 @@ module Bixby
     ret << "<div class='class well'>"
 
     name = mod.name(true).to_s
-    ret << "<div class='class_header'><h2 class='class'><a href='#{name}.html'>#{name}</a></h2></div>"
+    ret << "<div class='class_header'><h2 class='class'><a href='Bixby/#{name}.html'>#{name}</a></h2></div>"
 
     ret << show_methods_for_class(mod, ignore_methods_from, :class)
     ret << show_methods_for_class(mod, ignore_methods_from, :constructor) if mod.name.to_s == "API"
@@ -144,10 +144,10 @@ module Bixby
 
     ret = []
 
-    ignore_base_modules = [ "API", "RemoteExec::Methods" ]
+    ignore_base_modules = [ "Bixby::API", "Bixby::RemoteExec::Methods" ]
 
     ret << "<h1>Base class</h1>"
-    ret << show_class("API", [ "RemoteExec::Methods" ])
+    ret << show_class("API", [ "Bixby::RemoteExec::Methods" ])
 
     ret << "<h1>Core Modules</h1>"
     ret << show_class("RemoteExec", [ "API"] )
