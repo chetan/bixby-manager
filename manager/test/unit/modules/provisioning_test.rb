@@ -1,4 +1,6 @@
 
+require 'test_helper'
+
 class TestProvisioning < ActiveSupport::TestCase
 
   def setup

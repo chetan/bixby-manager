@@ -1,4 +1,6 @@
 
+require 'test_helper'
+
 class TestMetrics < ActiveSupport::TestCase
 
   def setup

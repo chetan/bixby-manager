@@ -1,16 +1,14 @@
 
-require 'rubygems'
-require 'spork'
-
-#uncomment the following line to use spork with the debugger
-#require 'spork/ext/ruby-debug'
-
-Spork.prefork do
-  require File.expand_path(File.dirname(__FILE__)) + "/test_prefork"
+def prefork
+  root = File.expand_path(File.dirname(__FILE__))
+  if not $:.include? root then
+    # add to library load path
+    $: << root
+  end
+  require "test_prefork"
 end
 
-Spork.each_run do
-
+def bootstrap_tests
   begin
     require 'simplecov'
     SimpleCov.start do
@@ -33,8 +31,27 @@ Spork.each_run do
   ENV["BOOTSTRAPNOW"] = "1"
   require "#{Rails.root.to_s}/config/initializers/devops_bootstrap"
   Dir.glob(Rails.root + "/lib/**/*.rb").each{ |f| require f }
-
 end
 
-# Spork.after_each_run do
-# end
+if Object.const_defined? :Spork then
+
+  #uncomment the following line to use spork with the debugger
+  #require 'spork/ext/ruby-debug'
+
+  Spork.prefork do
+    prefork()
+  end
+
+  Spork.each_run do
+    bootstrap_tests()
+  end
+
+  # Spork.after_each_run do
+  # end
+
+else
+  # normal 'rake test'
+  prefork()
+  bootstrap_tests()
+
+end

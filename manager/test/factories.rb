@@ -37,6 +37,7 @@ FactoryGirl.define do
   end
 
   factory :tenant do
+    password "foobar"
   end
 
   factory :user do

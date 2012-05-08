@@ -1,4 +1,6 @@
 
+require 'test_helper'
+
 class TestRemoteExec < ActiveSupport::TestCase
 
   def setup

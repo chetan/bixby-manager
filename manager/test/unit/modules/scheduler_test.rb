@@ -1,4 +1,6 @@
 
+require 'test_helper'
+
 class SchedulerTest < ActiveSupport::TestCase
 
   def setup

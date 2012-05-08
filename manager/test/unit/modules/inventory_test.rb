@@ -1,4 +1,6 @@
 
+require 'test_helper'
+
 require 'digest'
 
 class TestInventory < ActiveSupport::TestCase
