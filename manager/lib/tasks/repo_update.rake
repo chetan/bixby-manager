@@ -11,7 +11,7 @@ if defined?(Rails) then
   end
 end
 
-namespace :devops do
+namespace :bixby do
 
   desc "update repositories from upstream sources (git pull/svn up)"
   task :update_repos => :environment do
