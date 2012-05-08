@@ -1,7 +1,6 @@
 
-module Repository
-
-class BundleRepository
+module Bixby
+class Repository
 
   VENDOR_URI = "https://github.com/chetan/devops_repo.git"
 
@@ -155,6 +154,6 @@ class BundleRepository
     end
 
   end
-end
 
-end # module Repository
+end # class Repository
+end # Bixby

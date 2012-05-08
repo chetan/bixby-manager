@@ -120,7 +120,7 @@ module Bixby
   end
 
   def show_class(mod, ignore_methods_from=[])
-    mod = YARD::Registry.at(mod)
+    mod = YARD::Registry.at("Bixby::#{mod}")
     if mod.nil? then
       raise "Module '#{mod}' not found"
     end
@@ -151,7 +151,7 @@ module Bixby
 
     ret << "<h1>Core Modules</h1>"
     ret << show_class("RemoteExec", [ "API"] )
-    %w(Repository::BundleRepository Provisioning Inventory Scheduler).each do |mod|
+    %w(Repository Provisioning Inventory Scheduler).each do |mod|
       ret << show_class(mod, ignore_base_modules)
     end
 

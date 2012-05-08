@@ -15,11 +15,7 @@ namespace :devops do
 
   desc "update repositories from upstream sources (git pull/svn up)"
   task :update_repos => :environment do
-    require 'manager'
-    require 'modules/repository'
-
-    Repository::BundleRepository.update
-
+    require 'bixby/modules/repository'
+    Bixby::Repository.update
   end
 end
-

@@ -27,16 +27,16 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
     require "bixby/modules/scheduling/#{DEVOPS_CONFIG[:scheduler]}"
   end
   require "bixby/modules/scheduler"
-  Scheduler.configure(DEVOPS_CONFIG)
+  Bixby::Scheduler.configure(DEVOPS_CONFIG)
 
   # setup metrics
   if DEVOPS_CONFIG[:metrics] then
     require "bixby/modules/metrics"
     require "bixby/modules/metrics/#{DEVOPS_CONFIG[:metrics]}"
-    Metrics.configure(DEVOPS_CONFIG)
+    Bixby::Metrics.configure(DEVOPS_CONFIG)
   end
 
   # rescan plugins
-  Repository::BundleRepository.rescan_plugins << Metrics::RescanPlugin
+  Bixby::Repository.rescan_plugins << Metrics::RescanPlugin
 
 end
