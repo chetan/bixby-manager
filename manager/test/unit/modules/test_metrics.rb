@@ -11,19 +11,19 @@ class TestMetrics < ActiveSupport::TestCase
   end
 
   def test_require_class
-    require "modules/metrics"
-    assert Object.const_defined? :Metrics
+    require "bixby/modules/metrics"
+    assert Bixby.const_defined? :Metrics
   end
 
   def test_has_default_driver
-    assert Metrics.driver
-    assert Metrics.driver == Metrics::OpenTSDB
+    assert Bixby::Metrics.driver
+    assert Bixby::Metrics.driver == Bixby::Metrics::OpenTSDB
   end
 
   def test_put
     t = Time.new
     mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /foobar/ and v.include? t.to_i.to_s }.once()
-    Metrics.new.put("foobar", 37, t, {})
+    Bixby::Metrics.new.put("foobar", 37, t, {})
   end
 
   def test_put_check_result
@@ -38,7 +38,7 @@ class TestMetrics < ActiveSupport::TestCase
 
     mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /hardware/ and v.include? 1329775841.to_s }.times(4)
 
-    Metrics.new.put_check_result(m)
+    Bixby::Metrics.new.put_check_result(m)
   end
 
   def test_driver_must_override_methods
@@ -50,7 +50,7 @@ class TestMetrics < ActiveSupport::TestCase
     end
   end
 
-  class FooDriver < Metrics::Driver
+  class FooDriver < Bixby::Metrics::Driver
   end
 
 end

@@ -5,7 +5,7 @@ class SchedulerTest < ActiveSupport::TestCase
   end
 
   def test_require_class
-    require "modules/scheduler"
+    require "bixby/modules/scheduler"
     assert Bixby.const_defined? :Scheduler
   end
 

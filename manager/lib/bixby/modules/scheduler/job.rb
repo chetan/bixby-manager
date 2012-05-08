@@ -1,4 +1,5 @@
 
+module Bixby
 class Scheduler
 
   class Job
@@ -12,4 +13,5 @@ class Scheduler
 
   end
 
-end
+end # Scheduler
+end # Bixby

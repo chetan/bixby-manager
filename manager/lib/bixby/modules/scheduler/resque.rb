@@ -1,9 +1,10 @@
 
 require 'bixby/modules/scheduler/driver'
 
+module Bixby
 class Scheduler
 
-  class Resque < Scheduling::Driver
+  class Resque < Driver
 
     class << self
 
@@ -21,6 +22,7 @@ class Scheduler
 
   end
 
-end
+end # Scheduler
+end # Bixby
 
 Bixby::Scheduler.drivers << Bixby::Scheduler::Resque

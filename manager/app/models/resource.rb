@@ -55,7 +55,7 @@ class Resource < ActiveRecord::Base
     tags ||= {}
     agg ||= "sum"
 
-    Metrics.new.get_for_check(check_id, time_start, time_end, tags, agg, downsample)
+    Bixby::Metrics.new.get_for_check(check_id, time_start, time_end, tags, agg, downsample)
   end
 
 end

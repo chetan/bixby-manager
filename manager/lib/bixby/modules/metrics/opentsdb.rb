@@ -1,8 +1,10 @@
 
 require 'bixby/modules/metrics/driver'
 
+module Bixby
 class Metrics
-  class OpenTSDB < Metrics::Driver
+
+  class OpenTSDB < Driver
     class << self
 
       def configure(config)
@@ -90,6 +92,8 @@ class Metrics
 
     end # self
   end # OpenTSDB
-end # Metrics
 
-Metrics.driver = Metrics::OpenTSDB
+end # Metrics
+end # Bixby
+
+Bixby::Metrics.driver = Bixby::Metrics::OpenTSDB

@@ -1,4 +1,5 @@
 
+module Bixby
 class Metrics
 
   class Driver
@@ -37,4 +38,5 @@ class Metrics
 
   end
 
-end
+end # Metrics
+end # Bixby

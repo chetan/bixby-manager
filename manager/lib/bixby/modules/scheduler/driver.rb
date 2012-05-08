@@ -1,4 +1,5 @@
 
+module Bixby
 class Scheduler
 
   class Driver
@@ -17,4 +18,5 @@ class Scheduler
 
   end
 
-end
+end # Scheduler
+end # Bixby
