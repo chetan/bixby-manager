@@ -1,4 +1,6 @@
 
+module Bixby
+
 class RemoteExec < API
 
   module Methods
@@ -104,8 +106,10 @@ class RemoteExec < API
     include Methods
   end
 
-end
+end # RemoteExec
 
 class API
   include RemoteExec::Methods
 end
+
+end # Bixby

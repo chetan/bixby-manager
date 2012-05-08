@@ -7,16 +7,16 @@ class TestRemoteExec < ActiveSupport::TestCase
 
   def test_create_spec
       c = CommandSpec.new(:repo => "support", :bundle => "foobar")
-      assert_equal c, RemoteExec.create_spec(c)
+      assert_equal c, Bixby::RemoteExec.create_spec(c)
 
       c = CommandSpec.new(:repo => "support", :bundle => "foobar")
-      s = RemoteExec.create_spec(c.to_json)
+      s = Bixby::RemoteExec.create_spec(c.to_json)
       assert_equal c.repo, s.repo
       assert_equal c.bundle, s.bundle
 
       repo = Repo.new(:name => "vendor")
       cmd = Command.new(:bundle => "foobar", :command => "baz", :repo => repo)
-      cs = RemoteExec.create_spec(cmd)
+      cs = Bixby::RemoteExec.create_spec(cmd)
 
       assert_not_equal cs, cmd
       assert_equal "baz", cs.command
@@ -35,7 +35,7 @@ class TestRemoteExec < ActiveSupport::TestCase
       j["operation"] == "exec" and jp["repo"] == "vendor" and jp["bundle"] == "foobar" and jp["command"] == "baz"
     }.to_return(:status => 200, :body => JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json)
 
-    ret = RemoteExec.exec(agent, cmd)
+    ret = Bixby::RemoteExec.exec(agent, cmd)
 
     assert_requested(stub)
     assert ret.success?
@@ -62,7 +62,7 @@ class TestRemoteExec < ActiveSupport::TestCase
       req.body =~ %r{system/provisioning} and req.body =~ /get_bundle.rb/
     }.to_return(:status => 200, :body => JsonResponse.new("success", "", {}).to_json).times(3)
 
-    ret = RemoteExec.exec(agent, cmd)
+    ret = Bixby::RemoteExec.exec(agent, cmd)
 
     assert_requested(stub, :times => 2)
     assert_requested(stub2, :times => 1)

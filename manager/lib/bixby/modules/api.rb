@@ -1,10 +1,11 @@
 
+module Bixby
+
 # Base class for all APIs
 #
 # @abstract
 # @attr [ActionDispatch::Request] http_request  HTTP Request object
 # @attr [JsonRequest] json_request  The original JsonRequest object
-
 class API
 
   class Error < Exception
@@ -20,3 +21,5 @@ class API
   end
 
 end
+
+end # Bixby

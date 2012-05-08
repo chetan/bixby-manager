@@ -12,7 +12,7 @@ class TestProvisioning < ActiveSupport::TestCase
 
   def test_list_files
 
-    files = Provisioning.new.list_files(@cmd.to_command_spec.to_hash)
+    files = Bixby::Provisioning.new.list_files(@cmd.to_command_spec.to_hash)
     assert_equal 3, files.length
     assert files.first.keys.include? "file"
     assert files.first.keys.include? "digest"
@@ -21,9 +21,9 @@ class TestProvisioning < ActiveSupport::TestCase
 
   def test_fetch_file
 
-    dl = Provisioning.new.fetch_file(@cmd, "bin/echo")
+    dl = Bixby::Provisioning.new.fetch_file(@cmd, "bin/echo")
     assert dl
-    assert dl.kind_of? FileDownload
+    assert dl.kind_of? Bixby::FileDownload
     assert_equal File.join(BundleRepository.path, "support", "test_bundle", "bin/echo"), dl.filename
 
   end

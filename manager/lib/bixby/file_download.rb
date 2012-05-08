@@ -1,10 +1,14 @@
 
-class FileDownload
+module Bixby
+
+  class FileDownload
 
     attr_accessor :filename
 
     def initialize(file)
-        @filename = file
+      @filename = file
     end
+
+  end
 
 end

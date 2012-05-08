@@ -1,4 +1,6 @@
 
+module Bixby
+
 class Monitoring < API
 
   GET_OPTIONS = "--options"
@@ -147,3 +149,5 @@ class Monitoring < API
   end
 
 end
+
+end # Bixby

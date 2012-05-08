@@ -4,6 +4,8 @@ require 'digest'
 
 require 'bixby/file_download'
 
+module Bixby
+
 class Provisioning < API
 
   # Manager API
@@ -57,3 +59,5 @@ class Provisioning < API
   end
 
 end
+
+end # Bixby

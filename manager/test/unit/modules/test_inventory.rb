@@ -14,8 +14,8 @@ class TestInventory < ActiveSupport::TestCase
 
   def test_nil_pw
 
-    assert_throws(API::Error, "password didn't match any known tenants") do
-      Inventory.new.register_agent(nil, nil, nil, nil, nil)
+    assert_throws(Bixby::API::Error, "password didn't match any known tenants") do
+      Bixby::Inventory.new.register_agent(nil, nil, nil, nil, nil)
     end
 
   end
@@ -26,8 +26,8 @@ class TestInventory < ActiveSupport::TestCase
     t.name = "test"
     t.save
 
-    assert_throws(API::Error, "org not found") do
-      Inventory.new.register_agent(nil, nil, nil, nil, "test")
+    assert_throws(Bixby::API::Error, "org not found") do
+      Bixby::Inventory.new.register_agent(nil, nil, nil, nil, "test")
     end
   end
 
@@ -47,7 +47,7 @@ class TestInventory < ActiveSupport::TestCase
     http_req.expects(:remote_ip).returns(ip).twice()
 
     hostname = "foo.example.com"
-    agent = Inventory.new(http_req).register_agent("foo", "bar", hostname, 18000, "test")
+    agent = Bixby::Inventory.new(http_req).register_agent("foo", "bar", hostname, 18000, "test")
     assert agent
     assert_equal Agent, agent.class
 
@@ -71,8 +71,8 @@ class TestInventory < ActiveSupport::TestCase
     http_req = mock()
     http_req.expects(:remote_ip).returns("4.4.4.4").twice()
 
-    assert_throws(API::Error) do
-      Inventory.new(http_req).register_agent("foo", "bar", "foo.example.com", nil, "test")
+    assert_throws(Bixby::API::Error) do
+      Bixby::Inventory.new(http_req).register_agent("foo", "bar", "foo.example.com", nil, "test")
     end
   end
 

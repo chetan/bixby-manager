@@ -27,7 +27,8 @@ class ApiController < ApplicationController
         end
 
         begin
-            mod = mod.camelize.constantize.new(request, req)
+            mod = "Bixby::#{mod.camelize}"
+            mod = mod.constantize.new(request, req)
             op = op.to_sym
             if not (mod and mod.respond_to? op) then
                 return unsupported_operation(req)
@@ -48,7 +49,7 @@ class ApiController < ApplicationController
             else
                 ret = mod.send(op, req.params)
             end
-            if ret.kind_of? FileDownload then
+            if ret.kind_of? Bixby::FileDownload then
                 return send_file(ret.filename, :filename => File.basename(ret.filename))
 
             elsif ret.kind_of? JsonResponse then

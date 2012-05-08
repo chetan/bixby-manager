@@ -1,4 +1,6 @@
 
+module Bixby
+
 class Inventory < API
 
   # Register and Agent with the server. Also creates an associated Host record
@@ -47,3 +49,5 @@ class Inventory < API
   end
 
 end
+
+end # Bixby
