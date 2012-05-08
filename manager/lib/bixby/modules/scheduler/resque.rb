@@ -1,7 +1,7 @@
 
-require 'bixby/modules/scheduling/driver'
+require 'bixby/modules/scheduler/driver'
 
-module Scheduling
+class Scheduler
 
   class Resque < Scheduling::Driver
 
@@ -23,4 +23,4 @@ module Scheduling
 
 end
 
-Scheduler.drivers << Scheduling::Resque
+Bixby::Scheduler.drivers << Bixby::Scheduler::Resque

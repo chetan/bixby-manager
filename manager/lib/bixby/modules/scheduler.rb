@@ -2,6 +2,7 @@
 require 'bixby/modules/scheduling/driver'
 require 'bixby/modules/scheduling/job'
 
+module Bixby
 class Scheduler < API
 
   class << self
@@ -45,6 +46,7 @@ class Scheduler < API
     driver.schedule_at_with_queue(timestamp, job, queue)
   end
 
-end
+end # Scheduler
+end # Bixby
 
-require 'bixby/modules/scheduling/resque' if Scheduler.drivers.empty?
+require 'bixby/modules/scheduler/resque' if Bixby::Scheduler.drivers.empty?
