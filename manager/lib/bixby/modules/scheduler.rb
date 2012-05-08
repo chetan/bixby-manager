@@ -1,6 +1,6 @@
 
-require 'modules/scheduling/driver'
-require 'modules/scheduling/job'
+require 'bixby/modules/scheduling/driver'
+require 'bixby/modules/scheduling/job'
 
 class Scheduler < API
 
@@ -47,4 +47,4 @@ class Scheduler < API
 
 end
 
-require 'modules/scheduling/resque' if Scheduler.drivers.empty?
+require 'bixby/modules/scheduling/resque' if Scheduler.drivers.empty?

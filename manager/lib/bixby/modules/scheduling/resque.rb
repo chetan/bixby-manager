@@ -1,5 +1,5 @@
 
-require 'modules/scheduling/driver'
+require 'bixby/modules/scheduling/driver'
 
 module Scheduling
 

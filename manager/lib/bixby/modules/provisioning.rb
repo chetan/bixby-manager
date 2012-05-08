@@ -2,7 +2,7 @@
 require 'find'
 require 'digest'
 
-require 'file_download'
+require 'bixby/file_download'
 
 class Provisioning < API
 

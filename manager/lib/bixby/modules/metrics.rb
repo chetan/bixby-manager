@@ -201,5 +201,5 @@ class Metrics < API
 
 end
 
-require 'modules/metrics/driver'
-require 'modules/metrics/opentsdb' if Metrics.driver.nil?
+require 'bixby/modules/metrics/driver'
+require 'bixby/modules/metrics/opentsdb' if Metrics.driver.nil?

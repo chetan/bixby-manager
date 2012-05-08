@@ -1,8 +1,7 @@
 
-require 'modules/provisioning'
-require 'modules/inventory'
-
-require 'file_download'
+require 'bixby/modules/provisioning'
+require 'bixby/modules/inventory'
+require 'bixby/file_download'
 
 class ApiController < ApplicationController
 

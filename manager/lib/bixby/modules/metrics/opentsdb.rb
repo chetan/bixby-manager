@@ -1,5 +1,5 @@
 
-require 'modules/metrics/driver'
+require 'bixby/modules/metrics/driver'
 
 class Metrics
   class OpenTSDB < Metrics::Driver

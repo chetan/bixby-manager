@@ -2,9 +2,8 @@
 # instead, we load this after forking to run our tests
 if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
 
-  require 'modules'
-  require 'rails_ext/json_column'
-  require 'rails_ext/to_api'
+  require 'bixby'
+  require 'rails_ext'
 
   # load devops.yml
   devops_config_filename = File.open(File.join(::Rails.root.to_s, "config", "devops.yml"))
@@ -25,15 +24,15 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
   # setup the scheduler
   if DEVOPS_CONFIG[:scheduler] then
     # load a specific scheduler
-    require "modules/scheduling/#{DEVOPS_CONFIG[:scheduler]}"
+    require "bixby/modules/scheduling/#{DEVOPS_CONFIG[:scheduler]}"
   end
-  require "modules/scheduler"
+  require "bixby/modules/scheduler"
   Scheduler.configure(DEVOPS_CONFIG)
 
   # setup metrics
   if DEVOPS_CONFIG[:metrics] then
-    require "modules/metrics"
-    require "modules/metrics/#{DEVOPS_CONFIG[:metrics]}"
+    require "bixby/modules/metrics"
+    require "bixby/modules/metrics/#{DEVOPS_CONFIG[:metrics]}"
     Metrics.configure(DEVOPS_CONFIG)
   end
 
