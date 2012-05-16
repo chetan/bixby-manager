@@ -173,7 +173,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    memcache-client (1.8.5)
+    memcached (1.4.1)
     metaclass (0.0.1)
     mime-types (1.18)
     minitest (2.12.1)
@@ -311,7 +311,7 @@ DEPENDENCIES
   json
   jst_str!
   lorem_ipsum!
-  memcache-client
+  memcached
   minitest
   mocha
   multi_json
