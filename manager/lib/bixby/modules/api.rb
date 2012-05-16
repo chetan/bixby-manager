@@ -13,8 +13,8 @@ class API
 
   attr_accessor :http_request, :json_request
 
-  # @param [ActionDispatch::Request] http_request  HTTP Request object
-  # @param [JsonRequest] json_request  The original JsonRequest object
+  # @param [ActionDispatch::Request] http_req   HTTP Request object
+  # @param [JsonRequest] json_req               The original JsonRequest object
   def initialize(http_req = nil, json_req = nil)
     @http_request = http_req
     @json_request = json_req
