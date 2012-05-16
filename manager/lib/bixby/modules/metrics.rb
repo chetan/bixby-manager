@@ -6,25 +6,50 @@ class Metrics < API
 
     attr_accessor :driver
 
+    # Configure the active driver
+    #
+    # @param [Hash] config
     def configure(config)
       driver.configure(config)
     end
 
   end
 
+  # Fetch the active driver
+  #
+  # @return [Bixby::Metrics::Driver] driver instance
   def driver
     self.class.driver()
   end
 
-  # downsample format:
-  # time-agg
-  # time = 1s, 1m, 1h, 1d
-  # agg = min, max, sum, avg
-  # ex: 10m-avg
+  # Get metrics for the given options
+  #
+  # @param [Hash] opts
+  # @option opts [String] :key          Metric key name
+  # @option opts [Time] :start_time     Accepts either Time object or Fixnum (epoch in sec)
+  # @option opts [Time] :end_time       Accepts either Time object or Fixnum (epoch in sec)
+  # @option opts [Hash] :tags           Additional tags to filter by
+  # @option opts [String] :agg          Aggregate function; one of: sum, max, min, avg (default="sum")
+  # @option opts [String] :downsample   Whether or not to downsample values (default=nil)
+  #
+  # @example
+  #   Downsample is a combination of a time period and an aggregation function.
+  #   It takes the following form: "time-agg", where
+  #     time = 1s, 1m, 1h, 1d
+  #     agg = min, max, sum, avg
+  #   ex: 10m-avg
+  #
+  # @return [Array<Hash>] Array of metrics
   def get(opts={})
     driver.get(opts)
   end
 
+  # Retrieve multiple metrics simultaneously
+  #
+  # @param [Array<Hash>] reqs   An array of requests
+  # @return [Array<Array>]
+  #
+  # @see #get
   def multi_get(reqs=[])
     driver.multi_get(reqs)
   end
@@ -83,7 +108,12 @@ class Metrics < API
     return collect_metrics(keys, start_time, end_time, tags, agg, downsample)
   end
 
-
+  # Store the given metric
+  #
+  # @param [String] key       Metric key name
+  # @param [Fixnum] value     Value, can be either integer or decimal
+  # @param [Time] timestamp   Time at which value was recorded
+  # @param [Hash] metadata    Additional tags to record
   def put(key, value, timestamp = Time.new, metadata = {})
     driver.put(key, value, timestamp, metadata)
   end

@@ -6,11 +6,14 @@ class Repository
 
   class << self
 
+    # Get the list of rescan plugins
+    #
+    # @return [Array<Class>] List of rescan plugins
     def rescan_plugins
       @rescan_plugins ||= []
     end
 
-    # Update all repos (svn up or git pull) and rescan commands
+    # Update all configured repos (svn up or git pull) and rescan commands
     def update
       repos = Repo.all
       if repos.empty? then

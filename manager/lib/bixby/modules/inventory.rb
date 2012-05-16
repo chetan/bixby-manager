@@ -3,7 +3,7 @@ module Bixby
 
 class Inventory < API
 
-  # Register and Agent with the server. Also creates an associated Host record
+  # Register an Agent with the server. Also creates an associated Host record
   #
   # @param [String] uuid
   # @param [String] public_key

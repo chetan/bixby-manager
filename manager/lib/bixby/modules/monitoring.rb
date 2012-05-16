@@ -29,7 +29,8 @@ class Monitoring < API
     return exec_mon(check.agent, command, GET_METRICS)
   end
 
-  # Update the check configuration for the specified Agent
+  # Update the check configuration for the specified Agent and restart the
+  # monitoring daemon.
   #
   # @param [Agent] agent
   def update_check_config(agent)
@@ -53,6 +54,9 @@ class Monitoring < API
     # restart_mon_daemon(agent)
   end
 
+  # Restart the monitoring daemon. Starts if not already running.
+  #
+  # @param [Agent] agent
   def restart_mon_daemon(agent)
 
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",

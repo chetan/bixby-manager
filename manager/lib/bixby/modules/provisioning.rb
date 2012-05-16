@@ -8,13 +8,17 @@ module Bixby
 
 class Provisioning < API
 
-  # Manager API
+  # Provision an Agent with the given Command
+  #
+  # @param [Agent] agent
+  # @param [CommandSpec] command
+  # @return [JsonResponse] response for the provision request
   def provision(agent, command)
 
     command = create_spec(command)
 
     if not (command.bundle_exists? and command.command_exists?) then
-      # complain
+      # TODO complain
       raise "hey! *WE* don't even have that command!"
     end
 
