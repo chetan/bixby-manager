@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20120512180816) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string  "metric",     :null => false
     t.string  "unit"
     t.string  "desc"
+    t.string  "label"
   end
 
   add_index "command_metrics", ["command_id"], :name => "fk_command_keys_commands1"
@@ -72,6 +73,20 @@ ActiveRecord::Schema.define(:version => 0) do
   end
 
   add_index "hosts", ["org_id"], :name => "fk_hosts_orgs1"
+
+  create_table "metrics", :id => false, :force => true do |t|
+    t.integer  "id",                                                      :null => false
+    t.integer  "resource_id",                                             :null => false
+    t.integer  "check_id",                                                :null => false
+    t.string   "key"
+    t.integer  "status",      :limit => 2
+    t.decimal  "last_value",               :precision => 20, :scale => 2
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
+  end
+
+  add_index "metrics", ["check_id"], :name => "index_metrics_on_check_id"
+  add_index "metrics", ["resource_id"], :name => "index_metrics_on_resource_id"
 
   create_table "orgs", :force => true do |t|
     t.integer "tenant_id"
