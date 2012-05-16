@@ -2,7 +2,7 @@
 require 'yard'
 YARD::Rake::YardocTask.new do |t|
   t.files   = [ 'lib/**/*.rb', 'app/**/*.rb' ]
-  t.options = [ '--output-dir', './yardoc' ]
+  t.options = [ '--output-dir', './yardoc', '-m', 'markdown' ]
 end
 
 namespace :bixby do

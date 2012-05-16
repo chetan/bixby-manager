@@ -57,6 +57,7 @@ group :development do
     gem 'rpm_contrib'
     gem 'newrelic-redis'
     gem "yard"
+    gem "redcarpet"
     gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
     gem "awesome_print"
     gem "rcov",       :platforms => :mri_18

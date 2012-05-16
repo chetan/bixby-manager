@@ -227,6 +227,7 @@ GEM
       rcov
     rdoc (3.12)
       json (~> 1.4)
+    redcarpet (2.1.1)
     redis (2.2.2)
     redis-lock (0.1.0)
       redis
@@ -324,6 +325,7 @@ DEPENDENCIES
   rainbows
   rcov
   rcov_rails
+  redcarpet
   redis (>= 2.2.0)
   redis-lock
   resque!
