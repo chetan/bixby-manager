@@ -122,15 +122,15 @@ class Metrics < API
     driver.put(key, value, timestamp, metadata)
   end
 
-  # Store the results of one or more Checks
+  # Store the results of one or more Checks. Each result may contain multiple metrics.
   #
   # @param [Hash] results
   # @option results [Fixnum] :check_id
-  # @option results [String] :key base key name
-  # @option results [String] :status OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT
+  # @option results [String] :key             base key name
+  # @option results [String] :status          OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT
   # @option results [Fixnum] :timestamp
-  # @option results [Hash] :metrics key/value pairs of metrics
-  # @option results [Array<String>] :errors list of errors, if any
+  # @option results [Hash] :metrics           key/value pairs of metrics and metadata
+  # @option results [Array<String>] :errors   list of errors, if any
   #
   # @return [void]
   def put_check_result(results)
@@ -139,32 +139,40 @@ class Metrics < API
       results = [ results ]
     end
 
-    results.each do |result|
+    ActiveRecord::Base.transaction do
+      results.each do |result|
 
-      check = Check.find(result["check_id"].to_i)
+        check = Check.find(result["check_id"].to_i)
 
-      result["metrics"].each do |metric|
+        result["metrics"].each do |metric|
 
-        metadata = metric["metadata"] || {}
-        if not (metadata[:host] or metadata["host"]) then
-          metadata[:host] = check.agent.host.hostname || check.agent.host.ip
+          metadata = metric["metadata"] || {}
+
+          if not (metadata[:host] or metadata["host"]) then
+            metadata[:host] = check.agent.host.hostname || check.agent.host.ip
+          end
+          metadata[:host_id]     = check.agent.host.id
+          metadata[:check_id]    = check.id
+          metadata[:resource_id] = check.resource.id
+          metadata[:org_id]      = check.agent.host.org.id
+          metadata[:tenant_id]   = check.agent.host.org.tenant.id
+
+          time = Time.at(result["timestamp"])
+          base = result["key"] ? result["key"]+"." : ""
+          metric["metrics"].each do |k,v|
+            key = "#{base}#{k}"
+            m = Metric.for(check, key, metadata)
+            m.last_value = v
+            m.touch
+            m.save!
+            put(key, v, time, metadata)
+          end
+
         end
-        metadata[:host_id]     = check.agent.host.id
-        metadata[:check_id]    = check.id
-        metadata[:resource_id] = check.resource.id
-        metadata[:org_id]      = check.agent.host.org.id
-        metadata[:tenant_id]   = check.agent.host.org.tenant.id
 
-        time = Time.at(result["timestamp"])
-        base = result["key"] ? result["key"]+"." : ""
-        metric["metrics"].each do |k,v|
-          put("#{base}#{k}", v, time, metadata)
-        end
-
-      end
-
-      nil
-    end
+        true
+      end # results.each
+    end # transaction
 
   end
 
