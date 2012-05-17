@@ -12,7 +12,6 @@ class ActiveRecord::Migration
     execute "ALTER TABLE #{table} ADD CONSTRAINT `#{fk_name}` FOREIGN KEY (`#{other_table.to_s.foreign_key}` ) REFERENCES `#{other_table.to_s.pluralize}` (`id` ) ON DELETE NO ACTION ON UPDATE NO ACTION"
   end
 
-
 end
 
 class ActiveRecord::ConnectionAdapters::TableDefinition
@@ -20,8 +19,33 @@ class ActiveRecord::ConnectionAdapters::TableDefinition
   # create an 'int(10) unsigned' id field
   #
   # @param [String] col     column name (default = :id)
-  def add_id(col = :id)
-    self.column col, "int(10) unsigned", :null => false
+  def add_id(col = :id, opts = {})
+    primary = opts.delete(:primary) || col.to_s == "id"
+    type = "INT(10) UNSIGNED"
+    type = "#{type} AUTO_INCREMENT PRIMARY KEY" if primary
+    self.column(col, type, :null => false)
+  end
+
+  # Override integer method to create unsigned ints by default.
+  # To get a signed int, pass { :unsigned => false }
+  def integer(*args)
+    opts = args.extract_options!
+    type = @base.type_to_sql(:integer, opts.delete(:limit), opts.delete(:precision), opts.delete(:scale)) rescue type
+    unsigned = opts.include?(:unsigned) ? opts[:unsigned] : true # unsigned by default
+    type = "#{type} UNSIGNED" if unsigned
+    args.each do |col|
+      self.column(col, type, opts)
+    end
+  end
+
+  # Create column of type 'char'
+  def char(*args)
+    opts = args.extract_options!
+    type = @base.type_to_sql(:string, opts.delete(:limit), opts.delete(:precision), opts.delete(:scale)) rescue type
+    type = type.to_s.gsub(/varchar/, 'char')
+    args.each do |col|
+      self.column(col, type, opts)
+    end
   end
 
 end
