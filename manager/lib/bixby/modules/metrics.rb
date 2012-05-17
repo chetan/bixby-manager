@@ -75,7 +75,9 @@ class Metrics < API
     # tags[:org_id]    = @org_id
     # tags[:tenant_id] = @tenant_id
 
-    return collect_metrics(check.metrics, start_time, end_time, tags, agg, downsample)
+    return Rails.cache.fetch("metrics_for_check_#{check.id}", :expires_in => 2.minutes) do
+      collect_metrics(check.metrics, start_time, end_time, tags, agg, downsample)
+    end
   end
 
   # Get the metrics for the given Command
@@ -95,7 +97,9 @@ class Metrics < API
     # tags[:org_id]    = @org_id
     # tags[:tenant_id] = @tenant_id
 
-    return collect_metrics(CommandMetric.for(command), start_time, end_time, tags, agg, downsample)
+    return Rails.cache.fetch("metrics_for_command_#{command.id}", :expires_in => 2.minutes) do
+      collect_metrics(CommandMetric.for(command), start_time, end_time, tags, agg, downsample)
+    end
   end
 
   # Get the metrics for the given keys
@@ -195,6 +199,13 @@ class Metrics < API
     end
 
     return metrics
+  end
+
+  def create_cache_key(opts)
+    key = []
+    [:key, :start_time, :end_time, :agg, :downsample].each { |k| key << opts[k] }
+    opts[:tags].keys.sort{ |k| key << k << opts[:tags][k] }
+    return key.join("_")
   end
 
 end # Metrics
