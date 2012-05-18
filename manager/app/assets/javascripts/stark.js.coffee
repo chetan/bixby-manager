@@ -36,7 +36,7 @@ class Stark.App
   # bound to app:route event
   matchRoute: (route, params) ->
     console.log "matchRoute()", route.state_name
-    console.log route, params
+    console.log route, "params: ", params
     @transition route.state_name, { params: params }
 
   transition: (state_name, state_data) ->
