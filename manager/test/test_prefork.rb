@@ -4,6 +4,8 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 
+require 'awesome_print'
+
 require 'minitest/unit'
 require 'turn'
 require 'turn/reporter'
@@ -11,10 +13,15 @@ require 'turn/reporters/outline_reporter'
 
 Turn.config.framework = :minitest
 Turn.config.format = :outline
+Turn.config.natural = true
 
 module Turn
   class OutlineReporter < Reporter
     def start_test(test)
+
+      @last_test = test
+
+      # create new captures for each test (so we don't get repeated messages)
       @stdout = StringIO.new
       @stderr = StringIO.new
 
@@ -27,6 +34,31 @@ module Turn
 
       $stdout = @stdout
       $stderr = @stderr unless $DEBUG
+    end
+
+    # override so we can dump stdout/stderr even if the test passes
+    def pass(message=nil)
+      io.puts " %s %s" % [ticktock, PASS]
+
+      if message
+        message = Colorize.magenta(message)
+        message = message.to_s.tabto(TAB_SIZE)
+        io.puts(message)
+      end
+
+      show_captured_output
+    end
+
+    # override to add test name to output
+    def show_captured_stdout
+      @stdout.rewind
+      return if @stdout.eof?
+      STDOUT.puts(<<-output.tabto(8))
+\n\nSTDOUT (#{naturalized_name(@last_test)}):
+-------------------------------------------------------------------------------
+
+#{@stdout.read}
+      output
     end
   end
 end
@@ -43,12 +75,15 @@ end
 
 # load curb first so webmock can stub it out as necessary
 require 'curb'
+require 'curb_threadpool'
 require 'webmock'
-include WebMock::API
 require 'mocha'
 
 
 class ActiveSupport::TestCase
+
+  include WebMock::API
+
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   #
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
@@ -65,8 +100,6 @@ class MiniTest::Unit::TestCase
     begin
       yield
     rescue Exception => ex
-      puts "#{ex.class}: #{ex.message}"
-      puts ex.backtrace.join("\n")
       if clazz.to_s == ex.class.name then
         if msg.nil?
           return
@@ -74,6 +107,10 @@ class MiniTest::Unit::TestCase
           return
         end
       end
+      puts "unexpected exception caught:"
+      puts "#{ex.class}: #{ex.message}"
+      puts ex.backtrace.join("\n")
+      puts
     end
     flunk("Expected #{mu_pp(clazz)} to have been thrown")
   end
