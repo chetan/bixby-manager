@@ -10,6 +10,9 @@ Devops::Application.configure do
   # disabled for spork/simplecov
   config.cache_classes = false
 
+  # disable caching in test
+  config.cache_store = :null_store
+
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
