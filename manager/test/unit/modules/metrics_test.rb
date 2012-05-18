@@ -86,6 +86,16 @@ class TestMetrics < ActiveSupport::TestCase
     test_get_host(m.check.host.id.to_s)
   end
 
+  def test_get_for_check
+    m = FactoryGirl.create(:metric)
+    test_get_check(m.check)
+  end
+
+  def test_get_for_check_by_id
+    m = FactoryGirl.create(:metric)
+    test_get_check(m.check.id)
+  end
+
   class FooDriver < Bixby::Metrics::Driver
   end
 
@@ -96,7 +106,16 @@ class TestMetrics < ActiveSupport::TestCase
   def test_get_host(host)
     stub, req = create_req()
     ret = Bixby::Metrics.new.get_for_host(host, Time.new-86400, Time.new, {:foo=>"bar"})
+    common_metric_tests(stub, ret)
+  end
 
+  def test_get_check(check)
+    stub, req = create_req()
+    ret = Bixby::Metrics.new.get_for_check(check, Time.new-86400, Time.new, {:foo=>"bar"})
+    common_metric_tests(stub, ret)
+  end
+
+  def common_metric_tests(stub, ret)
     assert_requested(stub)
     assert ret
     assert_kind_of Array, ret

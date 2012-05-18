@@ -56,20 +56,25 @@ class Metrics < API
     process_results(driver.multi_get(reqs))
   end
 
+  # Get the metrics for the given Host
+  #
+  # @param [Host] host
+  # @param [Time] start_time
+  # @param [Time] end_time
+  # @param [Hash] tags        Tags to filter by, only check-related filters by default
+  # @param [String] agg
   def get_for_host(host, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
 
     if [Fixnum, String].include? host.class
       host = Host.find(host.to_i)
     end
 
-    metrics = Metric.includes(:check).where(:check_id => Check.where(:host_id => host.id))
-    keys = metrics.map { |m| m.key }
-    get_for_keys(keys, start_time, end_time, tags, agg, downsample).each_with_index do |data, i|
-      metrics[i].data = data[:vals]
-      metrics[i].tags = data[:tags]
-    end
+    # TODO add in other relevant keys like org, tenant
+    tags[:host_id]     = host.id
+    # tags[:org_id]    = @org_id
+    # tags[:tenant_id] = @tenant_id
 
-    return metrics.map { |m| m }
+    get_for_checks(Check.where(:host_id => host.id), start_time, end_time, tags, agg, downsample)
   end
 
   # Get the metrics for the given Check
@@ -93,29 +98,7 @@ class Metrics < API
     # tags[:tenant_id] = @tenant_id
 
     return Rails.cache.fetch("metrics_for_check_#{check.id}", :expires_in => 2.minutes) do
-      get_for_keys(check.metrics, start_time, end_time, tags, agg, downsample)
-    end
-  end
-
-  # Get the metrics for the given Command
-  #
-  # @param [Command] command
-  # @param [Time] start_time
-  # @param [Time] end_time
-  # @param [Hash] tags        Tags to filter by, only check-related filters by default
-  # @param [String] agg
-  def get_for_command(command, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
-
-    if [Fixnum, String].include? command.class
-      command = Command.find(command.to_i)
-    end
-
-    # TODO add in other relevant keys like org, tenant
-    # tags[:org_id]    = @org_id
-    # tags[:tenant_id] = @tenant_id
-
-    return Rails.cache.fetch("metrics_for_command_#{command.id}", :expires_in => 2.minutes) do
-      get_for_keys(MetricInfo.for(command), start_time, end_time, tags, agg, downsample)
+      get_for_checks(check, start_time, end_time, tags, agg, downsample)
     end
   end
 
@@ -208,6 +191,19 @@ class Metrics < API
 
 
   private
+
+  # Get Metrics for the given checks
+  def get_for_checks(checks, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
+    metrics = Metric.includes(:check).where(:check_id => checks)
+    keys = metrics.map { |m| m.key }
+    get_for_keys(keys, start_time, end_time, tags, agg, downsample).each_with_index do |data, i|
+      metrics[i].data = data[:vals]
+      metrics[i].tags = data[:tags]
+    end
+
+    return metrics.map { |m| m }
+  end
+
 
   # Process raw results
   #
