@@ -10,7 +10,7 @@ class Metrics < API
 
       # create a hash with only the metric name (remove base)
       existing = {}
-      metrics = CommandMetric.where("command_id = ?", cmd.id)
+      metrics = MetricInfo.where("command_id = ?", cmd.id)
       metrics.each do |m|
         k = m.metric.gsub(/#{base}\./, '')
         existing[k] = m
@@ -19,13 +19,14 @@ class Metrics < API
       # create/update metrics
       new_metrics = config["metrics"]
       new_metrics.each do |key, metric|
-        cm = existing.include?(key) ? existing[key] : CommandMetric.new
+        cm = existing.include?(key) ? existing[key] : MetricInfo.new
         if not cm.command_id then
           cm.command_id = cmd.id
           cm.metric = base + "." + key
         end
         cm.unit = metric["unit"]
         cm.desc = metric["desc"]
+        cm.label = config["label"]
         cm.save!
 
         Rails.logger.info "* updated metric: #{cm.metric}"

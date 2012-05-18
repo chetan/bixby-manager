@@ -11,7 +11,7 @@ FactoryGirl.define do
   end
 
   factory :check do
-    association :resource
+    association :host
     association :agent
     association :command
   end
@@ -30,10 +30,6 @@ FactoryGirl.define do
 
   factory :repo do
     association :org
-  end
-
-  factory :resource do
-    association :host
   end
 
   factory :tenant do

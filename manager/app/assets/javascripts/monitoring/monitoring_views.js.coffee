@@ -12,6 +12,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     events: {
       "click .add_resource_link": (e) ->
         @transition "mon_hosts_resources_new", { host: @host }
+      "click div.metric a.metric": (e) ->
+        res = @resources.get $(e.target).attr("resource_id")
+        metric = $(e.target).attr("metric")
+        @transition "mon_hosts_resources_metric", { host: @host, resource: res, metric: metric }
     }
 
     render: ->
@@ -22,10 +26,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       resources = @resources
 
       @resources.each (res) ->
-        metrics = res.get("metrics");
+        metrics = res.get("data");
+        console.log("got metrics: ", metrics);
 
         _.each metrics, (metric, key) ->
           s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
+          console.log(s)
           el = $(s + " .graph")[0]
 
           # draw footer
@@ -67,6 +73,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
             unhighlightCallback: (e) ->
               footer.text(footer_text)
 
+            # allow zooming in for more granular data (don't downsample)
             zoomCallback: (minX, maxX, yRanges) ->
               if g.is_granular
                 if minX == g.rawData_[0][0] && maxX == g.rawData_[g.rawData_.length-1][0]
@@ -132,6 +139,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           graph.render();
           $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
 
+  class exports.MetricDetail extends Stark.View
+    el: "div.monitoring_content"
+    template: "monitoring/metric_detail"
+    render: ->
+      console.log @
+      super()
 
   class exports.AddCommand extends Stark.View
     el: "div.monitoring_content"

@@ -13,17 +13,18 @@
       <h4><%= resource.get("name") %></h4>
       <div class="spacer">&nbsp;</div>
 <%
-    _.each(resource.get("metrics"), function(val, key) {
+    _.each(resource.get("data"), function(val, key) {
 %>
 
 <div class="metric" metric="<%= key %>">
   <h5 class="title">
-    <%= val.desc %><% if (val.unit) { %> (<%= val.unit %>)<% } %>
+    <a class="metric"
+       metric="<%= key %>"
+       resource_id="<%= resource.id %>"
+       host_id="<%= resource.get('host_id') %>"><%= val.desc %><% if (val.unit) { %> (<%= val.unit %>)<% } %></a>
   </h5>
   <div class="graph_container">
-    <div class="y_axis"></div>
     <div class="graph"></div>
-    <div class="x_axis"></div>
   </div>
   <h6 class="footer">
     Last Value: n/a

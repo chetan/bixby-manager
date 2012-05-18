@@ -8,11 +8,11 @@ class Monitoring::HostsController < Monitoring::BaseController
   def show
     @host = Host.find(params[:id])
     # TODO error if no id
-    @resources = Resource.metrics_for_host(@host.id)
+    @metrics = Metric.metrics_for_host(@host.id)
 
     @bootstrap = [
       { :name => "host", :model => "Host", :data => @host },
-      { :name => "resources", :model => "ResourceList", :data => @resources },
+      { :name => "resources", :model => "ResourceList", :data => @metrics },
     ]
   end
 

@@ -85,13 +85,9 @@ class Monitoring < API
       name += args.values.first
     end
 
-    res = Resource.new
-    res.host = host
-    res.name = name
-    res.save!
-
+    # TODO host & agent can be different
     check = Check.new
-    check.resource        = res
+    check.host            = host
     check.agent           = host.agent
     check.command         = command
     check.args            = args

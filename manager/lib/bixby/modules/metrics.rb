@@ -70,8 +70,7 @@ class Metrics < API
     # foo = Metrics.new.get("hardware.cpu.loadavg.1m", Time.new-(86400*14), Time.new)
     # TODO add in other relevant keys like org, tenant
     tags[:check_id]    = check.id
-    tags[:resource_id] = check.resource.id
-    tags[:host_id]     = check.resource.host.id
+    tags[:host_id]     = check.host.id
     # tags[:org_id]    = @org_id
     # tags[:tenant_id] = @tenant_id
 
@@ -98,7 +97,7 @@ class Metrics < API
     # tags[:tenant_id] = @tenant_id
 
     return Rails.cache.fetch("metrics_for_command_#{command.id}", :expires_in => 2.minutes) do
-      collect_metrics(CommandMetric.for(command), start_time, end_time, tags, agg, downsample)
+      collect_metrics(MetricInfo.for(command), start_time, end_time, tags, agg, downsample)
     end
   end
 
@@ -151,9 +150,8 @@ class Metrics < API
           if not (metadata[:host] or metadata["host"]) then
             metadata[:host] = check.agent.host.hostname || check.agent.host.ip
           end
-          metadata[:host_id]     = check.agent.host.id
+          metadata[:host_id]     = check.host.id
           metadata[:check_id]    = check.id
-          metadata[:resource_id] = check.resource.id
           metadata[:org_id]      = check.agent.host.org.id
           metadata[:tenant_id]   = check.agent.host.org.tenant.id
 
@@ -181,10 +179,10 @@ class Metrics < API
 
   # Fetch a list of metrics by metric name
   #
-  # @param [Object] command_metrics   Array of metric Strings or CommandMetric objects
+  # @param [Object] command_metrics   Array of metric Strings or MetricInfo objects
   def collect_metrics(command_metrics, start_time, end_time, tags, agg, downsample)
 
-    if command_metrics.first.kind_of? CommandMetric then
+    if command_metrics.first.kind_of? MetricInfo then
       command_metrics = command_metrics.map{ |m| m.metric }
     end
 

@@ -1,10 +1,10 @@
 
-class CommandMetric < ActiveRecord::Base
+class MetricInfo < ActiveRecord::Base
 
   belongs_to :command
 
   def self.for(command)
-    command = command.check.command if command.kind_of? Resource
+    command = command.check.command if command.kind_of? Metric
     where("command_id = ?", command.id)
   end
 

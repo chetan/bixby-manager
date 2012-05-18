@@ -1,7 +1,7 @@
 
 class Check < ActiveRecord::Base
 
-  belongs_to :resource
+  belongs_to :host
   belongs_to :agent
   belongs_to :command
 
@@ -9,7 +9,7 @@ class Check < ActiveRecord::Base
 
   # Get a list of CommandMetrics that this check provides
   def metrics
-    @metrics ||= CommandMetric.where("command_id = ?", self.command_id)
+    @metrics ||= MetricInfo.where("command_id = ?", self.command_id)
   end
 
 end

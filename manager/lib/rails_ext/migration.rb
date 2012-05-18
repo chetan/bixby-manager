@@ -1,21 +1,5 @@
 
-class ActiveRecord::Migration
-
-  # Add a foreign key constraint to a table
-  #
-  # @param [String] table         table on which to add the constraint
-  # @param [Stirng] other_table   table to which we will refer
-  def add_fk(table, other_table)
-    fk_name = "fk_#{table}_#{other_table.to_s.pluralize}"
-    o_fk = other_table.to_s.foreign_key
-    add_index table, o_fk, :order => { o_fk => :asc }
-    execute "ALTER TABLE #{table} ADD CONSTRAINT `#{fk_name}` FOREIGN KEY (`#{other_table.to_s.foreign_key}` ) REFERENCES `#{other_table.to_s.pluralize}` (`id` ) ON DELETE NO ACTION ON UPDATE NO ACTION"
-  end
-
-end
-
-class ActiveRecord::ConnectionAdapters::TableDefinition
-
+module Bixby::ARTableMigration
   # create an 'int(10) unsigned' id field
   #
   # @param [String] col     column name (default = :id)
@@ -23,7 +7,8 @@ class ActiveRecord::ConnectionAdapters::TableDefinition
     primary = opts.delete(:primary) || col.to_s == "id"
     type = "INT(10) UNSIGNED"
     type = "#{type} AUTO_INCREMENT PRIMARY KEY" if primary
-    self.column(col, type, :null => false)
+    opts[:null] = false
+    self.column(col, type, opts)
   end
 
   # Override integer method to create unsigned ints by default.
@@ -47,5 +32,31 @@ class ActiveRecord::ConnectionAdapters::TableDefinition
       self.column(col, type, opts)
     end
   end
+end
 
+class ActiveRecord::Migration
+
+  # Add a foreign key constraint to a table
+  #
+  # @param [String] table         table on which to add the constraint
+  # @param [Stirng] other_table   table to which we will refer
+  def add_fk(table, other_table)
+    fk_name = "fk_#{table}_#{other_table.to_s.pluralize}"
+    o_fk = other_table.to_s.foreign_key
+    add_index table, o_fk, :order => { o_fk => :asc }
+    execute "ALTER TABLE #{table} ADD CONSTRAINT `#{fk_name}` FOREIGN KEY (`#{other_table.to_s.foreign_key}` ) REFERENCES `#{other_table.to_s.pluralize}` (`id` ) ON DELETE NO ACTION ON UPDATE NO ACTION"
+  end
+
+  def drop_fk(table, fk)
+    execute "ALTER TABLE #{table} DROP FOREIGN KEY #{fk};"
+  end
+
+end
+
+class ActiveRecord::ConnectionAdapters::TableDefinition
+  include Bixby::ARTableMigration
+end
+
+class ActiveRecord::ConnectionAdapters::Table
+  include Bixby::ARTableMigration
 end
