@@ -40,8 +40,10 @@ class Metrics < API
   #   ex: 10m-avg
   #
   # @return [Array<Hash>] Array of metrics
+  #
+  # @example
   def get(opts={})
-    driver.get(opts)
+    process_results(driver.get(opts)).first
   end
 
   # Retrieve multiple metrics simultaneously
@@ -51,7 +53,23 @@ class Metrics < API
   #
   # @see #get
   def multi_get(reqs=[])
-    driver.multi_get(reqs)
+    process_results(driver.multi_get(reqs))
+  end
+
+  def get_for_host(host, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
+
+    if [Fixnum, String].include? host.class
+      host = Host.find(host.to_i)
+    end
+
+    metrics = Metric.includes(:check).where(:check_id => Check.where(:host_id => host.id))
+    keys = metrics.map { |m| m.key }
+    get_for_keys(keys, start_time, end_time, tags, agg, downsample).each_with_index do |data, i|
+      metrics[i].data = data[:vals]
+      metrics[i].tags = data[:tags]
+    end
+
+    return metrics.map { |m| m }
   end
 
   # Get the metrics for the given Check
@@ -75,7 +93,7 @@ class Metrics < API
     # tags[:tenant_id] = @tenant_id
 
     return Rails.cache.fetch("metrics_for_check_#{check.id}", :expires_in => 2.minutes) do
-      collect_metrics(check.metrics, start_time, end_time, tags, agg, downsample)
+      get_for_keys(check.metrics, start_time, end_time, tags, agg, downsample)
     end
   end
 
@@ -97,18 +115,32 @@ class Metrics < API
     # tags[:tenant_id] = @tenant_id
 
     return Rails.cache.fetch("metrics_for_command_#{command.id}", :expires_in => 2.minutes) do
-      collect_metrics(MetricInfo.for(command), start_time, end_time, tags, agg, downsample)
+      get_for_keys(MetricInfo.for(command), start_time, end_time, tags, agg, downsample)
     end
   end
 
   # Get the metrics for the given keys
   def get_for_keys(keys, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
 
+    if not keys.kind_of? Array then
+      keys = [ keys ]
+    end
+
     # TODO add in other relevant keys like org, tenant
     # tags[:org_id]    = @org_id
     # tags[:tenant_id] = @tenant_id
 
-    return collect_metrics(keys, start_time, end_time, tags, agg, downsample)
+    if keys.first.kind_of? MetricInfo then
+      keys = keys.map{ |m| m.metric }
+    end
+
+    reqs = []
+    keys.each do |m|
+      # tags should all be the same, so factor them out
+      reqs << { :key => m, :start_time => start_time, :end_time => end_time, :tags => tags, :agg => agg, :downsample => downsample }
+    end
+
+    process_results(driver.multi_get(reqs))
   end
 
   # Store the given metric
@@ -177,31 +209,29 @@ class Metrics < API
 
   private
 
-  # Fetch a list of metrics by metric name
+  # Process raw results
   #
-  # @param [Object] command_metrics   Array of metric Strings or MetricInfo objects
-  def collect_metrics(command_metrics, start_time, end_time, tags, agg, downsample)
+  # @param [Array<Array>] array of metric responses from the driver
+  def process_results(results)
 
-    if command_metrics.first.kind_of? MetricInfo then
-      command_metrics = command_metrics.map{ |m| m.metric }
+    if results.blank? then
+      return results
     end
 
-    reqs = []
-    command_metrics.each do |m|
-      # tags should all be the same, so factor them out
-      reqs << { :key => m, :start_time => start_time, :end_time => end_time, :tags => tags, :agg => agg, :downsample => downsample }
+    if not results.first.kind_of? Array then
+      results = [ results ]
     end
 
-    results = multi_get(reqs)
+    metrics = []
+    results.each do |met|
+      if not met or met.empty? then
+        metrics << met
+        next
+      end
 
-    metrics = {}
-    command_metrics.each_with_index do |m, i|
-      vals = results[i]
-      next if not vals or vals.empty?
-
-      ret = { :key => m, :tags => vals.first[:tags] }
-      ret[:vals] = vals.map{ |v| { :time => v[:time], :val => v[:val] } }
-      metrics[m] = ret
+      ret = { :key => met.first[:key], :tags => met.first[:tags] }
+      ret[:vals] = met.map{ |v| { :time => v[:time], :val => v[:val] } }
+      metrics << ret
     end
 
     return metrics

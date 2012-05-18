@@ -4,9 +4,12 @@ require 'factory_girl_rails'
 
 FactoryGirl.define do
 
+  sequence(:uuid) { |n| "uuid-#{n}" }
+  sequence(:pubkey) { |n| "pubkey-#{n}" }
+
   factory :agent do
-    uuid "1234"
-    public_key "asdf"
+    uuid { generate(:uuid) }
+    public_key { generate(:pubkey) }
     association :host
   end
 
@@ -14,6 +17,12 @@ FactoryGirl.define do
     association :host
     association :agent
     association :command
+  end
+
+  factory :metric do
+    key "hardware.storage.disk.free"
+    tag_hash "foobar"
+    association :check
   end
 
   factory :command do

@@ -131,6 +131,12 @@ class Watcher
     changes = []
     files.each do |f|
 
+      if f =~ %r{test\/(factories|test_.*?)\.rb$} or f =~ /^test_guard\.rb$/ then
+        # TODO move excludes to var
+        # skip changes in these files
+        next
+      end
+
       if f == "Gemfile" then # ignore .lock
         b = true
       elsif f =~ %r{^test/} then

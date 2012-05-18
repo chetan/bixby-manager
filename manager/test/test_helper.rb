@@ -28,6 +28,11 @@ def bootstrap_tests
   rescue Exception => ex
   end
 
+  begin
+    require "#{Rails.root}/test/factories"
+  rescue
+  end
+
   ENV["BOOTSTRAPNOW"] = "1"
   require "#{Rails.root.to_s}/config/initializers/devops_bootstrap"
   Dir.glob(Rails.root + "/lib/**/*.rb").each{ |f| require f }
