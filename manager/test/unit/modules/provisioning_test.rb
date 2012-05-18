@@ -30,4 +30,16 @@ class TestProvisioning < ActiveSupport::TestCase
 
   end
 
+  def test_provision_missing_bundle
+    BundleRepository.path = "#{Rails.root}/test"
+    repo  = Repo.new(:name => "support")
+    agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
+    cmd   = Command.new(:bundle => "test_bundle", :command => "echofoo", :repo => repo)
+
+    assert_throws RuntimeError do
+      Bixby::Provisioning.new.provision(agent, cmd)
+    end
+
+  end
+
 end
