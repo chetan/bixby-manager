@@ -4,6 +4,7 @@ require 'test_helper'
 class TestProvisioning < ActiveSupport::TestCase
 
   def setup
+    SimpleCov.command_name 'test:modules:provisioning'
     WebMock.reset!
 
     BundleRepository.path = "#{Rails.root}/test"

@@ -6,6 +6,7 @@ require 'digest'
 class TestInventory < ActiveSupport::TestCase
 
   def setup
+    SimpleCov.command_name 'test:modules:inventory'
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.start
   end

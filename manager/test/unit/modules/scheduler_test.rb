@@ -4,6 +4,7 @@ require 'test_helper'
 class SchedulerTest < ActiveSupport::TestCase
 
   def setup
+    SimpleCov.command_name 'test:modules:scheduler'
   end
 
   def test_require_class

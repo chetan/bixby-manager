@@ -4,6 +4,7 @@ require 'test_helper'
 class TestRemoteExec < ActiveSupport::TestCase
 
   def setup
+    SimpleCov.command_name 'test:modules:remote_exec'
     WebMock.reset!
   end
 
