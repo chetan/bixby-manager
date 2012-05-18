@@ -48,6 +48,8 @@ group :assets do
     # adds :coffeescript filter to haml
     # gem "coffee-filter"
     gem 'haml_assets'
+    gem 'yui-compressor'
+    gem 'uglifier'
 end
 
 group :development do
