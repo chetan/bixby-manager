@@ -8,8 +8,7 @@ class MetricInfo < ActiveRecord::Base
     where("command_id = ?", command.id)
   end
 
-  def to_api(opts, as_json=true)
-    opts ||= {}
+  def to_api(opts={}, as_json=true)
     opts[:except] = [ :command_id ]
     super(opts, as_json)
   end

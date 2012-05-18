@@ -3,6 +3,8 @@ class Metric < ActiveRecord::Base
 
   belongs_to :check
 
+  attr_accessor :data, :tags
+
   # Find an existing Metric or return a new instance
   #
   # @param [Check] check
@@ -50,6 +52,13 @@ class Metric < ActiveRecord::Base
 
   def metrics(time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
     self.class.metrics(self.check, time_start, time_end, tags, agg, downsample)
+  end
+
+  def to_api(opts={}, as_json=true)
+    opts[:inject] = proc do |obj, hash|
+      hash[:data] = obj.data
+    end
+    super(opts, as_json)
   end
 
 
