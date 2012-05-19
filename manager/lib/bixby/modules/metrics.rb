@@ -98,7 +98,7 @@ class Metrics < API
     # tags[:tenant_id] = @tenant_id
 
     return Rails.cache.fetch("metrics_for_check_#{check.id}", :expires_in => 2.minutes) do
-      get_for_checks(check, start_time, end_time, tags, agg, downsample)
+      get_for_checks(check, start_time, end_time, tags, agg, downsample).first
     end
   end
 
@@ -123,7 +123,7 @@ class Metrics < API
       reqs << { :key => m, :start_time => start_time, :end_time => end_time, :tags => tags, :agg => agg, :downsample => downsample }
     end
 
-    process_results(driver.multi_get(reqs))
+    return multi_get(reqs)
   end
 
   # Store the given metric

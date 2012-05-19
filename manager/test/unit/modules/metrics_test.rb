@@ -139,8 +139,18 @@ EOF
   def test_get_check(check)
     stub, req = create_req()
     ret = Bixby::Metrics.new.get_for_check(check, Time.new-86400, Time.new, {:foo=>"bar"})
-    common_metric_tests(stub, ret)
+    common_check_tests(stub, ret)
     return ret
+  end
+
+  def common_check_tests(stub, ret)
+    assert_requested(stub)
+    assert ret
+    assert_kind_of Metric, ret
+    assert ret.data
+    assert ret.metadata
+    assert_equal 2, ret.data.size
+    assert_equal 7, ret.metadata.size
   end
 
   def common_metric_tests(stub, ret)
