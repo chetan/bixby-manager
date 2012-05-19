@@ -183,7 +183,7 @@ class Metrics < API
           metadata[:tenant_id]   = check.agent.host.org.tenant.id
 
           # save
-          time = Time.at(result["timestamp"])
+          time = result["timestamp"].to_i
           metric["metrics"].each do |k,v|
             key = "#{base}#{k}"
             put(key, v, time, metadata)
