@@ -153,6 +153,38 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `checks`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `checks` ;
+
+CREATE  TABLE IF NOT EXISTS `checks` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `host_id` INT UNSIGNED NOT NULL ,
+  `agent_id` INT UNSIGNED NOT NULL ,
+  `command_id` INT UNSIGNED NOT NULL ,
+  `args` TEXT NULL ,
+  `normal_interval` SMALLINT UNSIGNED NULL ,
+  `retry_interval` SMALLINT UNSIGNED NULL ,
+  `timeout` SMALLINT NULL ,
+  `plot` TINYINT(1) NULL ,
+  `enabled` TINYINT(1) NULL DEFAULT false ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_checks_agents1` (`agent_id` ASC) ,
+  INDEX `fk_checks_commands1` (`command_id` ASC) ,
+  CONSTRAINT `fk_checks_agents1`
+    FOREIGN KEY (`agent_id` )
+    REFERENCES `agents` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_checks_commands1`
+    FOREIGN KEY (`command_id` )
+    REFERENCES `commands` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `resources`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `resources` ;
@@ -172,58 +204,83 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `checks`
+-- Table `metric_infos`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `checks` ;
+DROP TABLE IF EXISTS `metric_infos` ;
 
-CREATE  TABLE IF NOT EXISTS `checks` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `resource_id` INT UNSIGNED NOT NULL ,
-  `agent_id` INT UNSIGNED NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `metric_infos` (
   `command_id` INT UNSIGNED NOT NULL ,
-  `args` TEXT NULL ,
-  `normal_interval` SMALLINT UNSIGNED NULL ,
-  `retry_interval` SMALLINT UNSIGNED NULL ,
-  `timeout` SMALLINT NULL ,
-  `plot` TINYINT(1)  NULL ,
-  `enabled` TINYINT(1)  NULL DEFAULT false ,
-  PRIMARY KEY (`id`) ,
-  INDEX `fk_checks_agents1` (`agent_id` ASC) ,
-  INDEX `fk_checks_commands1` (`command_id` ASC) ,
-  INDEX `fk_checks_resources1` (`resource_id` ASC) ,
-  CONSTRAINT `fk_checks_agents1`
-    FOREIGN KEY (`agent_id` )
-    REFERENCES `agents` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_checks_commands1`
+  `metric` VARCHAR(255) NOT NULL ,
+  `unit` VARCHAR(255) NULL ,
+  `desc` VARCHAR(255) NULL ,
+  `label` VARCHAR(255) NULL ,
+  PRIMARY KEY (`command_id`, `metric`) ,
+  INDEX `fk_command_keys_commands1` (`command_id` ASC) ,
+  CONSTRAINT `fk_command_keys_commands1`
     FOREIGN KEY (`command_id` )
     REFERENCES `commands` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_checks_resources1`
-    FOREIGN KEY (`resource_id` )
-    REFERENCES `resources` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `command_metrics`
+-- Table `metrics`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `command_metrics` ;
+DROP TABLE IF EXISTS `metrics` ;
 
-CREATE  TABLE IF NOT EXISTS `command_metrics` (
-  `command_id` INT UNSIGNED NOT NULL ,
-  `metric` VARCHAR(255) NOT NULL ,
-  `unit` VARCHAR(255) NULL ,
-  `desc` VARCHAR(255) NULL ,
-  PRIMARY KEY (`command_id`, `metric`) ,
-  INDEX `fk_command_keys_commands1` (`command_id` ASC) ,
-  CONSTRAINT `fk_command_keys_commands1`
-    FOREIGN KEY (`command_id` )
-    REFERENCES `commands` (`id` )
+CREATE  TABLE IF NOT EXISTS `metrics` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `check_id` INT UNSIGNED NOT NULL ,
+  `name` VARCHAR(255) NULL ,
+  `key` VARCHAR(255) NOT NULL ,
+  `tag_hash` CHAR(32) NOT NULL ,
+  `status` SMALLINT UNSIGNED NULL ,
+  `last_value` DECIMAL(20,2) NULL ,
+  `created_at` DATETIME NOT NULL ,
+  `updated_at` DATETIME NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_metrics_checks1` (`check_id` ASC) ,
+  CONSTRAINT `fk_metrics_checks1`
+    FOREIGN KEY (`check_id` )
+    REFERENCES `checks` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tags`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `tags` ;
+
+CREATE  TABLE IF NOT EXISTS `tags` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `key` VARCHAR(255) NOT NULL ,
+  `value` VARCHAR(255) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `metrics_tags`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `metrics_tags` ;
+
+CREATE  TABLE IF NOT EXISTS `metrics_tags` (
+  `metric_id` INT UNSIGNED NOT NULL ,
+  `tag_id` INT UNSIGNED NOT NULL ,
+  PRIMARY KEY (`metric_id`, `tag_id`) ,
+  INDEX `fk_metrics_tags_metrics1` (`metric_id` ASC) ,
+  INDEX `fk_metrics_tags_tags1` (`tag_id` ASC) ,
+  CONSTRAINT `fk_metrics_tags_metrics1`
+    FOREIGN KEY (`metric_id` )
+    REFERENCES `metrics` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_metrics_tags_tags1`
+    FOREIGN KEY (`tag_id` )
+    REFERENCES `tags` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

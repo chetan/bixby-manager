@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120512180816) do
+ActiveRecord::Schema.define(:version => 20120517223659) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(:version => 20120512180816) do
   add_index "agents", ["id"], :name => "id_UNIQUE", :unique => true
 
   create_table "checks", :force => true do |t|
-    t.integer "resource_id",                                     :null => false
+    t.integer "host_id",                                         :null => false
     t.integer "agent_id",                                        :null => false
     t.integer "command_id",                                      :null => false
     t.text    "args"
@@ -41,17 +41,7 @@ ActiveRecord::Schema.define(:version => 20120512180816) do
 
   add_index "checks", ["agent_id"], :name => "fk_checks_agents1"
   add_index "checks", ["command_id"], :name => "fk_checks_commands1"
-  add_index "checks", ["resource_id"], :name => "fk_checks_resources1"
-
-  create_table "command_metrics", :id => false, :force => true do |t|
-    t.integer "command_id", :null => false
-    t.string  "metric",     :null => false
-    t.string  "unit"
-    t.string  "desc"
-    t.string  "label"
-  end
-
-  add_index "command_metrics", ["command_id"], :name => "fk_command_keys_commands1"
+  add_index "checks", ["host_id"], :name => "index_checks_on_host_id"
 
   create_table "commands", :force => true do |t|
     t.integer  "repo_id"
@@ -74,19 +64,35 @@ ActiveRecord::Schema.define(:version => 20120512180816) do
 
   add_index "hosts", ["org_id"], :name => "fk_hosts_orgs1"
 
-  create_table "metrics", :id => false, :force => true do |t|
-    t.integer  "id",                                                      :null => false
-    t.integer  "resource_id",                                             :null => false
+  create_table "metric_infos", :id => false, :force => true do |t|
+    t.integer "command_id", :null => false
+    t.string  "metric",     :null => false
+    t.string  "unit"
+    t.string  "desc"
+    t.string  "label"
+  end
+
+  add_index "metric_infos", ["command_id"], :name => "fk_command_keys_commands1"
+
+  create_table "metrics", :force => true do |t|
     t.integer  "check_id",                                                :null => false
-    t.string   "key"
-    t.integer  "status",      :limit => 2
+    t.string   "key",                                                     :null => false
+    t.string   "tag_hash",   :limit => 32,                                :null => false
+    t.integer  "status",     :limit => 2
     t.decimal  "last_value",               :precision => 20, :scale => 2
     t.datetime "created_at",                                              :null => false
     t.datetime "updated_at",                                              :null => false
   end
 
   add_index "metrics", ["check_id"], :name => "index_metrics_on_check_id"
-  add_index "metrics", ["resource_id"], :name => "index_metrics_on_resource_id"
+
+  create_table "metrics_tags", :id => false, :force => true do |t|
+    t.integer "metric_id", :null => false
+    t.integer "tag_id",    :null => false
+  end
+
+  add_index "metrics_tags", ["metric_id"], :name => "index_metrics_tags_on_metric_id"
+  add_index "metrics_tags", ["tag_id"], :name => "index_metrics_tags_on_tag_id"
 
   create_table "orgs", :force => true do |t|
     t.integer "tenant_id"
@@ -106,12 +112,10 @@ ActiveRecord::Schema.define(:version => 20120512180816) do
   add_index "repos", ["id"], :name => "id_UNIQUE", :unique => true
   add_index "repos", ["org_id"], :name => "fk_repos_orgs1"
 
-  create_table "resources", :force => true do |t|
-    t.integer "host_id", :null => false
-    t.string  "name"
+  create_table "tags", :force => true do |t|
+    t.string "key"
+    t.string "value"
   end
-
-  add_index "resources", ["host_id"], :name => "fk_services_hosts1"
 
   create_table "tenants", :force => true do |t|
     t.string "name"
