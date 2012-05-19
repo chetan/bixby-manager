@@ -25,6 +25,13 @@ FactoryGirl.define do
     association :check
   end
 
+  factory :metric_info do
+    metric "hardware.storage.disk.free"
+    desc "sample metric description"
+    label "$mount"
+    unit "GB"
+  end
+
   factory :command do
     association :repo
   end

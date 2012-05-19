@@ -30,26 +30,30 @@ class Metric < ActiveRecord::Base
 
   end
 
-  def self.metrics_for_host(host_id)
-    resources = Metric.where(:check_id => Check.where(:host_id => host_id.to_i)).to_api({ :inject =>
-      proc { |obj, hash|
-        hash[:data] = for_ui(obj.metrics(nil, nil, nil, nil, "1h-avg"))
-        add_metric_info(obj.check, hash)
-      }
-    }, false)
+  def self.metrics_for_host(host, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
+
+    # set defaults
+    time_start = Time.new - 86400 if time_start.nil?
+    time_end = Time.new if time_end.nil?
+    tags ||= {}
+    agg ||= "sum"
+    downsample ||= "1h-avg"
+
+    metrics = Bixby::Metrics.new.get_for_host(host, time_start, time_end, tags, agg, downsample).to_api(nil, false)
 
     # validate vals
-    resources.each do |res|
+    metrics.each do |res|
       # make sure we have at least 2 values so we can graph them
-      if res[:data].values.first[:vals].size == 1 then
-        check_id = res[:data].values.first[:tags]["check_id"]
+      if res[:data].size == 1 then
+        # run metrics query again w/o downsampling values this time
+        check_id = res["check_id"]
         check = Check.find(check_id.to_i)
-        res[:data] = for_ui(metrics(check)) # no downsampling
+        res[:data] = for_ui(metrics(check, time_start, time_end, tags, agg).data)
         add_metric_info(check, res)
       end
     end
 
-    return resources
+    return metrics
   end
 
   def metrics(time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
@@ -57,8 +61,13 @@ class Metric < ActiveRecord::Base
   end
 
   def to_api(opts={}, as_json=true)
+    opts ||= {}
+    skip_keys = %w{ id created_at updated_at }
     opts[:inject] = proc do |obj, hash|
-      hash[:data] = obj.data
+      hash.delete_if { |k,v| skip_keys.include? k }
+      hash[:data] = self.class.for_ui(obj.data)
+      hash[:metadata] = obj.metadata
+      self.class.add_metric_info(obj.check, hash)
     end
     super(opts, as_json)
   end
@@ -73,18 +82,14 @@ class Metric < ActiveRecord::Base
   end
 
   def self.add_metric_info(check, hash)
-    arr = MetricInfo.for(check.command)
-    arr.each { |a|
-      hash[:data][a.metric]["desc"] = a.desc
-      hash[:data][a.metric]["unit"] = a.unit
-    }
+    MetricInfo.for(check.command).each do |mi|
+      hash["desc"] = mi.desc
+      hash["unit"] = mi.unit
+    end
   end
 
-  def self.for_ui(metrics)
-    metrics.each do |k, met|
-      met[:vals] = met[:vals].map { |v| { :x => v[:time], :y => v[:val] } }
-    end
-    return metrics
+  def self.for_ui(data)
+    data.map { |d| { :x => d[:time], :y => d[:val] } }
   end
 
   def self.metrics(check_id, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
