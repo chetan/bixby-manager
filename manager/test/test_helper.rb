@@ -6,6 +6,7 @@ def prefork
     $: << root
   end
   require "test_prefork"
+  require "test_setup"
 end
 
 def bootstrap_tests
