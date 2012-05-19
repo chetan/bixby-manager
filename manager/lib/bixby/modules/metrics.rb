@@ -156,12 +156,24 @@ class Metrics < API
     ActiveRecord::Base.transaction do
       results.each do |result|
 
+        # TODO [security] validate check ownership
         check = Check.find(result["check_id"].to_i)
 
         result["metrics"].each do |metric|
 
-          metadata = metric["metadata"] || {}
+          base = result["key"] ? result["key"]+"." : ""
 
+          # find/save incoming metrics using passed in metadata
+          metadata = metric["metadata"] || {}
+          metric["metrics"].each do |k,v|
+            key = "#{base}#{k}"
+            m = Metric.for(check, key, metadata)
+            m.last_value = v
+            m.touch
+            m.save!
+          end
+
+          # attach extra metadata before storing
           if not (metadata[:host] or metadata["host"]) then
             metadata[:host] = check.agent.host.hostname || check.agent.host.ip
           end
@@ -170,14 +182,10 @@ class Metrics < API
           metadata[:org_id]      = check.agent.host.org.id
           metadata[:tenant_id]   = check.agent.host.org.tenant.id
 
+          # save
           time = Time.at(result["timestamp"])
-          base = result["key"] ? result["key"]+"." : ""
           metric["metrics"].each do |k,v|
             key = "#{base}#{k}"
-            m = Metric.for(check, key, metadata)
-            m.last_value = v
-            m.touch
-            m.save!
             put(key, v, time, metadata)
           end
 
@@ -194,11 +202,18 @@ class Metrics < API
 
   # Get Metrics for the given checks
   def get_for_checks(checks, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
-    metrics = Metric.includes(:check).where(:check_id => checks)
+    metrics = Metric.includes(:check).where(:check_id => checks).includes(:tags)
     keys = metrics.map { |m| m.key }
-    get_for_keys(keys, start_time, end_time, tags, agg, downsample).each_with_index do |data, i|
-      metrics[i].data = data[:vals]
-      metrics[i].tags = data[:tags]
+
+    metrics.each do |metric|
+      all_tags = {}
+      if metric.tags then
+        metric.tags.each{ |t| all_tags[t.key] = t.value }
+      end
+      all_tags.merge!(tags)
+      data = get_for_keys(metric.key, start_time, end_time, all_tags, agg, downsample).first
+      metric.data = data[:vals]
+      metric.metadata = data[:tags]
     end
 
     return metrics.map { |m| m }

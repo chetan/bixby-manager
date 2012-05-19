@@ -6,6 +6,10 @@ class TestMetrics < ActiveSupport::TestCase
   def setup
     SimpleCov.command_name 'test:modules:metrics'
     WebMock.reset!
+    @body = <<-EOF
+hardware.storage.disk.free 1336748410 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
+hardware.storage.disk.free 1336748470 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
+EOF
   end
 
   def teardown
@@ -46,6 +50,12 @@ class TestMetrics < ActiveSupport::TestCase
     assert m
     assert_equal 297, m.last_value.to_i
 
+    tags = Tag.find(:all)
+    assert tags
+    assert_equal 2, tags.size
+    assert_equal "mount", tags.first.key
+    assert_equal "/", tags.first.value
+    assert_equal "type", tags.last.key
   end
 
   def test_driver_must_override_methods
@@ -81,6 +91,22 @@ class TestMetrics < ActiveSupport::TestCase
     test_get_host(m.check.host)
   end
 
+  def test_get_for_host_includes_tags
+    m = FactoryGirl.create(:metric)
+    t = Tag.new
+    t.key = "cow"
+    t.value = "says moooo"
+    t.save!
+    m.tags = [] << t
+    host = m.check.host
+    stub = stub_request(:get, /:4242/).with { |req|
+      uri = req.uri.to_s
+      uri =~ /m=sum:hardware.storage.disk.free/ and uri =~ /foo=bar/ and uri =~ /cow=says%20moooo/
+    }.to_return(:status => 200, :body => @body)
+    ret = Bixby::Metrics.new.get_for_host(host, Time.new-86400, Time.new, {:foo=>"bar"})
+    common_metric_tests(stub, ret)
+  end
+
   def test_get_for_host_by_id
     m = FactoryGirl.create(:metric)
     test_get_host(m.check.host.id.to_s)
@@ -107,12 +133,14 @@ class TestMetrics < ActiveSupport::TestCase
     stub, req = create_req()
     ret = Bixby::Metrics.new.get_for_host(host, Time.new-86400, Time.new, {:foo=>"bar"})
     common_metric_tests(stub, ret)
+    return ret
   end
 
   def test_get_check(check)
     stub, req = create_req()
     ret = Bixby::Metrics.new.get_for_check(check, Time.new-86400, Time.new, {:foo=>"bar"})
     common_metric_tests(stub, ret)
+    return ret
   end
 
   def common_metric_tests(stub, ret)
@@ -123,20 +151,16 @@ class TestMetrics < ActiveSupport::TestCase
     metric = ret.first
     assert_kind_of Metric, metric
     assert metric.data
-    assert metric.tags
+    assert metric.metadata
     assert_equal 2, metric.data.size
-    assert_equal 7, metric.tags.size
+    assert_equal 7, metric.metadata.size
   end
 
   def create_req
-    body = <<-EOF
-hardware.storage.disk.free 1336748410 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
-hardware.storage.disk.free 1336748470 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
-EOF
     stub = stub_request(:get, /:4242/).with { |req|
       uri = req.uri.to_s
-      uri.include? "m=" and uri =~ /sum:hardware.storage.disk.free/ and uri =~ /foo=bar/
-    }.to_return(:status => 200, :body => body)
+      uri =~ /m=sum:hardware.storage.disk.free/ and uri =~ /foo=bar/
+    }.to_return(:status => 200, :body => @body)
 
     s = Time.new - 86400
     e = Time.new

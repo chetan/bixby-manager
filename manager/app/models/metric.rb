@@ -2,8 +2,9 @@
 class Metric < ActiveRecord::Base
 
   belongs_to :check
+  has_and_belongs_to_many :tags
 
-  attr_accessor :data, :tags
+  attr_accessor :data, :metadata
 
   # Find an existing Metric or return a new instance
   #
@@ -11,7 +12,7 @@ class Metric < ActiveRecord::Base
   # @param [String] key
   # @param [Hash] metadata
   # @return [Metric]
-  def self.for(check, key, metadata)
+  def self.for(check, key, metadata = {})
 
     hash = hash_metadata(metadata)
     m = Metric.first(:conditions => {:check_id => check.id, :key => key, :tag_hash => hash})
@@ -23,6 +24,7 @@ class Metric < ActiveRecord::Base
     m.check = check
     m.key = key
     m.tag_hash = hash
+    m.metadata = [] << metadata.each{ |k,v| Tag.for(k, v) } if metadata
 
     return m
 
