@@ -44,7 +44,7 @@ class Metric < ActiveRecord::Base
     # validate vals
     metrics.each do |res|
       # make sure we have at least 2 values so we can graph them
-      if res[:data].size == 1 then
+      if res[:data] and res[:data].size == 1 then
         # run metrics query again w/o downsampling values this time
         check_id = res["check_id"]
         check = Check.find(check_id.to_i)
@@ -89,7 +89,11 @@ class Metric < ActiveRecord::Base
   end
 
   def self.for_ui(data)
-    data.map { |d| { :x => d[:time], :y => d[:val] } }
+    if data.blank? then
+      data
+    else
+      data.map { |d| { :x => d[:time], :y => d[:val] } }
+    end
   end
 
   def self.metrics(check_id, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)

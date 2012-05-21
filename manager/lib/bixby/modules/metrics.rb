@@ -212,8 +212,10 @@ class Metrics < API
       end
       all_tags.merge!(tags)
       data = get_for_keys(metric.key, start_time, end_time, all_tags, agg, downsample).first
-      metric.data = data[:vals]
-      metric.metadata = data[:tags]
+      if not data.empty? then
+        metric.data = data[:vals]
+        metric.metadata = data[:tags]
+      end
     end
 
     return metrics.map { |m| m }
