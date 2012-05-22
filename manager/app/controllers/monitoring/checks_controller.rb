@@ -1,14 +1,19 @@
 
 class Monitoring::ChecksController < Monitoring::BaseController
 
-  # GET "/monitoring/hosts/3/checks"
+  # GET "/monitoring/hosts/3/checks" ?metric_id=56 (optional)
   def index
     @host = Host.find(params[:host_id])
-    @checks = Check.where(:host_id => @host)
+
+    if params[:metric_id] then
+      @ret = Metric.find(params[:metric_id].to_i).check
+    else
+      @ret = Check.where(:host_id => @host)
+    end
 
     respond_to do |format|
       format.html
-      format.json { render :json => @checks.to_api }
+      format.json { render :json => @ret.to_api }
     end
   end
 

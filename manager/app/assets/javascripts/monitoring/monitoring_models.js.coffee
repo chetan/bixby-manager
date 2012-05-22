@@ -10,8 +10,13 @@ namespace 'Bixby.model', (exports, top) ->
   #   initialize: (host_id) -> @host_id = host_id
 
   class exports.Metric extends Backbone.Model
+
+    initialize: (host_id) -> @host_id = host_id
+
     url: ->
-      s = "/monitoring/hosts/#{@get("host_id")}/metrics/#{@get("id")}?"
+      host_id = @host_id || @get("host_id")
+      id = @id || @get("id")
+      s = "/monitoring/hosts/#{host_id}/metrics/#{id}?"
       if @get("start") and @get("end")
         s += "&start=#{@get("start")}&end=#{@get("end")}"
       return s
@@ -55,7 +60,12 @@ namespace 'Bixby.model', (exports, top) ->
 
   # Check
   class exports.Check extends Backbone.Model
-    urlRoot: -> "/monitoring/hosts/#{@host.id}/checks" # id is appended if avail for update
+    url: ->
+      s = "/monitoring/hosts/#{@host_id}/checks" # id is appended if avail for update
+      if @metric_id?
+        s += "?metric_id=" + @metric_id
+
+    initialize: (host_id) -> @host_id = host_id
 
   class exports.CheckList extends Backbone.Collection
     model: exports.Check

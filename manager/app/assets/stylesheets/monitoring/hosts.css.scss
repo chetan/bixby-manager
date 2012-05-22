@@ -47,9 +47,19 @@ div.metric {
     text-transform: uppercase;
   }
 
-
   h6.footer {
     margin-top: 5px;
+  }
+}
+
+div.metric.detail {
+  width: 95%;
+  .graph_container {
+    width: auto;
+    height: 400px;
+    .graph {
+      height: auto;
+    }
   }
 }
 

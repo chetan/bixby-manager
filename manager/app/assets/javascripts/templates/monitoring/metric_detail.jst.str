@@ -1,0 +1,33 @@
+
+<div class="check" metric_id="<%= metric.id %>">
+
+  <h4><%= check.get("name") %></h4>
+
+  <!-- TODO remove this duplication from resource_list.jst.str -->
+  <% if (check.get("args")) { %>
+  <h5>
+    <% var a = 0; _.each(check.get("args"), function(val, key) {
+      a++; %>
+      <% if (a > 1) { %><%= ", " %><% } %>
+      <%= key + " = " + val %>
+    <% }); %>
+  </h5>
+  <% } %>
+
+  <div class="metric detail" metric_id="<%= metric.id %>">
+    <h5 class="title">
+      <a class="metric"
+         check_id="<%= check.id %>"
+         metric_id="<%= metric.id %>"
+         host_id="<%= check.get('host_id') %>"
+         ></a>
+    </h5>
+    <div class="graph_container">
+      <div class="graph"></div>
+    </div>
+    <h6 class="footer">
+      Last Value: n/a
+    </h6>
+  </div>
+
+</div>
