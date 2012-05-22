@@ -60,9 +60,13 @@ class Metric < ActiveRecord::Base
     self.class.metrics(self.check, time_start, time_end, tags, agg, downsample)
   end
 
+  def load_data!(time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
+    self.data = self.metrics(time_start, time_end, tags, agg, downsample).data
+  end
+
   def to_api(opts={}, as_json=true)
     opts ||= {}
-    skip_keys = %w{ id created_at updated_at }
+    skip_keys = %w{ created_at }
     opts[:inject] = proc do |obj, hash|
       hash.delete_if { |k,v| skip_keys.include? k }
       hash[:data] = self.class.for_ui(obj.data)
