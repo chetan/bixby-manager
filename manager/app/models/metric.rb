@@ -82,10 +82,12 @@ class Metric < ActiveRecord::Base
   end
 
   def self.add_metric_info(check, hash)
-    MetricInfo.for(check.command).each do |mi|
-      hash["desc"] = mi.desc
-      hash["unit"] = mi.unit
+    mi = MetricInfo.for(check.command, hash["key"]).first
+    if mi.blank? then
+      return
     end
+    hash["desc"] = mi.desc
+    hash["unit"] = mi.unit
   end
 
   def self.for_ui(data)
