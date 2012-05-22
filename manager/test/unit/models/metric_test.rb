@@ -27,7 +27,6 @@ EOF
     metrics = Metric.metrics_for_host(@host, nil, nil, req[:tags])
     assert_requested(stub)
     common_tests(metrics)
-    ap metrics
   end
 
   def test_metrics_for_host_no_downsample

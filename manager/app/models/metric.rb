@@ -24,10 +24,10 @@ class Metric < ActiveRecord::Base
     m.check = check
     m.key = key
     m.tag_hash = hash
-    m.metadata = [] << metadata.each{ |k,v| Tag.for(k, v) } if metadata
+    m.tags = []
+    m.tags += metadata.map { |k,v| Tag.for(k, v) } if metadata
 
     return m
-
   end
 
   def self.metrics_for_host(host, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)

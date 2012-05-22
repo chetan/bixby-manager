@@ -50,12 +50,17 @@ EOF
     assert m
     assert_equal 297, m.last_value.to_i
 
+    assert m.tags
+    assert m.tags.size == 2
+    assert_kind_of Tag, m.tags.first
+
     tags = Tag.find(:all)
     assert tags
     assert_equal 2, tags.size
     assert_equal "mount", tags.first.key
     assert_equal "/", tags.first.value
     assert_equal "type", tags.last.key
+
   end
 
   def test_driver_must_override_methods
