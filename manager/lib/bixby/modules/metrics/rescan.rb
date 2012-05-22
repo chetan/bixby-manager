@@ -8,6 +8,9 @@ class Metrics < API
       config = spec.load_config()
       base = config["key"]
 
+      new_metrics = config["metrics"]
+      return if new_metrics.blank?
+
       # create a hash with only the metric name (remove base)
       existing = {}
       metrics = MetricInfo.where("command_id = ?", cmd.id)
@@ -17,7 +20,6 @@ class Metrics < API
       end
 
       # create/update metrics
-      new_metrics = config["metrics"]
       new_metrics.each do |key, metric|
         cm = existing.include?(key) ? existing[key] : MetricInfo.new
         if not cm.command_id then
