@@ -74,7 +74,10 @@ group :development do
 
     # utils
     gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
+    gem "pry"
+    gem "pry-rails"
     gem "hirb"
+    gem "sextant"
 
     # coverage
     gem "rcov",       :platforms => :mri_18
