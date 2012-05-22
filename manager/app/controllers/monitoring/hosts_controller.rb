@@ -6,13 +6,16 @@ class Monitoring::HostsController < Monitoring::BaseController
   end
 
   def show
-    @host = Host.find(params[:id])
+
     # TODO error if no id
-    @metrics = Metric.metrics_for_host(@host.id)
+    @host = Host.find(params[:id])
+    @checks = Check.where(:host_id => @host)
+    @metrics = Metric.metrics_for_host(@host)
 
     @bootstrap = [
       { :name => "host", :model => "Host", :data => @host },
-      { :name => "resources", :model => "ResourceList", :data => @metrics },
+      { :name => "checks", :model => "CheckList", :data => @checks },
+      { :name => "metrics", :model => "MetricList", :data => @metrics },
     ]
   end
 

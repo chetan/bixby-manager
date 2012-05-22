@@ -6,101 +6,93 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     template: "monitoring/layout"
 
 
-  class exports.ResourceList extends Stark.View
+  class exports.MetricList extends Stark.View
     el: "div.monitoring_content"
     template: "monitoring/resource_list"
     events: {
       "click .add_resource_link": (e) ->
         @transition "mon_hosts_resources_new", { host: @host }
       "click div.metric a.metric": (e) ->
-        res = @resources.get $(e.target).attr("resource_id")
+        res = @metrics.get $(e.target).attr("resource_id") # FIXME
         metric = $(e.target).attr("metric")
-        @transition "mon_hosts_resources_metric", { host: @host, resource: res, metric: metric }
+        @transition "mon_hosts_resources_metric", { host: @host, metric: metric }
     }
 
     render: ->
       super()
 
-      # display graphs
-      state = @
-      resources = @resources
+      # render graphs into placeholder divs
+      @metrics.each (metric) ->
+        s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
+        el = $(s + " .graph")[0]
+        data = metric.get("data")
 
-      @resources.each (res) ->
-        metrics = res.get("data");
-        console.log("got metrics: ", metrics);
+        # draw footer
+        footer = $(s + " .footer")
+        unit = ""
+        if metric.unit?
+          if metric.unit != "%"
+            unit = " " + metric.unit
+          else
+            unit = "%"
+        footer_text = sprintf("Last Value: %0.2f%s", data[data.length-1].y, unit)
+        footer.text(footer_text)
 
-        _.each metrics, (metric, key) ->
-          s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
-          console.log(s)
-          el = $(s + " .graph")[0]
+        vals = _.map data, (v) ->
+          [ new Date(v.x * 1000), v.y ]
 
-          # draw footer
-          footer = $(s + " .footer")
-          unit = ""
-          if metric.unit?
-            if metric.unit != "%"
-              unit = " " + metric.unit
-            else
-              unit = "%"
-          footer_text = sprintf("Last Value: %0.2f%s", metric.vals[metric.vals.length-1].y, unit)
-          footer.text(footer_text)
+        opts = {
+          labels: [ "Date/Time", "v" ]
+          strokeWidth: 2
+          showLabelsOnHighlight: false
+          legend: "never"
+        }
 
-          vals = _.map metric.vals, (v) ->
-            [ new Date(v.x * 1000), v.y ]
+        if metric.unit == "%"
+          # set range if known
+          opts.valueRange = [ 0, 100 ]
 
-          opts = {
-            labels: [ "Date/Time", "v" ]
-            strokeWidth: 2
-            showLabelsOnHighlight: false
-            legend: "never"
-          }
+        # draw
+        g = new Dygraph(el, vals, opts)
 
-          if metric.unit == "%"
-            # set range if known
-            opts.valueRange = [ 0, 100 ]
+        # set callbacks
+        xOptView = g.optionsViewForAxis_('x');
+        xvf = xOptView('valueFormatter');
+        opts = {
+          highlightCallback: (e, x, pts, row) ->
+            date = xvf(x, xOptView, "", g) + ", " + sprintf("val = %0.2f%s", pts[0].yval, unit)
+            footer.text(date)
 
-          # draw
-          g = new Dygraph(el, vals, opts)
+          unhighlightCallback: (e) ->
+            footer.text(footer_text)
 
-          # set callbacks
-          xOptView = g.optionsViewForAxis_('x');
-          xvf = xOptView('valueFormatter');
-          opts = {
-            highlightCallback: (e, x, pts, row) ->
-              date = xvf(x, xOptView, "", g) + ", " + sprintf("val = %0.2f%s", pts[0].yval, unit)
-              footer.text(date)
+          # allow zooming in for more granular data (don't downsample)
+          zoomCallback: (minX, maxX, yRanges) ->
+            if g.is_granular
+              if minX == g.rawData_[0][0] && maxX == g.rawData_[g.rawData_.length-1][0]
+                g.updateOptions({ file: g.less_granular })
+                g.less_granular = null
+                g.is_granular = null
+              return
 
-            unhighlightCallback: (e) ->
-              footer.text(footer_text)
+            r = (maxX - minX) / 1000
+            if r < 43200
+              # load more granular data
+              g.less_granular = g.file_
+              g.is_granular = true
+              new_met = new Bixby.model.Metric({
+                id: metric.id
+                host_id: metric.get("metadata").host_id
+                start: parseInt(minX / 1000)
+                end: parseInt(maxX / 1000)
+              })
+              Backbone.multi_fetch [ new_met ], (err, results) ->
+                vals = _.map new_met.get("data"), (v) ->
+                  [ new Date(v.x * 1000), v.y ]
+                g.updateOptions({ file: vals })
 
-            # allow zooming in for more granular data (don't downsample)
-            zoomCallback: (minX, maxX, yRanges) ->
-              if g.is_granular
-                if minX == g.rawData_[0][0] && maxX == g.rawData_[g.rawData_.length-1][0]
-                  g.updateOptions({ file: g.less_granular })
-                  g.less_granular = null
-                  g.is_granular = null
-                return
-
-              r = (maxX - minX) / 1000
-              if r < 43200
-                # load more granular data
-                g.less_granular = g.file_
-                g.is_granular = true
-                new_met = new Bixby.model.Metric({
-                  id: res.id
-                  host_id: res.get("host_id")
-                  metric: key
-                  start: parseInt(minX / 1000)
-                  end: parseInt(maxX / 1000)
-                })
-                Backbone.multi_fetch [ new_met ], (err, results) ->
-                  vals = _.map new_met.get(key).vals, (v) ->
-                    [ new Date(v.x * 1000), v.y ]
-                  g.updateOptions({ file: vals })
-
-          }
-          g.updateOptions(opts);
+        }
+        g.updateOptions(opts);
 
     render_with_rickshaw: ->
       render()

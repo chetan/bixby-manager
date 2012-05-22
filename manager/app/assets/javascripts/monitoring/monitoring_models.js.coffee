@@ -14,8 +14,6 @@ namespace 'Bixby.model', (exports, top) ->
       s = "/monitoring/hosts/#{@get("host_id")}/metrics/#{@get("id")}?"
       if @get("start") and @get("end")
         s += "&start=#{@get("start")}&end=#{@get("end")}"
-      if @get("metric")
-        s += "&metric=" + @get("metric")
       return s
 
     # get only the metric attributes (the actual data elements)
@@ -27,6 +25,10 @@ namespace 'Bixby.model', (exports, top) ->
           metrics.push(v)
 
       return metrics
+
+  class exports.MetricList extends Backbone.Collection
+    model: exports.Metric
+
 
   # MonitoringCommand
   class exports.MonitoringCommand extends Backbone.Model
@@ -52,6 +54,7 @@ namespace 'Bixby.model', (exports, top) ->
   # Check
   class exports.Check extends Backbone.Model
     urlRoot: -> "/monitoring/hosts/#{@host.id}/checks" # id is appended if avail for update
+
   class exports.CheckList extends Backbone.Collection
     model: exports.Check
     url: -> "/monitoring/hosts/#{@host.id}/checks"

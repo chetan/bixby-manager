@@ -11,12 +11,13 @@ jQuery ->
 
       url:  "monitoring/hosts/:host_id" #  match() pattern [optional]
 
-      views:      [ _bv.PageLayout, _vn.Layout, _vn.ResourceList ]
+      views:      [ _bv.PageLayout, _vn.Layout, _vn.MetricList ]
       no_redraw:  [ _bv.PageLayout, _vn.Layout ]
-      models:     { host: _bm.Host, resources: _bm.ResourceList }
+      models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
 
       events: {
         mon_hosts_resources_new: { models: [ _bm.Host ] }
+        mon_hosts_resources_metric: { models: [ _bm.Host, _bm.Metric ]}
       }
 
       create_url: ->
@@ -28,15 +29,29 @@ jQuery ->
           @host = new _bm.Host({ id: @params.host_id })
           needed.push @host
 
-        if ! @resources?
+        if ! @metrics?
           host_id = (@params? && @params.host_id) || @host.id
-          @resources = new _bm.ResourceList(host_id)
-          needed.push @resources
+          @metrics = new _bm.MetricList(host_id)
+          needed.push @metrics
 
         return needed
 
       activate: ->
         @app.trigger("nav:select_tab", "monitoring")
+  )
+
+  Bixby.app.add_state(
+    class extends Stark.State
+
+      name: "mon_hosts_resources_metric"
+      url:  "monitoring/hosts/:host_id/metric/:metric"
+
+      create_url: ->
+        @url.replace(/:host_id/, @host.id).replace(/:metric/, @metric)
+
+      views:      [ _bv.PageLayout, _vn.Layout, _vn.MetricDetail ]
+      no_redraw:  [ _bv.PageLayout, _vn.Layout ]
+      models:     { host: _bm.Host, resource: _bm.Resource }
   )
 
   Bixby.app.add_state(

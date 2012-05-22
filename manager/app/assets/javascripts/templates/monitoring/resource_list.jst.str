@@ -1,27 +1,40 @@
 
 <h3>Resources for <%= host.get("ip") %></h3>
 
-<% if (resources.length == 0) { %>
+<% if (checks.length == 0) { %>
 
-  <p>No resources have been configured</p>
+  <p>No checks have been configured</p>
 
 <%
 } else {
-  resources.each(function(resource) {
+  checks.each(function(check) {
 %>
-    <div class="resource" resource_id="<%= resource.id %>">
-      <h4><%= resource.get("name") %></h4>
+    <div class="check" check_id="<%= check.id %>">
+      <h4><%= check.get("name") %></h4>
+
+      <% if (check.get("args")) { %>
+      <h5>
+        <% var a = 0; _.each(check.get("args"), function(val, key) {
+          a++; %>
+          <% if (a > 1) { %><%= ", " %><% } %>
+          <%= key + " = " + val %>
+        <% }); %>
+      </h5>
+      <% } %>
+
       <div class="spacer">&nbsp;</div>
 <%
-    _.each(resource.get("data"), function(val, key) {
+    var c_metrics = metrics.filter(function(m) { return m.get("check_id") == check.id });
+    _.each(c_metrics, function(metric) {
 %>
 
-<div class="metric" metric="<%= key %>">
+<div class="metric" metric_id="<%= metric.id %>">
   <h5 class="title">
     <a class="metric"
-       metric="<%= key %>"
-       resource_id="<%= resource.id %>"
-       host_id="<%= resource.get('host_id') %>"><%= val.desc %><% if (val.unit) { %> (<%= val.unit %>)<% } %></a>
+       check_id="<%= check.id %>"
+       metric_id="<%= metric.id %>"
+       host_id="<%= check.get('host_id') %>"
+       ><%= metric.get("desc") %><% if (metric.get("unit")) { %> (<%= metric.get("unit") %>)<% } %></a>
   </h5>
   <div class="graph_container">
     <div class="graph"></div>
@@ -37,7 +50,7 @@
     <div class="spacer">&nbsp;</div>
   </div>
 <%
-  }); // each resource
+  }); // each check
 }
 %>
 
