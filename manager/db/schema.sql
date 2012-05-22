@@ -209,13 +209,14 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `metric_infos` ;
 
 CREATE  TABLE IF NOT EXISTS `metric_infos` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `command_id` INT UNSIGNED NOT NULL ,
   `metric` VARCHAR(255) NOT NULL ,
   `unit` VARCHAR(255) NULL ,
   `desc` VARCHAR(255) NULL ,
   `label` VARCHAR(255) NULL ,
-  PRIMARY KEY (`command_id`, `metric`) ,
   INDEX `fk_command_keys_commands1` (`command_id` ASC) ,
+  PRIMARY KEY (`id`) ,
   CONSTRAINT `fk_command_keys_commands1`
     FOREIGN KEY (`command_id` )
     REFERENCES `commands` (`id` )

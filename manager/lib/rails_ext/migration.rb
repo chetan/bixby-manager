@@ -51,6 +51,17 @@ class ActiveRecord::Migration
     execute "ALTER TABLE #{table} DROP FOREIGN KEY #{fk};"
   end
 
+  # create an 'int(10) unsigned' id field
+  #
+  # @param [String] col     column name (default = :id)
+  def add_id(table, col = :id, opts = {})
+    primary = opts.delete(:primary) || col.to_s == "id"
+    type = "INT(10) UNSIGNED"
+    type = "#{type} AUTO_INCREMENT PRIMARY KEY" if primary
+    opts[:null] = false
+    self.add_column(table, col, type, opts)
+  end
+
 end
 
 class ActiveRecord::ConnectionAdapters::TableDefinition
