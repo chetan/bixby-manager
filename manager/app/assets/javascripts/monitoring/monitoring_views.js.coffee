@@ -25,7 +25,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       @metrics.each (metric) ->
         s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
         el = $(s + " .graph")[0]
+
         data = metric.get("data")
+        if !data
+          return
 
         # draw footer
         footer = $(s + " .footer")

@@ -1,13 +1,13 @@
 
 namespace 'Bixby.model', (exports, top) ->
 
-  class exports.Resource extends Backbone.Model
-    url: -> "/monitoring/hosts/#{@get("host_id")}/resources/#{@get("id")}"
+  # class exports.Resource extends Backbone.Model
+  #   url: -> "/monitoring/hosts/#{@get("host_id")}/resources/#{@get("id")}"
 
-  class exports.ResourceList extends Backbone.Collection
-    model: exports.Resource
-    url: -> "/monitoring/hosts/#{@host_id}/resources"
-    initialize: (host_id) -> @host_id = host_id
+  # class exports.ResourceList extends Backbone.Collection
+  #   model: exports.Resource
+  #   url: -> "/monitoring/hosts/#{@host_id}/resources"
+  #   initialize: (host_id) -> @host_id = host_id
 
   class exports.Metric extends Backbone.Model
     url: ->
@@ -28,6 +28,8 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.MetricList extends Backbone.Collection
     model: exports.Metric
+    url: -> "/monitoring/hosts/#{@host_id}/metrics"
+    initialize: (host_id) -> @host_id = host_id
 
 
   # MonitoringCommand
@@ -57,4 +59,5 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.CheckList extends Backbone.Collection
     model: exports.Check
-    url: -> "/monitoring/hosts/#{@host.id}/checks"
+    url: -> "/monitoring/hosts/#{@host_id}/checks"
+    initialize: (host_id) -> @host_id = host_id

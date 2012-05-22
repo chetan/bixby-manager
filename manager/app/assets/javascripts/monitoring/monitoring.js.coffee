@@ -29,6 +29,11 @@ jQuery ->
           @host = new _bm.Host({ id: @params.host_id })
           needed.push @host
 
+        if ! @checks?
+          host_id = (@params? && @params.host_id) || @host.id
+          @checks = new _bm.CheckList(host_id)
+          needed.push @checks
+
         if ! @metrics?
           host_id = (@params? && @params.host_id) || @host.id
           @metrics = new _bm.MetricList(host_id)

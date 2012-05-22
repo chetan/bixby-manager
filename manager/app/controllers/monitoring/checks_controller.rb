@@ -1,6 +1,17 @@
 
 class Monitoring::ChecksController < Monitoring::BaseController
 
+  # GET "/monitoring/hosts/3/checks"
+  def index
+    @host = Host.find(params[:host_id])
+    @checks = Check.where(:host_id => @host)
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @checks.to_api }
+    end
+  end
+
   def show
 
   end
