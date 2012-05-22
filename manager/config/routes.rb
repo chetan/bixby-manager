@@ -13,7 +13,7 @@ Devops::Application.routes.draw do
   namespace :monitoring do
     resources :commands
     resources :hosts do
-      resources :resources
+
       resources :checks
       resources :metrics
 
