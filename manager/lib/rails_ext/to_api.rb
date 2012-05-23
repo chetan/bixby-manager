@@ -1,7 +1,7 @@
 
 class Array
   def to_api(opts = {}, as_json = true)
-    r = map { |e| e.to_api(opts, false) }
+    r = map { |e| e.respond_to?(:to_api) ? e.to_api(opts, false) : e }
     return as_json ? MultiJson.dump(r) : r
   end
 end
