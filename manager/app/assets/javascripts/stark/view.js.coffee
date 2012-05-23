@@ -1,4 +1,8 @@
 
+"use strict"
+
+window.Stark or= {}
+
 class Stark.View extends Backbone.View
 
   state: null

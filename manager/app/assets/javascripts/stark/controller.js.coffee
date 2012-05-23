@@ -1,4 +1,8 @@
 
+"use strict"
+
+window.Stark or= {}
+
 class Stark.State
   _.extend @.prototype, Backbone.Events
 
