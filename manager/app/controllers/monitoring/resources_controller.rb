@@ -6,10 +6,7 @@ class Monitoring::ResourcesController < Monitoring::BaseController
     @host = Host.find(params[:host_id])
     @resources = Resource.metrics_for_host(@host.id)
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @resources }
-    end
+    respond_with(@resources.to_api)
   end
 
 end

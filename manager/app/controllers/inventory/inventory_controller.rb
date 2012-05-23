@@ -8,19 +8,12 @@ class InventoryController < ApplicationController
       { :name => "hosts", :model => "HostList", :data => @hosts },
     ]
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @hosts }
-    end
+    respond_with(@hosts)
   end
 
   def show
     @host = Host.find(params[:id])
-
-    respond_to do |format|
-      format.html
-      format.json { render :json => @host }
-    end
+    respond_with(@host)
   end
 
 end

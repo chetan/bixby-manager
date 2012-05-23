@@ -4,9 +4,7 @@ class Monitoring::CommandsController < Monitoring::BaseController
   def index
     @commands = Command.where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
 
-    respond_to do |format|
-      format.json { render :json => @commands }
-    end
+    respond_with(@commands.to_api)
   end
 
   def opts
@@ -20,9 +18,7 @@ class Monitoring::CommandsController < Monitoring::BaseController
       opts.each { |k,v| command.options[k][:values] = v }
     end
 
-    respond_to do |format|
-      format.json { render :json => command }
-    end
+    respond_with(command.to_api)
   end
 
 end

@@ -6,10 +6,7 @@ class Monitoring::MetricsController < Monitoring::BaseController
     @host = Host.find(params[:host_id])
     @metrics = Metric.metrics_for_host(@host)
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @metrics }
-    end
+    respond_with(@metrics)
   end
 
   def show
@@ -23,10 +20,7 @@ class Monitoring::MetricsController < Monitoring::BaseController
       { :name => "metric", :model => "Metric", :data => metric.to_api },
     ]
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => metric.to_api }
-    end
+    respond_with(metric.to_api)
   end
 
 end

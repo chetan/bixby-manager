@@ -11,10 +11,7 @@ class Monitoring::ChecksController < Monitoring::BaseController
       @ret = Check.where(:host_id => @host)
     end
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @ret.to_api }
-    end
+    respond_with(@ret.to_api)
   end
 
   def new
@@ -46,9 +43,7 @@ class Monitoring::ChecksController < Monitoring::BaseController
 
     check = Bixby::Monitoring.new.add_check(host, command, opts)
 
-    respond_to do |format|
-      format.json { render :json => check }
-    end
+    respond_with(check.to_api)
   end
 
 end
