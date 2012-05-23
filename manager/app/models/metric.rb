@@ -57,11 +57,22 @@ class Metric < ActiveRecord::Base
   end
 
   def metrics(time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
-    self.class.metrics(self.check, time_start, time_end, tags, agg, downsample)
+
+    time_start = Time.new - 86400 if time_start.nil?
+    time_end = Time.new if time_end.nil?
+    tags ||= {}
+    agg ||= "sum"
+
+    tags[:check_id] = self.check.id
+    self.tags.each{ |t| tags[t.key] = t.value }
+
+    Bixby::Metrics.new.get_for_keys(self.key, time_start, time_end, tags, agg, downsample)
   end
 
   def load_data!(time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
-    self.data = self.metrics(time_start, time_end, tags, agg, downsample).data
+    metrics = self.metrics(time_start, time_end, tags, agg, downsample).first
+    self.data = metrics[:vals]
+    self.metadata = metrics[:tags]
   end
 
   def to_api(opts={}, as_json=true)
