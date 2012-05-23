@@ -34,7 +34,6 @@ jQuery ->
     gc = $(s + " .graph_container")
     opts.width = gc.width()
     opts.height = gc.height()
-    console.log opts
 
     if metric.unit == "%"
       # set range if known
