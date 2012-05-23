@@ -1,6 +1,6 @@
 
 //= require "utils"
-//= require "stark"
+//= require_tree "./stark"
 
 //= require "bootstrap"
 //= require "templates"

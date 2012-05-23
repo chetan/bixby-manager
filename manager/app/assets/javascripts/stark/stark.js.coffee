@@ -1,8 +1,6 @@
 
 # stark.js = IRON.backbone.js
 
-#= require "stark_router"
-
 "use strict"
 
 window.Stark or= {}
