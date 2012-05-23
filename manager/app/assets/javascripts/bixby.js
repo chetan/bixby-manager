@@ -3,7 +3,7 @@
 //= require_tree "./stark"
 
 //= require "bootstrap"
-//= require "templates"
+//= require_tree "./templates"
 
 //= require "main_views"
 
