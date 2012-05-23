@@ -205,16 +205,22 @@ class Metrics < API
     metrics = Metric.includes(:check).where(:check_id => checks).includes(:tags)
     keys = metrics.map { |m| m.key }
 
+    reqs = []
     metrics.each do |metric|
       all_tags = {}
       if metric.tags then
         metric.tags.each{ |t| all_tags[t.key] = t.value }
       end
       all_tags.merge!(tags)
-      data = get_for_keys(metric.key, start_time, end_time, all_tags, agg, downsample).first
+      reqs << { :key => metric.key, :start_time => start_time, :end_time => end_time, :tags => all_tags, :agg => agg, :downsample => downsample }
+    end
+
+    responses = multi_get(reqs)
+
+    responses.each_with_index do |data, i|
       if not data.empty? then
-        metric.data = data[:vals]
-        metric.metadata = data[:tags]
+        metrics[i].data     = data[:vals]
+        metrics[i].metadata = data[:tags]
       end
     end
 
