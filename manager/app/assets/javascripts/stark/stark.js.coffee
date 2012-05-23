@@ -5,7 +5,6 @@
 
 window.Stark or= {}
 
-# -----------------------------------------------------------------------------
 class Stark.App
 
   # attributes
@@ -109,9 +108,6 @@ class Stark.App
     @current_state = state
 
 
-
-
-
   # method used by Server-side template to bootstrap any models
   # on the first hit. can be called multiple times
   #
@@ -157,105 +153,3 @@ class Stark.App
   subscribe   : Backbone.Events.on
   unsubscribe : Backbone.Events.off
   publish     : Backbone.Events.trigger
-
-
-# -----------------------------------------------------------------------------
-class Stark.State
-  _.extend @.prototype, Backbone.Events
-
-  # static attributes
-  name:   null
-  url:    null
-  views:  []
-  models: []
-  events: {}
-
-  constructor: ->
-    # internal attributes
-    @_views = []
-
-  # transition TO the given state
-  transition: (state_name, state_data) ->
-    @app.transition(state_name, state_data)
-
-  # this is where model objects should be resolved by the state
-  load_data: ->
-    # NO-OP
-    null
-
-  # this is called by Stark when this state becomes active (transitioning TO)
-  # optional, if extra setup is needed
-  activate: ->
-    # NO-OP
-
-  # this is called by Stark when this state becomes deactive (transitioning AWAY)
-  # optional, if extra teardown is needed
-  deactivate: ->
-    # NO-OP
-
-  # return the URL that represents this state (substituting any params in @url)
-  create_url: ->
-    @url
-
-  dispose: (new_state) ->
-    console.log "disposing of current state", @
-    _.each @_views, (v) ->
-      if ! (_.any(new_state.views, (n)-> v instanceof n) && _.any(new_state.no_redraw, (n)-> v instanceof n))
-        # only dispose of view IF NOT required by new state
-        console.log "disposing of", v
-        v.dispose()
-
-  bind_app_events: ->
-    _.each @app_events, (cb, key) ->
-      @app.subscribe(key, cb)
-    , @
-
-
-# -----------------------------------------------------------------------------
-class Stark.View extends Backbone.View
-
-  state: null
-  template: null
-  app_events: null
-  selector: null
-  views: [] # sub-views
-
-  initialize: ->
-    _.bindAll @
-
-  tpl_path: ->
-    @app.template_root + @template
-
-  render: ->
-    console.log "rendering view", @
-    @_template = new Template(JST[ @tpl_path() ])
-
-    # use an optional [dynamic] selector
-    el = null
-    if @selector?
-      if _.isFunction(@selector)
-        el = @selector()
-      else
-        el = el
-    else
-      el = @el
-
-    @setElement(el)
-    @$el.html(@_template.render(@))
-    @
-
-  # proxy for Stark.state#transition
-  transition: (state_name, state_data) ->
-    @state.transition(state_name, state_data)
-
-  bind_app_events: ->
-    _.each @app_events, (cb, key) ->
-      @app.subscribe(key, cb)
-    , @
-
-  dispose: ->
-    @$el.html("")
-    @undelegateEvents()
-    for v in @views
-      v.dispose()
-
