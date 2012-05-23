@@ -12,11 +12,8 @@ class Monitoring::HostsController < Monitoring::BaseController
     @checks = Check.where(:host_id => @host)
     @metrics = Metric.metrics_for_host(@host)
 
-    @bootstrap = [
-      { :name => "host", :model => "Host", :data => @host },
-      { :name => "checks", :model => "CheckList", :data => @checks },
-      { :name => "metrics", :model => "MetricList", :data => @metrics },
-    ]
+    bootstrap @host, @checks
+    bootstrap @metrics, :type => Metric
   end
 
   def edit

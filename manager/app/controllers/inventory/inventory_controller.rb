@@ -3,11 +3,7 @@ class InventoryController < ApplicationController
 
   def index
     @hosts = Host.all
-
-    @bootstrap = [
-      { :name => "hosts", :model => "HostList", :data => @hosts },
-    ]
-
+    bootstrap @hosts
     respond_with(@hosts)
   end
 

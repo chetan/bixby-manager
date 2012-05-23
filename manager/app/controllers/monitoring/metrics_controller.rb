@@ -10,16 +10,10 @@ class Monitoring::MetricsController < Monitoring::BaseController
   end
 
   def show
-
     metric = Metric.find(params[:id].to_i)
     metric.load_data!
 
-    @bootstrap = [
-      { :name => "host", :model => "Host", :data => @host },
-      { :name => "check", :model => "Check", :data => metric.check.to_api },
-      { :name => "metric", :model => "Metric", :data => metric.to_api },
-    ]
-
+    bootstrap metric, metric.check, metric.check.host
     respond_with(metric.to_api)
   end
 
