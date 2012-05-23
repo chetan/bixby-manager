@@ -31,6 +31,10 @@ class Stark.Router
   constructor: ->
     Backbone.history or= new Backbone.History
 
+  start: ->
+    console.log "starting history"
+    return Backbone.history.start({ pushState: true })
+
   # Connect an address with a particular state
   # Directly create a Backbone.history route
   match: (pattern, target, options = {}) ->

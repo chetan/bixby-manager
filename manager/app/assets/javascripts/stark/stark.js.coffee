@@ -16,11 +16,19 @@ class Stark.App
   data: {}
 
   router: new Stark.Router
+  default_route: null
 
   constructor: ->
     # console.log "initializing router"
     @router.app = @
     @subscribe('app:route', @matchRoute)
+
+  start: ->
+    console.log("starting app")
+    if !@router.start() && @default_route?
+      console.log("no route matched, using default: #{@default_route}")
+      @router.route(@default_route)
+      @router.changeURL(@current_state.create_url())
 
   add_state: (state) ->
     s = new state()
