@@ -61,13 +61,14 @@ namespace 'Bixby.model', (exports, top) ->
   # Check
   class exports.Check extends Backbone.Model
     url: ->
-      s = "/monitoring/hosts/#{@host_id}/checks" # id is appended if avail for update
+      s = "/monitoring/hosts/#{@host_id || @host.id}/checks" # id is appended if avail for update
       if @metric_id?
         s += "?metric_id=" + @metric_id
+      return s
 
     initialize: (host_id) -> @host_id = host_id
 
   class exports.CheckList extends Backbone.Collection
     model: exports.Check
-    url: -> "/monitoring/hosts/#{@host_id}/checks"
+    url: -> "/monitoring/hosts/#{@host_id || @host.id}/checks"
     initialize: (host_id) -> @host_id = host_id

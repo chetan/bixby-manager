@@ -15,7 +15,7 @@ class Monitoring::CommandsController < Monitoring::BaseController
     command = Command.find(params[:command_id])
 
     if not command.options.blank? then
-      opts = Monitoring.new.get_command_options(host.agent, command)
+      opts = Bixby::Monitoring.new.get_command_options(host.agent, command)
       # merge retrieved opts into command.options
       opts.each { |k,v| command.options[k][:values] = v }
     end

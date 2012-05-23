@@ -17,6 +17,21 @@ class Monitoring::ChecksController < Monitoring::BaseController
     end
   end
 
+  def new
+    @host = Host.find(params[:host_id])
+    @commands = Command.where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
+
+    @bootstrap = [
+      { :name => "commands", :model => "MonitoringCommandList", :data => @commands }
+    ]
+
+    if params[:command_id] then
+      @command = Command.find(params[:command_id])
+      @bootstrap << { :name => "command", :model => "MonitoringCommand", :data => @command }
+    end
+
+  end
+
   def show
 
   end
@@ -29,7 +44,7 @@ class Monitoring::ChecksController < Monitoring::BaseController
     command = Command.find(params[:command_id])
     opts = params[:args]
 
-    check = Monitoring.new.add_check(host, command, opts)
+    check = Bixby::Monitoring.new.add_check(host, command, opts)
 
     respond_to do |format|
       format.json { render :json => check }

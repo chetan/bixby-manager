@@ -206,7 +206,7 @@ jQuery ->
   Bixby.app.add_state(
     class extends Stark.State
       name: "mon_hosts_resources_new"
-      url:  "monitoring/hosts/:host_id/resources/new"
+      url:  "monitoring/hosts/:host_id/checks/new"
 
       views:      [ _bv.PageLayout, _vn.Layout, _vn.AddCommand ]
       no_redraw:  [ _bv.PageLayout, _vn.Layout ]
