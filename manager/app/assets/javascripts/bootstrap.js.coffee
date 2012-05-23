@@ -26,3 +26,4 @@ namespace 'Bixby.view', (exports, top) ->
 namespace 'Bixby', (exports, top) ->
   exports.app = new Stark.App()
   exports.app.template_root = "templates/"
+  exports.app.default_route = "inventory"
