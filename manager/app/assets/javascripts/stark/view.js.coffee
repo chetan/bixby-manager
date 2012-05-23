@@ -5,6 +5,10 @@ window.Stark or= {}
 
 class Stark.View extends Backbone.View
 
+  # mixin logger
+  _.extend @.prototype, Stark.Logger.prototype
+  logger: "view"
+
   state: null
   template: null
   app_events: null
@@ -18,7 +22,7 @@ class Stark.View extends Backbone.View
     @app.template_root + @template
 
   render: ->
-    console.log "rendering view", @
+    @log "rendering view", @
     @_template = new Template(JST[ @tpl_path() ])
 
     # use an optional [dynamic] selector

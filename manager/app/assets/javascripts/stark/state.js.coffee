@@ -4,7 +4,12 @@
 window.Stark or= {}
 
 class Stark.State
-  _.extend @.prototype, Backbone.Events
+
+  # mixin logger
+  _.extend @.prototype, Stark.Logger.prototype
+  logger: "state"
+
+  _.extend @.prototype, Backbone.Events.prototype
 
   # static attributes
   name:   null
@@ -41,11 +46,11 @@ class Stark.State
     @url
 
   dispose: (new_state) ->
-    console.log "disposing of current state", @
+    @log "disposing of current state", @
     _.each @_views, (v) ->
       if ! (_.any(new_state.views, (n)-> v instanceof n) && _.any(new_state.no_redraw, (n)-> v instanceof n))
         # only dispose of view IF NOT required by new state
-        console.log "disposing of", v
+        @log "disposing of", v
         v.dispose()
 
   bind_app_events: ->

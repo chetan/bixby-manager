@@ -19,14 +19,13 @@ class Stark.App
   default_route: null
 
   constructor: ->
-    # console.log "initializing router"
     @router.app = @
     @subscribe('app:route', @matchRoute)
 
   start: ->
-    console.log("starting app")
+    @log "start()"
     if !@router.start() && @default_route?
-      console.log("no route matched, using default: #{@default_route}")
+      @log "no routes matched, using default: #{@default_route}"
       @router.route(@default_route)
       @router.changeURL(@current_state.create_url())
 
@@ -40,12 +39,12 @@ class Stark.App
 
   # bound to app:route event
   matchRoute: (route, params) ->
-    console.log "matchRoute()", route.state_name
-    console.log route, "params: ", params
+    @log "matchRoute()", route.state_name
+    @log route, "params: ", params
     @transition route.state_name, { params: params }
 
   transition: (state_name, state_data) ->
-    console.log "transition", state_name, state_data
+    @log "transition", state_name, state_data
     target_state = @states[state_name]
 
     if ! target_state?
@@ -54,7 +53,7 @@ class Stark.App
     if @current_state instanceof target_state
       # TODO - verify params? models? some other way to make sure
       # its really the *same* state
-      console.log "same state, canceling"
+      @log "same state, canceling"
       return
 
     state_data or= {}
@@ -66,7 +65,7 @@ class Stark.App
     state.app = @
     state.bind_app_events()
 
-    console.log "got state_data", state_data
+    @log "got state_data", state_data
     _.extend(state, state_data)
 
     # get data that's still needed
@@ -84,7 +83,7 @@ class Stark.App
       view[key] = state[key]
 
   render_views: (state) ->
-    console.log "render_views "
+    @log "render_views "
 
     if @current_state?
       @current_state.deactivate()
@@ -93,10 +92,10 @@ class Stark.App
     # create views
     _.each state.views, (v) ->
       if @current_state? && _.include(state.no_redraw, v) && _.include(@current_state.views, v)
-        console.log "not going to redraw #{v.name}"
+        @log "not going to redraw #{v.name}"
         return
 
-      console.log "creating view #{state.name}::#{v.name}"
+      @log "creating view #{state.name}::#{v.name}"
       view = new v()
       @copy_data_from_state state, view
       view.app = @
@@ -139,10 +138,8 @@ class Stark.App
 
   # helper for converting string to function
   find_fn: (fn, base) ->
-    # console.log "find_fn ", fn, base
     base or= window
 
-    # console.log fn, base
     if fn.indexOf(".") >= 0
       s = fn.split(".")
       fn = s.shift()
@@ -161,3 +158,7 @@ class Stark.App
   subscribe   : Backbone.Events.on
   unsubscribe : Backbone.Events.off
   publish     : Backbone.Events.trigger
+
+  # mixin logger
+  _.extend @.prototype, Stark.Logger.prototype
+  logger: "app"

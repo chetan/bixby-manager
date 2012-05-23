@@ -16,4 +16,5 @@
 
 # finally, start the app
 jQuery ->
+  # Stark.Logger.enabled = false # uncomment to disable console logging
   Bixby.app.start()

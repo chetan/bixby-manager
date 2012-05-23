@@ -28,11 +28,15 @@ window.Stark or= {}
 # This class does not inherit from Backbone’s router
 class Stark.Router
 
+  # mixin logger
+  _.extend @.prototype, Stark.Logger.prototype
+  logger: "router"
+
   constructor: ->
     Backbone.history or= new Backbone.History
 
   start: ->
-    console.log "starting history"
+    @log "starting history"
     return Backbone.history.start({ pushState: true })
 
   # Connect an address with a particular state
