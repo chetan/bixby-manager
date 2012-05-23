@@ -10,6 +10,6 @@
 
     %div.scripts
       = csrf_meta_tag
-      = javascript_include_tag "application"
+      = javascript_include_tag "application", "bixby"
       = render(:partial => "layouts/bootstrap", :locals => { :bootstrap => @bootstrap })
       = yield :bootstrap
