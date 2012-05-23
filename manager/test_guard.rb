@@ -171,6 +171,16 @@ class Watcher
 
 end # class Watcher
 
+system("clear")
+
+# delete existing coverage data
+cov_dir = File.join(ROOT, "coverage")
+if File.directory? cov_dir then
+  puts "deleting existing coverage data\n---"
+  system("rm -rf #{cov_dir}")
+end
+
+# setup directories to watch
 dirs = [ ROOT ]
 ARGV.each do |d|
   if File.directory? d then
@@ -178,9 +188,10 @@ ARGV.each do |d|
   end
 end
 
-system("clear")
+# run all tests at start
 Watcher.new.run_test()
 
+# start listener for each dir
 threads = []
 listeners = []
 
@@ -196,6 +207,7 @@ dirs.each do |dir|
   end
 end
 
+# wait for exit (never)
 begin
   threads.each do |t|
     t.join()
