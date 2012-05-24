@@ -18,6 +18,7 @@ class Monitoring::ChecksController < Monitoring::BaseController
     @host = Host.find(params[:host_id])
     @commands = Command.where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
 
+    bootstrap @host
     @bootstrap << { :name => "commands", :model => "MonitoringCommandList", :data => @commands }
 
     if params[:command_id] then
