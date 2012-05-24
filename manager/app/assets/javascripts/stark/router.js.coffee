@@ -40,7 +40,7 @@ class Stark.Router
     return Backbone.history.start({ pushState: true })
 
   # Connect an address with a particular state
-  # Directly create a Backbone.history route
+  # Directly creates a Backbone.history route
   match: (pattern, target, options = {}) ->
     # console.debug 'Router#match', pattern, target
 

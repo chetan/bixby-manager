@@ -34,7 +34,12 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.MetricList extends Backbone.Collection
     model: exports.Metric
     url: -> "/monitoring/hosts/#{@host_id}/metrics"
-    initialize: (host_id) -> @host_id = host_id
+    initialize: (params) ->
+      if _.isObject(params)
+        if params.host_id?
+          @host_id = params.host_id
+      else
+        @host_id = params
 
 
   # MonitoringCommand
@@ -66,9 +71,19 @@ namespace 'Bixby.model', (exports, top) ->
         s += "?metric_id=" + @metric_id
       return s
 
-    initialize: (host_id) -> @host_id = host_id
+    initialize: (params) ->
+      if _.isObject(params)
+        if params.host_id?
+          @host_id = params.host_id
+      else
+        @host_id = params
 
   class exports.CheckList extends Backbone.Collection
     model: exports.Check
     url: -> "/monitoring/hosts/#{@host_id || @host.id}/checks"
-    initialize: (host_id) -> @host_id = host_id
+    initialize: (params) ->
+      if _.isObject(params)
+        if params.host_id?
+          @host_id = params.host_id
+      else
+        @host_id = params

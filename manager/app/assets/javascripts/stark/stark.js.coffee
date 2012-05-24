@@ -37,17 +37,34 @@ class Stark.App
       @router.match(s.url, s.name)
     state
 
-  # bound to app:route event
+  # bound to app:route event which is triggered by Route.handler method
+  # will get triggered whenever user uses back/forward browser nav
   matchRoute: (route, params) ->
     @log "matchRoute()", route.state_name
     @log route, "params: ", params
-    @transition route.state_name, { params: params }
+    @transition route.state_name, { params: params } # transition and pass in params
 
+
+  # Transition to another state, optionally with the given data
+  #
+  # How this works:
+  #
+  # transition( "foo", { baz: 'bar' } )
+  #
+  # - create new state instance
+  # - wire up instance with app reference
+  # - bind app events
+  # - copy bootstrapped and passed in data into state
+  # - see if any more data needs to be loaded
+  # - if not, render views right away
+  # - else, load data via ajax then render views
+  #
   transition: (state_name, state_data) ->
     @log "transition", state_name, state_data
     target_state = @states[state_name]
 
     if ! target_state?
+      # TODO error handler?!
       return
 
     if @current_state instanceof target_state
@@ -66,17 +83,17 @@ class Stark.App
     state.bind_app_events()
 
     @log "got state_data", state_data
-    _.extend(state, state_data)
 
-    # get data that's still needed
-    needed = state.load_data()
-
+    # load data into state, retrieve models which are missing
+    needed = state.load_data(state_data)
     if needed? && needed.length > 0
       app = @
       Backbone.multi_fetch needed, (err, results) ->
         app.render_views(state)
     else
       @render_views(state)
+
+    @log "---"
 
   copy_data_from_state: (state, view) ->
     _.each _.keys(state.models), (key) ->

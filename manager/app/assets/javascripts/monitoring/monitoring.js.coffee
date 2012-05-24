@@ -23,24 +23,6 @@ jQuery ->
       create_url: ->
         @url.replace /:host_id/, @host.id
 
-      load_data: ->
-        needed = []
-        if ! @host?
-          @host = new _bm.Host({ id: @params.host_id })
-          needed.push @host
-
-        if ! @checks?
-          host_id = (@params? && @params.host_id) || @host.id
-          @checks = new _bm.CheckList(host_id)
-          needed.push @checks
-
-        if ! @metrics?
-          host_id = (@params? && @params.host_id) || @host.id
-          @metrics = new _bm.MetricList(host_id)
-          needed.push @metrics
-
-        return needed
-
       activate: ->
         @app.trigger("nav:select_tab", "monitoring")
   )
@@ -54,21 +36,21 @@ jQuery ->
       create_url: ->
         @url.replace(/:host_id/, @host.id).replace(/:metric_id/, @metric.id)
 
-      load_data: ->
-        needed = []
-        if ! @check?
-          host_id = (@params? && @params.host_id) || @host.id
-          @check = new _bm.Check(host_id)
-          @check.metric_id = @params.metric_id
-          needed.push @check
+      # load_data: ->
+      #   needed = []
+      #   if ! @check?
+      #     host_id = (@params? && @params.host_id) || @host.id
+      #     @check = new _bm.Check(host_id)
+      #     @check.metric_id = @params.metric_id
+      #     needed.push @check
 
-        if ! @metric?
-          host_id = (@params? && @params.host_id) || @host.id
-          @metric = new _bm.Metric(host_id)
-          @metric.id = @params.metric_id
-          needed.push @metric
+      #   if ! @metric?
+      #     host_id = (@params? && @params.host_id) || @host.id
+      #     @metric = new _bm.Metric(host_id)
+      #     @metric.id = @params.metric_id
+      #     needed.push @metric
 
-        return needed
+      #   return needed
 
 
       views:      [ _bv.PageLayout, _vn.Layout, _vn.MetricDetail ]
@@ -88,17 +70,17 @@ jQuery ->
       create_url: ->
         @url.replace /:host_id/, @host.id
 
-      load_data: ->
-        needed = []
-        if ! @host?
-          @host = new _bm.Host({ id: @params.host_id })
-          needed.push @host
+      # load_data: ->
+      #   needed = []
+      #   if ! @host?
+      #     @host = new _bm.Host({ id: @params.host_id })
+      #     needed.push @host
 
-        if ! @commands
-          @commands = new _bm.MonitoringCommandList()
-          needed.push @commands
+      #   if ! @commands
+      #     @commands = new _bm.MonitoringCommandList()
+      #     needed.push @commands
 
-        return needed
+      #   return needed
   )
 
   Bixby.app.add_state(
@@ -107,9 +89,9 @@ jQuery ->
       views:      [ _bv.PageLayout, _vn.Layout, _vn.AddCommand, _vn.AddCommandOpts ]
       no_redraw:  [ _bv.PageLayout, _vn.Layout, _vn.AddCommand ]
       models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
-      load_data: ->
-        @spinner = new _bv.Spinner($("div.command_opts"))
-        return @commands
+      # load_data: ->
+      #   @spinner = new _bv.Spinner($("div.command_opts"))
+      #   return @commands
 
       activate: ->
         @spinner.stop()

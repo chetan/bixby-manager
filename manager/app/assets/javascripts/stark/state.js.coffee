@@ -26,10 +26,20 @@ class Stark.State
   transition: (state_name, state_data) ->
     @app.transition(state_name, state_data)
 
-  # this is where model objects should be resolved by the state
-  load_data: ->
-    # NO-OP
-    null
+  # Copy state_data into the local scope
+  # Return an array of any missing models so they can be loaded
+  load_data: (data) ->
+    needed = []
+    _.each @models, (model, key) ->
+      if data[key]
+        @[key] = data[key] # copy into current [state] scope
+      else
+        @log "will ajax load:", model
+        @[key] = new model(data.params)
+        needed.push @[key]
+    , @
+
+    return needed
 
   # this is called by Stark when this state becomes active (transitioning TO)
   # optional, if extra setup is needed
@@ -52,6 +62,7 @@ class Stark.State
         # only dispose of view IF NOT required by new state
         @log "disposing of", v
         v.dispose()
+    , @
 
   bind_app_events: ->
     _.each @app_events, (cb, key) ->
