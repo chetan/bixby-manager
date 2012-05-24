@@ -36,22 +36,6 @@ jQuery ->
       create_url: ->
         @url.replace(/:host_id/, @host.id).replace(/:metric_id/, @metric.id)
 
-      # load_data: ->
-      #   needed = []
-      #   if ! @check?
-      #     host_id = (@params? && @params.host_id) || @host.id
-      #     @check = new _bm.Check(host_id)
-      #     @check.metric_id = @params.metric_id
-      #     needed.push @check
-
-      #   if ! @metric?
-      #     host_id = (@params? && @params.host_id) || @host.id
-      #     @metric = new _bm.Metric(host_id)
-      #     @metric.id = @params.metric_id
-      #     needed.push @metric
-
-      #   return needed
-
 
       views:      [ _bv.PageLayout, _vn.Layout, _vn.MetricDetail ]
       no_redraw:  [ _bv.PageLayout, _vn.Layout ]
@@ -70,17 +54,6 @@ jQuery ->
       create_url: ->
         @url.replace /:host_id/, @host.id
 
-      # load_data: ->
-      #   needed = []
-      #   if ! @host?
-      #     @host = new _bm.Host({ id: @params.host_id })
-      #     needed.push @host
-
-      #   if ! @commands
-      #     @commands = new _bm.MonitoringCommandList()
-      #     needed.push @commands
-
-      #   return needed
   )
 
   Bixby.app.add_state(
@@ -89,9 +62,13 @@ jQuery ->
       views:      [ _bv.PageLayout, _vn.Layout, _vn.AddCommand, _vn.AddCommandOpts ]
       no_redraw:  [ _bv.PageLayout, _vn.Layout, _vn.AddCommand ]
       models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
-      # load_data: ->
-      #   @spinner = new _bv.Spinner($("div.command_opts"))
-      #   return @commands
+
+      load_data: (data) ->
+        needed = super(data)
+        @log "commands: ", @commands
+        needed = _.union(needed, @commands)
+        @spinner = new _bv.Spinner($("div.command_opts"))
+        return needed
 
       activate: ->
         @spinner.stop()
