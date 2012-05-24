@@ -1,5 +1,6 @@
 
 #= require "utils"
+#= require "stark/log"
 #= require_tree "./stark"
 
 # setup our namespaces
