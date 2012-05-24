@@ -1,17 +1,18 @@
 
 namespace 'Bixby.model', (exports, top) ->
 
-  # class exports.Resource extends Backbone.Model
+  # class exports.Resource extends Stark.Model
   #   url: -> "/monitoring/hosts/#{@get("host_id")}/resources/#{@get("id")}"
 
-  # class exports.ResourceList extends Backbone.Collection
+  # class exports.ResourceList extends Stark.Collection
   #   model: exports.Resource
   #   url: -> "/monitoring/hosts/#{@host_id}/resources"
   #   initialize: (host_id) -> @host_id = host_id
 
-  class exports.Metric extends Backbone.Model
+  class exports.Metric extends Stark.Model
 
-    initialize: (host_id) -> @host_id = host_id
+    initialize: (data) ->
+      @extract_param(data, "host")
 
     url: ->
       host_id = @host_id || @get("host_id")
@@ -31,19 +32,16 @@ namespace 'Bixby.model', (exports, top) ->
 
       return metrics
 
-  class exports.MetricList extends Backbone.Collection
+  class exports.MetricList extends Stark.Collection
     model: exports.Metric
     url: -> "/monitoring/hosts/#{@host_id}/metrics"
-    initialize: (params) ->
-      if _.isObject(params)
-        if params.host_id?
-          @host_id = params.host_id
-      else
-        @host_id = params
+
+    initialize: (data) ->
+      @extract_param(data, "host")
 
 
   # MonitoringCommand
-  class exports.MonitoringCommand extends Backbone.Model
+  class exports.MonitoringCommand extends Stark.Model
     urlRoot: "/monitoring/commands"
     command: ->
       cmd = @get("command")
@@ -55,7 +53,7 @@ namespace 'Bixby.model', (exports, top) ->
 
       return true
 
-  class exports.MonitoringCommandList extends Backbone.Collection
+  class exports.MonitoringCommandList extends Stark.Collection
     model: exports.MonitoringCommand
     url: "/monitoring/commands"
 
@@ -64,26 +62,19 @@ namespace 'Bixby.model', (exports, top) ->
     url: -> "/monitoring/hosts/#{@host.id}/command/#{@id}/opts"
 
   # Check
-  class exports.Check extends Backbone.Model
+  class exports.Check extends Stark.Model
     url: ->
       s = "/monitoring/hosts/#{@host_id || @host.id}/checks" # id is appended if avail for update
       if @metric_id?
         s += "?metric_id=" + @metric_id
       return s
 
-    initialize: (params) ->
-      if _.isObject(params)
-        if params.host_id?
-          @host_id = params.host_id
-      else
-        @host_id = params
+    initialize: (data) ->
+      @extract_param(data, "host")
 
-  class exports.CheckList extends Backbone.Collection
+  class exports.CheckList extends Stark.Collection
     model: exports.Check
     url: -> "/monitoring/hosts/#{@host_id || @host.id}/checks"
-    initialize: (params) ->
-      if _.isObject(params)
-        if params.host_id?
-          @host_id = params.host_id
-      else
-        @host_id = params
+
+    initialize: (data) ->
+      @extract_param(data, "host")

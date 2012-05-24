@@ -1,18 +1,16 @@
 
 namespace 'Bixby.model', (exports, top) ->
 
-  class exports.Agent extends Backbone.Model
-  class exports.Command extends Backbone.Model
+  class exports.Agent extends Stark.Model
+  class exports.Command extends Stark.Model
 
-  class exports.Host extends Backbone.Model
+  class exports.Host extends Stark.Model
     urlRoot: "/inventory"
-    initialize: (params) ->
-      if _.isObject(params)
-        if params.host_id?
-          @id = params.host_id
 
+    initialize: (data) ->
+      @extract_param(data, "host")
 
-  class exports.HostList extends Backbone.Collection
+  class exports.HostList extends Stark.Collection
     model: exports.Host
     url: "/inventory"
 

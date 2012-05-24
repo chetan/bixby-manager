@@ -35,7 +35,7 @@ class Stark.State
         @[key] = data[key] # copy into current [state] scope
       else
         @log "will ajax load:", model
-        @[key] = new model(data.params)
+        @[key] = new model(data)
         needed.push @[key]
     , @
 
