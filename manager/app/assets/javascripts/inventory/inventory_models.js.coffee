@@ -9,6 +9,8 @@ namespace 'Bixby.model', (exports, top) ->
 
     initialize: (data) ->
       @extract_param(data, "host")
+      if @host_id?
+        @id = @host_id
 
   class exports.HostList extends Stark.Collection
     model: exports.Host
