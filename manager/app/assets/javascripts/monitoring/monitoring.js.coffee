@@ -7,10 +7,10 @@ jQuery ->
 
   Bixby.app.add_state(
     class MonViewHostState extends Stark.State
-      name: "mon_view_host" #  canonical name used for state transitions
-                            #  e.g., it is referred to in events hash of other states
 
-      url:  "monitoring/hosts/:host_id" #  match() pattern [optional]
+      name: "mon_view_host"
+      url:  "monitoring/hosts/:host_id"
+      tab:  "monitoring"
 
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.MetricList ]
       no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
@@ -18,9 +18,6 @@ jQuery ->
 
       create_url: ->
         @url.replace /:host_id/, @host.id
-
-      activate: ->
-        @app.trigger("nav:select_tab", "monitoring")
   )
 
   Bixby.app.add_state(
@@ -28,6 +25,7 @@ jQuery ->
 
       name: "mon_hosts_resources_metric"
       url:  "monitoring/hosts/:host_id/metrics/:metric_id"
+      tab:  "monitoring"
 
       create_url: ->
         @url.replace(/:host_id/, @host.id).replace(/:metric_id/, @metric.id)
@@ -40,8 +38,10 @@ jQuery ->
 
   Bixby.app.add_state(
     class extends Stark.State
+
       name: "mon_hosts_resources_new"
       url:  "monitoring/hosts/:host_id/checks/new"
+      tab:  "monitoring"
 
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand ]
       no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
@@ -49,12 +49,14 @@ jQuery ->
 
       create_url: ->
         @url.replace /:host_id/, @host.id
-
   )
 
   Bixby.app.add_state(
     class extends Stark.State
+
       name: "mon_hosts_resources_new_opts"
+      tab:  "monitoring"
+
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand, _bvm.AddCommandOpts ]
       no_redraw:  [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand ]
       models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }

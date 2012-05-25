@@ -68,12 +68,16 @@ class Stark.State
 
     return needed
 
-  # This is called by Stark when this state becomes active (transitioning TO)
+  # This is called by Stark when this state becomes active (transitioning TO),
+  # after all data has been loaded and views have been rendered.
+  #
   # optional, if extra setup is needed
   activate: ->
     # NO-OP
 
-  # this is called by Stark when this state becomes deactive (transitioning AWAY)
+  # This is called by Stark when this state becomes deactive (transitioning AWAY),
+  # before dispose() is called
+  #
   # optional, if extra teardown is needed (beyond normal dispose())
   deactivate: ->
     # NO-OP

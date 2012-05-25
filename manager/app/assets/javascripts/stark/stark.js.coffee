@@ -112,6 +112,8 @@ class Stark.App
     if @current_state?
       @current_state.deactivate()
       @current_state.dispose(state)
+      @trigger("state:deactivate", state)
+
 
     # create views
     _.each state.views, (v) ->
@@ -137,6 +139,7 @@ class Stark.App
 
     state.activate()
     @current_state = state
+    @trigger("state:activate", state)
 
 
   # Method used by Server-side template to bootstrap any models

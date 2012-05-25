@@ -2,6 +2,7 @@
 namespace "Bixby.view", (exports, top) ->
 
   class exports.PageLayout extends Stark.View
+
     el: "#body"
     template: "page_layout"
 
@@ -17,9 +18,11 @@ namespace "Bixby.view", (exports, top) ->
     }
 
     app_events: {
-      "nav:select_tab": (tab) ->
-        $("div.navbar li.tab").removeClass("active")
-        $("div.navbar li.tab.#{tab}").addClass("active")
+      "state:activate": (state) ->
+        if state.tab? and state.tab != @current_tab
+          @current_tab = state.tab
+          $("div.navbar li.tab").removeClass("active")
+          $("div.navbar li.tab.#{@current_tab}").addClass("active")
     }
 
   class exports.Spinner extends Stark.View
