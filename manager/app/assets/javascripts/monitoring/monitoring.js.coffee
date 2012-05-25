@@ -2,8 +2,9 @@
 jQuery ->
 
   _bv = Bixby.view
-  _vn = _bv.monitoring
+  _bvm = _bv.monitoring
   _bm = Bixby.model
+
   Bixby.app.add_state(
     class MonViewHostState extends Stark.State
       name: "mon_view_host" #  canonical name used for state transitions
@@ -11,8 +12,8 @@ jQuery ->
 
       url:  "monitoring/hosts/:host_id" #  match() pattern [optional]
 
-      views:      [ _bv.PageLayout, _vn.Layout, _vn.MetricList ]
-      no_redraw:  [ _bv.PageLayout, _vn.Layout ]
+      views:      [ _bv.PageLayout, _bvm.Layout, _bvm.MetricList ]
+      no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
       models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
 
       events: {
@@ -37,8 +38,8 @@ jQuery ->
         @url.replace(/:host_id/, @host.id).replace(/:metric_id/, @metric.id)
 
 
-      views:      [ _bv.PageLayout, _vn.Layout, _vn.MetricDetail ]
-      no_redraw:  [ _bv.PageLayout, _vn.Layout ]
+      views:      [ _bv.PageLayout, _bvm.Layout, _bvm.MetricDetail ]
+      no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
       models:     { host: _bm.Host, check: _bm.Check, metric: _bm.Metric }
   )
 
@@ -47,8 +48,8 @@ jQuery ->
       name: "mon_hosts_resources_new"
       url:  "monitoring/hosts/:host_id/checks/new"
 
-      views:      [ _bv.PageLayout, _vn.Layout, _vn.AddCommand ]
-      no_redraw:  [ _bv.PageLayout, _vn.Layout ]
+      views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand ]
+      no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
       models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
 
       create_url: ->
@@ -59,8 +60,8 @@ jQuery ->
   Bixby.app.add_state(
     class extends Stark.State
       name: "mon_hosts_resources_new_opts"
-      views:      [ _bv.PageLayout, _vn.Layout, _vn.AddCommand, _vn.AddCommandOpts ]
-      no_redraw:  [ _bv.PageLayout, _vn.Layout, _vn.AddCommand ]
+      views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand, _bvm.AddCommandOpts ]
+      no_redraw:  [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand ]
       models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
 
       load_data: (data) ->
