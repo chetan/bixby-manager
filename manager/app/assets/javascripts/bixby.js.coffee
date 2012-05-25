@@ -3,9 +3,6 @@
 #= require "stark/log"
 #= require_tree "./stark"
 
-# setup our namespaces
-#= require "bootstrap"
-
 # include all templates, models
 #= require_tree "./templates"
 #= require_tree "./models"
@@ -17,6 +14,10 @@
 #= require_tree "./monitoring"
 
 # finally, start the app
+app = new Stark.App()
+app.template_root = "templates/"
+app.default_route = "inventory"
+Bixby.app = app
+
 jQuery ->
-  # Stark.Logger.enabled = false # uncomment to disable console logging
   Bixby.app.start()
