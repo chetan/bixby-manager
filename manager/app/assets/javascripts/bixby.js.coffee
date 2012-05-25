@@ -6,8 +6,9 @@
 # setup our namespaces
 #= require "bootstrap"
 
-# include all templates
+# include all templates, models
 #= require_tree "./templates"
+#= require_tree "./models"
 
 #= require "main_views"
 
