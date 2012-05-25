@@ -9,13 +9,33 @@ class Stark.State
   _.extend @.prototype, Stark.Logger.prototype
   logger: "state"
 
+  # mixin events
   _.extend @.prototype, Backbone.Events.prototype
 
-  # static attributes
+  # Unique name for state. Used to transition directly from one state to another
   name:   null
+
+  # URL pattern for this state. Used to create Routes.
+  #
+  # pattern is of the format:
+  #
+  #   "/foo/:param/bar"
+  #
+  # where :param would get extracted as a value in the @params hash injected
+  # into the created state. params are also passed into the Models during autoloading.
   url:    null
+
+  # List of views used by this state
   views:  []
-  models: []
+
+  # Hash of models required by this state and its views. Models will be autolaoded
+  # when the state is created. Views will only be rendered once loads are complete.
+  #
+  # { key: ModelClass }
+  #
+  # Once loaded, keys will be available directly within the state and view, as well as
+  # in templates.
+  models: {}
 
   constructor: ->
     # internal attributes
