@@ -95,10 +95,17 @@ class Stark.App
 
     @log "---"
 
+  # Copy all of the known model data from state into the view
+  #
+  # @param [State] state
+  # @param [View] view
   copy_data_from_state: (state, view) ->
     _.each _.keys(state.models), (key) ->
       view[key] = state[key]
 
+  # Render the State
+  #
+  # @param [State] state
   render_views: (state) ->
     @log "render_views "
 
@@ -132,8 +139,8 @@ class Stark.App
     @current_state = state
 
 
-  # method used by Server-side template to bootstrap any models
-  # on the first hit. can be called multiple times
+  # Method used by Server-side template to bootstrap any models
+  # on the first hit. Can be called multiple times
   #
   # @param [Object] data   Data to boostrap with, hash of models
   bootstrap: (data) ->

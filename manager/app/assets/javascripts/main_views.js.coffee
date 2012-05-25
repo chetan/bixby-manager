@@ -4,6 +4,7 @@ namespace "Bixby.view", (exports, top) ->
   class exports.PageLayout extends Stark.View
     el: "#body"
     template: "page_layout"
+
     events: {
       "click a.brand": ->
         @transition "inventory"

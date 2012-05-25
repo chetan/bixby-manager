@@ -61,7 +61,6 @@ class Stark.Route
     '([\\w-]+)'
 
   # Test if the route matches to a path (called by Backbone.History#loadUrl)
-
   test: (path) ->
     #console.debug 'Route#test', @, "path »#{path}«", typeof path
 

@@ -12,6 +12,9 @@ class Stark.State
   # mixin events
   _.extend @.prototype, Backbone.Events.prototype
 
+  # [internal] Reference to the Stark::App instance
+  app: null
+
   # Unique name for state. Used to transition directly from one state to another
   name:   null
 
@@ -41,7 +44,12 @@ class Stark.State
     # internal attributes
     @_views = []
 
-  # transition TO the given state
+  # Transition to another state
+  #
+  # This simply calls @app.transition()
+  #
+  # @param [String] state_name    name of the target state
+  # @param [Hash] state_data      data to pass into the target state
   transition: (state_name, state_data) ->
     @app.transition(state_name, state_data)
 
@@ -60,22 +68,27 @@ class Stark.State
 
     return needed
 
-  # this is called by Stark when this state becomes active (transitioning TO)
+  # This is called by Stark when this state becomes active (transitioning TO)
   # optional, if extra setup is needed
   activate: ->
     # NO-OP
 
   # this is called by Stark when this state becomes deactive (transitioning AWAY)
-  # optional, if extra teardown is needed
+  # optional, if extra teardown is needed (beyond normal dispose())
   deactivate: ->
     # NO-OP
 
-  # return the URL that represents this state (substituting any params in @url)
+  # Return the URL that represents this state (substituting any params in @url)
+  #
+  # While @url is used matching URLs to States, create_url() is used for updating
+  # the url in the address bar or creating a link to the state
   create_url: ->
     @url
 
+  # Cleanup any resources used by the state. Should remove all views and unbind any events
   dispose: (new_state) ->
     @log "disposing of current state", @
+    @unbind_app_events()
     _.each @_views, (v) ->
       if ! (_.any(new_state.views, (n)-> v instanceof n) && _.any(new_state.no_redraw, (n)-> v instanceof n))
         # only dispose of view IF NOT required by new state
@@ -83,7 +96,14 @@ class Stark.State
         v.dispose()
     , @
 
+  # Subscribe to all @app level events as defined in the @app_events var
   bind_app_events: ->
     _.each @app_events, (cb, key) ->
-      @app.subscribe(key, cb)
+      @app.subscribe(key, cb, @)
+    , @
+
+  # Unsubscribe all @app level events (see #bind_app_events)
+  unbind_app_events: ->
+    _.each @app_events, (cb, key) ->
+      @app.unsubscribe(key, cb, @)
     , @
