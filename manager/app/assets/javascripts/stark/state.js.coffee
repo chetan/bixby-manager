@@ -16,7 +16,6 @@ class Stark.State
   url:    null
   views:  []
   models: []
-  events: {}
 
   constructor: ->
     # internal attributes

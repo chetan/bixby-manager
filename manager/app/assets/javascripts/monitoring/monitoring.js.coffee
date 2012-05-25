@@ -16,11 +16,6 @@ jQuery ->
       no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
       models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
 
-      events: {
-        mon_hosts_resources_new: { models: [ _bm.Host ] }
-        mon_hosts_resources_metric: { models: [ _bm.Host, _bm.Metric ]}
-      }
-
       create_url: ->
         @url.replace /:host_id/, @host.id
 

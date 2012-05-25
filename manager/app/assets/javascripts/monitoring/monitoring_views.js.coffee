@@ -26,6 +26,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
         Bixby.monitoring.render_metric(s, metric)
 
+
   class exports.MetricDetail extends Stark.View
     el: "div.monitoring_content"
     template: "monitoring/metric_detail"

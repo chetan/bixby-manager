@@ -12,10 +12,6 @@ jQuery ->
       no_redraw:  [ Bixby.view.PageLayout, Bixby.view.inventory.Layout ]
       models:     { hosts: Bixby.model.HostList }
 
-      events: {
-        mon_view_host: { models: [ Bixby.model.Host ] }
-      }
-
       activate: ->
         @app.trigger("nav:select_tab", "inventory")
   )
