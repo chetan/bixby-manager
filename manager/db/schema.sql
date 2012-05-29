@@ -326,6 +326,30 @@ CREATE  TABLE IF NOT EXISTS `taggings` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `hosts_metadata`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `hosts_metadata` ;
+
+CREATE  TABLE IF NOT EXISTS `hosts_metadata` (
+  `host_id` INT UNSIGNED NOT NULL ,
+  `metadata_id` INT UNSIGNED NOT NULL ,
+  PRIMARY KEY (`host_id`, `metadata_id`) ,
+  INDEX `fk_hosts_metadata_hosts1` (`host_id` ASC) ,
+  INDEX `fk_hosts_metadata_metadata1` (`metadata_id` ASC) ,
+  CONSTRAINT `fk_hosts_metadata_hosts1`
+    FOREIGN KEY (`host_id` )
+    REFERENCES `hosts` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_hosts_metadata_metadata1`
+    FOREIGN KEY (`metadata_id` )
+    REFERENCES `metadata` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
