@@ -55,16 +55,17 @@ GIT
 
 GIT
   remote: https://github.com/chetan/devops_common.git
-  revision: 8661151d5db5b54cb94b4c58b8fe6be35e284521
+  revision: 3df81c8c79e2fe983b06159fde7b9e8a9328d05e
   specs:
     devops_common (0.1.0)
       curb
-      json
+      multi_json
+      oj
       systemu
 
 GIT
   remote: https://github.com/colszowka/simplecov.git
-  revision: c91cf71d8ab490be804fe6656a2d96dfe88a82d7
+  revision: d02fb3fe18141ce7822dbc20cba94b21115063be
   specs:
     simplecov (0.6.4)
       multi_json (~> 1.0)
@@ -121,6 +122,8 @@ GEM
     activesupport (3.2.3)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    acts-as-taggable-on (2.3.1)
+      rails (~> 3.0)
     addressable (2.2.8)
     ansi (1.4.2)
     arel (3.0.2)
@@ -181,16 +184,16 @@ GEM
     metaclass (0.0.1)
     method_source (0.7.1)
     mime-types (1.18)
-    minitest (3.0.0)
+    minitest (3.0.1)
     mocha (0.11.4)
       metaclass (~> 0.0.1)
-    multi_json (1.3.5)
+    multi_json (1.3.6)
     mysql2 (0.3.11)
     newrelic-redis (1.3.2)
       newrelic_rpm (~> 3.0)
       redis (< 4.0)
     newrelic_rpm (3.3.4.1)
-    oj (1.2.8)
+    oj (1.2.9)
     open4 (1.3.0)
     polyglot (0.3.3)
     pry (0.9.9.6)
@@ -251,7 +254,7 @@ GEM
       redis (< 3.0.0)
     rev (0.3.2)
       iobuffer (>= 0.1.3)
-    rpm_contrib (2.1.10)
+    rpm_contrib (2.1.11)
       newrelic_rpm (>= 3.1.1)
       newrelic_rpm (>= 3.1.1)
     ruby-debug (0.10.4)
@@ -261,14 +264,14 @@ GEM
       linecache (>= 0.3)
     rufus-scheduler (2.0.16)
       tzinfo (>= 0.3.23)
-    sass (3.1.18)
+    sass (3.1.19)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
-    sextant (0.1.0)
-      activesupport (>= 3.1)
-      rails (>= 3.1)
+    sextant (0.1.1)
+      activesupport (>= 3.2)
+      rails (>= 3.2)
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
@@ -319,6 +322,7 @@ PLATFORMS
 
 DEPENDENCIES
   SystemTimer
+  acts-as-taggable-on
   awesome_print
   bahia
   coffee-script

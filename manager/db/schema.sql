@@ -48,6 +48,8 @@ CREATE  TABLE IF NOT EXISTS `hosts` (
   `hostname` VARCHAR(255) NULL ,
   `alias` VARCHAR(255) NULL ,
   `desc` VARCHAR(255) NULL ,
+  `created_at` DATETIME NULL ,
+  `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_hosts_orgs1` (`org_id` ASC) ,
   CONSTRAINT `fk_hosts_orgs1`
@@ -282,6 +284,43 @@ CREATE  TABLE IF NOT EXISTS `metrics_metadata` (
   CONSTRAINT `fk_metrics_metadata_metadata1`
     FOREIGN KEY (`metadata_id` )
     REFERENCES `metadata` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tags`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `tags` ;
+
+CREATE  TABLE IF NOT EXISTS `tags` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `taggings`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `taggings` ;
+
+CREATE  TABLE IF NOT EXISTS `taggings` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `tag_id` INT UNSIGNED NOT NULL ,
+  `taggable_id` INT UNSIGNED NULL ,
+  `taggable_type` VARCHAR(255) NULL ,
+  `tagger_id` INT UNSIGNED NULL ,
+  `tagger_type` VARCHAR(255) NULL ,
+  `context` VARCHAR(128) NULL ,
+  `created_at` DATETIME NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_taggings_tags1` (`tag_id` ASC) ,
+  INDEX `index_taggings_on_taggable_id_and_taggable_type_and_context` (`taggable_id` ASC, `taggable_type` ASC, `context` ASC) ,
+  CONSTRAINT `fk_taggings_tags1`
+    FOREIGN KEY (`tag_id` )
+    REFERENCES `tags` (`name` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

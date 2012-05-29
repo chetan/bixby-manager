@@ -31,6 +31,8 @@ gem "SystemTimer",  :platforms => :mri_18
 gem "git"
 gem "rabl" # Ruby API Builder Language -- not currently used
 
+gem "acts-as-taggable-on"
+
 # scheduler module
 gem "hiredis"
 gem "redis", ">= 2.2.0", :require => ["redis/connection/hiredis", "redis"]

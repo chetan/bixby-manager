@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120529202216) do
+ActiveRecord::Schema.define(:version => 20120529223150) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -55,14 +55,24 @@ ActiveRecord::Schema.define(:version => 20120529202216) do
   add_index "commands", ["repo_id"], :name => "fk_commands_repos1"
 
   create_table "hosts", :force => true do |t|
-    t.integer "org_id",                 :null => false
-    t.string  "ip",       :limit => 16
-    t.string  "hostname"
-    t.string  "alias"
-    t.string  "desc"
+    t.integer  "org_id",                   :null => false
+    t.string   "ip",         :limit => 16
+    t.string   "hostname"
+    t.string   "alias"
+    t.string   "desc"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "hosts", ["org_id"], :name => "fk_hosts_orgs1"
+
+  create_table "hosts_metadata", :id => false, :force => true do |t|
+    t.integer "host_id",     :null => false
+    t.integer "metadata_id", :null => false
+  end
+
+  add_index "hosts_metadata", ["host_id"], :name => "index_hosts_metadata_on_host_id"
+  add_index "hosts_metadata", ["metadata_id"], :name => "index_hosts_metadata_on_metadata_id"
 
   create_table "metadata", :force => true do |t|
     t.string "key"
@@ -117,6 +127,23 @@ ActiveRecord::Schema.define(:version => 20120529202216) do
 
   add_index "repos", ["id"], :name => "id_UNIQUE", :unique => true
   add_index "repos", ["org_id"], :name => "fk_repos_orgs1"
+
+  create_table "taggings", :force => true do |t|
+    t.integer  "tag_id",                       :null => false
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context",       :limit => 128
+    t.datetime "created_at"
+  end
+
+  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
+
+  create_table "tags", :force => true do |t|
+    t.string "name"
+  end
 
   create_table "tenants", :force => true do |t|
     t.string "name"

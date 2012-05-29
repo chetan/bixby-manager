@@ -7,8 +7,17 @@ module Bixby::ARTableMigration
     primary = opts.delete(:primary) || col.to_s == "id"
     type = "INT(10) UNSIGNED"
     type = "#{type} AUTO_INCREMENT PRIMARY KEY" if primary
-    opts[:null] = false
-    self.column(col, type, opts)
+
+    if opts[:polymorphic] then
+      opts[:null] = true
+      col_id = col.to_s =~ /_id$/ ? col : col.to_s + "_id"
+      col_type = col.to_s =~ /_id$/ ? col.to_s.gsub(/_id/, '_type') : col.to_s + "_type"
+      self.column(col_id, type, opts)
+      self.column(col_type, "string", opts)
+    else
+      opts[:null] = false
+      self.column(col, type, opts)
+    end
   end
 
   # Override integer method to create unsigned ints by default.
