@@ -251,11 +251,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `tags`
+-- Table `metadata`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `tags` ;
+DROP TABLE IF EXISTS `metadata` ;
 
-CREATE  TABLE IF NOT EXISTS `tags` (
+CREATE  TABLE IF NOT EXISTS `metadata` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `key` VARCHAR(255) NOT NULL ,
   `value` VARCHAR(255) NOT NULL ,
@@ -264,24 +264,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `metrics_tags`
+-- Table `metrics_metadata`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `metrics_tags` ;
+DROP TABLE IF EXISTS `metrics_metadata` ;
 
-CREATE  TABLE IF NOT EXISTS `metrics_tags` (
+CREATE  TABLE IF NOT EXISTS `metrics_metadata` (
   `metric_id` INT UNSIGNED NOT NULL ,
-  `tag_id` INT UNSIGNED NOT NULL ,
-  PRIMARY KEY (`metric_id`, `tag_id`) ,
-  INDEX `fk_metrics_tags_metrics1` (`metric_id` ASC) ,
-  INDEX `fk_metrics_tags_tags1` (`tag_id` ASC) ,
-  CONSTRAINT `fk_metrics_tags_metrics1`
+  `metadata_id` INT UNSIGNED NOT NULL ,
+  INDEX `fk_metrics_metadata_metrics1` (`metric_id` ASC) ,
+  INDEX `fk_metrics_metadata_metadata1` (`metadata_id` ASC) ,
+  PRIMARY KEY (`metric_id`, `metadata_id`) ,
+  CONSTRAINT `fk_metrics_metadata_metrics1`
     FOREIGN KEY (`metric_id` )
     REFERENCES `metrics` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_metrics_tags_tags1`
-    FOREIGN KEY (`tag_id` )
-    REFERENCES `tags` (`id` )
+  CONSTRAINT `fk_metrics_metadata_metadata1`
+    FOREIGN KEY (`metadata_id` )
+    REFERENCES `metadata` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

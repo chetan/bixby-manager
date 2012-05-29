@@ -2,7 +2,7 @@
 class Metric < ActiveRecord::Base
 
   belongs_to :check
-  has_and_belongs_to_many :tags
+  has_and_belongs_to_many :tags, :class_name => :Metadata, :join_table => "metrics_metadata"
 
   attr_accessor :data, :metadata
 
@@ -25,7 +25,7 @@ class Metric < ActiveRecord::Base
     m.key = key
     m.tag_hash = hash
     m.tags = []
-    m.tags += metadata.map { |k,v| Tag.for(k, v) } if metadata
+    m.tags += metadata.map { |k,v| Metadata.for(k, v) } if metadata
 
     return m
   end

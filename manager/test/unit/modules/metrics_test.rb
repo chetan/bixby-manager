@@ -52,9 +52,9 @@ EOF
 
     assert m.tags
     assert m.tags.size == 2
-    assert_kind_of Tag, m.tags.first
+    assert_kind_of Metadata, m.tags.first
 
-    tags = Tag.find(:all)
+    tags = Metadata.find(:all)
     assert tags
     assert_equal 2, tags.size
     assert_equal "mount", tags.first.key
@@ -98,7 +98,7 @@ EOF
 
   def test_get_for_host_includes_tags
     m = FactoryGirl.create(:metric)
-    t = Tag.new
+    t = Metadata.new
     t.key = "cow"
     t.value = "says moooo"
     t.save!

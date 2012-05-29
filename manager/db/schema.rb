@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120517223659) do
+ActiveRecord::Schema.define(:version => 20120529202216) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -64,7 +64,12 @@ ActiveRecord::Schema.define(:version => 20120517223659) do
 
   add_index "hosts", ["org_id"], :name => "fk_hosts_orgs1"
 
-  create_table "metric_infos", :id => false, :force => true do |t|
+  create_table "metadata", :force => true do |t|
+    t.string "key"
+    t.string "value"
+  end
+
+  create_table "metric_infos", :force => true do |t|
     t.integer "command_id", :null => false
     t.string  "metric",     :null => false
     t.string  "unit"
@@ -86,13 +91,14 @@ ActiveRecord::Schema.define(:version => 20120517223659) do
 
   add_index "metrics", ["check_id"], :name => "index_metrics_on_check_id"
 
-  create_table "metrics_tags", :id => false, :force => true do |t|
-    t.integer "metric_id", :null => false
-    t.integer "tag_id",    :null => false
+  create_table "metrics_metadata", :id => false, :force => true do |t|
+    t.integer "metric_id",   :null => false
+    t.integer "metadata_id", :null => false
   end
 
-  add_index "metrics_tags", ["metric_id"], :name => "index_metrics_tags_on_metric_id"
-  add_index "metrics_tags", ["tag_id"], :name => "index_metrics_tags_on_tag_id"
+  add_index "metrics_metadata", ["metadata_id"], :name => "index_metrics_metadata_on_metadata_id"
+  add_index "metrics_metadata", ["metadata_id"], :name => "index_metrics_tags_on_tag_id"
+  add_index "metrics_metadata", ["metric_id"], :name => "index_metrics_tags_on_metric_id"
 
   create_table "orgs", :force => true do |t|
     t.integer "tenant_id"
@@ -111,11 +117,6 @@ ActiveRecord::Schema.define(:version => 20120517223659) do
 
   add_index "repos", ["id"], :name => "id_UNIQUE", :unique => true
   add_index "repos", ["org_id"], :name => "fk_repos_orgs1"
-
-  create_table "tags", :force => true do |t|
-    t.string "key"
-    t.string "value"
-  end
 
   create_table "tenants", :force => true do |t|
     t.string "name"
