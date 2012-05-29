@@ -261,6 +261,7 @@ CREATE  TABLE IF NOT EXISTS `metadata` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `key` VARCHAR(255) NOT NULL ,
   `value` VARCHAR(255) NOT NULL ,
+  `source` SMALLINT(2) NOT NULL DEFAULT 1 ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -318,9 +319,10 @@ CREATE  TABLE IF NOT EXISTS `taggings` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_taggings_tags1` (`tag_id` ASC) ,
   INDEX `index_taggings_on_taggable_id_and_taggable_type_and_context` (`taggable_id` ASC, `taggable_type` ASC, `context` ASC) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
   CONSTRAINT `fk_taggings_tags1`
     FOREIGN KEY (`tag_id` )
-    REFERENCES `tags` (`name` )
+    REFERENCES `tags` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

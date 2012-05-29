@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120529223150) do
+ActiveRecord::Schema.define(:version => 20120529223931) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -75,8 +75,9 @@ ActiveRecord::Schema.define(:version => 20120529223150) do
   add_index "hosts_metadata", ["metadata_id"], :name => "index_hosts_metadata_on_metadata_id"
 
   create_table "metadata", :force => true do |t|
-    t.string "key"
-    t.string "value"
+    t.string  "key"
+    t.string  "value"
+    t.integer "source", :limit => 2, :default => 1
   end
 
   create_table "metric_infos", :force => true do |t|
