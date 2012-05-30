@@ -101,9 +101,7 @@ class Metrics < API
   # Get the metrics for the given keys
   def get_for_keys(keys, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
 
-    if not keys.kind_of? Array then
-      keys = [ keys ]
-    end
+    keys = array(keys)
 
     # TODO add in other relevant keys like org, tenant
     # tags[:org_id]    = @org_id
@@ -145,9 +143,7 @@ class Metrics < API
   # @return [void]
   def put_check_result(results)
 
-    if not results.kind_of? Array then
-      results = [ results ]
-    end
+    results = array(results)
 
     ActiveRecord::Base.transaction do
       results.each do |result|

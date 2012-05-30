@@ -31,6 +31,15 @@ class API
     return clazz.find(obj.to_i) if [Fixnum, String].include? obj.class
     return obj
   end
+
+  # Helper for converting input into an array
+  #
+  # @param [Object] arr
+  # @return [Array]
+  def array(arr)
+    return arr if arr.nil?
+    return arr.kind_of?(Array) ? arr : [arr]
+  end
 end
 
 end # Bixby
