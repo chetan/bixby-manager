@@ -1,7 +1,7 @@
 
 class Metadata < ActiveRecord::Base
 
-  def self.for(key, val, source)
+  def self.for(key, val, source=1)
     md = Metadata.where(:key => key, :value => val, :source => source).first
     return md if not md.nil?
 

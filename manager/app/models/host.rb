@@ -16,4 +16,16 @@ class Host < ActiveRecord::Base
     end
   end
 
+  def info
+    info = {}
+    wanted = %w(architecture fqdn ipaddress ec2_public_ipv4 hostname kernel kernelrelease memsize timezone uptime operatingsystem lsbdistdescription)
+    self.metadata.each do |m|
+      if wanted.include? m.key then
+        info[m.key] = m.value
+      end
+    end
+
+    return info
+  end
+
 end
