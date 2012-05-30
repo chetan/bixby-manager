@@ -65,9 +65,7 @@ class Metrics < API
   # @param [String] agg
   def get_for_host(host, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
 
-    if [Fixnum, String].include? host.class
-      host = Host.find(host.to_i)
-    end
+    host = get_model(host, Host)
 
     # TODO add in other relevant keys like org, tenant
     tags[:host_id]     = host.id
@@ -86,9 +84,7 @@ class Metrics < API
   # @param [String] agg
   def get_for_check(check, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
 
-    if [Fixnum, String].include? check.class
-      check = Check.find(check.to_i)
-    end
+    check = get_model(check, Check)
 
     # foo = Metrics.new.get("hardware.cpu.loadavg.1m", Time.new-(86400*14), Time.new)
     # TODO add in other relevant keys like org, tenant

@@ -23,8 +23,13 @@ class API
 
   protected
 
-  def is_id?(obj)
-    return [Fixnum, String].include? obj.class
+  # Helper for retrieving a model using flexible inputs
+  #
+  # @param [Object] obj       Can be Fixnum, String or Object (AR model instance)
+  # @param [Class] clazz      AR type that is expected
+  def get_model(obj, clazz)
+    return clazz.find(obj.to_i) if [Fixnum, String].include? obj.class
+    return obj
   end
 end
 

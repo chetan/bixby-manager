@@ -55,15 +55,12 @@ class Inventory < API
   # @param [Agent] agent
   def update_facts(agent)
 
-    if is_id? agent then
-      agent = Agent.find(agent.to_i)
-    end
+    agent = get_model(agent, Agent)
 
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/inventory",
                                :command => "list_facts.rb" )
 
     ret = exec(agent, command)
-    ap ret
     if ret.error? then
       return ret # TODO
     end
