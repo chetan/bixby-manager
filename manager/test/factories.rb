@@ -41,6 +41,9 @@ FactoryGirl.define do
 
   factory :command do
     association :repo
+    name "foobar"
+    bundle "foo"
+    command "bar"
   end
 
   factory :host do
@@ -53,6 +56,7 @@ FactoryGirl.define do
 
   factory :repo do
     association :org
+    name "repo"
   end
 
   factory :tenant do
