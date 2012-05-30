@@ -32,6 +32,11 @@ gem "git"
 gem "rabl" # Ruby API Builder Language -- not currently used
 
 gem "acts-as-taggable-on"
+gem "acts_as_tree"
+
+# notifications module
+gem "twilio-ruby"
+gem "pony"
 
 # scheduler module
 gem "hiredis"

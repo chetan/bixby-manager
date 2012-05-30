@@ -352,6 +352,57 @@ CREATE  TABLE IF NOT EXISTS `hosts_metadata` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `host_groups`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `host_groups` ;
+
+CREATE  TABLE IF NOT EXISTS `host_groups` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `org_id` INT UNSIGNED NOT NULL ,
+  `parent_id` INT UNSIGNED NULL ,
+  `name` VARCHAR(255) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  INDEX `fk_host_groups_orgs1` (`org_id` ASC) ,
+  INDEX `fk_host_groups_host_groups1` (`parent_id` ASC) ,
+  CONSTRAINT `fk_host_groups_orgs1`
+    FOREIGN KEY (`org_id` )
+    REFERENCES `orgs` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_host_groups_host_groups1`
+    FOREIGN KEY (`parent_id` )
+    REFERENCES `host_groups` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hosts_host_groups`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `hosts_host_groups` ;
+
+CREATE  TABLE IF NOT EXISTS `hosts_host_groups` (
+  `host_id` INT UNSIGNED NOT NULL ,
+  `host_group_id` INT UNSIGNED NOT NULL ,
+  PRIMARY KEY (`host_id`, `host_group_id`) ,
+  INDEX `fk_hosts_host_groups_hosts1` (`host_id` ASC) ,
+  INDEX `fk_hosts_host_groups_host_groups1` (`host_group_id` ASC) ,
+  CONSTRAINT `fk_hosts_host_groups_hosts1`
+    FOREIGN KEY (`host_id` )
+    REFERENCES `hosts` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_hosts_host_groups_host_groups1`
+    FOREIGN KEY (`host_group_id` )
+    REFERENCES `host_groups` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

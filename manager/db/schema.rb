@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120530012210) do
+ActiveRecord::Schema.define(:version => 20120530194543) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -54,6 +54,14 @@ ActiveRecord::Schema.define(:version => 20120530012210) do
 
   add_index "commands", ["repo_id"], :name => "fk_commands_repos1"
 
+  create_table "host_groups", :force => true do |t|
+    t.integer "org_id",    :null => false
+    t.integer "parent_id"
+    t.string  "name"
+  end
+
+  add_index "host_groups", ["parent_id"], :name => "index_host_groups_on_parent_id"
+
   create_table "hosts", :force => true do |t|
     t.integer  "org_id",                   :null => false
     t.string   "ip",         :limit => 16
@@ -65,6 +73,14 @@ ActiveRecord::Schema.define(:version => 20120530012210) do
   end
 
   add_index "hosts", ["org_id"], :name => "fk_hosts_orgs1"
+
+  create_table "hosts_host_groups", :id => false, :force => true do |t|
+    t.integer "host_id",       :null => false
+    t.integer "host_group_id", :null => false
+  end
+
+  add_index "hosts_host_groups", ["host_group_id"], :name => "index_hosts_host_groups_on_host_group_id"
+  add_index "hosts_host_groups", ["host_id"], :name => "index_hosts_host_groups_on_host_id"
 
   create_table "hosts_metadata", :id => false, :force => true do |t|
     t.integer "host_id",     :null => false

@@ -15,7 +15,7 @@ module Bixby::ARTableMigration
       self.column(col_id, type, opts)
       self.column(col_type, "string", opts)
     else
-      opts[:null] = false
+      opts[:null] = (col == :parent_id)
       self.column(col, type, opts)
     end
   end
@@ -50,10 +50,20 @@ class ActiveRecord::Migration
   # @param [String] table         table on which to add the constraint
   # @param [Stirng] other_table   table to which we will refer
   def add_fk(table, other_table)
-    fk_name = "fk_#{table}_#{other_table.to_s.pluralize}"
-    o_fk = other_table.to_s.foreign_key
-    add_index table, o_fk, :order => { o_fk => :asc }
-    execute "ALTER TABLE #{table} ADD CONSTRAINT `#{fk_name}` FOREIGN KEY (`#{other_table.to_s.foreign_key}` ) REFERENCES `#{other_table.to_s.pluralize}` (`id` ) ON DELETE NO ACTION ON UPDATE NO ACTION"
+
+    if other_table == :parent or other_table == :parent_id then
+      # self reference
+      fk_name = "fk_#{table}_parent_id"
+      add_index table, "parent_id", :order => { "parent_id" => :asc }
+      execute "ALTER TABLE #{table} ADD CONSTRAINT `#{fk_name}` FOREIGN KEY (`parent_id`) REFERENCES `#{table}` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION"
+
+    else
+      # standard fk
+      fk_name = "fk_#{table}_#{other_table.to_s.pluralize}"
+      o_fk = other_table.to_s.foreign_key
+      add_index table, o_fk, :order => { o_fk => :asc }
+      execute "ALTER TABLE #{table} ADD CONSTRAINT `#{fk_name}` FOREIGN KEY (`#{other_table.to_s.foreign_key}` ) REFERENCES `#{other_table.to_s.pluralize}` (`id` ) ON DELETE NO ACTION ON UPDATE NO ACTION"
+    end
   end
 
   def drop_fk(table, fk)
