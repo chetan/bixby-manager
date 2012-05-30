@@ -91,7 +91,7 @@ class Repository
     # @param [Repo] repo
     def rescan_repo(repo)
       Rails.logger.info("* rescanning commands in #{repo.name} repository (#{repo.path})")
-      Find.find(repo.path) do |path|
+      Find.find(repo.path+"/") do |path|
 
         # skip everything except for /bin/ scripts in bundle dirs
         if File.basename(path) == ".git" then
