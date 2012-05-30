@@ -140,7 +140,7 @@ class Monitoring < API
 
     if ret.stdout then
       begin
-        return JSON.parse(ret.stdout)
+        return MultiJson.load(ret.stdout)
       rescue Exception => ex
       end
     end

@@ -138,7 +138,7 @@ class Repository
 
       config = cmd.path + ".json"
       if File.exists? config then
-        conf = JSON.parse(File.read(config))
+        conf = MultiJson.load(File.read(config))
         cmd.name = conf["name"] || script
         cmd.options = conf["options"]
       else
