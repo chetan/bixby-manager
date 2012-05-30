@@ -1,8 +1,9 @@
 
-class Bixby::Models::TestMetric < ActiveSupport::TestCase
+class Bixby::Test::Models::Metric < ActiveSupport::TestCase
 
   def setup
     SimpleCov.command_name 'test:modules:metrics'
+    DatabaseCleaner.start
     WebMock.reset!
     @body1 = <<-EOF
 hardware.storage.disk.free 1336748410 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
@@ -19,6 +20,7 @@ EOF
   end
 
   def teardown
+    DatabaseCleaner.clean
   end
 
   def test_metrics_for_host

@@ -1,11 +1,13 @@
 
 module Bixby
-  module Models
-  end
+  module Test
+    module Models
+    end
 
-  module Modules
-  end
+    module Modules
+    end
 
-  module RailsExt
+    module RailsExt
+    end
   end
 end

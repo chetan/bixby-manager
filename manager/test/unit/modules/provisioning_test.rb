@@ -1,16 +1,21 @@
 
 require 'test_helper'
 
-class TestProvisioning < ActiveSupport::TestCase
+class Bixby::Test::Modules::Provisioning < ActiveSupport::TestCase
 
   def setup
     SimpleCov.command_name 'test:modules:provisioning'
     WebMock.reset!
+    DatabaseCleaner.start
 
     BundleRepository.path = "#{Rails.root}/test"
     @repo  = Repo.new(:name => "support")
     @agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
     @cmd   = Command.new(:bundle => "test_bundle", :command => "echo", :repo => @repo)
+  end
+
+  def teardown
+    DatabaseCleaner.clean
   end
 
   def test_list_files

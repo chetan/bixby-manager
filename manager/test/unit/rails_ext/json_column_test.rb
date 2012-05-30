@@ -1,7 +1,7 @@
 
 require 'test_helper'
 
-class TestJSONColumn < ActiveSupport::TestCase
+class Bixby::Test::RailsExt::JSONColumn < ActiveSupport::TestCase
 
   def setup
     SimpleCov.command_name 'test:rails_ext:json_column'

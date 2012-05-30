@@ -1,11 +1,16 @@
 
 require 'test_helper'
 
-class TestRemoteExec < ActiveSupport::TestCase
+class Bixby::Test::Modules::RemoteExec < ActiveSupport::TestCase
 
   def setup
     SimpleCov.command_name 'test:modules:remote_exec'
     WebMock.reset!
+    DatabaseCleaner.start
+  end
+
+  def teardown
+    DatabaseCleaner.clean
   end
 
   def test_create_spec

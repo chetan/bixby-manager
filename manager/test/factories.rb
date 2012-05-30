@@ -33,6 +33,12 @@ FactoryGirl.define do
     unit "GB"
   end
 
+  factory :metadata do
+    key "uptime"
+    value "34 days"
+    source 3
+  end
+
   factory :command do
     association :repo
   end

@@ -3,11 +3,10 @@ require 'test_helper'
 
 require 'digest'
 
-class TestInventory < ActiveSupport::TestCase
+class Bixby::Test::Modules::Inventory < ActiveSupport::TestCase
 
   def setup
     SimpleCov.command_name 'test:modules:inventory'
-    DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.start
   end
 
