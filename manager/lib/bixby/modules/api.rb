@@ -20,6 +20,12 @@ class API
     @json_request = json_req
   end
 
+
+  protected
+
+  def is_id?(obj)
+    return [Fixnum, String].include? obj.class
+  end
 end
 
 end # Bixby

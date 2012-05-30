@@ -8,6 +8,7 @@ FactoryGirl.define do
   sequence(:pubkey) { |n| "pubkey-#{n}" }
 
   factory :agent do
+    ip "2.2.2.2"
     uuid { generate(:uuid) }
     public_key { generate(:pubkey) }
     association :host

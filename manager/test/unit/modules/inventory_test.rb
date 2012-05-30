@@ -79,4 +79,42 @@ class TestInventory < ActiveSupport::TestCase
     end
   end
 
+  def test_update_facts
+    agent = FactoryGirl.create(:agent)
+
+    # first update
+    jr = JsonResponse.new("success", "", { :status => 0, :stdout => {:uptime => "3 days", :kernel => "Darwin"}.to_json, :stderr => nil })
+    stub = stub_request(:post, agent.agent_uri).with { |req|
+      req.body =~ /list_facts.rb/
+    }.to_return(:status => 200, :body => jr.to_json)
+
+    assert Bixby::Inventory.new.update_facts(agent)
+
+    m = Metadata.all
+    assert m
+    assert_equal 2, m.size
+    assert_equal "uptime", m.first.key
+    assert_equal "3 days", m.first.value
+    assert_equal 3, m.first.source
+
+    assert_equal "kernel", m.last.key
+    assert_equal "Darwin", m.last.value
+
+    # second update, 1 new fact
+    jr = JsonResponse.new("success", "", { :status => 0, :stdout => {:domain => "local", :uptime => "3 days", :kernel => "Darwin"}.to_json, :stderr => nil })
+    stub = stub_request(:post, agent.agent_uri).with { |req|
+      req.body =~ /list_facts.rb/
+    }.to_return(:status => 200, :body => jr.to_json)
+
+    assert Bixby::Inventory.new.update_facts(agent)
+
+    m = Metadata.all
+    assert m
+    assert_equal 3, m.size
+    assert_equal "domain", m.last.key
+    assert_equal "local", m.last.value
+
+    assert_requested(stub, :times => 2)
+  end
+
 end

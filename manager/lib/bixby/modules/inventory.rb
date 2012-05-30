@@ -3,6 +3,8 @@ module Bixby
 
 class Inventory < API
 
+  METADATA_FACTER = 3
+
   # Register an Agent with the server. Also creates an associated Host record
   #
   # @param [String] uuid
@@ -46,6 +48,45 @@ class Inventory < API
     a.save!
 
     a
+  end
+
+  # Update Facter facts on the given Agent
+  #
+  # @param [Agent] agent
+  def update_facts(agent)
+
+    if is_id? agent then
+      agent = Agent.find(agent.to_i)
+    end
+
+    command = CommandSpec.new( :repo => "vendor", :bundle => "system/inventory",
+                               :command => "list_facts.rb" )
+
+    ret = exec(agent, command)
+    ap ret
+    if ret.error? then
+      return ret # TODO
+    end
+
+    facts = ret.decode
+    metadata = {}
+
+    agent.host.metadata ||= []
+    agent.host.metadata.each { |m| metadata["#{m.key}_#{m.source}"] = m }
+
+    facts.each do |k,v|
+      mk = "#{k}_#{METADATA_FACTER}"
+      if metadata.include?(mk) then
+        metadata[mk].value = v
+      else
+        m = Metadata.for(k, v, METADATA_FACTER)
+        agent.host.metadata << m
+      end
+    end
+
+    agent.host.save!
+
+    true
   end
 
 end
