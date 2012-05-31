@@ -40,6 +40,9 @@ class Stark.State
   # in templates.
   models: {}
 
+  # List of events to subscribe to at the @app level
+  app_events: null
+
   constructor: ->
     # internal attributes
     @_views = []
