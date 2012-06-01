@@ -23,7 +23,31 @@ class Stark.View extends Backbone.View
   # a function.
   selector: null
 
-  # List of links to create and bind
+  # Hash of links to create and bind.
+  # The keys are selectors and the value is an array. The first element of the
+  # array is the state name which will be activated when the link is clicked,
+  # and the second value is a hash of data models to pass into the new state.
+  #
+  # Instead of a hash, a function may be passed which would be called onClick.
+  # The result of this function should be a hash of models.
+  #
+  # Examples:
+  #
+  #   Simple links:
+  #
+  #     links: {
+  #       "a.brand": [ "inventory" ]
+  #       ".tab.monitoring a": [ "monitoring", { foo: "bar" } ]
+  #     }
+  #
+  #   Using a function:
+  #
+  #     links: {
+  #       ".monitoring_host_link": [ "mon_view_host", (el) ->
+  #         return { host: @hosts.get( $(el).attr("host_id") ) }
+  #       ]
+  #     }
+  #
   links: null
 
   # List of events to subscribe to at the @app level
