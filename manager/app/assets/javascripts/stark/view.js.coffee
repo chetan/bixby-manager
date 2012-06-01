@@ -82,31 +82,65 @@ class Stark.View extends Backbone.View
     link_events = @events || {}
 
     _.each @links, (link, sel) ->
-      state = link[0]
-      data = null
-      if link.length > 1
-        data = link[1]
 
-      link_events["click " + sel] = (e) ->
-        if e.altKey || e.ctrlKey || e.metaKey || e.shiftKey
-          return # let click go through (new tab, etc)
-        e.preventDefault();
-        @transition(state)
+      _.each $(sel), (el) ->
 
-      return if not (state in @app.states) # skip if state doesn't exist
+        state = link[0]
+        data = null
+        if link.length > 1
+          data = link[1]
 
-      # create url for the state with the required data from this view
-      s = new @app.states[state]()
-      if data
-        _.each data, (key) ->
-          s[key] = @[key]
-        , @
-      url = s.create_url()
-      url = "/" + url if url.charAt(0) != '/'
-      $(sel).attr("href", url)
-    , @
+        # setup delegate event
+        link_events["click " + sel] = (e) ->
+          if e.altKey || e.ctrlKey || e.metaKey || e.shiftKey
+            return # let click go through (new tab, etc)
 
+          # stop normal click event (navigate to href)
+          # so we can instead do some internal routing (transition)
+          e.preventDefault();
+          @transition(state, @get_link_data(data, e.target))
+
+
+        return if not @app.states[state]?
+
+        # create url for the state with the required data from this view
+        s = new @app.states[state]()
+        _.extend s, @get_link_data(data, el)
+
+        url = s.create_url()
+        url = "/" + url if url.charAt(0) != '/'
+
+        $(el).attr("href", url)
+
+      , @ # each sel
+    , @ # each link
+
+    # bind events
     @delegateEvents(link_events)
+
+  # Helper for resolving data to a set of actual values
+  #
+  # @param [Object] data    Data hash
+  # @param [Element] el     Element which data should be generated for (in the function case)
+  get_link_data: (data, el) ->
+    ret = {}
+
+    if not data?
+      return ret
+
+    if _.isArray(data)
+      _.each data, (key) ->
+        ret[key] = @[key]
+      , @
+
+    else if _.isFunction(data)
+      data = data.call(@, el)
+      _.each data, (val, key) ->
+        ret[key] = val
+
+    return ret
+
+
 
 
   # Proxy for Stark.state#transition
