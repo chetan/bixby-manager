@@ -1,5 +1,10 @@
 /*! JSON v3.2.2 | http://bestiejs.github.com/json3 | Copyright 2012, Kit Cambridge | http://kit.mit-license.org */
 ;(function () {
+
+  if (typeof JSON == "object" && JSON) {
+    return;
+  }
+
   // Convenience aliases.
   var getClass = {}.toString, isProperty, forEach, undef;
 
