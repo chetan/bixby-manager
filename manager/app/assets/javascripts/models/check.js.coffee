@@ -4,6 +4,7 @@ namespace 'Bixby.model', (exports, top) ->
 
 
   class exports.Check extends Stark.Model
+
     url: ->
       s = "/monitoring/hosts/#{@host_id || @host.id}/checks" # id is appended if avail for update
       if @metric_id?
@@ -12,6 +13,7 @@ namespace 'Bixby.model', (exports, top) ->
 
     initialize: (data) ->
       @extract_param(data, "host")
+      @extract_param(data, "metric")
 
 
 

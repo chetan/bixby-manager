@@ -5,9 +5,7 @@ namespace 'Bixby.model', (exports, top) ->
     urlRoot: "/inventory"
 
     initialize: (data) ->
-      @extract_param(data, "host")
-      if @host_id?
-        @id = @host_id
+      @extract_param(data, "host", true)
 
   class exports.HostList extends Stark.Collection
     model: exports.Host
