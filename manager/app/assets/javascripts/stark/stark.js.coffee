@@ -81,6 +81,7 @@ class Stark.App
     state = new @states[state_name]()
     state.app = @
     state.bind_app_events()
+    state.params = state_data.params if state_data.params?
 
     @log "got state_data", state_data
 
@@ -131,10 +132,9 @@ class Stark.App
       state._views.push view
     , @ # context for _.each
 
-
-    # TODO update URL from state
-    if @current_state? && state.url?
+    if @current_state? && state.url? && (!state.params? || state.params.changeURL == true)
       # there was a previous state, update browser url
+      # does not fire when using back/forward buttons as params.changeURL will be false
       @router.changeURL state.create_url()
 
     state.activate()
