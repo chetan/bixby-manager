@@ -10,12 +10,21 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/resource_list"
     events: {
-      "click .add_resource_link": (e) ->
-        @transition "mon_hosts_resources_new", { host: @host }
-      "click div.metric a.metric": (e) ->
-        check = @checks.get $(e.target).attr("check_id")
-        metric = @metrics.get $(e.target).attr("metric_id")
-        @transition "mon_hosts_resources_metric", { host: @host, check: check, metric: metric }
+    }
+
+    links: {
+
+      # add resources/checks
+      ".add_resource_link": [ "mon_hosts_resources_new", (el) ->
+        return { host: @host }
+        ]
+
+      # metric detail page
+      "div.metric a.metric": [ "mon_hosts_resources_metric", (el) ->
+          check = @checks.get $(el).attr("check_id")
+          metric = @metrics.get $(el).attr("metric_id")
+          return { host: @host, check: check, metric: metric }
+        ]
     }
 
     render: ->
