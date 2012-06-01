@@ -6,15 +6,12 @@ namespace "Bixby.view", (exports, top) ->
     el: "#body"
     template: "page_layout"
 
-    events: {
-      "click a.brand": ->
-        @transition "inventory"
+    events: {}
 
-      "click .tab.inventory": ->
-        @transition "inventory"
-
-      "click .tab.monitoring": ->
-        @transition "monitoring"
+    links: {
+      "a.brand": [ "inventory" ]
+      ".tab.inventory a": [ "inventory" ]
+      ".tab.monitoring a": [ "monitoring" ]
     }
 
     app_events: {

@@ -23,6 +23,9 @@ class Stark.View extends Backbone.View
   # a function.
   selector: null
 
+  # List of links to create and bind
+  links: null
+
   # List of events to subscribe to at the @app level
   app_events: null
 
@@ -66,7 +69,45 @@ class Stark.View extends Backbone.View
 
     @setElement(el)
     @$el.html(@_template.render(@))
-    @
+
+    @attach_link_events()
+
+    return @
+
+  # Process @links hash and attach events
+  attach_link_events: ->
+
+    return if not @links?
+
+    link_events = @events || {}
+
+    _.each @links, (link, sel) ->
+      state = link[0]
+      data = null
+      if link.length > 1
+        data = link[1]
+
+      link_events["click " + sel] = (e) ->
+        if e.altKey || e.ctrlKey || e.metaKey || e.shiftKey
+          return # let click go through (new tab, etc)
+        e.preventDefault();
+        @transition(state)
+
+      return if not (state in @app.states) # skip if state doesn't exist
+
+      # create url for the state with the required data from this view
+      s = new @app.states[state]()
+      if data
+        _.each data, (key) ->
+          s[key] = @[key]
+        , @
+      url = s.create_url()
+      url = "/" + url if url.charAt(0) != '/'
+      $(sel).attr("href", url)
+    , @
+
+    @delegateEvents(link_events)
+
 
   # Proxy for Stark.state#transition
   transition: (state_name, state_data) ->
