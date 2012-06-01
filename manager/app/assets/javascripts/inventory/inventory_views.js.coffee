@@ -9,7 +9,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
     el: "div.inventory_content"
     template: "inventory/host_table"
     links: {
-      ".monitoring_host_link": [ "mon_view_host", (el) ->
+      "div.host div.actions a.monitoring": [ "mon_view_host", (el) ->
         return { host: @hosts.get( $(el).attr("host_id") ) }
       ]
     }

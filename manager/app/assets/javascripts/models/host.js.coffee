@@ -7,6 +7,9 @@ namespace 'Bixby.model', (exports, top) ->
     initialize: (data) ->
       @extract_param(data, "host", true)
 
+    name: ->
+      @get("alias") || @get("hostname") || @get("ip")
+
   class exports.HostList extends Stark.Collection
     model: exports.Host
     url: "/inventory"
