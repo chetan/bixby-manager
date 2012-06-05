@@ -29,7 +29,7 @@ class Stark.State
   url:    null
 
   # List of views used by this state
-  views:  []
+  views:  null
 
   # Hash of models required by this state and its views. Models will be autolaoded
   # when the state is created. Views will only be rendered once loads are complete.
@@ -38,7 +38,7 @@ class Stark.State
   #
   # Once loaded, keys will be available directly within the state and view, as well as
   # in templates.
-  models: {}
+  models: null
 
   # List of events to subscribe to at the @app level
   app_events: null
