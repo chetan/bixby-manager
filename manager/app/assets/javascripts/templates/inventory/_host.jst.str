@@ -1,0 +1,18 @@
+
+<!-- <div class="host" host_id="<%= host.get('id') %>"> -->
+
+  <div class="body">
+    <h3>
+      <a class="host" host_id="<%= host.get('id') %>"><%= host.name() %></a>
+      <span class="edit_body"><a class="btn btn-mini">edit</a></span>
+    </h3>
+  </div>
+
+  <div class="editor_body">
+    <input type="text" class="span3 host_name" placeholder="alias">
+    <textarea name="desc" class="span3" placeholder="description"></textarea>
+  </div>
+
+  <div class="actions"><a class="monitoring" host_id="<%= host.get('id') %>">Monitoring</a></div>
+
+<!-- </div> -->

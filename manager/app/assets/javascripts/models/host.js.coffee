@@ -8,7 +8,10 @@ namespace 'Bixby.model', (exports, top) ->
       @extract_param(data, "host", true)
 
     name: ->
-      @get("alias") || @get("hostname") || @get("ip")
+      name = (@get("hostname") || @get("ip"))
+      if @get("alias")?
+        name += " (" + @get("alias") + ")"
+      return name
 
   class exports.HostList extends Stark.Collection
     model: exports.Host
