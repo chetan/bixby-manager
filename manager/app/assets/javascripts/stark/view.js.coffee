@@ -44,9 +44,11 @@ class Stark.View extends Backbone.View
   #
   #     links: {
   #       ".monitoring_host_link": [ "mon_view_host", (el) ->
-  #         return { host: @hosts.get( $(el).attr("host_id") ) }
+  #         return { host: @host }
   #       ]
   #     }
+  #
+  #   Using a function makes sure you get the correct context
   #
   links: null
 

@@ -16,22 +16,38 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @hosts.each (host) ->
         v = @create_partial(exports.Host, { host: host })
         list.append(v.$el)
-        # v.attach_link_events()
       , @
-
-
 
 
   class exports.Host extends Stark.Partial
     template: "inventory/_host"
     tagName: "div"
     className: "host"
+
     events: {
-      "click span.edit_body a.btn": (e) ->
-        console.log @host.id
+      # edit
+      "click span.edit a.edit": (e) ->
+        e = @$(e.target)
+        ed = @$(".editor")
+        if e.html() == "edit"
+          ed.show()
+          e.html("cancel")
+        else
+          ed.hide()
+          e.html("edit")
+
+      # cancel
+      "click div.editor a.cancel": (e) ->
+        @$(".editor").hide()
+
+      # save
+      "click div.editor a.save": (e) ->
+        @host.set "alias", @$(".editor input.alias").val()
+        @host.set "desc", @$(".editor textarea.desc").val()
+        @host.save()
+        @$(".editor").hide()
     }
+
     links: {
-      "div.actions a.monitoring": [ "mon_view_host", (el) ->
-        return { host: @host }
-      ]
+      "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
     }

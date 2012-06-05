@@ -40,3 +40,7 @@ class Stark.Model extends Backbone.Model
 
     @id = @[id] if set_id
     return true
+
+  # Proxy for @get(); will return empty string ("") instead of null
+  g: (k) ->
+    @get(k) || ""

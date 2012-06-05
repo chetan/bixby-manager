@@ -1,18 +1,16 @@
 
-<!-- <div class="host" host_id="<%= host.get('id') %>"> -->
-
   <div class="body">
     <h3>
-      <a class="host" host_id="<%= host.get('id') %>"><%= host.name() %></a>
-      <span class="edit_body"><a class="btn btn-mini">edit</a></span>
+      <a class="host"><%= host.name() %></a>
+      <span class="edit"><a class="btn btn-mini edit">edit</a></span>
     </h3>
   </div>
 
-  <div class="editor_body">
-    <input type="text" class="span3 host_name" placeholder="alias">
-    <textarea name="desc" class="span3" placeholder="description"></textarea>
+  <div class="editor">
+    <input type="text" class="span3 alias" placeholder="alias" value="<%= host.g('alias') %>">
+    <textarea class="span3 desc" placeholder="description"><%= host.g('desc') %></textarea>
+    <a class="btn btn-mini cancel">Cancel</a>
+    <a class="btn btn-mini save">Save</a>
   </div>
 
-  <div class="actions"><a class="monitoring" host_id="<%= host.get('id') %>">Monitoring</a></div>
-
-<!-- </div> -->
+  <div class="actions"><a class="monitoring">Monitoring</a></div>
