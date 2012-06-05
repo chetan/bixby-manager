@@ -8,6 +8,7 @@ Devops::Application.routes.draw do
   # match '/json/:model'     => 'json#handle'
 
   resources :inventory
+  resources :hosts
 
   match "/monitoring" => "monitoring#index"
   namespace :monitoring do

@@ -15,6 +15,29 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Extracts the given keys from params().
+  #
+  # The hash to filter can optionally be passed as the first paramater.
+  #
+  # Common usage:
+  #
+  #   @model.update_attributes pick(:name, :desc)
+  #
+  # @param [Array] keys     Key names to filter by
+  #
+  # @return [Hash] filtered key/value pairs
+  def pick(*keys)
+
+    # default to params()
+    hash = keys.first.kind_of?(Hash) ? keys.shift : params()
+
+    filtered = {}
+    hash.each do |key, value|
+      filtered[key.to_sym] = value if keys.include?(key.to_sym)
+    end
+    filtered
+  end
+
 
   private
 
