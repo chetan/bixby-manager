@@ -54,9 +54,11 @@ class Stark.View extends Backbone.View
   app_events: null
 
   # List of sub-views
-  views: []
+  views: null
 
-  initialize: ->
+  initialize: (args) ->
+    @views = []
+    _.extend @, args if _.isObject(args)
     _.bindAll @
 
   # Lookup @template in the global JST hash
@@ -71,6 +73,10 @@ class Stark.View extends Backbone.View
   create_template: ->
     new Template(@jst())
 
+  render_html: ->
+    @_template ||= @create_template()
+    @_template.render(@)
+
   # Default implementation of Backbone.View's render() method. Simply renders
   # the @template into the element defined by @selector.
   #
@@ -79,7 +85,6 @@ class Stark.View extends Backbone.View
   render: ->
 
     @log "rendering view", @
-    @_template = @create_template()
 
     # use an optional [dynamic] selector
     el = null
@@ -92,7 +97,7 @@ class Stark.View extends Backbone.View
       el = @el
 
     @setElement(el)
-    @$el.html(@_template.render(@))
+    @$el.html(@render_html())
 
     @attach_link_events()
 
@@ -107,7 +112,7 @@ class Stark.View extends Backbone.View
 
     _.each @links, (link, sel) ->
 
-      _.each $(sel), (el) ->
+      _.each @$(sel), (el) ->
 
         state = link[0]
         data = null
@@ -123,7 +128,6 @@ class Stark.View extends Backbone.View
           # so we can instead do some internal routing (transition)
           e.preventDefault();
           @transition(state, @get_link_data(data, e.target))
-
 
         return if not @app.states[state]?
 
@@ -164,7 +168,34 @@ class Stark.View extends Backbone.View
 
     return ret
 
+  # Render a partial (sub) view
+  #
+  # @param [Class] clazz    class name of view to render
+  # @param [Object] data    context data for partial
+  #
+  # @return [String] rendered template data (HTML)
+  partial: (clazz, data) ->
+    v = create_partial(clazz, data)
+    if v instanceof Stark.Partial
+      return v.$el.html()
+    else
+      return v.render_html()
 
+  create_partial: (clazz, data) ->
+    data.app = @app
+    data.state = @state
+
+    v = null
+    if _.isObject(clazz)
+      v = new clazz(data)
+
+    else if _.isString(clazz)
+      # assume its a template name, create a generic instance
+      v = new Stark.View(data)
+      v.template = clazz
+
+    @views.push(v)
+    return v
 
 
   # Proxy for Stark.state#transition
