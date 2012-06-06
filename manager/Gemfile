@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.4'
+gem 'rails', '3.2.5'
 
 gem 'devops_common', :git => "https://github.com/chetan/devops_common.git"
 
