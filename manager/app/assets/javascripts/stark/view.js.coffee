@@ -59,8 +59,15 @@ class Stark.View extends Backbone.View
   views: null
 
   initialize: (args) ->
+    @_data = []
     @views = []
-    _.extend @, args if _.isObject(args)
+    if _.isObject(args)
+      _.extend @, args
+      for v in _.values(args)
+        if v instanceof Stark.Model
+          @_data.push(v)
+          @bindModel(v)
+
     _.bindAll @
 
   # Lookup @template in the global JST hash
@@ -76,8 +83,7 @@ class Stark.View extends Backbone.View
     new Template(@jst())
 
   render_html: ->
-    @_template ||= @create_template()
-    @_template.render(@)
+    @create_template().render(@)
 
   # Default implementation of Backbone.View's render() method. Simply renders
   # the @template into the element defined by @selector.
@@ -86,7 +92,7 @@ class Stark.View extends Backbone.View
   # rendering.
   render: ->
 
-    @log "rendering view", @
+    @log "render", @
 
     # use an optional [dynamic] selector
     el = null
@@ -199,6 +205,16 @@ class Stark.View extends Backbone.View
     @views.push(v)
     return v
 
+  set: (key, val) ->
+    @_data.push(val)
+    @[key] = val
+    @bindModel(val)
+
+  bindModel: (model, event, handler) ->
+    event ||= "change"
+    handler ||= @render
+    model.bind event, handler, @
+
 
   # Proxy for Stark.state#transition
   transition: (state_name, state_data) ->
@@ -221,5 +237,7 @@ class Stark.View extends Backbone.View
     @$el.html("")
     @unbind_app_events()
     @undelegateEvents()
+    for m in @_data
+      m.unbind null, null, @
     for v in @views
       v.dispose()
