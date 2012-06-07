@@ -215,6 +215,13 @@ class Stark.View extends Backbone.View
     handler ||= @render
     model.bind event, handler, @
 
+  # Process a given string containing Markdown syntax
+  #
+  # @param [String] str
+  # @return [String] str converted to html
+  markdown: (str) ->
+    @_converter ||= new Markdown.Converter()
+    @_converter.makeHtml(str)
 
   # Proxy for Stark.state#transition
   transition: (state_name, state_data) ->

@@ -9,6 +9,7 @@
 //= require "async"
 //= require "spin.min"
 //= require "sprintf"
+//= require "Markdown.Converter"
 
 // charting libs
 // require "chart/d3.v2"
