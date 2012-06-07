@@ -10,9 +10,15 @@
   </div>
 
   <div class="editor">
-    <input type="text" class="span3 alias" placeholder="alias" value="<%= host.g('alias') %>">
-    <textarea class="span3 desc" placeholder="description"><%= host.g('desc') %></textarea>
+    <label>Alias
+      <input type="text" class="span3 alias" placeholder="alias" value="<%= host.g('alias') %>">
+    </label>
+
+    <label>Description
+      <textarea class="span3 desc" placeholder="description"><%= host.g('desc') %></textarea>
+    </label>
     <p class="markdown">accepts <a href="http://daringfireball.net/projects/markdown/syntax" target="_new" title="open markdown reference in new window">markdown</a></p>
+
     <button class="btn btn-mini save">Save</button>
     <button class="btn btn-mini btn-danger cancel">Cancel</button>
   </div>
