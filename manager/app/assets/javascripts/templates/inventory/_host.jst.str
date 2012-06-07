@@ -2,7 +2,7 @@
   <div class="body">
     <h3>
       <a class="host"><%= host.name() %></a>
-      <span class="edit"><a class="btn btn-mini edit">edit</a></span>
+      <span class="edit"><button class="btn btn-mini edit">edit</button></span>
     </h3>
     <%? host.get("desc") %>
       <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>

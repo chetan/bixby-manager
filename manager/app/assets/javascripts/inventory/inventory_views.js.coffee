@@ -26,7 +26,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     events: {
       # edit
-      "click span.edit a.edit": (e) ->
+      "click span.edit button.edit": (e) ->
         e = @$(e.target)
         if e.html() == "edit"
           @$(".editor").show()
@@ -54,7 +54,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
     }
 
     hide_editor: ->
-      @$("span.edit a.edit").html("edit")
+      @$("span.edit button.edit").html("edit")
       @$(".editor").hide()
       @$("blockquote.desc").show()
 
