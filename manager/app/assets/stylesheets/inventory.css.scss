@@ -2,25 +2,51 @@
 div.host_list {
   div.host {
     margin-top: 10px;
+
     div.body {
       span.edit {
         display: none;
       }
+      blockquote p {
+        /* override some normal bootstrap blockquote styles */
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+      }
     }
+
     div.body:hover {
       span.edit {
         display: inline;
       }
     }
+
     div.editor {
       display: none;
       margin-bottom: 10px;
       margin-top: 10px;
+      textarea {
+        height: 95px;
+      }
       a.save {
         margin-left: 10px;
       }
+      p.markdown {
+        color: grey;
+        font-size: smaller;
+        margin-top: -10px;
+        padding: 0;
+        width: 200px;
+        text-align: right;
+        a {
+          color: grey;
+          font-weight: bold;
+        }
+      }
     }
+
     div.actions {
     }
+
   }
 }

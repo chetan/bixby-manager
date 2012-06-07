@@ -4,13 +4,17 @@
       <a class="host"><%= host.name() %></a>
       <span class="edit"><a class="btn btn-mini edit">edit</a></span>
     </h3>
+    <%? host.get("desc") %>
+      <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>
+    <%//%>
   </div>
 
   <div class="editor">
     <input type="text" class="span3 alias" placeholder="alias" value="<%= host.g('alias') %>">
     <textarea class="span3 desc" placeholder="description"><%= host.g('desc') %></textarea>
-    <a class="btn btn-mini cancel">Cancel</a>
-    <a class="btn btn-mini save">Save</a>
+    <p class="markdown">accepts <a href="http://daringfireball.net/projects/markdown/syntax" target="_new" title="open markdown reference in new window">markdown</a></p>
+    <button class="btn btn-mini save">Save</button>
+    <button class="btn btn-mini btn-danger cancel">Cancel</button>
   </div>
 
   <div class="actions"><a class="monitoring">Monitoring</a></div>

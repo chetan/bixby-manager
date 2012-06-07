@@ -28,26 +28,38 @@ namespace "Bixby.view.inventory", (exports, top) ->
       # edit
       "click span.edit a.edit": (e) ->
         e = @$(e.target)
-        ed = @$(".editor")
         if e.html() == "edit"
-          ed.show()
+          @$(".editor").show()
+          @$("blockquote.desc").hide()
           e.html("cancel")
         else
-          ed.hide()
-          e.html("edit")
+          @hide_editor()
 
       # cancel
-      "click div.editor a.cancel": (e) ->
-        @$(".editor").hide()
+      "click div.editor button.cancel": (e) ->
+        @hide_editor()
 
       # save
-      "click div.editor a.save": (e) ->
-        @host.set "alias", @$(".editor input.alias").val()
-        @host.set "desc", @$(".editor textarea.desc").val()
-        @host.save()
-        @$(".editor").hide()
+      "click div.editor button.save": (e) ->
+        @save_edits()
+
+      # save (on enter)
+      "keyup div.editor input.alias": (e) ->
+        if e.keyCode == 13
+          @save_edits()
     }
 
     links: {
       "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
     }
+
+    hide_editor: ->
+      @$("span.edit a.edit").html("edit")
+      @$(".editor").hide()
+      @$("blockquote.desc").show()
+
+    save_edits: ->
+      @host.set "alias", @$(".editor input.alias").val()
+      @host.set "desc", @$(".editor textarea.desc").val()
+      @host.save()
+      @hide_editor()
