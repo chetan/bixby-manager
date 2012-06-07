@@ -16,7 +16,6 @@ class HostsController < ApplicationController
   def update
     @host = Host.find(params[:id])
     @host.update_attributes pick(:alias, :desc)
-    @host.save!
     respond_with(@host)
   end
 
