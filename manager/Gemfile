@@ -29,7 +29,6 @@ gem "oj"
 
 gem "SystemTimer",  :platforms => :mri_18
 gem "git"
-gem "rabl" # Ruby API Builder Language -- not currently used
 
 gem "acts-as-taggable-on"
 gem "acts_as_tree"
@@ -85,6 +84,9 @@ group :development do
     gem "pry-rails"
     gem "hirb"
     gem "sextant"
+end
+
+group :test do
 
     # coverage
     gem "rcov",       :platforms => :mri_18
