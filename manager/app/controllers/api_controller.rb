@@ -5,6 +5,8 @@ require 'bixby/file_download'
 
 class ApiController < ApplicationController
 
+    skip_before_filter :verify_authenticity_token
+
     def handle
 
         # extract JsonRequest
