@@ -6,12 +6,15 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # Bootstrap a list of models
+  #
+  # @param [Object] *models           List of models to bootstrap
+  # @param [Hash] options             Options hash
+  # @option options [String] :type    The name of the Backbone.js Model class to map to
   def bootstrap(*args)
     opts = args.extract_options!
-    type = opts.delete(:type)
-
     args.each do |obj|
-      bootstrap_obj(obj, type)
+      bootstrap_obj(obj, opts)
     end
   end
 
@@ -38,6 +41,19 @@ class ApplicationController < ActionController::Base
     filtered
   end
 
+  # Restful response
+  #
+  # Handles HTML request normally; XML/JSON requests are handled using
+  # ApiView::Engine to generate the response
+  #
+  # @param [Object] obj
+  def restful(obj)
+    respond_to do |format|
+      format.html
+      format.any(:xml, :json) { render :text => ApiView::Engine.render(obj, self) }
+    end
+  end
+
 
   private
 
@@ -48,7 +64,9 @@ class ApplicationController < ActionController::Base
   # bootstrap the given object
   # automatically sets the hash and model names based on the type of object passed
   # (i.e. pluralizes and adds List for arrays, etc)
-  def bootstrap_obj(obj, type=nil)
+  def bootstrap_obj(obj, opts)
+
+    type = opts.delete(:type)
     if type.nil? then
 
       if obj.kind_of? ActiveRecord::Base then
@@ -61,18 +79,15 @@ class ApplicationController < ActionController::Base
         name = obj.first.class.to_s.pluralize.downcase
       end
 
-      data = obj.to_api
-
     else
       name = type.to_s.pluralize.downcase
       type = type.to_s + "List"
-      data = obj
     end
 
     @bootstrap << {
       :name  => name,
       :model => type,
-      :data  => data
+      :data  => ApiView::Engine.render(obj, self)
     }
   end
 

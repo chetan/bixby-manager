@@ -5,6 +5,12 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
   require 'bixby'
   require 'rails_ext'
 
+  # load api_view models
+  Find.find(File.join(::Rails.root.to_s, "app", "views", "models")) do |path|
+    next if not File.file? path
+    require path
+  end
+
   # load devops.yml
   devops_config_filename = File.open(File.join(::Rails.root.to_s, "config", "devops.yml"))
   if not File.exists? devops_config_filename then
