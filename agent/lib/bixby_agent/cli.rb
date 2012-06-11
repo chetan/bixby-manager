@@ -37,47 +37,47 @@ class App
 
 module CLI
 
-    include Mixlib::CLI
+  include Mixlib::CLI
 
-    def self.included(receiver)
-      receiver.extend(Mixlib::CLI::ClassMethods)
-      receiver.instance_variable_set(:@options, @options)
-    end
+  def self.included(receiver)
+    receiver.extend(Mixlib::CLI::ClassMethods)
+    receiver.instance_variable_set(:@options, @options)
+  end
 
-    option :password,
-        :short          => "-P PASSWORD",
-        :long           => "--password PASSWORD",
-        :description    => "Agent registration password"
+  option :password,
+      :short          => "-P PASSWORD",
+      :long           => "--password PASSWORD",
+      :description    => "Agent registration password"
 
-    option :directory,
-        :short          => "-d DIRECTORY",
-        :long           => "--directory DIRECTORY",
-        :default        => "/opt/devops",
-        :description    => "Root directory for devops (default: /opt/devops)"
+  option :directory,
+      :short          => "-d DIRECTORY",
+      :long           => "--directory DIRECTORY",
+      :default        => "/opt/devops",
+      :description    => "Root directory for devops (default: /opt/devops)"
 
-    option :port,
-        :short          => "-p PORT",
-        :long           => "--port PORT",
-        :default        => Bixby::Server::DEFAULT_PORT,
-        :description    => "Port agent will listen on (default: #{Bixby::Server::DEFAULT_PORT})"
+  option :port,
+      :short          => "-p PORT",
+      :long           => "--port PORT",
+      :default        => Bixby::Server::DEFAULT_PORT,
+      :description    => "Port agent will listen on (default: #{Bixby::Server::DEFAULT_PORT})"
 
-    option :debug,
-        :long           => "--debug",
-        :description    => "Enable debugging messages",
-        :boolean        => true
+  option :debug,
+      :long           => "--debug",
+      :description    => "Enable debugging messages",
+      :boolean        => true
 
-    option :help,
-        :short          => "-h",
-        :long           => "--help",
-        :description    => "Print this help",
-        :boolean        => true,
-        :show_options   => true,
-        :exit           => 0
+  option :help,
+      :short          => "-h",
+      :long           => "--help",
+      :description    => "Print this help",
+      :boolean        => true,
+      :show_options   => true,
+      :exit           => 0
 
-    def initialize
-        super
-        @argv = parse_options()
-    end
+  def initialize
+    super
+    @argv = parse_options()
+  end
 
 end # CLI
 

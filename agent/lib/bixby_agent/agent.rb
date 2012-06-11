@@ -13,66 +13,65 @@ require "bixby_agent/agent/config"
 module Bixby
 class Agent
 
-    DEFAULT_ROOT_DIR = "/opt/devops"
+  DEFAULT_ROOT_DIR = "/opt/devops"
 
-    include HttpClient
-    include Config
-    include Handshake
-    include RemoteExec
+  include HttpClient
+  include Config
+  include Handshake
+  include RemoteExec
 
-    class << self
-        attr_accessor :agent_root
+  class << self
+    attr_accessor :agent_root
+  end
+
+  def agent_root
+    self.class.agent_root
+  end
+
+  def agent_root=(path)
+    self.class.agent_root = path
+  end
+
+  attr_accessor :port, :manager_uri, :uuid, :mac_address, :password, :log
+
+  def self.create(uri = nil, password = nil, root_dir = nil, port = nil, use_config = true)
+
+    agent = load_config(root_dir) if use_config
+
+    if agent.nil? and (uri.nil? or URI.parse(uri).nil?) then
+      raise ConfigException, "Missing manager URI", caller
     end
 
-    def agent_root
-        self.class.agent_root
+    if agent.nil? then
+      # create a new one if unable to load
+      uri.gsub!(%r{/$}, '') # remove trailing slash
+      agent = new(uri, password, root_dir, port)
     end
 
-    def agent_root=(path)
-        self.class.agent_root = path
-    end
+    # pass config to some modules
+    BundleRepository.path = File.join(agent.agent_root, "/repo")
+    BaseModule.agent = agent
+    BaseModule.manager_uri = agent.manager_uri
+    ENV["DEVOPS_ROOT"] = agent.agent_root
 
-    attr_accessor :port, :manager_uri, :uuid, :mac_address, :password, :log
+    return agent
+  end
 
-    def self.create(uri = nil, password = nil, root_dir = nil, port = nil, use_config = true)
+  def initialize(uri, password = nil, root_dir = nil, port = nil)
+    @new = true
 
-        agent = load_config(root_dir) if use_config
+    @log = Logging.logger[self]
 
-        if agent.nil? and (uri.nil? or URI.parse(uri).nil?) then
-            raise ConfigException, "Missing manager URI", caller
-        end
+    @port = port
+    @manager_uri = uri
+    @password = password
+    @agent_root = root_dir.nil? ? DEFAULT_ROOT_DIR : root_dir
 
-        if agent.nil? then
-            # create a new one if unable to load
-            uri.gsub!(%r{/$}, '') # remove trailing slash
-            agent = new(uri, password, root_dir, port)
-        end
-
-        # pass config to some modules
-        BundleRepository.path = File.join(agent.agent_root, "/repo")
-        BaseModule.agent = agent
-        BaseModule.manager_uri = agent.manager_uri
-        ENV["DEVOPS_ROOT"] = agent.agent_root
-
-        return agent
-    end
-
-    private_class_method :new
-
-    def initialize(uri, password = nil, root_dir = nil, port = nil)
-        @new = true
-
-        @log = Logging.logger[self]
-
-        @port = port
-        @manager_uri = uri
-        @password = password
-        @agent_root = root_dir.nil? ? DEFAULT_ROOT_DIR : root_dir
-
-        @uuid = create_uuid()
-        @mac_address = get_mac_address()
-        create_keypair()
-    end
+    @uuid = create_uuid()
+    @mac_address = get_mac_address()
+    create_keypair()
+  end
+  private_class_method :new
 
 end # Agent
 end # Bixby
