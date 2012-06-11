@@ -14,7 +14,7 @@ class App
     password = @config[:password]
 
     begin
-        agent = Agent.create(uri, password, root_dir, port)
+      agent = Agent.create(uri, password, root_dir, port)
     rescue Exception => ex
       if ex.message == "Missing manager URI" then
         # if unable to load from config and no uri passed, bail!

@@ -44,7 +44,7 @@ class Agent
 
     if agent.nil? then
       # create a new one if unable to load
-      uri.gsub!(%r{/$}, '') # remove trailing slash
+      uri = uri.gsub(%r{/$}, '') # remove trailing slash
       agent = new(uri, password, root_dir, port)
     end
 
