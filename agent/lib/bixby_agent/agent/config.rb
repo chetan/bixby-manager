@@ -2,6 +2,9 @@
 require 'yaml'
 require 'fileutils'
 
+module Bixby
+class Agent
+
 module Config
 
     module ClassMethods
@@ -81,4 +84,7 @@ module Config
         [ "@port", "@manager_uri", "@uuid", "@mac_address" ]
     end
 
-end
+end # Config
+
+end # Agent
+end # Bixby

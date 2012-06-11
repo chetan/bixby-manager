@@ -1,4 +1,5 @@
 
+module Bixby
 class Inventory < BaseModule
 
     class << self
@@ -11,4 +12,5 @@ class Inventory < BaseModule
 
     end # self
 
-end
+end # Inventory
+end # Bixby

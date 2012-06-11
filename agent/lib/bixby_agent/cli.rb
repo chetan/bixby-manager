@@ -32,6 +32,9 @@
 require 'mixlib/cli'
 require 'optparse'
 
+module Bixby
+class App
+
 module CLI
 
     include Mixlib::CLI
@@ -55,8 +58,8 @@ module CLI
     option :port,
         :short          => "-p PORT",
         :long           => "--port PORT",
-        :default        => ::Server::DEFAULT_PORT,
-        :description    => "Port agent will listen on (default: #{::Server::DEFAULT_PORT})"
+        :default        => Bixby::Server::DEFAULT_PORT,
+        :description    => "Port agent will listen on (default: #{Bixby::Server::DEFAULT_PORT})"
 
     option :debug,
         :long           => "--debug",
@@ -76,4 +79,7 @@ module CLI
         @argv = parse_options()
     end
 
-end
+end # CLI
+
+end # App
+end # Bixby

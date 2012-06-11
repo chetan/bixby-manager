@@ -6,7 +6,7 @@ Bundler.setup(:default)
 
 $: << File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 
-require 'devops_agent'
-require 'devops_agent/app'
+require 'bixby_agent'
+require 'bixby_agent/app'
 
-App.new.run!
+Bixby::App.new.run!

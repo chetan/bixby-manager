@@ -1,6 +1,7 @@
 
 require 'sinatra/base'
 
+module Bixby
 class Server < Sinatra::Base
 
     SUPPORTED_OPERATIONS = [ "exec" ]
@@ -77,4 +78,5 @@ class Server < Sinatra::Base
         return JsonResponse.new("success", nil, data).to_json
     end
 
-end
+end # Server
+end # Bixby

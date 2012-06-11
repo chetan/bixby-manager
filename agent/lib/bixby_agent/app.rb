@@ -1,7 +1,8 @@
 
-require 'devops_agent/server'
-require 'devops_agent/cli'
+require 'bixby_agent/server'
+require 'bixby_agent/cli'
 
+module Bixby
 class App
 
     include CLI
@@ -66,4 +67,5 @@ class App
         Server.run!
     end
 
-end
+end # App
+end # Bixby

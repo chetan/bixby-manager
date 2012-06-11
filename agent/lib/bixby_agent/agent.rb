@@ -5,11 +5,12 @@ require "uri"
 
 require "logging"
 
-require "devops_agent/config_exception"
-require "devops_agent/agent/handshake"
-require "devops_agent/agent/remote_exec"
-require "devops_agent/agent/config"
+require "bixby_agent/config_exception"
+require "bixby_agent/agent/handshake"
+require "bixby_agent/agent/remote_exec"
+require "bixby_agent/agent/config"
 
+module Bixby
 class Agent
 
     DEFAULT_ROOT_DIR = "/opt/devops"
@@ -73,5 +74,5 @@ class Agent
         create_keypair()
     end
 
-end
-
+end # Agent
+end # Bixby

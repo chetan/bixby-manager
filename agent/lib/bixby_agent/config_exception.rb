@@ -1,3 +1,5 @@
 
-class ConfigException < Exception
+module Bixby
+  class ConfigException < Exception
+  end
 end

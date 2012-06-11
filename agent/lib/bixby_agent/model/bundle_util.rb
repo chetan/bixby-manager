@@ -1,4 +1,5 @@
 
+module Bixby
 module BundleUtil
 
   def uname
@@ -19,4 +20,5 @@ module BundleUtil
   end
   alias :windows? :win?
 
-end
+end # BundleUtil
+end # Bixby

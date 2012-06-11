@@ -2,8 +2,11 @@
 require 'facter'
 require 'uuidtools'
 
-require "devops_agent/api/modules/inventory"
-require "devops_agent/agent/crypto"
+require "bixby_agent/api/modules/inventory"
+require "bixby_agent/agent/crypto"
+
+module Bixby
+class Agent
 
 module Handshake
 
@@ -43,4 +46,7 @@ module Handshake
         UUIDTools::UUID.random_create.hexdigest
     end
 
-end
+end # Handshake
+
+end # Agent
+end # Bixby

@@ -1,11 +1,12 @@
 
-require "devops_agent/model/bundle_util"
+require "bixby_agent/model/bundle_util"
 
 require "digest"
 require "fileutils"
 
 require 'mixlib/cli'
 
+module Bixby
 class BundleCommand
 
   include BundleUtil
@@ -73,5 +74,6 @@ class BundleCommand
     @subclasses << subclass
   end
 
-end
+end # BundleCommand
+end # Bixby
 

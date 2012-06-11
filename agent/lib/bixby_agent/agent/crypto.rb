@@ -2,6 +2,9 @@
 require 'ezcrypto'
 require 'ezsig'
 
+module Bixby
+class Agent
+
 module Crypto
 
     # create crypto keypair and save in config folder
@@ -32,4 +35,7 @@ module Crypto
         self.keypair.private_key.to_s
     end
 
-end
+end # Crypto
+
+end # Agent
+end # Bixby

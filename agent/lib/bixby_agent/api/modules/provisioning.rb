@@ -1,4 +1,5 @@
 
+module Bixby
 class Provisioning < BaseModule
 
     class << self
@@ -43,4 +44,5 @@ class Provisioning < BaseModule
 
     end # self
 
-end
+end # Provisioning
+end # Bixby

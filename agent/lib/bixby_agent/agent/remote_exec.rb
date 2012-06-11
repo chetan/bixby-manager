@@ -1,6 +1,9 @@
 
 require 'systemu'
 
+module Bixby
+class Agent
+
 module RemoteExec
 
     # params hash contains:
@@ -25,4 +28,7 @@ module RemoteExec
         return ret
     end
 
-end
+end # RemoteExec
+
+end # Agent
+end # Bixby
