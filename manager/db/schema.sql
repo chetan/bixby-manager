@@ -71,7 +71,7 @@ CREATE  TABLE IF NOT EXISTS `agents` (
   `uuid` VARCHAR(255) NULL ,
   `ip` VARCHAR(16) NULL ,
   `port` SMALLINT UNSIGNED NULL DEFAULT 18000 ,
-  `public_key` VARCHAR(426) NULL ,
+  `public_key` TEXT NULL ,
   `status` SMALLINT UNSIGNED NOT NULL DEFAULT 0 ,
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
