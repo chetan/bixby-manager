@@ -1,4 +1,6 @@
 
+require "test_helper"
+
 class Bixby::Test::Models::Metric < ActiveSupport::TestCase
 
   def setup

@@ -1,3 +1,6 @@
+
+require "test_helper"
+
 class Bixby::Test::Models::Command < ActiveSupport::TestCase
 
   def setup
