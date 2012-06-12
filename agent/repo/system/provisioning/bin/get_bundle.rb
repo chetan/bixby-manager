@@ -11,6 +11,7 @@ require "bixby_agent/api/modules/provisioning"
 require "digest"
 require "fileutils"
 
+module Bixby
 class Provision < Bixby::BundleCommand
 
     include HttpClient
@@ -34,8 +35,9 @@ class Provision < Bixby::BundleCommand
 
     end
 
-end
+end # Provisioning
+end # Bixby
 
 if $0 == __FILE__ then
-    Provision.new.run!
+    Bixby::Provision.new.run!
 end
