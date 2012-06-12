@@ -5,13 +5,13 @@ require 'bundler/setup'
 Bundler.setup(:default)
 
 $: << File.expand_path(File.join(File.dirname(__FILE__), "../../../../lib"))
-require "devops_agent"
-require "devops_agent/api/modules/provisioning"
+require "bixby_agent"
+require "bixby_agent/api/modules/provisioning"
 
 require "digest"
 require "fileutils"
 
-class Provision < BundleCommand
+class Provision < Bixby::BundleCommand
 
     include HttpClient
 
