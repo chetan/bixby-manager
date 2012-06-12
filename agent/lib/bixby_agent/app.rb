@@ -44,11 +44,13 @@ class App
   end
 
   def setup_logger
+    level = @config[:debug] ? :debug : :warn
     Logging.appenders.stdout(
-      :level  => @config[:debug] ? :debug : :warn,
+      :level  => level,
       :layout => Logging.layouts.pattern(:pattern => '[%d] %-5l: %m\n')
       )
     Logging::Logger.root.add_appenders(Logging.appenders.stdout)
+    Logging::Logger.root.level = level
   end
 
   def run!

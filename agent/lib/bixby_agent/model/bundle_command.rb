@@ -25,7 +25,7 @@ class BundleCommand
   def initialize(parse_options = true, *args)
     @agent = Agent.create
     if parse_options then
-      super
+      super()
       @argv = parse_options()
     end
   end
