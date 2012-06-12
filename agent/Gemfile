@@ -14,17 +14,30 @@ gem 'systemu'
 gem 'logging'
 
 group :development, :test do
+
+    # packaging
     gem 'jeweler', '~> 1.8.3'
     gem 'yard', '~> 0.7'
+
+    # debugging
+    gem 'pry'
     gem 'awesome_print'
-    gem 'cucumber'
-    gem 'aruba', '0.4.7'
-    gem 'rspec'
+    gem 'guard'
+    gem 'colorize'
+    gem 'growl'
+    gem 'hirb'
+
+    # test frameworks
+    # gem 'cucumber'
+    # gem 'aruba', '0.4.7'
+    # gem 'rspec'
+    gem "bahia"
     gem 'webmock', :git => 'https://github.com/bblimke/webmock.git'
     gem 'mocha'
-    gem "simplecov",:platforms => :mri_19
-    gem "rcov", :platforms => :mri_18
     gem "minitest"
     gem "turn"
-    gem "bahia"
+
+    # coverage
+    gem "simplecov",:platforms => :mri_19
+    gem "rcov", :platforms => :mri_18
 end
