@@ -108,8 +108,14 @@ class Stark.View extends Backbone.View
     @$el.html(@render_html())
 
     @attach_link_events()
+    @after_render()
 
     return @
+
+  # Actions to perform after rendering (e.g., attach custom events, jquery
+  # plugins, etc)
+  after_render: ->
+    # noop
 
   # Process @links hash and attach events
   attach_link_events: ->

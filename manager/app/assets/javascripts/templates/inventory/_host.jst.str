@@ -1,26 +1,60 @@
 
-  <div class="body">
-    <h3>
-      <a class="host"><%= host.name() %></a>
-      <span class="edit"><button class="btn btn-mini edit">edit</button></span>
-    </h3>
-    <%? host.get("desc") %>
-      <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>
-    <%//%>
+  <div class="row-fluid">
+    <div class="body span5">
+      <h3>
+        <a class="host"><%= host.name() %></a>
+        <span class="edit"><button class="btn btn-mini edit">edit</button></span>
+      </h3>
+      <%? host.get("desc") %>
+        <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>
+      <%//%>
+    </div>
   </div>
 
-  <div class="editor">
-    <label>Alias
-      <input type="text" class="span3 alias" placeholder="alias" value="<%= host.g('alias') %>">
-    </label>
+  <div class="row-fluid">
+    <div class="editor span5">
 
-    <label>Description
-      <textarea class="span3 desc" placeholder="description"><%= host.g('desc') %></textarea>
-    </label>
-    <p class="markdown">accepts <a href="http://daringfireball.net/projects/markdown/syntax" target="_new" title="open markdown reference in new window">markdown</a></p>
+      <form class="form-vertical">
+        <fieldset>
+          <div class="control-group">
 
-    <button class="btn btn-mini save">Save</button>
-    <button class="btn btn-mini btn-danger cancel">Cancel</button>
+            <label class="control-label">Alias
+              <div class="controls">
+                <input type="text" class="alias span12" placeholder="alias" value="<%= host.g('alias') %>">
+              </div>
+            </label>
+
+            <label class="control-label">Description
+              <div class="controls">
+                <textarea class="desc span12" placeholder="description"><%= host.g('desc') %></textarea>
+              </div>
+            </label>
+
+            <p class="markdown">accepts
+              <!-- another good link: http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet -->
+              <a href="http://daringfireball.net/projects/markdown/syntax"
+                 target="_new"
+                 title="open markdown reference in new window">markdown</a>
+              </p>
+
+            <label class="control-label">Tags<br/>
+              <div class="controls">
+                <ul class="tags span12"></ul>
+              </div>
+            </label>
+
+            <div class="controls">
+              <button class="btn btn-mini save">Save</button>
+              <button class="btn btn-mini btn-danger cancel">Cancel</button>
+            </div>
+
+          </div> <!-- control-group -->
+        </fieldset>
+      </form>
+
+    </div>
   </div>
 
-  <div class="actions"><a class="monitoring">Monitoring</a></div>
+  <div class="row-fluid">
+    <div class="actions span5"><a class="monitoring">Monitoring</a></div>
+  </div>

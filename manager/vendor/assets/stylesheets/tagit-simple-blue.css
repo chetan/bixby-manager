@@ -29,7 +29,7 @@
     border-bottom: 1px solid #E5E5E5;
     border-top: 1px solid #fff;
     color: #78959D;
-    
+
 }
 
 .ui-autocomplete .ui-menu-item a.ui-state-hover,
@@ -46,8 +46,7 @@
 ul.tagit {
     cursor: text;
     overflow: auto;
-    font-size: 14px;
-    width: 97%;
+    font-size: 12px;
     padding: 3px;
     margin-top: 2px;
     margin-right: 6px;
@@ -76,7 +75,7 @@ ul.tagit.ui-sortable li.tagit-choice a.ui-icon.ui-icon-grip-dotted-vertical{
 ul.tagit li.tagit-choice {
     background-color: #DEE7F8;
     border: 1px solid #CAD8F3;
-    padding: 2px 13px 3px 4px;
+    padding: 0px 13px 3px 4px;
 }
 
 ul.tagit li.tagit-choice.selected {
@@ -109,7 +108,7 @@ ul.tagit li.tagit-choice a.tagit-close {
     font-size: 12px;
     font-weight: bold;
     outline: medium none;
-    padding: 2px 0 2px 3px;
+    padding: 0 0 2px 3px;
     text-decoration: none;
     position: absolute;
     display: block;
@@ -133,4 +132,12 @@ ul.tagit input[type="text"] {
 
 .tagit-hiddenSelect {
     display:none;
+}
+
+ul.tags {
+    margin-left: 0;
+}
+
+ul.tags input, ul.tags textarea {
+    box-shadow: none !important;
 }

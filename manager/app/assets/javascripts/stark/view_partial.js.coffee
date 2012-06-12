@@ -26,4 +26,5 @@ class Stark.Partial extends Stark.View
     @log "render", @
     @$el.html(@render_html())
     @attach_link_events()
+    @after_render()
     return @

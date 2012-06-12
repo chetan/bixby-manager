@@ -2,4 +2,8 @@
 /*= require "main" */
 /*= require "inventory" */
 /*= require_tree "./monitoring" */
+
+/* vendor stylesheets */
 /* require "rickshaw" */
+/*= require "jquery-ui-1.8.21" */
+/*= require "tagit-simple-blue" */

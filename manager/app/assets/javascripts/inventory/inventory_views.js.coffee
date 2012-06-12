@@ -63,3 +63,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @host.set "desc", @$(".editor textarea.desc").val()
       @host.save()
       @hide_editor()
+
+    after_render: ->
+      @$('ul.tags').tagit();
