@@ -53,7 +53,7 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
 
   def test_create_missing_manager_uri
     @manager_uri = nil
-    assert_throws(:ConfigException) do
+    assert_throws(ConfigException) do
       @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
     end
   end
