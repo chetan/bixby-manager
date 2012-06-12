@@ -157,9 +157,9 @@ threads = []
 listeners = []
 
 dirs.each do |dir|
-  listener = Guard::Listener.select_and_init({:watchdir => dir})
   watcher = Watcher.new(dir)
-  listener.on_change do |files|
+  listener = Listen.to(dir) do |mod, add, del|
+    files = mod + add + del
     watcher.on_change(files)
   end
   listeners << listener
