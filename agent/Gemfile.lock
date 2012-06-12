@@ -113,11 +113,12 @@ DEPENDENCIES
   guard
   hirb
   jeweler (~> 1.8.3)
-  json
   logging
   minitest
   mixlib-cli
   mocha
+  multi_json
+  oj
   pry
   rcov
   simplecov

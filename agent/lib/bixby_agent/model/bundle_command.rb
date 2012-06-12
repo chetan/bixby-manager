@@ -43,7 +43,7 @@ class BundleCommand
   def get_json_input
     input = read_stdin()
     input.strip! if input
-    (input.nil? or input.empty?) ? {} : JSON.parse(input)
+    (input.nil? or input.empty?) ? {} : MultiJson.load(input)
   end
 
   # Read all available data on STDIN without blocking

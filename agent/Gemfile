@@ -4,7 +4,8 @@ gem 'devops_common', :git => "https://github.com/chetan/devops_common.git"
 
 gem 'sinatra'
 gem 'thin'
-gem 'json'
+gem 'multi_json'
+gem 'oj'
 gem 'curb'
 gem 'facter'
 gem 'mixlib-cli'
