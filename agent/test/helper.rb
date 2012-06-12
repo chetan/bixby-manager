@@ -55,6 +55,11 @@ module Turn
       end
     end
 
+    def finish_test(test)
+      super
+      @clean = true
+    end
+
     # override so we can dump stdout/stderr even if the test passes
     def pass(message=nil)
       io.puts " %s %s" % [ticktock, PASS]
@@ -65,6 +70,7 @@ module Turn
         io.puts(message)
       end
 
+      @clean = true
       show_captured_output if Rake.verbose?
     end
 
