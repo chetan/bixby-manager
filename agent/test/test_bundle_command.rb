@@ -1,6 +1,7 @@
 
 require 'helper'
 
+module Bixby
 class TestBundleCommand < MiniTest::Unit::TestCase
 
   def setup
@@ -51,3 +52,5 @@ end
 
 class Baz < Foobar
 end
+
+end # Bixby

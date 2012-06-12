@@ -1,6 +1,7 @@
 
 require 'helper'
 
+module Bixby
 class TestGetBundle < MiniTest::Unit::TestCase
 
   def setup
@@ -61,4 +62,5 @@ class TestGetBundle < MiniTest::Unit::TestCase
 
   end
 
+end
 end

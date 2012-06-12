@@ -1,6 +1,7 @@
 
 require 'helper'
 
+module Bixby
 class TestDevopsAgent < MiniTest::Unit::TestCase
 
 	def setup
@@ -79,4 +80,5 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
     # TODO
   end
 
+end
 end

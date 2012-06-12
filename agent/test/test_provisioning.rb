@@ -1,6 +1,7 @@
 
 require 'helper'
 
+module Bixby
 class TestProvisioning < MiniTest::Unit::TestCase
 
   def setup
@@ -85,4 +86,5 @@ class TestProvisioning < MiniTest::Unit::TestCase
 
   end
 
+end
 end

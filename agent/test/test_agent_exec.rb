@@ -1,6 +1,7 @@
 
 require 'helper'
 
+module Bixby
 class TestDevopsAgentExec < MiniTest::Unit::TestCase
 
   def setup
@@ -48,4 +49,5 @@ class TestDevopsAgentExec < MiniTest::Unit::TestCase
     end
   end
 
+end
 end

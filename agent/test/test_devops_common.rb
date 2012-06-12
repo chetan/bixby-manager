@@ -1,5 +1,6 @@
 require 'helper'
 
+module Bixby
 class TestDevopsAgent < MiniTest::Unit::TestCase
 
   def test_common_loaded
@@ -9,4 +10,5 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
     assert_equal(CommandSpec, CommandSpec.new.class)
   end
 
+end
 end

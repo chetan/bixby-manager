@@ -1,6 +1,7 @@
 
 require 'helper'
 
+module Bixby
 class TestApp < MiniTest::Unit::TestCase
 
   def setup
@@ -46,7 +47,7 @@ class TestApp < MiniTest::Unit::TestCase
     ARGV << @root_dir
     ARGV << @manager_uri
 
-    stub_request(:post, "http://localhost:3000/api").to_return(:status => 200, :body => {:status => "fail"}.to_json)
+    stub_request(:post, "http://localhost:3000/api").to_return(:status => 200, :body => MultiJson.dump({:status => "fail"}))
 
     app = App.new
     assert_throws(SystemExit) do
@@ -66,4 +67,5 @@ class TestApp < MiniTest::Unit::TestCase
     assert_equal 2, Logging::Logger.root.level
   end
 
+end
 end
