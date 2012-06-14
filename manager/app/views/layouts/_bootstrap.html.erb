@@ -3,14 +3,13 @@
   <script type="text/javascript">
     Bixby.app.bootstrap({
       <%
-      json = boot[:data].html_safe
       if boot[:model] =~ /List$/ or boot[:data].kind_of? Array then
       %>
-        <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>()).reset(<%= json %>)
+        <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>()).reset(<%= boot[:data] %>)
       <%
       else
       %>
-        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(<%= json %>)
+        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(<%= boot[:data] %>)
       <%
       end
       %>
