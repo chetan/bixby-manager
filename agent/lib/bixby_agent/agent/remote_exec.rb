@@ -24,7 +24,7 @@ module RemoteExec
     end
 
     ret = cmd.execute()
-    @log.debug{ "ret: " + ret.to_json }
+    @log.debug{ "ret: " + MultiJson.dump(ret) }
     return ret
   end
 
