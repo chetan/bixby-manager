@@ -19,11 +19,11 @@ class Monitoring::ChecksController < Monitoring::BaseController
     @commands = Command.where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
 
     bootstrap @host
-    @bootstrap << { :name => "commands", :model => "MonitoringCommandList", :data => @commands }
+    @bootstrap << { :name => "commands", :model => "MonitoringCommandList", :data => to_api(@commands) }
 
     if params[:command_id] then
       @command = Command.find(params[:command_id])
-      @bootstrap << { :name => "command", :model => "MonitoringCommand", :data => @command }
+      @bootstrap << { :name => "command", :model => "MonitoringCommand", :data => to_api(@command) }
     end
 
   end
@@ -41,8 +41,7 @@ class Monitoring::ChecksController < Monitoring::BaseController
     opts = params[:args]
 
     check = Bixby::Monitoring.new.add_check(host, command, opts)
-
-    respond_with(check.to_api)
+    restful check
   end
 
 end

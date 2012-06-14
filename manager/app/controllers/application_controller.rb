@@ -50,8 +50,16 @@ class ApplicationController < ActionController::Base
   def restful(obj)
     respond_to do |format|
       format.html
-      format.any(:xml, :json) { render :text => ApiView::Engine.render(obj, self) }
+      format.any(:xml, :json) { render :text => to_api(obj) }
     end
+  end
+
+  # Helper for rendering obj via ApiView
+  #
+  # @param [Object] obj
+  # @return [String]
+  def to_api(obj)
+    ApiView::Engine.render(obj, self).html_safe
   end
 
 
@@ -87,7 +95,7 @@ class ApplicationController < ActionController::Base
     @bootstrap << {
       :name  => name,
       :model => type,
-      :data  => ApiView::Engine.render(obj, self)
+      :data  => to_api(obj)
     }
   end
 
