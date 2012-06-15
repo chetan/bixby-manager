@@ -251,6 +251,14 @@ class Stark.View extends Backbone.View
     @unbind_app_events()
     @undelegateEvents()
     for m in @_data
-      m.unbind null, null, @
+      @unbind_model(m)
     for v in @views
       v.dispose()
+
+  unbind_model: (m) ->
+    if _.isObject(m) && _.isFunction(m["unbind"])
+      m.unbind null, null, @
+    else if _.isArray(m)
+      for mm in m
+        @unbind_model(mm)
+
