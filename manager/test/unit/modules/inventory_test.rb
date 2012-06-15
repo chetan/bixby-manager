@@ -3,7 +3,8 @@ require 'test_helper'
 
 require 'digest'
 
-class Bixby::Test::Modules::Inventory < ActiveSupport::TestCase
+module Bixby
+class Test::Modules::Inventory < ActiveSupport::TestCase
 
   def setup
     SimpleCov.command_name 'test:modules:inventory'
@@ -116,4 +117,5 @@ class Bixby::Test::Modules::Inventory < ActiveSupport::TestCase
     assert_requested(stub, :times => 2)
   end
 
+end
 end

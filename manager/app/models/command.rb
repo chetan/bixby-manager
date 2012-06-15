@@ -10,7 +10,7 @@ class Command < ActiveRecord::Base
   end
 
   def to_command_spec
-    c = CommandSpec.new(self.attributes)
+    c = Bixby::CommandSpec.new(self.attributes)
     c.repo = self.repo.name
     return c
   end

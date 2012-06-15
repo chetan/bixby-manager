@@ -1,7 +1,8 @@
 
 require 'test_helper'
 
-class Bixby::Test::Modules::RemoteExec < ActiveSupport::TestCase
+module Bixby
+class Test::Modules::RemoteExec < ActiveSupport::TestCase
 
   def setup
     SimpleCov.command_name 'test:modules:remote_exec'
@@ -82,4 +83,5 @@ class Bixby::Test::Modules::RemoteExec < ActiveSupport::TestCase
     assert ret.success?
   end
 
-end
+end # Test::Modules::RemoteExec
+end # Bixby

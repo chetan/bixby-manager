@@ -1,7 +1,8 @@
 
 require 'test_helper'
 
-class Bixby::Test::Modules::Provisioning < ActiveSupport::TestCase
+module Bixby
+class Test::Modules::Provisioning < ActiveSupport::TestCase
 
   def setup
     SimpleCov.command_name 'test:modules:provisioning'
@@ -48,4 +49,5 @@ class Bixby::Test::Modules::Provisioning < ActiveSupport::TestCase
 
   end
 
-end
+end # Test::Modules::Provisioning
+end # Bixby

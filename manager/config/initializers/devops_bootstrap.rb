@@ -24,8 +24,8 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
 
   # setup bundle repo, manager uri
   manager_root = File.expand_path(DEVOPS_CONFIG[:manager][:root])
-  BundleRepository.path = File.join(manager_root, "repo")
-  BaseModule.manager_uri = DEVOPS_CONFIG[:manager][:uri]
+  Bixby::BundleRepository.path = File.join(manager_root, "repo")
+  Bixby::BaseModule.manager_uri = DEVOPS_CONFIG[:manager][:uri]
 
   # setup the scheduler
   if DEVOPS_CONFIG[:scheduler] then

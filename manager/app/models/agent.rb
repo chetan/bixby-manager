@@ -11,11 +11,11 @@ class Agent < ActiveRecord::Base
   validates_presence_of :port, :uuid, :public_key
   validates_uniqueness_of :uuid, :public_key
 
-  include HttpClient
+  include Bixby::HttpClient
 
   # execute the given command and return the response
   def run_cmd(cmd)
-    req = JsonRequest.new("exec", cmd.to_hash)
+    req = Bixby::JsonRequest.new("exec", cmd.to_hash)
     return req.exec(agent_uri)
   end
 

@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '~>3.2'
 
-gem 'devops_common', :git => "https://github.com/chetan/devops_common.git"
+gem 'bixby_common', :git => "https://github.com/chetan/devops_common.git"
 
 group :threads do
   gem "rainbows", :platforms => :mri
