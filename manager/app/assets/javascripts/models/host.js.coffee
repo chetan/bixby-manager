@@ -13,6 +13,9 @@ namespace 'Bixby.model', (exports, top) ->
         name += " (" + @get("alias") + ")"
       return name
 
+    tags: ->
+      return @get("tags").split(",")
+
   class exports.HostList extends Stark.Collection
     model: exports.Host
     url: "/hosts"

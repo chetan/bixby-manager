@@ -61,6 +61,13 @@ namespace "Bixby.view.inventory", (exports, top) ->
     save_edits: ->
       @host.set "alias", @$(".editor input.alias").val()
       @host.set "desc", @$(".editor textarea.desc").val()
+
+      tags = ""
+      _.each @$(".editor ul.tags").tagit("tags"), (tag) ->
+        tags += "," if tags.length > 0
+        tags += tag.value
+      @host.set "tags", tags
+
       @host.save()
       @hide_editor()
 

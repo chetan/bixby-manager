@@ -39,7 +39,11 @@
 
             <label class="control-label">Tags<br/>
               <div class="controls">
-                <ul class="tags span12"></ul>
+                <ul class="tags span12">
+                  <% _.each(host.tags(), function(tag) { %>
+                    <li><%= tag %></li>
+                  <% }); %>
+                </ul>
               </div>
             </label>
 
