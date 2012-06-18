@@ -50,13 +50,13 @@ EOF
     assert_kind_of Array, metrics
     assert_equal 1, metrics.size
 
-    m = metrics.first
+    m = MultiJson.load(ApiView::Engine.render(metrics.first, nil))
     assert_kind_of Hash, m
-    (%w(check_id key status desc unit)+[:data, :metadata]).each { |k| assert m.include? k }
+    %w{check_id key status desc unit data metadata}.each { |k| assert m.include?(k), "includes #{k}" }
     refute m.include? "created_at"
     assert_kind_of Fixnum, m["check_id"]
-    assert_equal 2, m[:data].size
-    [:x, :y].each { |k| assert m[:data].first.include? k }
+    assert_equal 2, m["data"].size
+    %w{x y}.each { |k| assert m["data"].first.include? k }
   end
 
   def create_req(body, downsample=true)

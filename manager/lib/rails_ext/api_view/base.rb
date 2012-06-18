@@ -15,6 +15,10 @@ module ApiView
       return ret
     end
 
+    def self.attrs_except(obj, *attrs)
+      return obj.serializable_hash({ :except => attrs })
+    end
+
   end
 
   class Default < Base
