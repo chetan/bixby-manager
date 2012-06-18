@@ -11,7 +11,7 @@ class Monitoring::ChecksController < Monitoring::BaseController
       @ret = Check.where(:host_id => @host)
     end
 
-    restful @ret.to_api
+    restful @ret
   end
 
   def new
