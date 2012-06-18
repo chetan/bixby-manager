@@ -12,7 +12,7 @@ class ApiController < ApplicationController
     # extract JsonRequest
 
     req = extract_request()
-    if req.kind_of? JsonResponse then
+    if req.kind_of? Bixby::JsonResponse then
       return render :json => req.to_json
     end
 
@@ -56,16 +56,16 @@ class ApiController < ApplicationController
       if ret.kind_of? Bixby::FileDownload then
         return send_file(ret.filename, :filename => File.basename(ret.filename))
 
-      elsif ret.kind_of? JsonResponse then
+      elsif ret.kind_of? Bixby::JsonResponse then
         return render :json => ret
       end
 
-      return render :json => JsonResponse.new(:success, nil, ret)
+      return render :json => Bixby::JsonResponse.new(:success, nil, ret)
 
     rescue Exception => ex
       puts ex
       puts ex.backtrace
-      return render :json => JsonResponse.new(:fail, ex.message, ex, 500)
+      return render :json => Bixby::JsonResponse.new(:fail, ex.message, ex, 500)
     end
 
   end # handle()
@@ -73,7 +73,7 @@ class ApiController < ApplicationController
 
   # Helper for creating JsonResponse
   def unsupported_operation(req)
-      JsonResponse.invalid_request("unsupported operation: '#{req.operation}'")
+      Bixby::JsonResponse.invalid_request("unsupported operation: '#{req.operation}'")
   end
 
   # Extract JsonRequest
@@ -81,17 +81,17 @@ class ApiController < ApplicationController
 
     body = request.body.read.strip
     if body.blank? then
-      return JsonResponse.invalid_request
+      return Bixby::JsonResponse.invalid_request
     end
 
     begin
-      req = JsonRequest.from_json(body)
+      req = Bixby::JsonRequest.from_json(body)
     rescue Exception => ex
-      return JsonResponse.invalid_request
+      return Bixby::JsonResponse.invalid_request
     end
 
     if req.operation.blank? then
-      return JsonResponse.invalid_request
+      return Bixby::JsonResponse.invalid_request
     end
 
     return req
