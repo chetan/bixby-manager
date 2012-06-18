@@ -6,7 +6,7 @@ class Monitoring::MetricsController < Monitoring::BaseController
     @host = Host.find(params[:host_id])
     @metrics = Metric.metrics_for_host(@host)
 
-    respond_with(@metrics)
+    restful @metrics
   end
 
   def show
@@ -14,7 +14,7 @@ class Monitoring::MetricsController < Monitoring::BaseController
     metric.load_data!
 
     bootstrap metric, metric.check, metric.check.host
-    respond_with(metric.to_api)
+    restful metric
   end
 
 end
