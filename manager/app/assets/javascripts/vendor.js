@@ -2,7 +2,6 @@
 //= require "json3"
 //= require "jquery"
 //= require "underscore"
-//= require "underscore_patch"
 //= require "backbone"
 //= require "template"
 //= require "twitter/bootstrap"
