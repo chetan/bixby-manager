@@ -15,9 +15,6 @@ jQuery ->
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.MetricList ]
       no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
       models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
-
-      create_url: ->
-        @url.replace /:host_id/, @host.id
   )
 
   Bixby.app.add_state(
@@ -26,10 +23,6 @@ jQuery ->
       name: "mon_hosts_resources_metric"
       url:  "monitoring/hosts/:host_id/metrics/:metric_id"
       tab:  "monitoring"
-
-      create_url: ->
-        @url.replace(/:host_id/, @host.id).replace(/:metric_id/, @metric.id)
-
 
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.MetricDetail ]
       no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
@@ -46,9 +39,6 @@ jQuery ->
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand ]
       no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
       models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
-
-      create_url: ->
-        @url.replace /:host_id/, @host.id
   )
 
   Bixby.app.add_state(

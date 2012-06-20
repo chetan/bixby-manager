@@ -11,6 +11,7 @@
     </div>
   </div>
 
+  <!-- host editor form -->
   <div class="row-fluid">
     <div class="editor span5">
 
@@ -57,7 +58,7 @@
       </form>
 
     </div>
-  </div>
+  </div> <!-- end host editor form -->
 
   <div class="row-fluid">
     <div class="actions span5"><a class="monitoring">Monitoring</a></div>

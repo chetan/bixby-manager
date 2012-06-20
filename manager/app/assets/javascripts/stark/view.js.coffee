@@ -189,7 +189,7 @@ class Stark.View extends Backbone.View
   #
   # @return [String] rendered template data (HTML)
   partial: (clazz, data) ->
-    v = create_partial(clazz, data)
+    v = @create_partial(clazz, data)
     if v instanceof Stark.Partial
       return v.$el.html()
     else
