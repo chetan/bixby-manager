@@ -18,11 +18,6 @@ class Stark.View extends Backbone.View
   # File name of the template rendered by this view
   template: null
 
-  # Selector for element into which this view will be rendered
-  # (usually a div or span). Can be a string (CSS selector) or
-  # a function.
-  selector: null
-
   # Hash of links to create and bind.
   # The keys are selectors and the value is an array. The first element of the
   # array is the state name which will be activated when the link is clicked,
@@ -69,6 +64,7 @@ class Stark.View extends Backbone.View
           @bindModel(v)
 
     _.bindAll @
+    return @
 
   # Lookup @template in the global JST hash
   jst: ->
@@ -83,6 +79,7 @@ class Stark.View extends Backbone.View
     new Template(@jst())
 
   render_html: ->
+    return "" if not @template?
     @create_template().render(@)
 
   # Default implementation of Backbone.View's render() method. Simply renders
@@ -91,20 +88,8 @@ class Stark.View extends Backbone.View
   # Custom rendering should usually call super() before any additional
   # rendering.
   render: ->
-
     @log "render", @
 
-    # use an optional [dynamic] selector
-    el = null
-    if @selector?
-      if _.isFunction(@selector)
-        el = @selector()
-      else
-        el = el
-    else
-      el = @el
-
-    @setElement(el)
     @$el.html(@render_html())
 
     @attach_link_events()
@@ -190,10 +175,8 @@ class Stark.View extends Backbone.View
   # @return [String] rendered template data (HTML)
   partial: (clazz, data) ->
     v = @create_partial(clazz, data)
-    if v instanceof Stark.Partial
-      return v.$el.html()
-    else
-      return v.render_html()
+    v.render()
+    return v
 
   create_partial: (clazz, data) ->
     data ||= {}
