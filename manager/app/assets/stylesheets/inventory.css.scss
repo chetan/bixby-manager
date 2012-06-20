@@ -50,8 +50,12 @@ div.host {
   div.actions {
   }
 
+  div.metadata {
+    margin-left: 0;
+  }
 
   table.metadata {
+    margin-top: 10px;
     display: block;
     overflow: auto;
     max-height: 400px;
