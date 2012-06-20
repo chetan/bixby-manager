@@ -196,6 +196,7 @@ class Stark.View extends Backbone.View
       return v.render_html()
 
   create_partial: (clazz, data) ->
+    data ||= {}
     data.app = @app
     data.state = @state
 
