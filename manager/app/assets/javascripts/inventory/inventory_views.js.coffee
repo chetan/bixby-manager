@@ -14,12 +14,12 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
       list = $(".host_list")
       @hosts.each (host) ->
-        v = @create_partial(exports.Host, { host: host })
+        v = @create_partial(exports.HostTableRow, { host: host })
         list.append(v.$el)
       , @
 
 
-  class exports.Host extends Stark.Partial
+  class exports.HostTableRow extends Stark.Partial
     template: "inventory/_host"
     tagName: "div"
     className: "host"
@@ -51,6 +51,8 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     links: {
       "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
+
+      "div.body a.host": [ "inv_view_host", (el) -> { host: @host } ]
     }
 
     hide_editor: ->
@@ -73,3 +75,22 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     after_render: ->
       @$('ul.tags').tagit();
+
+  class exports.Host extends Stark.View
+    el: "div.inventory_content"
+    template: "inventory/host"
+    render: ->
+      super
+      @partial(exports.HostMetadata, { metadata: @host.get("metadata") })
+
+  class exports.HostMetadata extends Stark.Partial
+    el: "div.host div.metadata"
+    template: "inventory/_metadata"
+
+    after_render: ->
+      # show a popover for long values
+      $("tbody tr").each (i, el) ->
+        dc = $(el).attr("data-content")
+        if dc.length > 40
+          $(el).attr("data-content", "<pre>#{dc}</pre>")
+          $(el).popover()

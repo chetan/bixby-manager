@@ -4,11 +4,13 @@ Devops::Application.routes.draw do
 
   match '/api' => 'api#handle'
 
-  # match '/json/:model/:id' => 'json#handle'
-  # match '/json/:model'     => 'json#handle'
-
-  resources :inventory
   resources :hosts
+
+  match "/inventory" => "inventory#index"
+  namespace :inventory do
+    resources :hosts do
+    end
+  end
 
   match "/monitoring" => "monitoring#index"
   namespace :monitoring do

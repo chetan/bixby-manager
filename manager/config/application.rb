@@ -19,6 +19,7 @@ module Devops
     # config.autoload_paths += %W(#{config.root}/extras)
 
     # add controller subdirs
+    config.autoload_paths << "#{config.root}/app/controllers/"
     %w(inventory monitoring).each do |path|
       config.autoload_paths << "#{config.root}/app/controllers/#{path}"
     end
