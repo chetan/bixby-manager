@@ -13,10 +13,8 @@ namespace "Bixby.view.inventory", (exports, top) ->
       super
 
       list = $(".host_list")
-      @hosts.each (host) ->
-        v = @create_partial(exports.HostTableRow, { host: host })
-        list.append(v.$el)
-      , @
+      @hosts.eachR @, (host) ->
+        list.append( @partial(exports.HostTableRow, { host: host }).$el )
 
 
   class exports.HostTableRow extends Stark.View
