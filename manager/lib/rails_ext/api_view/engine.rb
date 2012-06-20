@@ -4,20 +4,17 @@ module ApiView
 
     class << self
 
+      # Render the given object as JSON or XML
+      #
+      # @param [Object] obj
+      # @param [ActionDispatch::Request] scope
+      # @param [Hash] options
+      # @option options [String] :format    Request a particular format ("json" or "xml")
+      #
+      # @return [String]
       def render(obj, scope, options={})
 
-        if obj.kind_of? String then
-          return obj # already converted
-        end
-
-        clazz = obj.respond_to?(:to_a) ? obj.first.class : obj.class
-        converter = ApiView.converter_for(clazz)
-
-        if obj.respond_to?(:map) then
-          ret = obj.map { |o| converter.convert(o) }
-        else
-          ret = converter.convert(obj)
-        end
+        ret = convert(obj)
 
         if ret.kind_of? String then
           return ret # already converted (by default converter, for ex)
@@ -26,6 +23,28 @@ module ApiView
         # TODO cache_results { self.send("to_" + format.to_s) }
         format = options[:format] || self.request_format(scope)
         self.send("to_" + format.to_s, ret)
+      end
+
+      # Convert the given object into a hash, array or other simple type
+      # (String, Fixnum, etc) that can be easily serialized into JSON or XML.
+      #
+      # @param [Object] obj
+      # @return [Object]
+      def convert(obj)
+
+        if obj.kind_of? String then
+          return obj # already converted
+        end
+
+        clazz = obj.respond_to?(:first) ? obj.first.class : obj.class
+        converter = ApiView.converter_for(clazz)
+
+        if obj.respond_to?(:map) then
+          ret = obj.map { |o| converter.convert(o) }
+        else
+          ret = converter.convert(obj)
+        end
+
       end
 
       # Returns a JSON representation of the data object

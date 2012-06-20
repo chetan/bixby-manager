@@ -3,21 +3,30 @@ module ApiView
 
   class Base
 
-    def self.for_model(model)
-      ApiView.add_model(model, self)
-    end
+    class << self
 
-    def self.attrs(obj, *attrs)
-      ret = {}
-      attrs.each do |a|
-        ret[a.to_sym] = obj.send(a.to_sym)
+      def for_model(model)
+        ApiView.add_model(model, self)
       end
-      return ret
+
+      def attrs(obj, *attrs)
+        ret = {}
+        attrs.each do |a|
+          ret[a.to_sym] = obj.send(a.to_sym)
+        end
+        return ret
+      end
+
+      def attrs_except(obj, *attrs)
+        return obj.serializable_hash({ :except => attrs })
+      end
+
+      def render(obj)
+        Engine.convert(obj)
+      end
+
     end
 
-    def self.attrs_except(obj, *attrs)
-      return obj.serializable_hash({ :except => attrs })
-    end
 
   end
 
