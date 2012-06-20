@@ -65,23 +65,25 @@ class Inventory < API
       return ret # TODO
     end
 
-    facts = ret.decode
-    metadata = {}
+    ActiveRecord::Base.transaction do
+      facts = ret.decode
+      metadata = {}
 
-    agent.host.metadata ||= []
-    agent.host.metadata.each { |m| metadata["#{m.key}_#{m.source}"] = m }
+      agent.host.metadata ||= []
+      agent.host.metadata.each { |m| metadata["#{m.key}_#{m.source}"] = m }
 
-    facts.each do |k,v|
-      mk = "#{k}_#{METADATA_FACTER}"
-      if metadata.include?(mk) then
-        metadata[mk].value = v
-      else
-        m = Metadata.for(k, v, METADATA_FACTER)
-        agent.host.metadata << m
+      facts.each do |k,v|
+        mk = "#{k}_#{METADATA_FACTER}"
+        if metadata.include?(mk) then
+          metadata[mk].value = v
+        else
+          m = Metadata.for(k, v, METADATA_FACTER)
+          agent.host.metadata << m
+        end
       end
-    end
 
-    agent.host.save!
+      agent.host.save!
+    end
 
     true
   end
