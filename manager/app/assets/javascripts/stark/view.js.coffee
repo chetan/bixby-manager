@@ -67,8 +67,9 @@ class Stark.View extends Backbone.View
     return @
 
   # Lookup @template in the global JST hash
-  jst: ->
-    JST[ @app.template_root + @template ]
+  jst: (tpl) ->
+    tpl ||= @template
+    JST[ @app.template_root + tpl ]
 
   # Create a Template object for the configured @template
   #
@@ -169,14 +170,23 @@ class Stark.View extends Backbone.View
 
   # Render a partial (sub) view
   #
-  # @param [Class] clazz    class name of view to render
-  # @param [Object] data    context data for partial
+  # @param [Class] clazz      class name of view to render
+  # @param [Object] data      context data for partial
+  # @param [String] selector  optional CSS selector into which the partial view will be rendered
   #
   # @return [String] rendered template data (HTML)
-  partial: (clazz, data) ->
+  partial: (clazz, data, selector) ->
     v = @create_partial(clazz, data)
+    if selector?
+      v.setElement( @$(selector) )
+      @log v.el
     v.render()
     return v
+
+  partial_html: (tpl, data) ->
+    if _.isString(tpl)
+      tpl = new Template(@jst(tpl))
+    tpl.render(data)
 
   create_partial: (clazz, data) ->
     data ||= {}
@@ -194,6 +204,9 @@ class Stark.View extends Backbone.View
 
     @views.push(v)
     return v
+
+  html: (args...) ->
+    @$el.html(args...)
 
   set: (key, val) ->
     @_data.push(val)
