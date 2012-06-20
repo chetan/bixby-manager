@@ -77,18 +77,21 @@ namespace "Bixby.view.inventory", (exports, top) ->
   class exports.Host extends Stark.View
     el: "div.inventory_content"
     template: "inventory/host"
+
     render: ->
       super
-      @partial(exports.HostMetadata, { metadata: @host.get("metadata") })
+      @partial exports.HostMetadata,
+        { metadata: @host.get("metadata") },
+        "div.host div.metadata"
 
   class exports.HostMetadata extends Stark.View
-    el: "div.host div.metadata"
     template: "inventory/_metadata"
 
     after_render: ->
       # show a popover for long values
       $("tbody tr").each (i, el) ->
-        dc = $(el).attr("data-content")
+        el = $(el)
+        dc = el.attr("data-content")
         if dc.length > 40
-          $(el).attr("data-content", "<pre>#{dc}</pre>")
-          $(el).popover()
+          el.attr("data-content", "<pre>#{dc}</pre>")
+          el.popover()
