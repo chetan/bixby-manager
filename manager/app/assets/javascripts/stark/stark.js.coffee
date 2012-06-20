@@ -32,10 +32,9 @@ class Stark.App
   add_state: (state) ->
     s = new state()
     @states[s.name] = state
-    state.app = @
+    state.prototype.app = @
     if s.url?
-      @router.match(s.url, s.name)
-    state
+      state.prototype.route = @router.match(s.url, s.name)
 
   # bound to app:route event which is triggered by Route.handler method
   # will get triggered whenever user uses back/forward browser nav

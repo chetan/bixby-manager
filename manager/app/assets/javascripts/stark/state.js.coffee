@@ -28,6 +28,9 @@ class Stark.State
   # into the created state. params are also passed into the Models during autoloading.
   url:    null
 
+  # Route instance that reprsents this State
+  route: null
+
   # List of views used by this state
   views:  null
 
@@ -90,7 +93,14 @@ class Stark.State
   # While @url is used matching URLs to States, create_url() is used for updating
   # the url in the address bar or creating a link to the state
   create_url: ->
-    @url
+    url = @url
+    for name in @route.paramNames
+      if name.match(/_id$/)
+        v = name.replace(/_id$/, '')
+        if @[v]
+          url = url.replace(":#{name}", @[v].id)
+
+    return url
 
   # Cleanup any resources used by the state. Should remove all views and unbind any events
   dispose: (new_state) ->

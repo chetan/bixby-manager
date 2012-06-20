@@ -52,6 +52,8 @@ class Stark.Router
     # Register the route at the Backbone History instance
     Backbone.history.route(route, route.handler)
 
+    return route
+
   # Route a given URL path manually, return whether a route matched
   route: (path) =>
     #console.debug 'Router#route', path, params
