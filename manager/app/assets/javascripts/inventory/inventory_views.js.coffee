@@ -19,7 +19,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
       , @
 
 
-  class exports.HostTableRow extends Stark.Partial
+  class exports.HostTableRow extends Stark.View
     template: "inventory/_host"
     tagName: "div"
     className: "host"
@@ -83,7 +83,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
       super
       @partial(exports.HostMetadata, { metadata: @host.get("metadata") })
 
-  class exports.HostMetadata extends Stark.Partial
+  class exports.HostMetadata extends Stark.View
     el: "div.host div.metadata"
     template: "inventory/_metadata"
 
