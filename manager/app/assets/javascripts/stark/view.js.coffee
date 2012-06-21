@@ -186,6 +186,8 @@ class Stark.View extends Backbone.View
   partial_html: (tpl, data) ->
     if _.isString(tpl)
       tpl = new Template(@jst(tpl))
+
+    data ||= @
     tpl.render(data)
 
   create_partial: (clazz, data) ->
