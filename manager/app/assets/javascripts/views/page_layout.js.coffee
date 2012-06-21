@@ -22,3 +22,5 @@ namespace "Bixby.view", (exports, top) ->
 
     render: ->
       super
+      @breadcrumb = @partial(exports.Breadcrumb)
+      @$("#breadcrumb").append(@breadcrumb.$el)
