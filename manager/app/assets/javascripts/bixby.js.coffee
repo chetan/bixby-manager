@@ -1,11 +1,8 @@
 
-# include all templates, models
 #= require_tree "./templates"
 #= require_tree "./models"
+#= require_tree "./views"
 
-#= require "main_views"
-
-# include all modules
 #= require_tree "./inventory"
 #= require_tree "./monitoring"
 
