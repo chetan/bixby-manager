@@ -22,6 +22,11 @@ namespace "Bixby.view.inventory", (exports, top) ->
     tagName: "div"
     className: "host"
 
+    links: {
+      "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
+      "div.body a.host":          [ "inv_view_host", (el) -> { host: @host } ]
+    }
+
     events: {
       # edit
       "click span.edit button.edit": (e) ->
@@ -35,22 +40,19 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
       # cancel
       "click div.editor button.cancel": (e) ->
+        e.preventDefault();
         @hide_editor()
 
       # save
       "click div.editor button.save": (e) ->
+        e.preventDefault();
         @save_edits()
 
       # save (on enter)
       "keyup div.editor input.alias": (e) ->
         if e.keyCode == 13
+          e.preventDefault();
           @save_edits()
-    }
-
-    links: {
-      "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
-
-      "div.body a.host": [ "inv_view_host", (el) -> { host: @host } ]
     }
 
     hide_editor: ->
@@ -83,6 +85,55 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @partial exports.HostMetadata,
         { metadata: @host.get("metadata") },
         "div.host div.metadata"
+
+    events: {
+      # edit
+      "click span.edit button.edit": (e) ->
+        e = @$(e.target)
+        if e.html() == "edit"
+          @$(".editor").show()
+          @$("blockquote.desc").hide()
+          e.html("cancel")
+        else
+          @hide_editor()
+
+      # cancel
+      "click div.editor button.cancel": (e) ->
+        e.preventDefault();
+        @hide_editor()
+
+      # save
+      "click div.editor button.save": (e) ->
+        e.preventDefault();
+        @save_edits()
+
+      # save (on enter)
+      "keyup div.editor input.alias": (e) ->
+        if e.keyCode == 13
+          e.preventDefault();
+          @save_edits()
+    }
+
+    hide_editor: ->
+      @$("span.edit button.edit").html("edit")
+      @$(".editor").hide()
+      @$("blockquote.desc").show()
+
+    save_edits: ->
+      @host.set "alias", @$(".editor input.alias").val()
+      @host.set "desc", @$(".editor textarea.desc").val()
+
+      tags = ""
+      _.each @$(".editor ul.tags").tagit("tags"), (tag) ->
+        tags += "," if tags.length > 0
+        tags += tag.value
+      @host.set "tags", tags
+
+      @host.save()
+      @hide_editor()
+
+    after_render: ->
+      @$('ul.tags').tagit();
 
   class exports.HostMetadata extends Stark.View
     template: "inventory/_metadata"
