@@ -13,6 +13,9 @@ Backbone.Collection.prototype.eachR = (context, func) ->
 _.eachR = (context, func) ->
   @each func, context
 
+_.bindR = (context, func) ->
+  @bind func, context
+
 # alias away the sync method
 Backbone._sync = Backbone.sync
 
