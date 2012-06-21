@@ -15,6 +15,10 @@
   </div>
 
   <div class="row-fluid">
+    <div class="actions span5"><a class="monitoring">Monitoring</a></div>
+  </div>
+
+  <div class="row-fluid">
 
     <h4>Facts</h4>
     <div class="metadata span6">

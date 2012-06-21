@@ -6,6 +6,10 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     bindings: [ "host" ]
 
+    links: {
+      "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
+    }
+
     render: ->
       super
 
