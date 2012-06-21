@@ -23,3 +23,8 @@
 // require "chart/cubism.v1"
 // require "chart/rickshaw"
 // require "chart/rickshaw.extensions"
+
+
+// pulled in from #{Rails.root}/lib/assets
+//= require "underscore_patch"
+//= require "stark"

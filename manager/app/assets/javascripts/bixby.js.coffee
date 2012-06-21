@@ -1,10 +1,4 @@
 
-#= require "underscore_patch"
-
-#= require "stark/utils"
-#= require "stark/log"
-#= require_tree "./stark"
-
 # include all templates, models
 #= require_tree "./templates"
 #= require_tree "./models"
