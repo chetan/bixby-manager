@@ -107,9 +107,8 @@ class Stark.State
     @log "disposing of current state", @
     @unbind_app_events()
     _.each @_views, (v) ->
-      if ! (_.any(new_state.views, (n)-> v instanceof n) && _.any(new_state.no_redraw, (n)-> v instanceof n))
+      if ! (_.any(new_state.views, (n)-> v instanceof n) && v.redraw == false)
         # only dispose of view IF NOT required by new state
-        @log "disposing of", v
         v.dispose()
     , @
 

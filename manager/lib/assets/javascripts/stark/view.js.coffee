@@ -53,6 +53,9 @@ class Stark.View extends Backbone.View
   # List of models to bind to this view
   bindings: null
 
+  # Set false to avoid redrawing on state changes
+  redraw: true
+
   # List of sub-views
   views: null
 
@@ -261,6 +264,7 @@ class Stark.View extends Backbone.View
 
   # Cleanup any resources used by the view. Should remove all views and unbind any events
   dispose: ->
+    @log "disposing of view ", @
     @$el.html("")
     @unbind_app_events()
     @undelegateEvents()

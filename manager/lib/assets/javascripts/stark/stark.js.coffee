@@ -117,7 +117,7 @@ class Stark.App
 
     # create views
     _.each state.views, (v) ->
-      if @current_state? && _.include(state.no_redraw, v) && _.include(@current_state.views, v)
+      if @current_state? && _.include(@current_state.views, v) && v.prototype.redraw == false
         @log "not going to redraw #{v.name}"
         return
 

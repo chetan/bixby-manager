@@ -13,7 +13,6 @@ jQuery ->
       tab:  "monitoring"
 
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.MetricList ]
-      no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
       models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
   )
 
@@ -25,7 +24,6 @@ jQuery ->
       tab:  "monitoring"
 
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.MetricDetail ]
-      no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
       models:     { host: _bm.Host, check: _bm.Check, metric: _bm.Metric }
   )
 
@@ -37,7 +35,6 @@ jQuery ->
       tab:  "monitoring"
 
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand ]
-      no_redraw:  [ _bv.PageLayout, _bvm.Layout ]
       models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
   )
 
@@ -48,7 +45,6 @@ jQuery ->
       tab:  "monitoring"
 
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand, _bvm.AddCommandOpts ]
-      no_redraw:  [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand ]
       models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
 
       load_data: (data) ->

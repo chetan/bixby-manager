@@ -9,7 +9,6 @@ jQuery ->
       tab:  "inventory"
 
       views:      [ Bixby.view.PageLayout, Bixby.view.inventory.Layout, Bixby.view.inventory.HostTable ]
-      no_redraw:  [ Bixby.view.PageLayout, Bixby.view.inventory.Layout ]
       models:     { hosts: Bixby.model.HostList }
   )
 
@@ -21,6 +20,5 @@ jQuery ->
       tab:  "inventory"
 
       views:      [ Bixby.view.PageLayout, Bixby.view.inventory.Layout, Bixby.view.inventory.Host ]
-      no_redraw:  [ Bixby.view.PageLayout, Bixby.view.inventory.Layout ]
       models:     { host: Bixby.model.Host }
   )
