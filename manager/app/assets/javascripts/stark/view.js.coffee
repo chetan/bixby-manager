@@ -50,6 +50,9 @@ class Stark.View extends Backbone.View
   # List of events to subscribe to at the @app level
   app_events: null
 
+  # List of models to bind to this view
+  bindings: null
+
   # List of sub-views
   views: null
 
@@ -61,7 +64,6 @@ class Stark.View extends Backbone.View
       for v in _.values(args)
         if v instanceof Stark.Model
           @_data.push(v)
-          @bindModel(v)
 
     _.bindAll @
     return @
@@ -94,6 +96,7 @@ class Stark.View extends Backbone.View
     @$el.html(@render_html())
 
     @attach_link_events()
+    @bind_models()
     @after_render()
 
     return @
@@ -213,9 +216,21 @@ class Stark.View extends Backbone.View
   set: (key, val) ->
     @_data.push(val)
     @[key] = val
-    @bindModel(val)
 
-  bindModel: (model, event, handler) ->
+  # Bind all the models specified in @bindings
+  bind_models: ->
+    return if not @bindings?
+    for m in @bindings
+      if @[m]?
+        @unbind_model( @[m] )
+        @bind_model( @[m] )
+
+  # Bind a method to the given model, using this View as the context
+  #
+  # @param [Model] model
+  # @param [String] event       Event to bind to (default: change)
+  # @param [Function] handler   Handler (default: @render)
+  bind_model: (model, event, handler) ->
     event ||= "change"
     handler ||= @render
     model.bind event, handler, @
@@ -249,10 +264,13 @@ class Stark.View extends Backbone.View
     @$el.html("")
     @unbind_app_events()
     @undelegateEvents()
-    for m in @_data
-      @unbind_model(m)
+    @unbind_models()
     for v in @views
       v.dispose()
+
+  unbind_models: ->
+    for m in @_data
+      @unbind_model(m)
 
   unbind_model: (m) ->
     if _.isObject(m) && _.isFunction(m["unbind"])

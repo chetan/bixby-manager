@@ -101,8 +101,7 @@ class Stark.App
   # @param [View] view
   copy_data_from_state: (state, view) ->
     _.each _.keys(state.models), (key) ->
-      view[key] = state[key]
-      view._data.push state[key]
+      view.set key, state[key]
 
   # Render the State
   #
