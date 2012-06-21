@@ -1,49 +1,55 @@
 
-  <!-- host editor form -->
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal">×</button>
+  <h3>Edit host: <%= host.name() %></h3>
+</div>
+
+<div class="modal-body container-fluid">
+
   <div class="row-fluid">
-    <div class="editor span5">
+  <form class="form-vertical">
+    <fieldset>
+      <div class="control-group">
 
-      <form class="form-vertical">
-        <fieldset>
-          <div class="control-group">
+        <label class="control-label">Alias
+          <div class="controls">
+            <input type="text" class="alias span12" placeholder="alias" value="<%= host.g('alias') %>">
+          </div>
+        </label>
 
-            <label class="control-label">Alias
-              <div class="controls">
-                <input type="text" class="alias span12" placeholder="alias" value="<%= host.g('alias') %>">
-              </div>
-            </label>
+        <label class="control-label">Description
+          <div class="controls">
+            <textarea class="desc span12" placeholder="description"><%= host.g('desc') %></textarea>
+          </div>
+        </label>
 
-            <label class="control-label">Description
-              <div class="controls">
-                <textarea class="desc span12" placeholder="description"><%= host.g('desc') %></textarea>
-              </div>
-            </label>
+        <p class="markdown">accepts
+          <!-- another good link: http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet -->
+          <a href="http://daringfireball.net/projects/markdown/syntax"
+             target="_new"
+             title="open markdown reference in new window">markdown</a>
+          </p>
 
-            <p class="markdown">accepts
-              <!-- another good link: http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet -->
-              <a href="http://daringfireball.net/projects/markdown/syntax"
-                 target="_new"
-                 title="open markdown reference in new window">markdown</a>
-              </p>
+        <label class="control-label">Tags<br/>
+          <div class="controls">
+            <ul class="tags span12">
+              <% _.each(host.tags(), function(tag) { %>
+                <li><%= tag %></li>
+              <% }); %>
+            </ul>
+          </div>
+        </label>
 
-            <label class="control-label">Tags<br/>
-              <div class="controls">
-                <ul class="tags span12">
-                  <% _.each(host.tags(), function(tag) { %>
-                    <li><%= tag %></li>
-                  <% }); %>
-                </ul>
-              </div>
-            </label>
+      </div> <!-- control-group -->
+    </fieldset>
+  </form>
+</div>
 
-            <div class="controls">
-              <button class="btn btn-mini save">Save</button>
-              <button class="btn btn-mini btn-danger cancel">Cancel</button>
-            </div>
+</div>
 
-          </div> <!-- control-group -->
-        </fieldset>
-      </form>
-
-    </div>
-  </div> <!-- end host editor form -->
+<div class="modal-footer">
+  <div class="controls">
+    <button class="btn btn save">Save</button>
+    <button class="btn btn btn-danger cancel" data-dismiss="modal">Cancel</button>
+  </div>
+</div>

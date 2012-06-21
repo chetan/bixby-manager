@@ -14,8 +14,6 @@
 
   </div>
 
-  <%= partial_html("inventory/_host_editor") %>
-
   <div class="row-fluid">
 
     <h4>Facts</h4>

@@ -27,116 +27,92 @@ namespace "Bixby.view.inventory", (exports, top) ->
       "div.body a.host":          [ "inv_view_host", (el) -> { host: @host } ]
     }
 
-    events: {
-      # edit
-      "click span.edit button.edit": (e) ->
-        e = @$(e.target)
-        if e.html() == "edit"
-          @$(".editor").show()
-          @$("blockquote.desc").hide()
-          e.html("cancel")
-        else
-          @hide_editor()
+    bindings: [ "host" ]
 
-      # cancel
-      "click div.editor button.cancel": (e) ->
-        e.preventDefault();
-        @hide_editor()
-
-      # save
-      "click div.editor button.save": (e) ->
-        e.preventDefault();
-        @save_edits()
-
-      # save (on enter)
-      "keyup div.editor input.alias": (e) ->
-        if e.keyCode == 13
-          e.preventDefault();
-          @save_edits()
-    }
-
-    hide_editor: ->
-      @$("span.edit button.edit").html("edit")
-      @$(".editor").hide()
-      @$("blockquote.desc").show()
-
-    save_edits: ->
-      @host.set "alias", @$(".editor input.alias").val()
-      @host.set "desc", @$(".editor textarea.desc").val()
-
-      tags = ""
-      _.each @$(".editor ul.tags").tagit("tags"), (tag) ->
-        tags += "," if tags.length > 0
-        tags += tag.value
-      @host.set "tags", tags
-
-      @host.save()
-      @hide_editor()
-
-    after_render: ->
-      @$('ul.tags').tagit();
+    render: ->
+      super
+      @_he ||= @partial(exports.HostEditor, { host: @host })
+      @_he.setButton( @$("span.edit button.edit") )
 
   class exports.Host extends Stark.View
     el: "div.inventory_content"
     template: "inventory/host"
 
+    bindings: [ "host" ]
+
     render: ->
       super
-      @partial exports.HostMetadata,
+
+      if @_md?
+        @_md.dispose()
+
+      @_md = @partial exports.HostMetadata,
         { metadata: @host.get("metadata") },
         "div.host div.metadata"
 
-    events: {
-      # edit
-      "click span.edit button.edit": (e) ->
-        e = @$(e.target)
+      @_he ||= @partial(exports.HostEditor, { host: @host })
+      @_he.setButton( @$("span.edit button.edit") )
+
+  class exports.HostEditor extends Stark.View
+
+    tagName: "div"
+    className: "modal hide host_editor"
+    template: "inventory/_host_editor"
+
+    bindings: [ "host" ]
+
+    setButton: (button) ->
+      @button = button
+      cb = _.bindR @, (ev) ->
+        e = $(ev.target)
         if e.html() == "edit"
-          @$(".editor").show()
-          @$("blockquote.desc").hide()
+          @$el.modal("show")
           e.html("cancel")
         else
           @hide_editor()
 
-      # cancel
-      "click div.editor button.cancel": (e) ->
-        e.preventDefault();
-        @hide_editor()
+      @button.on "click", cb
 
+    events: {
       # save
-      "click div.editor button.save": (e) ->
+      "click button.save": (e) ->
         e.preventDefault();
         @save_edits()
 
       # save (on enter)
-      "keyup div.editor input.alias": (e) ->
+      "keyup input.alias": (e) ->
         if e.keyCode == 13
           e.preventDefault();
           @save_edits()
     }
 
     hide_editor: ->
-      @$("span.edit button.edit").html("edit")
-      @$(".editor").hide()
-      @$("blockquote.desc").show()
+      @button.html("edit")
+      @$el.modal("hide")
 
     save_edits: ->
-      @host.set "alias", @$(".editor input.alias").val()
-      @host.set "desc", @$(".editor textarea.desc").val()
+      @hide_editor()
+      @host.set "alias", @$("input.alias").val(), {silent: true}
+      @host.set "desc", @$("textarea.desc").val(), {silent: true}
 
       tags = ""
-      _.each @$(".editor ul.tags").tagit("tags"), (tag) ->
+      _.each @$("ul.tags").tagit("tags"), (tag) ->
         tags += "," if tags.length > 0
         tags += tag.value
-      @host.set "tags", tags
+      @host.set "tags", tags, {silent: true}
 
-      @host.save()
-      @hide_editor()
+      if @host.hasChanged()
+        @host.save()
 
     after_render: ->
-      @$('ul.tags').tagit();
+      @$("ul.tags").tagit();
+      @$el.modal({ show: false })
+      @$el.on "hidden", _.bindR(@, (ev) -> @hide_editor())
+      @$el.on "shown", _.bindR(@, (ev) -> @$("input.alias").putCursorAtEnd())
 
   class exports.HostMetadata extends Stark.View
     template: "inventory/_metadata"
+    bindings: [ "host" ]
 
     after_render: ->
       # show a popover for long values

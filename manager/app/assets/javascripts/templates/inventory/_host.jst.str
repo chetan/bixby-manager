@@ -11,10 +11,6 @@
     </div>
   </div>
 
-  <%= partial_html("inventory/_host_editor") %>
-
-  <!-- insert editor -->
-
   <div class="row-fluid">
     <div class="actions span5"><a class="monitoring">Monitoring</a></div>
   </div>
