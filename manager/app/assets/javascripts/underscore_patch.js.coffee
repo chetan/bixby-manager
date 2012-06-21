@@ -12,3 +12,19 @@ Backbone.Collection.prototype.eachR = (context, func) ->
 # eachR - allows passing the context as the first param instead of last
 _.eachR = (context, func) ->
   @each func, context
+
+# alias away the sync method
+Backbone._sync = Backbone.sync
+
+# define a new sync method
+Backbone.sync = (method, model, success, error) ->
+  # only need a token for non-get requests
+  if (method == 'create' || method == 'update' || method == 'delete')
+    # grab the token from the meta tag rails embeds
+    auth_options = {}
+    auth_options[$("meta[name='csrf-param']").attr('content')] = $("meta[name='csrf-token']").attr('content')
+    # set it as a model attribute without triggering events
+    model.set(auth_options, {silent: true});
+
+  # proxy the call to the old sync method
+  return Backbone._sync(method, model, success, error);
