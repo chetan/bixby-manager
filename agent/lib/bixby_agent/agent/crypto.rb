@@ -1,4 +1,7 @@
 
+require "openssl"
+require "base64"
+
 module Bixby
 class Agent
 
@@ -20,11 +23,35 @@ module Crypto
   end
 
   def public_key
-    self.keypair.public_key.to_s
+    @public_key ||= keypair.public_key
   end
 
   def private_key
-    self.keypair.private_key.to_s
+    keypair
+  end
+
+  def server_key_file
+    File.join(self.config_dir, "server.pub")
+  end
+
+  def server_key
+    @server_key ||= OpenSSL::PKey::RSA.new(File.read(server_key_file))
+  end
+
+  # Encrypt data using the server's public key
+  #
+  # @param [String] data    data to encrypt
+  # @result [String] Base64 result
+  def encrypt_for_server(data)
+    Base64.encode64(server_key.public_encrypt(data))
+  end
+
+  # Decrypt data that was encrypted with our public key
+  #
+  # @param [String] data    Base64 encoded data
+  # @result [String] unencrypted data
+  def decrypt_from_server(data)
+    keypair.private_decrypt(Base64.decode64(data))
   end
 
 end # Crypto
