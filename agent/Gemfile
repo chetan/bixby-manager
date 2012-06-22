@@ -10,7 +10,6 @@ gem 'curb'
 gem 'facter'
 gem 'mixlib-cli'
 gem 'uuidtools'
-gem 'ezcrypto'
 gem 'systemu'
 gem 'logging'
 
