@@ -2,7 +2,6 @@
 require 'facter'
 require 'uuidtools'
 
-require "bixby_agent/api/modules/inventory"
 require "bixby_agent/agent/crypto"
 
 module Bixby
@@ -17,7 +16,9 @@ module Handshake
   end
 
   def register_agent
-    return Inventory.register_agent(@uuid, self.public_key.to_s, get_hostname(), @port, @password)
+    params = [ @uuid, self.public_key.to_s, get_hostname(), @port, @password ]
+    req = JsonRequest.new("inventory:register_agent", params)
+    return req.exec()
   end
 
   def mac_changed?
