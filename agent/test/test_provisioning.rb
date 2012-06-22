@@ -55,8 +55,8 @@ class TestProvisioning < MiniTest::Unit::TestCase
       { "file" => "manifest.json", "digest" => sha.hexdigest(File.read("#{path}/../manifest.json")) }
     ]
 
-    body1 = '{"operation":"provisioning:fetch_file","params":[{"repo":"support","bundle":"test_bundle","command":"echo"},"bin\\/echo"]}'
-    body2 = '{"operation":"provisioning:fetch_file","params":[{"repo":"support","bundle":"test_bundle","command":"echo"},"bin\\/cat"]}'
+    body1 = '{"operation":"provisioning:fetch_file","params":[{"repo":"support","bundle":"test_bundle","command":"echo"},"bin/echo"]}'
+    body2 = '{"operation":"provisioning:fetch_file","params":[{"repo":"support","bundle":"test_bundle","command":"echo"},"bin/cat"]}'
 
     req1 = stub_request(:post, @api_url).with(:body => body1, :times => 1).to_return(:status => 200, :body => File.new("#{path}/echo"))
     req2 = stub_request(:post, @api_url).with(:body => body2, :times => 1).to_return(:status => 200, :body => File.new("#{path}/cat"))
