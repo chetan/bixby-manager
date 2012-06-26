@@ -37,8 +37,11 @@ class TestGetBundle < MiniTest::Unit::TestCase
     provisioner.stubs(:get_json_input).returns(cmd.to_json)
 
     # setup our expectations on the run method
-    Provisioning.expects(:list_files).once().returns(["foobar"])
-    Provisioning.expects(:download_files).once().returns(true)
+    ret_list = JsonResponse.from_json('{"status":"success","message":null,"data":[{"file":"bin/echo","digest":"abcd"}],"code":null}')
+    a.expects(:exec_api).once().returns(ret_list)
+    a.expects(:exec_api_download).once().returns(true)
+    `mkdir -p #{File.dirname(cmd.command_file)}`
+    `touch #{cmd.command_file}`
 
     provisioner.run
   end
