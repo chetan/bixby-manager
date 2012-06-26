@@ -6,7 +6,7 @@ jQuery ->
   _bm = Bixby.model
 
   Bixby.app.add_state(
-    class MonViewHostState extends Stark.State
+    class extends Stark.State
 
       name: "mon_view_host"
       url:  "monitoring/hosts/:host_id"

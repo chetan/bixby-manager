@@ -1,14 +1,17 @@
 
 jQuery ->
 
+  _bv = Bixby.view
+  _vi = Bixby.view.inventory
+
   Bixby.app.add_state(
-    class InventoryState extends Stark.State
+    class extends Stark.State
 
       name: "inventory"
       url:  "inventory"
       tab:  "inventory"
 
-      views:      [ Bixby.view.PageLayout, Bixby.view.inventory.Layout, Bixby.view.inventory.HostTable ]
+      views:      [ _bv.PageLayout, _vi.Layout, _vi.HostTable ]
       models:     { hosts: Bixby.model.HostList }
   )
 
@@ -19,6 +22,6 @@ jQuery ->
       url:  "inventory/hosts/:host_id"
       tab:  "inventory"
 
-      views:      [ Bixby.view.PageLayout, Bixby.view.inventory.Layout, Bixby.view.inventory.Host ]
+      views:      [ _bv.PageLayout, _vi.Layout, _vi.Host ]
       models:     { host: Bixby.model.Host }
   )
