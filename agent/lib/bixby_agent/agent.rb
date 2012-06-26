@@ -8,6 +8,7 @@ require "logging"
 require "bixby_agent/config_exception"
 require "bixby_agent/agent/handshake"
 require "bixby_agent/agent/remote_exec"
+require "bixby_agent/agent/api"
 require "bixby_agent/agent/config"
 
 module Bixby
@@ -19,6 +20,7 @@ class Agent
   include Config
   include Handshake
   include RemoteExec
+  include API
 
   class << self
     attr_accessor :agent_root
@@ -52,7 +54,7 @@ class Agent
     BundleRepository.path = File.join(agent.agent_root, "/repo")
     BaseModule.agent = agent
     BaseModule.manager_uri = agent.manager_uri
-    ENV["DEVOPS_ROOT"] = agent.agent_root
+    ENV["BIXBY_HOME"] = agent.agent_root
 
     return agent
   end

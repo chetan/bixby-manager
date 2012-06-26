@@ -18,7 +18,7 @@ module Handshake
   def register_agent
     params = [ @uuid, self.public_key.to_s, get_hostname(), @port, @password ]
     req = JsonRequest.new("inventory:register_agent", params)
-    return req.exec()
+    return exec_api(req)
   end
 
   def mac_changed?
