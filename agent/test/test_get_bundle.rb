@@ -40,7 +40,7 @@ class TestGetBundle < MiniTest::Unit::TestCase
     Provisioning.expects(:list_files).once().returns(["foobar"])
     Provisioning.expects(:download_files).once().returns(true)
 
-    provisioner.run!
+    provisioner.run
   end
 
   def test_bad_json
@@ -57,7 +57,7 @@ class TestGetBundle < MiniTest::Unit::TestCase
     provisioner.stubs(:get_json_input).returns(nil)
 
     assert_throws(SystemExit) do
-      provisioner.run!
+      provisioner.run
     end
 
   end
