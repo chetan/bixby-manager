@@ -6,10 +6,6 @@ require "fileutils"
 module Bixby
   class Provision < Bixby::BundleCommand
 
-    def initialize
-      super
-    end
-
     def run
 
       input = get_json_input()
@@ -59,7 +55,7 @@ module Bixby
 
         path = File.join(local_path, f['file'])
         req = JsonRequest.new("provisioning:fetch_file", [ params, f['file'] ])
-        @agent.api_exec_download(req, path)
+        @agent.exec_api_download(req, path)
         if f['file'] =~ /^bin/ then
           # correct permissions for executables
           FileUtils.chmod(0755, path)
