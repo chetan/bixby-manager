@@ -10,7 +10,7 @@ class TestBundleCommand < MiniTest::Unit::TestCase
     @root_dir = "/tmp/agent_test_temp"
     @port = 9999
     `rm -rf #{@root_dir}`
-    ENV["DEVOPS_ROOT"] = @root_dir
+    ENV["BIXBY_HOME"] = @root_dir
     setup_existing_agent()
 
     ARGV.clear

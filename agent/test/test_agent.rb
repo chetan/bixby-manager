@@ -7,7 +7,7 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
 	def setup
     WebMock.reset!
 
-    ENV["DEVOPS_ROOT"] = nil
+    ENV["BIXBY_HOME"] = nil
     @manager_uri = "http://localhost:3000"
     @password = "foobar"
     @root_dir = "/tmp/agent_test_temp"
@@ -27,27 +27,27 @@ class TestDevopsAgent < MiniTest::Unit::TestCase
     @agent.save_config()
     assert(@agent.new?)
     assert( File.exists? File.join(@root_dir, "etc", "devops.yml") )
-    assert ENV["DEVOPS_ROOT"]
-    assert_equal ENV["DEVOPS_ROOT"], @root_dir
+    assert ENV["BIXBY_HOME"]
+    assert_equal ENV["BIXBY_HOME"], @root_dir
   end
 
   def test_load_existing_agent
     setup_existing_agent()
     @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
     assert(!@agent.new?)
-    assert ENV["DEVOPS_ROOT"]
-    assert_equal ENV["DEVOPS_ROOT"], @root_dir
+    assert ENV["BIXBY_HOME"]
+    assert_equal ENV["BIXBY_HOME"], @root_dir
   end
 
   def test_load_existing_agent_using_env
     setup_existing_agent()
-    ENV["DEVOPS_ROOT"] = @root_dir
+    ENV["BIXBY_HOME"] = @root_dir
 
     @agent = Agent.create()
     assert @agent
     assert(!@agent.new?)
-    assert ENV["DEVOPS_ROOT"]
-    assert_equal ENV["DEVOPS_ROOT"], @root_dir
+    assert ENV["BIXBY_HOME"]
+    assert_equal ENV["BIXBY_HOME"], @root_dir
     assert_equal @root_dir, @agent.agent_root
   end
 
