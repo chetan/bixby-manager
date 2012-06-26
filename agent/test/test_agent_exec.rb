@@ -2,7 +2,7 @@
 require 'helper'
 
 module Bixby
-class TestDevopsAgentExec < MiniTest::Unit::TestCase
+class TestAgentExec < MiniTest::Unit::TestCase
 
   def setup
     @bundle_path = File.expand_path(File.dirname(__FILE__)) + "/support/test_bundle"

@@ -2,7 +2,7 @@
 require 'helper'
 
 module Bixby
-class TestDevopsAgent < MiniTest::Unit::TestCase
+class TestAgent < MiniTest::Unit::TestCase
 
 	def setup
     WebMock.reset!
