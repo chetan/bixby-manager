@@ -4,3 +4,7 @@ features_rcov
 pkg/
 coverage/
 .rvmrc
+
+/agent/etc
+/agent/var
+/agent/repo/vendor
