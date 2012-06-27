@@ -22,9 +22,9 @@ class BundleCommand
       :show_options   => true,
       :exit           => 0
 
-  def initialize(parse_options = true, *args)
+  def initialize(options=nil)
     @agent = Agent.create
-    if parse_options then
+    if not @skip_parse then
       super()
       @argv = parse_options()
     end
