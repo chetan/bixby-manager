@@ -5,6 +5,8 @@ class RemoteExec < API
 
   module Methods
 
+    include HttpClient
+
     # Execute a command on an Agent, automatically provisioning it if necessary
     #
     # @param [Agent] agent
@@ -15,7 +17,7 @@ class RemoteExec < API
 
       command = create_spec(command)
 
-      ret = agent.run_cmd(command)
+      ret = exec_api(agent.uri, "exec", command.to_hash)
       if ret.success? then
         return CommandResponse.new(ret.data)
       end
@@ -33,7 +35,7 @@ class RemoteExec < API
         return pret # TODO raise err?
       end
 
-      ret = agent.run_cmd(command)
+      ret = exec_api(agent.uri, "exec", command.to_hash)
       if not ret.success? then
         # TODO raise err?
         return ret
@@ -73,7 +75,7 @@ class RemoteExec < API
         return pret # TODO raise err?
       end
 
-      ret = agent.run_cmd(command)
+      ret = exec_api(agent.uri, "exec", command.to_hash)
       if not ret.success? then
         # TODO raise err?
         return ret
@@ -97,6 +99,38 @@ class RemoteExec < API
         CommandSpec.from_json(command)
       else
         command
+      end
+    end
+
+    # Execute the given API request
+    #
+    # @param [String] uri
+    # @param [String] operation
+    # @param [*Array] params
+    #
+    # @return [JsonResponse]
+    def exec_api(uri, operation, params)
+      begin
+        req = JsonRequest.new(operation, params)
+        return JsonResponse.from_json(http_post_json(uri, req.to_json))
+      rescue Curl::Err::CurlError => ex
+        return JsonResponse.new("fail", ex.message, ex.backtrace)
+      end
+    end
+
+    # Execute the given API download request
+    #
+    # @param [String] uri
+    # @param [JsonRequest] json_req     Request to download a file
+    # @param [String] download_path     Location to download requested file to
+    #
+    # @return [JsonResponse]
+    def exec_api_download(uri, json_req, download_path)
+      begin
+        http_post_download(uri, json_req.to_json, download_path)
+        return JsonResponse.new("success")
+      rescue Curl::Err::CurlError => ex
+        return JsonResponse.new("fail", ex.message, ex.backtrace)
       end
     end
 

@@ -31,8 +31,7 @@ class Provisioning < API
                   :bundle => "system/provisioning", :command => "get_bundle.rb",
                   :stdin => noargs.to_json })
 
-    pret = agent.run_cmd(provision)
-    return pret
+    return exec_api(agent.uri, "exec", provision.to_hash)
   end
 
   # List files in bundle specified by CommandSpec

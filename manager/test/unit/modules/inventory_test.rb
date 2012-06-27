@@ -84,7 +84,7 @@ class Test::Modules::Inventory < ActiveSupport::TestCase
 
     # first update
     jr = JsonResponse.new("success", "", { :status => 0, :stdout => {:uptime => "3 days", :kernel => "Darwin"}.to_json, :stderr => nil })
-    stub = stub_request(:post, agent.agent_uri).with { |req|
+    stub = stub_request(:post, agent.uri).with { |req|
       req.body =~ /list_facts.rb/
     }.to_return(:status => 200, :body => jr.to_json)
 
@@ -102,7 +102,7 @@ class Test::Modules::Inventory < ActiveSupport::TestCase
 
     # second update, 1 new fact
     jr = JsonResponse.new("success", "", { :status => 0, :stdout => {:domain => "local", :uptime => "3 days", :kernel => "Darwin"}.to_json, :stderr => nil })
-    stub = stub_request(:post, agent.agent_uri).with { |req|
+    stub = stub_request(:post, agent.uri).with { |req|
       req.body =~ /list_facts.rb/
     }.to_return(:status => 200, :body => jr.to_json)
 
