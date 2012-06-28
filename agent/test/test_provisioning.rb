@@ -2,7 +2,9 @@
 require 'helper'
 
 module Bixby
-class TestProvisioning < MiniTest::Unit::TestCase
+module Test
+
+class Provisioning < TestCase
 
   def setup
 
@@ -89,6 +91,8 @@ class TestProvisioning < MiniTest::Unit::TestCase
     refute_equal digest_mtime, File::Stat.new(digest_file).mtime.to_i
 
   end
+
+end
 
 end
 end

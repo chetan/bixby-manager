@@ -130,6 +130,8 @@ class MiniTest::Unit::TestCase
 
 end
 
+require "test_base"
+
 Dir.glob(File.dirname(__FILE__) + "/../lib/**/*.rb").each{ |f| require f }
 
 MiniTest::Unit.autorun

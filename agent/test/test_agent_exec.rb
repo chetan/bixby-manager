@@ -2,7 +2,9 @@
 require 'helper'
 
 module Bixby
-class TestAgentExec < MiniTest::Unit::TestCase
+module Test
+
+class AgentExec < TestCase
 
   def setup
     @bundle_path = File.expand_path(File.dirname(__FILE__)) + "/support/test_bundle"
@@ -48,6 +50,8 @@ class TestAgentExec < MiniTest::Unit::TestCase
       @agent.exec(@c.to_hash)
     end
   end
+
+end
 
 end
 end

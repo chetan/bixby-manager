@@ -2,7 +2,9 @@
 require 'helper'
 
 module Bixby
-class TestApp < MiniTest::Unit::TestCase
+module Test
+
+class TestApp < TestCase
 
   def setup
     WebMock.reset!
@@ -66,6 +68,8 @@ class TestApp < MiniTest::Unit::TestCase
     App.new.setup_logger
     assert_equal 2, Logging::Logger.root.level
   end
+
+end
 
 end
 end

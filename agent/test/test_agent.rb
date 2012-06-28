@@ -2,7 +2,9 @@
 require 'helper'
 
 module Bixby
-class TestAgent < MiniTest::Unit::TestCase
+module Test
+
+class TestAgent < TestCase
 
 	def setup
     WebMock.reset!
@@ -79,6 +81,8 @@ class TestAgent < MiniTest::Unit::TestCase
   def test_bad_config
     # TODO
   end
+
+end
 
 end
 end

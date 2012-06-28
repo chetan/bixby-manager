@@ -2,7 +2,9 @@
 require 'helper'
 
 module Bixby
-class TestGetBundle < MiniTest::Unit::TestCase
+module Test
+
+class GetBundle < TestCase
 
   def setup
     @bundle_path = File.expand_path(File.dirname(__FILE__)) + "/support/test_bundle"
@@ -64,6 +66,8 @@ class TestGetBundle < MiniTest::Unit::TestCase
     end
 
   end
+
+end
 
 end
 end

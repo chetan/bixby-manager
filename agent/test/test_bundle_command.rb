@@ -2,7 +2,9 @@
 require 'helper'
 
 module Bixby
-class TestBundleCommand < MiniTest::Unit::TestCase
+module Test
+
+class TestBundleCommand < TestCase
 
   def setup
     @manager_uri = "http://localhost:3000"
@@ -53,4 +55,5 @@ end
 class Baz < Foobar
 end
 
+end # Test
 end # Bixby
