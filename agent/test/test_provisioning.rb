@@ -7,25 +7,12 @@ module Test
 class Provisioning < TestCase
 
   def setup
-
-    WebMock.reset!
-    WebMock.enable!
-
-    @manager_uri = "http://localhost:3000"
-    @password = "foobar"
-    @root_dir = "/tmp/agent_test_temp"
-    @port = 9999
-    `rm -rf #{@root_dir}`
-
-    @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
+    super
 
     BaseModule.manager_uri = @manager_uri
     @api_url = @manager_uri + "/api"
 
-  end
-
-  def teardown
-    `rm -rf #{@root_dir}`
+    @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
   end
 
   def test_list_files

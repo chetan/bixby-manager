@@ -6,16 +6,6 @@ module Test
 
 class TestApp < TestCase
 
-  def setup
-    WebMock.reset!
-
-    @manager_uri = "http://localhost:3000"
-    @password = "foobar"
-    @root_dir = "/tmp/agent_test_temp"
-    @port = 9999
-    `rm -rf #{@root_dir}`
-  end
-
   def test_load_agent
     ARGV.clear
     ARGV << "-d"

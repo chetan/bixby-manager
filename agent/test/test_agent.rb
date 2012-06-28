@@ -7,21 +7,8 @@ module Test
 class TestAgent < TestCase
 
 	def setup
-    WebMock.reset!
-
+    super
     ENV["BIXBY_HOME"] = nil
-    @manager_uri = "http://localhost:3000"
-    @password = "foobar"
-    @root_dir = "/tmp/agent_test_temp"
-    @port = 9999
-    `rm -rf #{@root_dir}`
-  end
-
-  def setup_existing_agent
-    src = File.expand_path(File.join(File.dirname(__FILE__), "support/root_dir"))
-    dest = File.join(@root_dir, "etc")
-    FileUtils.mkdir_p(dest)
-    FileUtils.copy_entry(src, dest)
   end
 
   def test_create_new_agent

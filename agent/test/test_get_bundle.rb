@@ -7,18 +7,13 @@ module Test
 class GetBundle < TestCase
 
   def setup
+    super
+
     @bundle_path = File.expand_path(File.dirname(__FILE__)) + "/support/test_bundle"
     h = { :repo => "local", :bundle => "system/provisioning", 'command' => "get_bundle.rb" }
     @c = CommandSpec.new(h)
 
-    @manager_uri = "http://localhost:3000"
-    @password = "foobar"
-    @root_dir = "/tmp/agent_test_temp"
-    @port = 9999
-    `rm -rf #{@root_dir}`
     @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
-
-    ARGV.clear
   end
 
   def test_get_bundle

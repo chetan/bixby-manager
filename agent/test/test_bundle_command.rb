@@ -7,22 +7,8 @@ module Test
 class TestBundleCommand < TestCase
 
   def setup
-    @manager_uri = "http://localhost:3000"
-    @password = "foobar"
-    @root_dir = "/tmp/agent_test_temp"
-    @port = 9999
-    `rm -rf #{@root_dir}`
-    ENV["BIXBY_HOME"] = @root_dir
+    super
     setup_existing_agent()
-
-    ARGV.clear
-  end
-
-  def setup_existing_agent
-    src = File.expand_path(File.join(File.dirname(__FILE__), "support/root_dir"))
-    dest = File.join(@root_dir, "etc")
-    FileUtils.mkdir_p(dest)
-    FileUtils.copy_entry(src, dest)
   end
 
   def test_subclasses
