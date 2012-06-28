@@ -34,6 +34,10 @@ module Crypto
     File.join(self.config_dir, "server.pub")
   end
 
+  def have_server_key?
+    File.exists? server_key_file
+  end
+
   def server_key
     @server_key ||= OpenSSL::PKey::RSA.new(File.read(server_key_file))
   end
