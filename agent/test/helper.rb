@@ -130,7 +130,7 @@ class MiniTest::Unit::TestCase
 
 end
 
-require "test_base"
+require "base"
 
 Dir.glob(File.dirname(__FILE__) + "/../lib/**/*.rb").each{ |f| require f }
 
