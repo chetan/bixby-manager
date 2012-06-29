@@ -31,6 +31,9 @@ module Config
         agent.log = Logging.logger[agent]
         return agent
       rescue Exception => ex
+        if ex.kind_of? SystemExit then
+          raise ex
+        end
         bad_config(ex) if ex.message != "exit"
       end
     end

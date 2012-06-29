@@ -31,6 +31,7 @@ module Bixby
       end
 
       def setup_existing_agent
+        ENV["BIXBY_HOME"] = @root_dir
         src = File.expand_path(File.join(File.dirname(__FILE__), "support/root_dir"))
         dest = File.join(@root_dir, "etc")
         FileUtils.mkdir_p(dest)
@@ -44,6 +45,7 @@ module Bixby
       end
 
       def create_new_agent
+        ENV["BIXBY_HOME"] = nil
         @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
       end
 

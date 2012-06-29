@@ -57,16 +57,12 @@ class TestAgent < TestCase
     assert response.status == "success"
   end
 
-  # @stdout
-  # Scenario: Corrupted configuration throws error
-  #   Given a manager at "http://localhost:3000"
-  #   And a root dir of "/tmp/devops/test"
-  #   And there is "a" existing agent
-  #   And a corrupted configuration
-  #   When I create an agent
-  #   Then stdout should contain "exiting"
   def test_bad_config
-    # TODO
+    setup_existing_agent()
+    File.open(File.join(@root_dir, "etc", "devops.yml"), 'w') { |f| f.write("foo") }
+    assert_throws(SystemExit) do
+      Agent.create
+    end
   end
 
 end
