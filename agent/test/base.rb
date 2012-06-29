@@ -15,14 +15,19 @@ module Bixby
         @root_dir = "/tmp/agent_test_temp"
         @port = 9999
 
+        BaseModule.manager_uri = @manager_uri
+        @api_url = @manager_uri + "/api"
+
         `rm -rf #{@root_dir}`
 
+        ENV["BIXBY_NOCRYPT"] = "1"
         ENV["BIXBY_HOME"] = @root_dir
         ARGV.clear
       end
 
       def teardown
         `rm -rf #{@root_dir}`
+        @agent = nil
       end
 
       def setup_existing_agent

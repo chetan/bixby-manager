@@ -29,6 +29,28 @@ class Crypto < TestCase
     assert_equal "foobar", @agent.decrypt_from_server(input)
   end
 
+  # This test is the same as Bixby::Test::Provisioning.test_list_files except
+  # that crypto routines are enabled.
+  def test_api_call_with_crypto
+
+    setup_test_bundle("local", "system/provisioning", "get_bundle.rb")
+    require @c.command_file
+    ENV["BIXBY_NOCRYPT"] = "0"
+    setup_existing_agent()
+
+    ret_data = Base64.encode64(@agent.private_key.public_encrypt("{}"))
+    stub_request(:post, @api_url).to_return(:status => 200, :body => ret_data)
+    Agent.stubs(:create).returns(@agent)
+
+    cmd = CommandSpec.new({ :repo => "support", :bundle => "test_bundle", :command => "echo" })
+    provisioner = Provision.new
+    ret = provisioner.list_files(cmd)
+
+    assert_requested(:post, @manager_uri + "/api", :times => 1) { |req|
+      not req.body.include? "operation"
+    }
+  end
+
 end
 
 end

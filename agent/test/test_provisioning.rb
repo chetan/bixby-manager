@@ -8,10 +8,6 @@ class Provisioning < TestCase
 
   def setup
     super
-
-    BaseModule.manager_uri = @manager_uri
-    @api_url = @manager_uri + "/api"
-
     @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
   end
 

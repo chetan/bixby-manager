@@ -10,7 +10,14 @@ class Agent
     def exec_api(json_req)
       uri = URI.join(BaseModule.manager_uri, "/api").to_s
       begin
-        return JsonResponse.from_json(json_req.http_post_json(uri, json_req.to_json))
+        post = json_req.to_json
+        if crypto_enabled? and have_server_key? then
+          ret = json_req.http_post(uri, encrypt_for_server(post))
+          res = decrypt_from_server(ret)
+        else
+          res = json_req.http_post_json(uri, post)
+        end
+        return JsonResponse.from_json(res)
       rescue Curl::Err::CurlError => ex
         return JsonResponse.new("fail", ex.message, ex.backtrace)
       end

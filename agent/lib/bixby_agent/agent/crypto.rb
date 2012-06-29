@@ -42,6 +42,11 @@ module Crypto
     @server_key ||= OpenSSL::PKey::RSA.new(File.read(server_key_file))
   end
 
+  def crypto_enabled?
+    b = ENV["BIXBY_NOCRYPTO"]
+    !(b and %w{1 true yes}.include? b)
+  end
+
   # Encrypt data using the server's public key
   #
   # @param [String] data    data to encrypt
