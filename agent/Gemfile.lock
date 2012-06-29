@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://github.com/chetan/devops_common.git
-  revision: 732487a63782102c9dfbb2241c3943f9768d8f4b
+  revision: 1ac5c885a2953f13e58b8ddf7e01eaee82af96a6
   specs:
     bixby_common (0.1.0)
       curb
@@ -67,6 +67,8 @@ GEM
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
+    rack-test (0.6.1)
+      rack (>= 1.0)
     rake (0.9.2.2)
     rb-fchange (0.0.5)
       ffi
@@ -118,6 +120,7 @@ DEPENDENCIES
   multi_json
   oj
   pry
+  rack-test
   rcov
   simplecov
   sinatra

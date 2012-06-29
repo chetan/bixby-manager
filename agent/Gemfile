@@ -28,14 +28,13 @@ group :development, :test do
     gem 'hirb'
 
     # test frameworks
-    # gem 'cucumber'
-    # gem 'aruba', '0.4.7'
-    # gem 'rspec'
     gem "bahia"
     gem 'webmock', :git => 'https://github.com/bblimke/webmock.git'
     gem 'mocha'
     gem "minitest"
     gem "turn"
+
+    gem "rack-test"
 
     # coverage
     gem "simplecov",:platforms => :mri_19
