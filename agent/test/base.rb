@@ -33,6 +33,11 @@ module Bixby
         @agent = Agent.create
       end
 
+      def setup_test_bundle(repo, bundle, command)
+        @bundle_path = File.expand_path(File.dirname(__FILE__)) + "/support/test_bundle"
+        @c = CommandSpec.new({ :repo => repo, :bundle => bundle, :command => command })
+      end
+
       def create_new_agent
         @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
       end

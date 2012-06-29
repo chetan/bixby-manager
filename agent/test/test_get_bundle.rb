@@ -8,11 +8,7 @@ class GetBundle < TestCase
 
   def setup
     super
-
-    @bundle_path = File.expand_path(File.dirname(__FILE__)) + "/support/test_bundle"
-    h = { :repo => "local", :bundle => "system/provisioning", 'command' => "get_bundle.rb" }
-    @c = CommandSpec.new(h)
-
+    setup_test_bundle("local", "system/provisioning", "get_bundle.rb")
     @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
   end
 
