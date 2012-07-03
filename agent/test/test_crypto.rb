@@ -35,7 +35,7 @@ class Crypto < TestCase
 
     setup_test_bundle("local", "system/provisioning", "get_bundle.rb")
     require @c.command_file
-    ENV["BIXBY_NOCRYPT"] = "0"
+    ENV["BIXBY_NOCRYPTO"] = "0"
     setup_existing_agent()
 
     ret_data = Base64.encode64(@agent.private_key.public_encrypt("{}"))

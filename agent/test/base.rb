@@ -20,7 +20,7 @@ module Bixby
 
         `rm -rf #{@root_dir}`
 
-        ENV["BIXBY_NOCRYPT"] = "1"
+        ENV["BIXBY_NOCRYPTO"] = "1"
         ENV["BIXBY_HOME"] = @root_dir
         ARGV.clear
       end
