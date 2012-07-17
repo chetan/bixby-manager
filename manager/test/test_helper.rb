@@ -36,7 +36,11 @@ def bootstrap_tests
 
   ENV["BOOTSTRAPNOW"] = "1"
   require "#{Rails.root.to_s}/config/initializers/bixby_bootstrap"
-  Dir.glob(Rails.root + "/lib/**/*.rb").each{ |f| require f }
+
+  # require files in order to force coverage reports
+  [ "lib", "app" ].each do |d|
+    Dir.glob(File.join(Rails.root, d, "**/*.rb")).each{ |f| require f }
+  end
 end
 
 if Object.const_defined? :Spork then
