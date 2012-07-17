@@ -4,6 +4,14 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 
+module Rake
+  class << self
+    def verbose?
+      ENV.include? "VERBOSE" and ["1", "true", "yes"].include? ENV["VERBOSE"]
+    end
+  end
+end
+
 require 'awesome_print'
 
 require 'minitest/unit'
