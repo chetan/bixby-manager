@@ -102,4 +102,8 @@ group :development do
     gem "spork-rails", :require => false
     gem "database_cleaner"
     gem "factory_girl_rails"
+
+    gem "guard"
+    gem "growl"
+    gem "colorize"
 end
