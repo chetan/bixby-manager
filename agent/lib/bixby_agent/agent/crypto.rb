@@ -50,7 +50,8 @@ module Crypto
   # Encrypt data using the server's public key
   #
   # @param [String] data    data to encrypt
-  # @result [String] Base64 result
+  #
+  # @return [String] Base64 result
   def encrypt_for_server(data)
     Base64.encode64(server_key.public_encrypt(data))
   end
@@ -58,7 +59,8 @@ module Crypto
   # Decrypt data that was encrypted with our public key
   #
   # @param [String] data    Base64 encoded data
-  # @result [String] unencrypted data
+  #
+  # @return [String] unencrypted data
   def decrypt_from_server(data)
     keypair.private_decrypt(Base64.decode64(data))
   end
