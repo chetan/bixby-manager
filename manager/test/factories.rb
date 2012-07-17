@@ -10,6 +10,7 @@ FactoryGirl.define do
 
   factory :agent do
     ip "2.2.2.2"
+    port = 18000
     uuid { generate(:uuid) }
     public_key { generate(:pubkey) }
     association :host

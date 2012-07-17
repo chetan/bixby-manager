@@ -6,6 +6,7 @@ class RemoteExec < API
   module Methods
 
     include HttpClient
+    include Crypto
 
     # Execute a command on an Agent, automatically provisioning it if necessary
     #
@@ -17,7 +18,7 @@ class RemoteExec < API
 
       command = create_spec(command)
 
-      ret = exec_api(agent.uri, "exec", command.to_hash)
+      ret = exec_api(agent, "exec", command.to_hash)
       if ret.success? then
         return CommandResponse.new(ret.data)
       end
@@ -35,7 +36,7 @@ class RemoteExec < API
         return pret # TODO raise err?
       end
 
-      ret = exec_api(agent.uri, "exec", command.to_hash)
+      ret = exec_api(agent, "exec", command.to_hash)
       if not ret.success? then
         # TODO raise err?
         return ret
@@ -75,7 +76,7 @@ class RemoteExec < API
         return pret # TODO raise err?
       end
 
-      ret = exec_api(agent.uri, "exec", command.to_hash)
+      ret = exec_api(agent, "exec", command.to_hash)
       if not ret.success? then
         # TODO raise err?
         return ret
@@ -102,23 +103,30 @@ class RemoteExec < API
       end
     end
 
-    # Execute the given API request
+    # Execute the given API request on an Agent
     #
-    # @param [String] uri
+    # @param [Agent] agent
     # @param [String] operation
     # @param [*Array] params
     #
     # @return [JsonResponse]
-    def exec_api(uri, operation, params)
+    def exec_api(agent, operation, params)
       begin
-        req = JsonRequest.new(operation, params)
-        return JsonResponse.from_json(http_post_json(uri, req.to_json))
+        uri = agent.uri
+        post = JsonRequest.new(operation, params).to_json
+        if crypto_enabled? then
+          ret = http_post(uri, encrypt_for_agent(agent, post))
+          res = decrypt_from_agent(agent, ret)
+        else
+          res = http_post_json(uri, post)
+        end
+        return JsonResponse.from_json(res)
       rescue Curl::Err::CurlError => ex
         return JsonResponse.new("fail", ex.message, ex.backtrace)
       end
     end
 
-    # Execute the given API download request
+    # Execute the given API download request (download a file from an Agent)
     #
     # @param [String] uri
     # @param [JsonRequest] json_req     Request to download a file
