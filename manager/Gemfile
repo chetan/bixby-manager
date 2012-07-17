@@ -93,8 +93,8 @@ group :development do
 
     # test tools (frameworks, mock, runners, etc)
     gem 'webmock', :git => 'https://github.com/bblimke/webmock.git', :require => false
-    gem 'mocha'
     gem "minitest"
+    gem 'mocha', :require => false
     gem "turn"
     gem "bahia"
     gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
