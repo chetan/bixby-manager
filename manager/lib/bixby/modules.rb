@@ -1,5 +1,6 @@
 
 require 'bixby/modules/api'
+require 'bixby/modules/crypto'
 require 'bixby/modules/remote_exec'
 require 'bixby/modules/inventory'
 require 'bixby/modules/metrics'

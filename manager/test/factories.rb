@@ -1,11 +1,12 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 require 'factory_girl_rails'
+require 'openssl'
 
 FactoryGirl.define do
 
   sequence(:uuid) { |n| "uuid-#{n}" }
-  sequence(:pubkey) { |n| "pubkey-#{n}" }
+  sequence(:pubkey) { |n| OpenSSL::PKey::RSA.generate(2048).public_key.to_s }
 
   factory :agent do
     ip "2.2.2.2"
@@ -61,6 +62,7 @@ FactoryGirl.define do
 
   factory :tenant do
     password "foobar"
+    private_key OpenSSL::PKey::RSA.generate(2048).to_s
   end
 
   factory :user do
