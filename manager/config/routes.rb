@@ -1,4 +1,4 @@
-Devops::Application.routes.draw do
+Bixby::Application.routes.draw do
 
   root :to => "inventory#index"
 
