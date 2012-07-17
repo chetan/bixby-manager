@@ -12,6 +12,7 @@ CREATE  TABLE IF NOT EXISTS `tenants` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NULL ,
   `password` CHAR(32) NULL ,
+  `private_key` TEXT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 

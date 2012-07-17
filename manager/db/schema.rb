@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120611233712) do
+ActiveRecord::Schema.define(:version => 20120717191235) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                     :null => false
@@ -175,7 +175,8 @@ ActiveRecord::Schema.define(:version => 20120611233712) do
 
   create_table "tenants", :force => true do |t|
     t.string "name"
-    t.string "password", :limit => 32
+    t.string "password",   :limit => 32
+    t.text   "public_key"
   end
 
   create_table "users", :force => true do |t|
