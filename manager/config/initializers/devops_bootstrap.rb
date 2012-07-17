@@ -1,4 +1,4 @@
-# this is mainly to skip loading devops-related coded when using 'spork'
+# this is mainly to skip loading bixby-related coded when using 'spork'
 # instead, we load this after forking to run our tests
 if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
 
@@ -11,16 +11,16 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
     require path
   end
 
-  # load devops.yml
-  devops_config_filename = File.open(File.join(::Rails.root.to_s, "config", "devops.yml"))
-  if not File.exists? devops_config_filename then
-    raise "config/devops.yml not found!"
+  # load bixby.yml
+  bixby_config_filename = File.open(File.join(::Rails.root.to_s, "config", "bixby.yml"))
+  if not File.exists? bixby_config_filename then
+    raise "config/bixby.yml not found!"
   end
-  devops_config = YAML.load(devops_config_filename)
-  if not devops_config.include? ::Rails.env then
-    raise "devops.yml doesn't have a config for the '#{::Rails.env}' environment!"
+  bixby_config = YAML.load(bixby_config_filename)
+  if not bixby_config.include? ::Rails.env then
+    raise "bixby.yml doesn't have a config for the '#{::Rails.env}' environment!"
   end
-  DEVOPS_CONFIG = devops_config[::Rails.env].with_indifferent_access
+  DEVOPS_CONFIG = bixby_config[::Rails.env].with_indifferent_access
 
   # setup bundle repo, manager uri
   manager_root = File.expand_path(DEVOPS_CONFIG[:manager][:root])

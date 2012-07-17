@@ -5,7 +5,7 @@ log/*.log
 script/log/
 tmp/
 config/database.yml
-config/devops.yml
+config/bixby.yml
 db/devops_schema.mwb.bak
 .yardoc/
 yardoc/
