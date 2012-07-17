@@ -20,26 +20,26 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
   if not bixby_config.include? ::Rails.env then
     raise "bixby.yml doesn't have a config for the '#{::Rails.env}' environment!"
   end
-  DEVOPS_CONFIG = bixby_config[::Rails.env].with_indifferent_access
+  BIXBY_CONFIG = bixby_config[::Rails.env].with_indifferent_access
 
   # setup bundle repo, manager uri
-  manager_root = File.expand_path(DEVOPS_CONFIG[:manager][:root])
+  manager_root = File.expand_path(BIXBY_CONFIG[:manager][:root])
   Bixby::BundleRepository.path = File.join(manager_root, "repo")
-  Bixby::BaseModule.manager_uri = DEVOPS_CONFIG[:manager][:uri]
+  Bixby::BaseModule.manager_uri = BIXBY_CONFIG[:manager][:uri]
 
   # setup the scheduler
-  if DEVOPS_CONFIG[:scheduler] then
+  if BIXBY_CONFIG[:scheduler] then
     # load a specific scheduler
-    require "bixby/modules/scheduler/#{DEVOPS_CONFIG[:scheduler]}"
+    require "bixby/modules/scheduler/#{BIXBY_CONFIG[:scheduler]}"
   end
   require "bixby/modules/scheduler"
-  Bixby::Scheduler.configure(DEVOPS_CONFIG)
+  Bixby::Scheduler.configure(BIXBY_CONFIG)
 
   # setup metrics
-  if DEVOPS_CONFIG[:metrics] then
+  if BIXBY_CONFIG[:metrics] then
     require "bixby/modules/metrics"
-    require "bixby/modules/metrics/#{DEVOPS_CONFIG[:metrics]}"
-    Bixby::Metrics.configure(DEVOPS_CONFIG)
+    require "bixby/modules/metrics/#{BIXBY_CONFIG[:metrics]}"
+    Bixby::Metrics.configure(BIXBY_CONFIG)
   end
 
   # rescan plugins

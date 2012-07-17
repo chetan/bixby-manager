@@ -35,7 +35,7 @@ def bootstrap_tests
   end
 
   ENV["BOOTSTRAPNOW"] = "1"
-  require "#{Rails.root.to_s}/config/initializers/devops_bootstrap"
+  require "#{Rails.root.to_s}/config/initializers/bixby_bootstrap"
   Dir.glob(Rails.root + "/lib/**/*.rb").each{ |f| require f }
 end
 
