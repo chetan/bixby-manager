@@ -1,5 +1,5 @@
 
-# rake devops:update_repos
+# rake bixby:update_repos
 # git pull / svn up all attached repositories
 
 if defined?(Rails) then
