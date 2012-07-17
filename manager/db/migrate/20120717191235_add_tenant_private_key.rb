@@ -1,9 +1,9 @@
 class AddTenantPrivateKey < ActiveRecord::Migration
   def up
-    add_column "tenants", "public_key", :text,:default => nil
+    add_column "tenants", "private_key", :text,:default => nil
   end
 
   def down
-    drop_column "tenants", "public_key"
+    remove_column "tenants", "private_key"
   end
 end

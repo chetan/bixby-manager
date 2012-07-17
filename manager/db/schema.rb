@@ -175,8 +175,8 @@ ActiveRecord::Schema.define(:version => 20120717191235) do
 
   create_table "tenants", :force => true do |t|
     t.string "name"
-    t.string "password",   :limit => 32
-    t.text   "public_key"
+    t.string "password",    :limit => 32
+    t.text   "private_key"
   end
 
   create_table "users", :force => true do |t|
