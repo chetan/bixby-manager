@@ -9,5 +9,8 @@ module Bixby
 
     module RailsExt
     end
+
+    module Controllers
+    end
   end
 end

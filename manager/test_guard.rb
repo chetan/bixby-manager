@@ -68,7 +68,7 @@ class Watcher
     puts
 
     if TEST_COMMAND =~ /testdrb/ and not changes.empty? then
-      tests = changes.find_all{ |c| c =~ %r{^test/} }
+      tests = changes.find_all{ |c| c =~ %r{^#{ROOT}/test/} }
       if tests.size == changes.size then
         # only tests were changed, run those specific files
         system("testdrb " + tests.join(" "))
@@ -131,7 +131,7 @@ class Watcher
     changes = []
     files.each do |f|
 
-      if f =~ %r{test\/(factories|test_.*?)\.rb$} or f =~ /^test_guard\.rb$/ then
+      if f =~ %r{test\/(factories|test_.*?)\.rb$} or f =~ /^test_guard\.rb$/ or f =~ %r{#{ROOT}/coverage} then
         # TODO move excludes to var
         # skip changes in these files
         next
