@@ -13,6 +13,10 @@ class Bixby::Hello < Bixby::API
   def err(foo)
     raise Exception.new("ahhh")
   end
+
+  def hash(hash)
+    return hash[:msg]
+  end
 end
 
 module Bixby
@@ -72,6 +76,17 @@ class API < ActionController::TestCase
     assert res
     assert res.success?
     assert "msg: hi there", res.data
+  end
+
+  def test_params_hash
+    agent = FactoryGirl.create(:agent)
+    @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:hash", {:msg => "yo boss"}).to_json
+    post :handle
+
+    res = JsonResponse.from_json(@response.body)
+    assert res
+    assert res.success?
+    assert "yo boss", res.data
   end
 
   def test_catch_exception
