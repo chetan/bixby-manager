@@ -13,7 +13,7 @@ class ApiController < ApplicationController
 
     req = extract_request()
     if req.kind_of? Bixby::JsonResponse then
-      return render :json => req.to_json
+      return render(:json => req.to_json)
     end
 
 
@@ -57,15 +57,15 @@ class ApiController < ApplicationController
         return send_file(ret.filename, :filename => File.basename(ret.filename))
 
       elsif ret.kind_of? Bixby::JsonResponse then
-        return render :json => ret
+        return render(:json => ret.to_json)
       end
 
-      return render :json => Bixby::JsonResponse.new(:success, nil, ret)
+      return render(:json => Bixby::JsonResponse.new(:success, nil, ret).to_json)
 
     rescue Exception => ex
       puts ex
       puts ex.backtrace
-      return render :json => Bixby::JsonResponse.new(:fail, ex.message, ex, 500)
+      return render(:json => Bixby::JsonResponse.new(:fail, ex.message, ex, 500).to_json)
     end
 
   end # handle()
@@ -73,7 +73,7 @@ class ApiController < ApplicationController
 
   # Helper for creating JsonResponse
   def unsupported_operation(req)
-      Bixby::JsonResponse.invalid_request("unsupported operation: '#{req.operation}'")
+      return render(:json => Bixby::JsonResponse.invalid_request("unsupported operation: '#{req.operation}'").to_json)
   end
 
   # Extract JsonRequest
