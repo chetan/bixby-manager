@@ -58,32 +58,11 @@ module Bixby
       end
 
       def encrypt_for_agent(msg)
-        c = OpenSSL::Cipher.new("AES-256-CBC")
-        c.encrypt
-        key = c.random_key
-        iv = c.random_iv
-        encrypted = c.update(msg) + c.final
-
-        out = []
-        out << Base64.encode64(@agent.private_key.public_encrypt(key)).gsub(/\n/, "\\n")
-        out << Base64.encode64(server_private_key.private_encrypt(iv)).gsub(/\n/, "\\n")
-        out << Base64.encode64(encrypted)
-
-        return out.join("\n")
+        Bixby::CryptoUtil.encrypt(msg, @agent.private_key, server_private_key)
       end
 
       def decrypt_from_agent(data)
-        data = StringIO.new(data, 'rb')
-        key = server_private_key.private_decrypt(Base64.decode64(data.readline.gsub(/\\n/, "\n")))
-        iv = @agent.private_key.public_decrypt(Base64.decode64(data.readline.gsub(/\\n/, "\n")))
-
-        c = OpenSSL::Cipher.new("AES-256-CBC")
-        c.decrypt
-        c.key = key
-        c.iv = iv
-
-        data = Base64.decode64(data.read)
-        ret = c.update(data) + c.final
+        Bixby::CryptoUtil.decrypt(data, server_private_key, @agent.private_key)
       end
 
     end
