@@ -64,26 +64,25 @@ module Bixby
         iv = c.random_iv
         encrypted = c.update(msg) + c.final
 
-        ret = {
-          :key  => Base64.encode64(@agent.private_key.public_encrypt(key)),
-          :iv   => Base64.encode64(server_private_key.private_encrypt(iv)),
-          :data => Base64.encode64(encrypted)
-        }
+        out = []
+        out << Base64.encode64(@agent.private_key.public_encrypt(key)).gsub(/\n/, "\\n")
+        out << Base64.encode64(server_private_key.private_encrypt(iv)).gsub(/\n/, "\\n")
+        out << Base64.encode64(encrypted)
 
-        MultiJson.dump(ret)
+        return out.join("\n")
       end
 
       def decrypt_from_agent(data)
-        hash = MultiJson.load(data)
-        key = server_private_key.private_decrypt(Base64.decode64(hash["key"]))
-        iv = @agent.private_key.public_decrypt(Base64.decode64(hash["iv"]))
+        data = StringIO.new(data, 'rb')
+        key = server_private_key.private_decrypt(Base64.decode64(data.readline.gsub(/\\n/, "\n")))
+        iv = @agent.private_key.public_decrypt(Base64.decode64(data.readline.gsub(/\\n/, "\n")))
 
         c = OpenSSL::Cipher.new("AES-256-CBC")
         c.decrypt
         c.key = key
         c.iv = iv
 
-        data = Base64.decode64(hash["data"])
+        data = Base64.decode64(data.read)
         ret = c.update(data) + c.final
       end
 
