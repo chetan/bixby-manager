@@ -53,7 +53,19 @@ module Crypto
   #
   # @return [String] Base64 result
   def encrypt_for_server(data)
-    Base64.encode64(server_key.public_encrypt(data))
+    c = new_cipher()
+    c.encrypt
+    key = c.random_key
+    iv = c.random_iv
+    encrypted = c.update(data) + c.final
+
+    ret = {
+      :key  => Base64.encode64(server_key.public_encrypt(key)),
+      :iv   => Base64.encode64(keypair.private_encrypt(iv)),
+      :data => Base64.encode64(encrypted)
+    }
+
+    MultiJson.dump(ret)
   end
 
   # Decrypt data that was encrypted with our public key
@@ -62,7 +74,21 @@ module Crypto
   #
   # @return [String] unencrypted data
   def decrypt_from_server(data)
-    keypair.private_decrypt(Base64.decode64(data))
+    hash = MultiJson.load(data)
+    key = keypair.private_decrypt(Base64.decode64(hash["key"]))
+    iv = server_key.public_decrypt(Base64.decode64(hash["iv"]))
+
+    c = new_cipher()
+    c.decrypt
+    c.key = key
+    c.iv = iv
+
+    data = Base64.decode64(hash["data"])
+    ret = c.update(data) + c.final
+  end
+
+  def new_cipher
+    OpenSSL::Cipher.new("AES-256-CBC")
   end
 
 end # Crypto

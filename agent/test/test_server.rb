@@ -58,13 +58,10 @@ module Test
       ENV["BIXBY_NOCRYPTO"] = "0"
       `ls` # hack to create a Process::Status object we can pass to our stub
       @agent.expects(:exec).once().returns([$?, "", ""])
-      post "/foobar", Base64.encode64(@agent.private_key.public_encrypt(JsonRequest.new("exec", {}).to_json))
+      post "/foobar", encrypt_for_agent( JsonRequest.new("exec", {}).to_json )
 
       assert_equal 200, last_response.status
-
-      server_key = OpenSSL::PKey::RSA.new(File.read(File.join(@root_dir, "etc", "server")))
-      json = server_key.private_decrypt(Base64.decode64(last_response.body))
-
+      json = decrypt_from_agent(last_response.body)
       res = JsonResponse.from_json(json)
       assert res.success?
       assert_equal 0, res.data["status"]

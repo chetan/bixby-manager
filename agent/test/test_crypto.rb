@@ -24,8 +24,7 @@ class Crypto < TestCase
 
   def test_decrypt
     setup_existing_agent()
-
-    input = Base64.encode64(@agent.private_key.public_encrypt("foobar"))
+    input = encrypt_for_agent("foobar")
     assert_equal "foobar", @agent.decrypt_from_server(input)
   end
 
@@ -38,7 +37,7 @@ class Crypto < TestCase
     ENV["BIXBY_NOCRYPTO"] = "0"
     setup_existing_agent()
 
-    ret_data = Base64.encode64(@agent.private_key.public_encrypt("{}"))
+    ret_data = encrypt_for_agent("{}")
     stub_request(:post, @api_url).to_return(:status => 200, :body => ret_data)
     Agent.stubs(:create).returns(@agent)
 

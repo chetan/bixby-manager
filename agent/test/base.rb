@@ -49,6 +49,44 @@ module Bixby
         @agent = Agent.create(@manager_uri, @password, @root_dir, @port)
       end
 
+
+      # common routines for crypto tests
+
+      def server_private_key
+        s = File.join(@root_dir, "etc", "server")
+        OpenSSL::PKey::RSA.new(File.read(s))
+      end
+
+      def encrypt_for_agent(msg)
+        c = OpenSSL::Cipher.new("AES-256-CBC")
+        c.encrypt
+        key = c.random_key
+        iv = c.random_iv
+        encrypted = c.update(msg) + c.final
+
+        ret = {
+          :key  => Base64.encode64(@agent.private_key.public_encrypt(key)),
+          :iv   => Base64.encode64(server_private_key.private_encrypt(iv)),
+          :data => Base64.encode64(encrypted)
+        }
+
+        MultiJson.dump(ret)
+      end
+
+      def decrypt_from_agent(data)
+        hash = MultiJson.load(data)
+        key = server_private_key.private_decrypt(Base64.decode64(hash["key"]))
+        iv = @agent.private_key.public_decrypt(Base64.decode64(hash["iv"]))
+
+        c = OpenSSL::Cipher.new("AES-256-CBC")
+        c.decrypt
+        c.key = key
+        c.iv = iv
+
+        data = Base64.decode64(hash["data"])
+        ret = c.update(data) + c.final
+      end
+
     end
 
   end
