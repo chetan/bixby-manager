@@ -55,9 +55,9 @@ GIT
 
 GIT
   remote: https://github.com/chetan/devops_common.git
-  revision: 2695eba998070c06b767b8b9daac28d3c81e3122
+  revision: 9c7084fe31c47cb193fd4f20945b8469d551b164
   specs:
-    bixby_common (0.1.0)
+    bixby_common (0.2.0)
       curb
       multi_json
       oj
