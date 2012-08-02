@@ -58,10 +58,12 @@ module Bixby
       end
 
       def encrypt_for_agent(msg)
-        Bixby::CryptoUtil.encrypt(msg, @agent.private_key, server_private_key)
+        Bixby::CryptoUtil.encrypt(msg, "server_uuid", @agent.private_key, server_private_key)
       end
 
       def decrypt_from_agent(data)
+        data = StringIO.new(data, 'rb')
+        uuid = data.readline.strip
         Bixby::CryptoUtil.decrypt(data, server_private_key, @agent.private_key)
       end
 

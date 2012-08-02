@@ -53,7 +53,7 @@ module Crypto
   #
   # @return [String] Base64 result
   def encrypt_for_server(data)
-    Bixby::CryptoUtil.encrypt(data, server_key, keypair)
+    Bixby::CryptoUtil.encrypt(data, self.uuid, server_key, keypair)
   end
 
   # Decrypt data that was encrypted with our public key
@@ -62,6 +62,8 @@ module Crypto
   #
   # @return [String] unencrypted data
   def decrypt_from_server(data)
+    data = StringIO.new(data, 'rb')
+    uuid = data.readline.strip
     Bixby::CryptoUtil.decrypt(data, keypair, server_key)
   end
 
