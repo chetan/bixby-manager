@@ -13,7 +13,9 @@ module Bixby
 
       # @return [String] Base64 result
       def encrypt_for_agent(agent, data)
-        Base64.encode64(public_key_for_agent(agent).public_encrypt(data))
+        # TODO replace master with server's hostname or per-tenant uuid?
+        Bixby::CryptoUtil.encrypt(data, "master",
+          public_key_for_agent(agent), server_key_for_agent(agent))
       end
 
       # Decrypt data that was encrypted with our public key
@@ -22,7 +24,9 @@ module Bixby
       # @param [String] data    Base64 encoded data
       # @return [String] unencrypted data
       def decrypt_from_agent(agent, data)
-        server_key_for_agent(agent).private_decrypt(Base64.decode64(data))
+        data = StringIO.new(data, 'rb')
+        uuid = data.readline.strip
+        Bixby::CryptoUtil.decrypt(data, server_key_for_agent(agent), public_key_for_agent(agent))
       end
 
       # Check whether crypto should be used or not. True if Rails.env is

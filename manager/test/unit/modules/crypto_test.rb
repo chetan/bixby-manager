@@ -42,8 +42,7 @@ class Test::Modules::Crypto < ActiveSupport::TestCase
     agent = FactoryGirl.create(:agent)
     api = Bixby::API.new
 
-    pair = OpenSSL::PKey::RSA.new(agent.host.org.tenant.private_key)
-    crypt = Base64.encode64(pair.public_encrypt("foobar"))
+    crypt = encrypt_for_server(agent, "foobar")
 
     ret = api.decrypt_from_agent(agent, crypt)
     assert_equal "foobar", ret
@@ -55,9 +54,8 @@ class Test::Modules::Crypto < ActiveSupport::TestCase
     agent = FactoryGirl.create(:agent)
     cmd   = Command.new(:bundle => "foobar", :command => "baz", :repo => repo)
 
-
-    pair = OpenSSL::PKey::RSA.new(agent.host.org.tenant.private_key)
-    crypt = Base64.encode64(pair.public_encrypt( JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json ))
+    data = JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json
+    crypt = encrypt_for_server(agent, data)
 
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
       req.body !~ /operation/
@@ -68,6 +66,14 @@ class Test::Modules::Crypto < ActiveSupport::TestCase
 
     assert_requested(stub)
     assert ret.success?
+  end
+
+  private
+
+  def encrypt_for_server(agent, payload)
+    server_pem = OpenSSL::PKey::RSA.new(agent.host.org.tenant.private_key)
+    agent_pem = OpenSSL::PKey::RSA.new(agent.private_key)
+    Bixby::CryptoUtil.encrypt(payload, agent.uuid, server_pem, agent_pem)
   end
 
 end # Test::Modules::Crypto
