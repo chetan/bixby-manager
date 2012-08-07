@@ -98,7 +98,7 @@ group :development do
     gem "turn"
     gem "bahia"
     gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
-    gem 'spork-testunit'
+    gem 'spork-testunit', :git => "https://github.com/sporkrb/spork-testunit.git", :require => false
     gem "spork-rails", :require => false
     gem "database_cleaner"
     gem "factory_girl_rails"
