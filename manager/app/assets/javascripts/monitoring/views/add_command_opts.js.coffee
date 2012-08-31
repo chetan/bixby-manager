@@ -8,7 +8,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       $("#submit_check").on "click", null, (e) ->
         # create the commands
         checks = []
-        _.each view.commands, (cmd) ->
+        _.each view.opts, (cmd) ->
           check = new Bixby.model.Check()
           check.host = cmd.host
           check.set { command_id: cmd.id, host_id: cmd.host.id }
