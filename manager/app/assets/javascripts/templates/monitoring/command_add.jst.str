@@ -1,0 +1,39 @@
+
+<div class="content-inner">
+  <h2>Add Resource</h2>
+  <p>Host: <%= host.get("ip") %></p>
+
+  <h3>Select a resource check from the list below:</h3>
+
+  <form method="get" id="form_select_check">
+
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Bundle</th>
+          <th>Script</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% log(commands);
+           commands.each(function(cmd) { %>
+       <tr>
+          <td><input type="checkbox" class="checkbox" id="command_id_<%= cmd.id %>" value="<%= cmd.id %>"></td>
+          <td><label for="command_id_<%= cmd.id %>"><%= cmd.get("name") %></label></td>
+          <td><label for="command_id_<%= cmd.id %>"><%= cmd.get("bundle") %></label></td>
+          <td><label for="command_id_<%= cmd.id %>"><%= cmd.command() %></label></td>
+        </tr>
+        <% }); %>
+
+      </tbody>
+
+    </table>
+
+    <div class="command_opts">
+      <a id="submit_check" class="btn primary">Add Check(s)</a>
+    </div>
+
+  </form>
+</div>
