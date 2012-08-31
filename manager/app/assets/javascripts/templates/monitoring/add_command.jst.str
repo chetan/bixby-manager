@@ -32,8 +32,9 @@
     </table>
 
     <div class="command_opts">
-      <a id="submit_check" class="btn primary">Add Check(s)</a>
     </div>
+
+    <a id="submit_check" class="btn primary">Add Check(s)</a>
 
   </form>
 </div>

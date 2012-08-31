@@ -1,7 +1,7 @@
 
 <h3>Configure check(s):</h3>
 
-<% _.each(commands, function(command) { %>
+<% _.each(opts, function(command) { %>
 
 <h4><%= command.get("name") %></h4>
 <form class="form-horizontal">

@@ -45,12 +45,12 @@ jQuery ->
       tab:  "monitoring"
 
       views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand, _bvm.AddCommandOpts ]
-      models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
+      models:     { host: _bm.Host, commands: _bm.MonitoringCommandList, opts: _bm.MonitoringCommandOpts }
 
       load_data: (data) ->
         needed = super(data)
-        @log "commands: ", @commands
-        needed = _.union(needed, @commands)
+        @log "opts: ", @opts
+        needed = _.union(needed, @opts)
         @spinner = new _bv.Spinner($("div.command_opts"))
         return needed
 

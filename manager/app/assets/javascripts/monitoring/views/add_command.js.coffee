@@ -14,5 +14,5 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           opts.push opt
 
         if opts.length > 0
-          @transition "mon_hosts_resources_new_opts", { host: @host, commands: opts }
+          @transition "mon_hosts_resources_new_opts", { host: @host, opts: opts, commands: @commands }
     }
