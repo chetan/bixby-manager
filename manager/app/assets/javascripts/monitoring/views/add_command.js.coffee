@@ -2,7 +2,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
   class exports.AddCommand extends Stark.View
     el: "div.monitoring_content"
-    template: "monitoring/command_add"
+    template: "monitoring/add_command"
     events: {
       "click #submit_check": (e) ->
         # show options for selected commands/checks
