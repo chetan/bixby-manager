@@ -6,8 +6,12 @@
       <a class="brand">BIXBY</a>
 
       <ul class="nav">
-        <li class="tab inventory">Inventory</li>
-        <li class="tab monitoring">Monitoring</li>
+        <li class="tab inventory">
+          <a>Inventory</a>
+        </li>
+        <li class="tab monitoring">
+          <a>Monitoring</a>
+        </li>
       </ul>
 
       <ul class="nav secondary-nav pull-right">
