@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20120717191235) do
 
   add_index "checks", ["agent_id"], :name => "fk_checks_agents1"
   add_index "checks", ["command_id"], :name => "fk_checks_commands1"
+  add_index "checks", ["host_id"], :name => "index_checks_on_host_id"
 
   create_table "commands", :force => true do |t|
     t.integer  "repo_id"
@@ -56,12 +57,10 @@ ActiveRecord::Schema.define(:version => 20120717191235) do
   create_table "host_groups", :force => true do |t|
     t.integer "org_id",    :null => false
     t.integer "parent_id"
-    t.string  "name",      :null => false
+    t.string  "name"
   end
 
-  add_index "host_groups", ["id"], :name => "id_UNIQUE", :unique => true
-  add_index "host_groups", ["org_id"], :name => "fk_host_groups_orgs1"
-  add_index "host_groups", ["parent_id"], :name => "fk_host_groups_host_groups1"
+  add_index "host_groups", ["parent_id"], :name => "index_host_groups_on_parent_id"
 
   create_table "hosts", :force => true do |t|
     t.integer  "org_id",                   :null => false
@@ -80,24 +79,24 @@ ActiveRecord::Schema.define(:version => 20120717191235) do
     t.integer "host_group_id", :null => false
   end
 
-  add_index "hosts_host_groups", ["host_group_id"], :name => "fk_hosts_host_groups_host_groups1"
-  add_index "hosts_host_groups", ["host_id"], :name => "fk_hosts_host_groups_hosts1"
+  add_index "hosts_host_groups", ["host_group_id"], :name => "index_hosts_host_groups_on_host_group_id"
+  add_index "hosts_host_groups", ["host_id"], :name => "index_hosts_host_groups_on_host_id"
 
   create_table "hosts_metadata", :id => false, :force => true do |t|
     t.integer "host_id",     :null => false
     t.integer "metadata_id", :null => false
   end
 
-  add_index "hosts_metadata", ["host_id"], :name => "fk_hosts_metadata_hosts1"
-  add_index "hosts_metadata", ["metadata_id"], :name => "fk_hosts_metadata_metadata1"
+  add_index "hosts_metadata", ["host_id"], :name => "index_hosts_metadata_on_host_id"
+  add_index "hosts_metadata", ["metadata_id"], :name => "index_hosts_metadata_on_metadata_id"
 
   create_table "metadata", :force => true do |t|
-    t.string  "key",                                :null => false
-    t.text    "value",                              :null => false
-    t.integer "source", :limit => 2, :default => 1, :null => false
+    t.string  "key"
+    t.text    "value"
+    t.integer "source", :limit => 2, :default => 1
   end
 
-  create_table "metric_infos", :force => true do |t|
+  create_table "metric_infos", :id => false, :force => true do |t|
     t.integer "command_id", :null => false
     t.string  "metric",     :null => false
     t.string  "unit"
@@ -109,24 +108,24 @@ ActiveRecord::Schema.define(:version => 20120717191235) do
 
   create_table "metrics", :force => true do |t|
     t.integer  "check_id",                                                :null => false
-    t.string   "name"
     t.string   "key",                                                     :null => false
     t.string   "tag_hash",   :limit => 32,                                :null => false
     t.integer  "status",     :limit => 2
     t.decimal  "last_value",               :precision => 20, :scale => 2
     t.datetime "created_at",                                              :null => false
-    t.datetime "updated_at"
+    t.datetime "updated_at",                                              :null => false
   end
 
-  add_index "metrics", ["check_id"], :name => "fk_metrics_checks1"
+  add_index "metrics", ["check_id"], :name => "index_metrics_on_check_id"
 
   create_table "metrics_metadata", :id => false, :force => true do |t|
     t.integer "metric_id",   :null => false
     t.integer "metadata_id", :null => false
   end
 
-  add_index "metrics_metadata", ["metadata_id"], :name => "fk_metrics_metadata_metadata1"
-  add_index "metrics_metadata", ["metric_id"], :name => "fk_metrics_metadata_metrics1"
+  add_index "metrics_metadata", ["metadata_id"], :name => "index_metrics_metadata_on_metadata_id"
+  add_index "metrics_metadata", ["metadata_id"], :name => "index_metrics_tags_on_tag_id"
+  add_index "metrics_metadata", ["metric_id"], :name => "index_metrics_tags_on_metric_id"
 
   create_table "orgs", :force => true do |t|
     t.integer "tenant_id"
@@ -137,23 +136,14 @@ ActiveRecord::Schema.define(:version => 20120717191235) do
   add_index "orgs", ["tenant_id"], :name => "fk_orgs_tenants1"
 
   create_table "repos", :force => true do |t|
-    t.integer  "org_id"
-    t.string   "name"
-    t.string   "uri"
-    t.string   "branch"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "org_id"
+    t.string  "name"
+    t.string  "uri"
+    t.string  "branch"
   end
 
   add_index "repos", ["id"], :name => "id_UNIQUE", :unique => true
   add_index "repos", ["org_id"], :name => "fk_repos_orgs1"
-
-  create_table "resources", :force => true do |t|
-    t.integer "host_id", :null => false
-    t.string  "name"
-  end
-
-  add_index "resources", ["host_id"], :name => "fk_resources_hosts1"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id",                       :null => false
@@ -165,8 +155,7 @@ ActiveRecord::Schema.define(:version => 20120717191235) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["id"], :name => "id_UNIQUE", :unique => true
-  add_index "taggings", ["tag_id"], :name => "fk_taggings_tags1"
+  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
@@ -175,7 +164,7 @@ ActiveRecord::Schema.define(:version => 20120717191235) do
 
   create_table "tenants", :force => true do |t|
     t.string "name"
-    t.string "password",    :limit => 32
+    t.string "password",    :limit => 32, :null => false
     t.text   "private_key"
   end
 
