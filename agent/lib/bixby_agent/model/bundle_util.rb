@@ -3,16 +3,17 @@ module Bixby
 module BundleUtil
 
   def uname
-    @uname ||= `uname -s`.strip
+    RUBY_PLATFORM
   end
 
   def osx?
-    uname == "Darwin"
+    uname =~ /darwin/
   end
   alias :darwin? :osx?
+  alias :mac? :osx?
 
   def linux?
-    uname == "Linux"
+    uname =~ /linux/
   end
 
   def win?
