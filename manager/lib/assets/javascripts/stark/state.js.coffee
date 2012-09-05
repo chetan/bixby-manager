@@ -100,6 +100,10 @@ class Stark.State
         if @[v]
           url = url.replace(":#{name}", @[v].id)
 
+      else if @[name] and _.isString(@[name])
+        url = url.replace(":#{name}", @[name])
+
+
     return url
 
   # Cleanup any resources used by the state. Should remove all views and unbind any events
