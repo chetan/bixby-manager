@@ -118,9 +118,9 @@ class Stark.View extends Backbone.View
 
     link_events = @events || {}
 
-    _.each @links, (link, sel) ->
+    _.eachR @, @links, (link, sel) ->
 
-      _.each @$(sel), (el) ->
+      _.eachR @, @$(sel), (el) ->
 
         state = link[0]
         data = null
@@ -146,10 +146,7 @@ class Stark.View extends Backbone.View
         url = s.create_url()
         url = "/" + url if url.charAt(0) != '/'
 
-        $(el).attr("href", url)
-
-      , @ # each sel
-    , @ # each link
+        @$(el).attr("href", url)
 
     # bind events
     @delegateEvents(link_events)
@@ -182,7 +179,7 @@ class Stark.View extends Backbone.View
   # @param [Object] data      context data for partial
   # @param [String] selector  optional CSS selector into which the partial view will be rendered
   #
-  # @return [String] rendered template data (HTML)
+  # @return [Object] view instance
   partial: (clazz, data, selector) ->
     v = @create_partial(clazz, data)
     if selector?
@@ -191,6 +188,20 @@ class Stark.View extends Backbone.View
     v.render()
     return v
 
+  # DO NOT USE - will break event delegation!
+  #
+  # Create a partial view and return the rendered HTML
+  #
+  # @param [Class] clazz      class name of view to render
+  # @param [Object] data      context data for partial
+  # @param [String] selector  optional CSS selector into which the partial view will be rendered
+  #
+  # @return [String] rendered HTML string
+  render_partial: (clazz, data, selector) ->
+    return @partial(clazz, data, selector).$el.html()
+
+  # DO NOT USE - will break event delegation!
+  # currently unused helper
   partial_html: (tpl, data) ->
     if _.isString(tpl)
       tpl = new Template(@jst(tpl))
@@ -198,6 +209,12 @@ class Stark.View extends Backbone.View
     data ||= @
     tpl.render(data)
 
+  # Instantiate a partial class with the given data
+  #
+  # @param [Class] clazz
+  # @param [Object] data
+  #
+  # @return [Object] view class instance
   create_partial: (clazz, data) ->
     data ||= {}
     data.app = @app
