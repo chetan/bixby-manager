@@ -10,11 +10,11 @@ Backbone.Collection.prototype.eachR = (context, func) ->
   @each func, context
 
 # eachR - allows passing the context as the first param instead of last
-_.eachR = (context, func) ->
-  @each func, context
+_.eachR = (context, list, func) ->
+  @each list, func, context
 
-_.bindR = (context, func) ->
-  @bind func, context
+_.bindR = (context, func, args...) ->
+  @bind func, context, args...
 
 # alias away the sync method
 Backbone._sync = Backbone.sync
