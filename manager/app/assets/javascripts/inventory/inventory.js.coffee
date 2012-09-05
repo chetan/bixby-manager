@@ -25,3 +25,14 @@ jQuery ->
       views:      [ _bv.PageLayout, _vi.Layout, _vi.Host ]
       models:     { host: Bixby.model.Host }
   )
+
+  Bixby.app.add_state(
+    class extends Stark.State
+
+      name: "inv_search"
+      url: "inventory/search/:query"
+      tab: "inventory"
+
+
+
+  )
