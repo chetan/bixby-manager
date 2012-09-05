@@ -33,6 +33,7 @@ jQuery ->
       url: "inventory/search/:query"
       tab: "inventory"
 
-
+      views:      [ _bv.PageLayout, _vi.Layout, _vi.HostTable ]
+      models:     { hosts: Bixby.model.HostList, query: "" }
 
   )
