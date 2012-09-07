@@ -190,7 +190,6 @@ class Stark.View extends Backbone.View
     v = @create_partial(clazz, data)
     if selector?
       v.setElement( @$(selector) )
-      @log v.el
     v.render()
     return v
 
@@ -203,9 +202,6 @@ class Stark.View extends Backbone.View
   # @return [String] rendered HTML string
   render_partial: (clazz, data, selector) ->
     p = @partial(clazz, data, selector)
-    @after_render_hooks.push ->
-      p.post_render()
-
     return p.partial_html()
 
   # Instantiate a partial class with the given data
@@ -316,7 +312,18 @@ class Stark.Partial extends Stark.View
     super(args)
     @span_id = "partial_" + Math.floor(Math.random()*10000000)
 
+  add_render_hook: (func) ->
+    if @parent instanceof Stark.Partial
+      @parent.add_render_hook(func)
+    else
+      @parent.after_render_hooks.unshift(func)
+
   partial_html: ->
+    # since html is being requested, setup a hook in the parent view
+    p = @
+    @add_render_hook ->
+      p.post_render()
+
     return "<span id='#{@span_id}'>" + @$el.html() + "</span>"
 
   # Called by the parent view after it has completed rendering. Allows us to

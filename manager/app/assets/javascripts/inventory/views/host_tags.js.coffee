@@ -1,6 +1,6 @@
 namespace "Bixby.view.inventory", (exports, top) ->
 
-  class exports.HostTags extends Stark.View
+  class exports.HostTags extends Stark.Partial
     template: "inventory/_host_tags"
     bindings: [ "host" ]
 

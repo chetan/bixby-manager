@@ -16,4 +16,3 @@ namespace "Bixby.view.inventory", (exports, top) ->
       super
       @_he ||= @partial(exports.HostEditor, { host: @host })
       @_he.setButton( @$("span.edit button.edit") )
-      @partial(exports.HostTags, { host: @host }, "div.tags")
