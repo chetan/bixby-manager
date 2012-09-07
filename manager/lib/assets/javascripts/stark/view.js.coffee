@@ -59,9 +59,13 @@ class Stark.View extends Backbone.View
   # List of sub-views
   views: null
 
+  # List of post-render hooks
+  after_render_hooks: null
+
   initialize: (args) ->
     @_data = []
     @views = []
+    @after_render_hooks = []
     if _.isObject(args)
       _.extend @, args
       for v in _.values(args)
@@ -103,6 +107,8 @@ class Stark.View extends Backbone.View
     @attach_link_events()
     @bind_models()
     @after_render()
+    _.each @after_render_hooks, (hook) ->
+      hook.call()
 
     return @
 
@@ -188,8 +194,6 @@ class Stark.View extends Backbone.View
     v.render()
     return v
 
-  # DO NOT USE - will break event delegation!
-  #
   # Create a partial view and return the rendered HTML
   #
   # @param [Class] clazz      class name of view to render
@@ -198,16 +202,11 @@ class Stark.View extends Backbone.View
   #
   # @return [String] rendered HTML string
   render_partial: (clazz, data, selector) ->
-    return @partial(clazz, data, selector).$el.html()
+    p = @partial(clazz, data, selector)
+    @after_render_hooks.push ->
+      p.post_render()
 
-  # DO NOT USE - will break event delegation!
-  # currently unused helper
-  partial_html: (tpl, data) ->
-    if _.isString(tpl)
-      tpl = new Template(@jst(tpl))
-
-    data ||= @
-    tpl.render(data)
+    return p.partial_html()
 
   # Instantiate a partial class with the given data
   #
@@ -226,10 +225,11 @@ class Stark.View extends Backbone.View
 
     else if _.isString(clazz)
       # assume its a template name, create a generic instance
-      v = new Stark.View(data)
+      v = new Stark.Partial(data)
       v.template = clazz
 
     @views.push(v)
+    v.parent = @
     return v
 
   html: (args...) ->
@@ -302,3 +302,29 @@ class Stark.View extends Backbone.View
       for mm in m
         @unbind_model(mm)
 
+
+
+class Stark.Partial extends Stark.View
+
+  # Randomly generated span ID used for HTML injection workaround
+  span_id: null
+
+  # Reference to parent view
+  parent: null
+
+  initialize: (args) ->
+    super(args)
+    @span_id = "partial_" + Math.floor(Math.random()*10000000)
+
+  partial_html: ->
+    return "<span id='#{@span_id}'>" + @$el.html() + "</span>"
+
+  # Called by the parent view after it has completed rendering. Allows us to
+  # bind any events in the case that we were setup via HTML injection into
+  # the parent view's template
+  post_render: ->
+    @setElement( @parent.$("span#" + @span_id) )
+    @attach_link_events()
+    @bind_models()
+    @after_render()
+    return @
