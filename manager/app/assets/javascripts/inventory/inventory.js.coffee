@@ -36,4 +36,10 @@ jQuery ->
       views:      [ _bv.PageLayout, _vi.Layout, _vi.HostTable ]
       models:     { hosts: Bixby.model.HostList, query: "" }
 
+      load_data: (data) ->
+        @query = data.query
+        @hosts = new Bixby.model.HostList()
+        @hosts.query = @query
+        return [ @hosts ]
+
   )

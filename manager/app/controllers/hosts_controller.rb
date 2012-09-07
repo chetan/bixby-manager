@@ -2,7 +2,12 @@
 class HostsController < ApplicationController
 
   def index
-    @hosts = Host.all
+    query = params[:q] || params[:query]
+    if not query.blank? then
+      @hosts = Host.search(query)
+    else
+      @hosts = Host.all
+    end
     bootstrap @hosts
     restful @hosts
   end

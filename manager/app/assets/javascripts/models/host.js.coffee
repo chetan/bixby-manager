@@ -18,4 +18,8 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.HostList extends Stark.Collection
     model: exports.Host
-    url: "/hosts"
+    url: ->
+      s = "/hosts"
+      if @query
+        s += "?q=" + @query
+      return s
