@@ -69,8 +69,8 @@ class Stark.App
     if @current_state instanceof target_state
       # TODO - verify params? models? some other way to make sure
       # its really the *same* state
-      @log "same state, canceling"
-      return
+      @log "same state, should we cancel transition?"
+      # return
 
     state_data or= {}
     if @data?
