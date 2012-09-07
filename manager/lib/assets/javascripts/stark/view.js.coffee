@@ -79,7 +79,7 @@ class Stark.View extends Backbone.View
   jst: (tpl) ->
     tpl ||= @template
     filename = @app.template_root + tpl
-    @log "template: ", filename
+    @log "render ", @, "file: ", filename
     JST[filename]
 
   # Create a Template object for the configured @template
@@ -100,8 +100,6 @@ class Stark.View extends Backbone.View
   # Custom rendering should usually call super() before any additional
   # rendering.
   render: ->
-    @log "render", @
-
     @$el.html(@render_html())
 
     @attach_link_events()
