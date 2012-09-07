@@ -36,8 +36,10 @@ class Host < ActiveRecord::Base
 
     terms.split(/\s+/).each do |s|
       if s =~ /^(\w+):(.*?)$/ then
+        key = $1
+        val = $2
         if $1 =~ /^tags?$/ then
-          tags += $2.split(/,/)
+          tags += val.split(/,/)
         end
       else
         keys << s
