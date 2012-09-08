@@ -1,0 +1,1 @@
+showing search results for: <span class="results"><%= query %></span>

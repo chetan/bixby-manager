@@ -1,4 +1,5 @@
 
 <div class="content-inner">
+  <div class="search_header"></div>
   <div class="inventory_content"></div>
 </div>

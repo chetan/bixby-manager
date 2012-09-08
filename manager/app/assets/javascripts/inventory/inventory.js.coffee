@@ -33,11 +33,12 @@ jQuery ->
       url: "inventory/search/:query"
       tab: "inventory"
 
-      views:      [ _bv.PageLayout, _vi.Layout, _vi.HostTable ]
+      views:      [ _bv.PageLayout, _vi.Layout, _vi.HostSearchHeader, _vi.HostTable ]
       models:     { hosts: Bixby.model.HostList, query: "" }
 
       load_data: (data) ->
-        @query = data.query
+        @query = data.query || data.params.query
+        @app.trigger("search:set_query", @query)
         @hosts = new Bixby.model.HostList()
         @hosts.query = @query
         return [ @hosts ]
