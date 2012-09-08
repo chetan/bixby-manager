@@ -10,7 +10,7 @@ class Stark.State
   logger: "state"
 
   # mixin events
-  _.extend @.prototype, Backbone.Events.prototype
+  _.extend @.prototype, Backbone.Events
 
   # [internal] Reference to the Stark::App instance
   app: null
