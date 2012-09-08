@@ -60,6 +60,7 @@ class Stark.App
   #
   transition: (state_name, state_data) ->
     @log "transition", state_name, state_data
+    @trigger "before:transition", state_name, state_data
     target_state = @states[state_name]
 
     if ! target_state?
@@ -110,13 +111,14 @@ class Stark.App
     @log "render_views "
 
     if @current_state?
+      @trigger("state:deactivate", state)
       @current_state.deactivate()
       @current_state.dispose(state)
-      @trigger("state:deactivate", state)
 
 
     # create views
-    _.each state.views, (v) ->
+    _.eachR @, state.views, (v) ->
+
       if @current_state? && _.include(@current_state.views, v) && v.prototype.redraw == false
         @log "not going to redraw #{v.name}"
         return
@@ -129,7 +131,6 @@ class Stark.App
       view.bind_app_events()
       view.render()
       state._views.push view
-    , @ # context for _.each
 
     if @current_state? && state.url? && (!state.params? || state.params.changeURL == true)
       # there was a previous state, update browser url
