@@ -1,0 +1,3 @@
+<form class="navbar-search pull-right">
+  <input type="text" placeholder="Search" value="<%= get_query() %>">
+</form>
