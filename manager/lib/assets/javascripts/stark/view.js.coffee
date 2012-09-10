@@ -138,7 +138,7 @@ class Stark.View extends Backbone.View
 
           # stop normal click event (navigate to href)
           # so we can instead do some internal routing (transition)
-          e.preventDefault();
+          e.preventDefault()
           @transition(state, @get_link_data(data, e.target))
 
         return if not @app.states[state]?
