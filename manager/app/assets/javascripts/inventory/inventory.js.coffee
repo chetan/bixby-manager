@@ -37,7 +37,14 @@ jQuery ->
       models:     { hosts: Bixby.model.HostList, query: "" }
 
       load_data: (data) ->
-        @query = data.query || data.params.query
+
+        if data.query
+          @query = data.query
+        else if data.params
+          @query = data.params.query
+        else
+          @query = ""
+
         @app.trigger("search:set_query", @query)
         @hosts = new Bixby.model.HostList()
         @hosts.query = @query
