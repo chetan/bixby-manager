@@ -29,6 +29,7 @@ class Inventory < API
     h.org_id = org.id
     h.ip = @http_request.remote_ip
     h.hostname = hostname
+    h.tag_list = "new"
     h.save!
 
     a = Agent.new

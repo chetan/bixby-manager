@@ -58,6 +58,8 @@ class Test::Modules::Inventory < ActiveSupport::TestCase
     assert host, "host created"
     assert_equal hostname, host.hostname, "hostname is set"
     assert_equal ip, host.ip, "ip is set"
+
+    refute_empty Host.tagged_with(["new"])
   end
 
   def test_validation_failure
