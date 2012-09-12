@@ -63,14 +63,16 @@ class Stark.State
   # Return an array of any missing models so they can be loaded
   load_data: (data) ->
     needed = []
-    _.each @models, (model, key) ->
+    _.eachR @, @models, (model, key) ->
       if data[key]
-        @[key] = data[key] # copy into current [state] scope
-      else
+        # copy into current [state] scope
+        @[key] = data[key]
+
+      else if _.isObject(model)
+        # create new model to be fetched
         @[key] = new model(data)
         @log "will ajax load:", @[key]
         needed.push @[key]
-    , @
 
     return needed
 

@@ -41,13 +41,12 @@ jQuery ->
         if data.query
           @query = data.query
         else if data.params
-          @query = data.params.query
+          data.query = @query = data.params.query
         else
           @query = ""
 
         @app.trigger("search:set_query", @query)
-        @hosts = new Bixby.model.HostList()
-        @hosts.query = @query
-        return [ @hosts ]
+
+        return super(data)
 
   )
