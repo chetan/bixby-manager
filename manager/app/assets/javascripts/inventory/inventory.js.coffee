@@ -36,6 +36,9 @@ jQuery ->
       views:      [ _bv.PageLayout, _vi.Layout, _vi.HostSearchHeader, _vi.HostTable ]
       models:     { hosts: Bixby.model.HostList, query: "" }
 
+      create_url: ->
+        return super().replace(/#/, '%23')
+
       load_data: (data) ->
 
         if data.query

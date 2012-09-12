@@ -58,7 +58,7 @@ class Stark.Route
     # Save parameter name
     @paramNames.push paramName
     # Replace with a character class
-    '([\\w-:=]+)'
+    '([\\w-:=%]+)'
 
   # Test if the route matches to a path (called by Backbone.History#loadUrl)
   test: (path) ->
@@ -120,6 +120,6 @@ class Stark.Route
     # Fill the hash using the paramNames and the matches
     for match, index in matches.slice(1)
       paramName = @paramNames[index]
-      params[paramName] = match
+      params[paramName] = match.replace(/%23/, "#")
 
     params
