@@ -42,10 +42,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @host.set "alias", @$("input.alias").val(), {silent: true}
       @host.set "desc", @$("textarea.desc").val(), {silent: true}
 
-      tags = ""
-      _.each @$("ul.tags").tagit("tags"), (tag) ->
-        tags += "," if tags.length > 0
-        tags += tag.value
+      tags = _.map(@$("ul.tags").tagit("tags"), (t) -> t.value).join(",")
       @host.set "tags", tags, {silent: true}
 
       if @host.hasChanged()
