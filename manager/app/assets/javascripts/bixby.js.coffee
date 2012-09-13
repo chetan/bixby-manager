@@ -8,7 +8,6 @@
 
 # finally, start the app
 app = new Stark.App()
-app.template_root = "templates/"
 app.default_route = "inventory"
 Bixby.app = app
 

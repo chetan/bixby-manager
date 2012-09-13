@@ -78,9 +78,8 @@ class Stark.View extends Backbone.View
   # Lookup @template in the global JST hash
   jst: (tpl) ->
     tpl ||= @template
-    filename = @app.template_root + tpl
-    @log "render ", @, "file: ", filename
-    JST[filename]
+    @log "render ", @, "file: ", tpl
+    JST[tpl]
 
   # Create a Template object for the configured @template
   #

@@ -10,7 +10,6 @@ class Stark.App
   # attributes
   current_state: null
   states: {}
-  template_root: ""
 
   # for collecting bootstrapped data
   data: {}
@@ -23,7 +22,26 @@ class Stark.App
     @subscribe('app:route', @matchRoute)
 
   start: ->
-    @log "start()"
+    @log "stark.app.start()"
+
+    # cleanup template namespace
+    # removes /templates/ from the middle of the path string to make
+    # referencing in views a bit [c]leaner
+    #
+    # also removes templates/ from the start
+    t = @
+    r = /\/templates\//
+    s = /^templates\//
+    _.each _.keys(JST), (k) ->
+      kp = null
+      if r.test(k)
+        kp = k.replace(r, '/')
+      if s.test(k)
+        kp = k.replace(s, '')
+      if kp and not JST[kp]
+        JST[kp] = JST[k]
+
+
     if !@router.start() && @default_route?
       @log "no routes matched, using default: #{@default_route}"
       @router.route(@default_route)
