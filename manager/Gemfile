@@ -91,6 +91,9 @@ group :development do
     gem "simplecov",  :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git"
     gem "simplecov-html", :platforms => :mri_19, :git => "git://github.com/chetan/simplecov-html.git"
 
+    # quality
+    gem "cane", :platforms => :mri_19
+
     # test tools (frameworks, mock, runners, etc)
     gem 'webmock', :git => 'https://github.com/bblimke/webmock.git', :require => false
     gem "minitest"
@@ -103,6 +106,7 @@ group :development do
     gem "database_cleaner"
     gem "factory_girl_rails"
 
+    # test utils
     gem "guard"
     gem "growl"
     gem "colorize"
