@@ -3,12 +3,11 @@
   %head
     %title BIXBY
     = csrf_meta_tag
+    = javascript_include_tag "application", "bixby"
     = stylesheet_link_tag "application"
 
   %body
     %div#body
       -# main content (JS layout) will go here
 
-    %div.scripts
-      = javascript_include_tag "application", "bixby"
-      = render(:partial => "layouts/bootstrap", :locals => { :bootstrap => @bootstrap })
+    = render(:partial => "layouts/bootstrap", :locals => { :bootstrap => @bootstrap })
