@@ -41,5 +41,5 @@ namespace 'Bixby.model', (exports, top) ->
     url: ->
       s = "/hosts"
       if @query
-        s += "?q=" + @query
+        s += "?q=" + @query.replace(/#/, "%23")
       return s
