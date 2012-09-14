@@ -16,6 +16,26 @@ namespace 'Bixby.model', (exports, top) ->
     tags: ->
       return @get("tags").split(",")
 
+    has_tag: (tag) ->
+      return _.include(@tags(), tag)
+
+    is_new: ->
+      return @has_tag("new")
+
+    add_tag: (tag) ->
+      tags = @tags()
+      tags.push(tag)
+      @set_tags(tags)
+
+    remove_tag: (tag) ->
+      @set_tags _.reject(@tags(), (t) -> t == tag)
+
+    set_tags: (tags) ->
+      if ! _.isString(tags)
+        tags = tags.join(",")
+
+      @set("tags", tags, {silent: true})
+
   class exports.HostList extends Stark.Collection
     model: exports.Host
     url: ->
