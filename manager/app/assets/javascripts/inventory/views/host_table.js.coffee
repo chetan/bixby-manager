@@ -4,9 +4,18 @@ namespace "Bixby.view.inventory", (exports, top) ->
     el: "div.inventory_content"
     template: "inventory/host_table"
 
+    bindings: [ "hosts" ]
+
     render: ->
-      super
+      @new_hosts = @hosts.filter (h) -> h.is_new()
+      @other_hosts = @hosts.filter (h) -> !h.is_new()
+
+      super()
+
+      list = $(".new_host_list")
+      _.eachR @, @new_hosts, (host) ->
+        list.append( @partial(exports.HostTableNewRow, { host: host }).$el )
 
       list = $(".host_list")
-      @hosts.eachR @, (host) ->
+      _.eachR @, @other_hosts, (host) ->
         list.append( @partial(exports.HostTableRow, { host: host }).$el )

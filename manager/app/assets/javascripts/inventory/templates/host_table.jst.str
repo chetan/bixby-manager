@@ -1,3 +1,10 @@
 
-<div class="host_list">
-</div>
+<% if (new_hosts.length) { %>
+<h2>New hosts</h2>
+<div class="new_host_list"></div>
+<% } %>
+
+<% if (other_hosts.length) { %>
+<h2>All hosts</h2>
+<div class="host_list"></div>
+<% } %>
