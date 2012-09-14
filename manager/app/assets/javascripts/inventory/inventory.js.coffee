@@ -50,6 +50,11 @@ jQuery ->
 
         @app.trigger("search:set_query", @query)
 
-        return super(data)
+        needed = super(data)
+        _.eachR @, needed, (n) ->
+          if n instanceof Bixby.model.HostList
+            n.query = @query
+
+        return needed
 
   )
