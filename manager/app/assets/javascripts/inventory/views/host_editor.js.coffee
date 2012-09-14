@@ -23,7 +23,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
     events: {
       # save
       "click button.save": (e) ->
-        @log "save?"
         e.preventDefault();
         @save_edits()
 
@@ -34,13 +33,8 @@ namespace "Bixby.view.inventory", (exports, top) ->
           @save_edits()
     }
 
-    hide_editor: (dispose) ->
-      @button.html("edit")
+    hide_editor: ->
       @$el.modal("hide")
-      if dispose == true
-        @dispose()
-        return
-      @redraw()
 
     save_edits: ->
       @host.set "alias", @$("input.alias").val(), {silent: true}
@@ -51,13 +45,15 @@ namespace "Bixby.view.inventory", (exports, top) ->
       if @host.hasChanged()
         @host.save()
 
-      @hide_editor(true)
+      @hide_editor()
 
     after_render: ->
       @$("ul.tags").tagit();
       @$el.modal({ show: false })
-      @$el.on "hidden", _.bindR(@, (ev) -> @hide_editor())
       @$el.on "shown", _.bindR(@, (ev) -> @$("input.alias").putCursorAtEnd())
+      @$el.on "hidden", _.bindR @, (ev) ->
+        @button.html("edit")
+        @redraw()
 
     dispose: ->
       @$el.off "hidden"
