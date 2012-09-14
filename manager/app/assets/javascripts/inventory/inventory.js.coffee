@@ -39,6 +39,9 @@ jQuery ->
       create_url: ->
         return super().replace(/#/, '%23')
 
+      activate: ->
+        @app.trigger("search:set_query", @query)
+
       load_data: (data) ->
 
         if data.query
@@ -47,8 +50,6 @@ jQuery ->
           data.query = @query = data.params.query
         else
           @query = ""
-
-        @app.trigger("search:set_query", @query)
 
         needed = super(data)
         _.eachR @, needed, (n) ->
