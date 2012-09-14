@@ -146,7 +146,6 @@ class Stark.App
       @copy_data_from_state state, view
       view.app = @
       view.state = state
-      view.bind_app_events()
       view.render()
       state._views.push view
 

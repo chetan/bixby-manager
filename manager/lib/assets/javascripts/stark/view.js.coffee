@@ -106,6 +106,7 @@ class Stark.View extends Backbone.View
   render: ->
     @$el.html(@render_html())
 
+    @bind_app_events()
     @attach_link_events()
     @bind_models()
     @after_render()
@@ -272,9 +273,8 @@ class Stark.View extends Backbone.View
 
   # Subscribe to all @app level events as defined in the @app_events var
   bind_app_events: ->
-    _.each @app_events, (cb, key) ->
+    _.eachR @, @app_events, (cb, key) ->
       @app.subscribe(key, cb, @)
-    , @
 
   # Unsubscribe all @app level events (see #bind_app_events)
   unbind_app_events: ->
