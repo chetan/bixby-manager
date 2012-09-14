@@ -19,7 +19,7 @@ _.bindR = (context, func, args...) ->
 # alias away the sync method
 Backbone._sync = Backbone.sync
 
-# define a new sync method
+# define a new sync method which handles Rails CSRF
 Backbone.sync = (method, model, success, error) ->
   # only need a token for non-get requests
   if (method == 'create' || method == 'update' || method == 'delete')
@@ -31,3 +31,9 @@ Backbone.sync = (method, model, success, error) ->
 
   # proxy the call to the old sync method
   return Backbone._sync(method, model, success, error);
+
+# split which handles empty string correctly
+_.split = (str, regex) ->
+  if ! str
+    return []
+  return str.split(regex)

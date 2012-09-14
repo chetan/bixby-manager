@@ -14,7 +14,7 @@ namespace 'Bixby.model', (exports, top) ->
       return name
 
     tags: ->
-      return @get("tags").split(",")
+      return _.split @get("tags"), ","
 
     has_tag: (tag) ->
       return _.include(@tags(), tag)
