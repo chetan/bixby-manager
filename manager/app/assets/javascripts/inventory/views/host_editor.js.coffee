@@ -23,6 +23,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
     events: {
       # save
       "click button.save": (e) ->
+        @log "save?"
         e.preventDefault();
         @save_edits()
 
@@ -33,23 +34,32 @@ namespace "Bixby.view.inventory", (exports, top) ->
           @save_edits()
     }
 
-    hide_editor: ->
+    hide_editor: (dispose) ->
       @button.html("edit")
       @$el.modal("hide")
+      if dispose == true
+        @dispose()
+        return
+      @redraw()
 
     save_edits: ->
-      @hide_editor()
       @host.set "alias", @$("input.alias").val(), {silent: true}
       @host.set "desc", @$("textarea.desc").val(), {silent: true}
 
-      tags = _.map(@$("ul.tags").tagit("tags"), (t) -> t.value).join(",")
-      @host.set "tags", tags, {silent: true}
+      @host.set_tags _.pluck(@$("ul.tags").tagit("tags"), "value")
 
       if @host.hasChanged()
         @host.save()
+
+      @hide_editor(true)
 
     after_render: ->
       @$("ul.tags").tagit();
       @$el.modal({ show: false })
       @$el.on "hidden", _.bindR(@, (ev) -> @hide_editor())
       @$el.on "shown", _.bindR(@, (ev) -> @$("input.alias").putCursorAtEnd())
+
+    dispose: ->
+      @$el.off "hidden"
+      @$el.off "shown"
+      super()

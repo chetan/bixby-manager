@@ -93,6 +93,11 @@ class Stark.View extends Backbone.View
     return "" if not @template?
     @create_template().render(@)
 
+  # Redraw the view, taking care to first dispose of any events and subviews
+  redraw: ->
+    @dispose()
+    @render()
+
   # Default implementation of Backbone.View's render() method. Simply renders
   # the @template into the element defined by @selector.
   #
@@ -247,7 +252,10 @@ class Stark.View extends Backbone.View
   # @param [Function] handler   Handler (default: @render)
   bind_model: (model, event, handler) ->
     event ||= "change"
-    handler ||= @render
+    handler ||= ->
+      @log "redraw handler fired due to model binding on: ", model
+      @log "redrawing view: ", @
+      @redraw()
     model.bind event, handler, @
 
   # Process a given string containing Markdown syntax
@@ -283,6 +291,7 @@ class Stark.View extends Backbone.View
     @unbind_models()
     for v in @views
       v.dispose()
+    @views = []
 
   unbind_models: ->
     for m in @_data
