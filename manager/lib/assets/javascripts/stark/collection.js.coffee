@@ -5,6 +5,19 @@ window.Stark or= {}
 
 class Stark.Collection extends Backbone.Collection
 
+  # mixin logger
+  _.extend @.prototype, Stark.Logger.prototype
+  logger: "collection"
+
+  # mixin model binding
+  _.extend @.prototype, Stark.ModelBinding.prototype
+
+  bound_views: null
+
+  initialize: (attributes, options) ->
+    super(attributes, options)
+    bound_views = []
+
   extract_param: (data, name) ->
     if ! _.isObject(data)
       return false

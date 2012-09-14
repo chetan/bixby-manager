@@ -123,7 +123,12 @@ class Stark.View extends Backbone.View
   # Process @links hash and attach events
   attach_link_events: ->
 
-    return if not @links?
+    @log "attach_link_events", @
+
+    if not @links?
+      @log "binding events: ", @, @events
+      @delegateEvents(@events)
+      return
 
     link_events = @events || {}
 
@@ -157,7 +162,7 @@ class Stark.View extends Backbone.View
 
         @$(el).attr("href", url)
 
-    # bind events
+    @log "binding events: ", @, link_events
     @delegateEvents(link_events)
 
   # Helper for resolving data to a set of actual values
@@ -240,6 +245,7 @@ class Stark.View extends Backbone.View
 
   # Bind all the models specified in @bindings
   bind_models: ->
+    @log "binding models for view ", @
     return if not @bindings?
     for m in @bindings
       if @[m]?
@@ -249,15 +255,8 @@ class Stark.View extends Backbone.View
   # Bind a method to the given model, using this View as the context
   #
   # @param [Model] model
-  # @param [String] event       Event to bind to (default: change)
-  # @param [Function] handler   Handler (default: @render)
-  bind_model: (model, event, handler) ->
-    event ||= "change"
-    handler ||= ->
-      @log "redraw handler fired due to model binding on: ", model
-      @log "redrawing view: ", @
-      @redraw()
-    model.bind event, handler, @
+  bind_model: (model) ->
+    model.bind_view(@)
 
   # Process a given string containing Markdown syntax
   #
@@ -298,8 +297,8 @@ class Stark.View extends Backbone.View
       @unbind_model(m)
 
   unbind_model: (m) ->
-    if _.isObject(m) && _.isFunction(m["unbind"])
-      m.unbind null, null, @
+    if _.isObject(m) && _.isFunction(m["unbind_view"])
+      m.unbind_view(@)
     else if _.isArray(m)
       for mm in m
         @unbind_model(mm)

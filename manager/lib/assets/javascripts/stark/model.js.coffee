@@ -9,6 +9,15 @@ class Stark.Model extends Backbone.Model
   _.extend @.prototype, Stark.Logger.prototype
   logger: "model"
 
+  # mixin model binding
+  _.extend @.prototype, Stark.ModelBinding.prototype
+
+  bound_views: null
+
+  initialize: (attributes, options) ->
+    super(attributes, options)
+    bound_views = []
+
   # look for the given paramter name in the data hash
   # actually searches for name_id
   #
