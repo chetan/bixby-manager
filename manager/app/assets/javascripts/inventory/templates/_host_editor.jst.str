@@ -49,7 +49,7 @@
 
 <div class="modal-footer">
   <div class="controls">
-    <button class="btn btn save">Save</button>
-    <button class="btn btn btn-danger cancel" data-dismiss="modal">Cancel</button>
+    <button class="btn btn cancel" data-dismiss="modal">Cancel</button>
+    <button class="btn btn btn-primary save">Save</button>
   </div>
 </div>
