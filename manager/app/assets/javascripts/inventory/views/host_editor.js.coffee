@@ -48,7 +48,13 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @hide_editor()
 
     after_render: ->
-      @$("ul.tags").tagit();
+      tags = @$("ul.tags")
+      tags.tagit({
+        tagsChanged: (tag, action, el) ->
+          if action == "added" and tag.substr(0, 1) == "#"
+            tags.tagit("remove", tag)
+            tags.tagit("add", tag.substr(1))
+      })
       @$el.modal({ show: false })
       @$el.on "shown", _.bindR(@, (ev) -> @$("input.alias").putCursorAtEnd())
       @$el.on "hidden", _.bindR @, (ev) ->
