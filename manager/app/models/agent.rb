@@ -2,6 +2,7 @@
 class Agent < ActiveRecord::Base
 
   belongs_to :host
+  acts_as_paranoid
 
   STATUS_NEW      = 0
   STATUS_ACTIVE   = 1

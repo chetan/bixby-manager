@@ -51,6 +51,7 @@ CREATE  TABLE IF NOT EXISTS `hosts` (
   `desc` VARCHAR(255) NULL ,
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
+  `deleted_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_hosts_orgs1` (`org_id` ASC) ,
   CONSTRAINT `fk_hosts_orgs1`
@@ -76,6 +77,7 @@ CREATE  TABLE IF NOT EXISTS `agents` (
   `status` SMALLINT UNSIGNED NOT NULL DEFAULT 0 ,
   `created_at` DATETIME NULL ,
   `updated_at` DATETIME NULL ,
+  `deleted_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
   INDEX `fk_agents_hosts1` (`host_id` ASC) ,

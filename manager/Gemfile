@@ -30,8 +30,10 @@ gem "oj"
 gem "SystemTimer",  :platforms => :mri_18
 gem "git"
 
+# rails plugins
 gem "acts-as-taggable-on"
 gem "acts_as_tree"
+gem "delete_paranoid" # https://github.com/socialcast/delete_paranoid
 
 # notifications module
 gem "twilio-ruby"

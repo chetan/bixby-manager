@@ -4,6 +4,7 @@ class Host < ActiveRecord::Base
   belongs_to :org
   has_one :agent
   acts_as_taggable # adds :tags accessor
+  acts_as_paranoid
   has_and_belongs_to_many :metadata, :class_name => :Metadata, :join_table => "hosts_metadata"
   has_and_belongs_to_many :groups, :class_name => :HostGroup, :join_table => "hosts_host_groups"
 
