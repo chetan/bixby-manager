@@ -26,24 +26,27 @@
             //should tag and Tag be treated as identical
             caseSensitive:false,
             //should tags be drag-and-drop sortable?
-                //true: entire tag is draggable
-                //'handle': a handle is rendered which is draggable
+            //true: entire tag is draggable
+            //'handle': a handle is rendered which is draggable
             sortable:false,
             //color to highlight text when a duplicate tag is entered
             highlightOnExistColor:'#0F0',
             //empty search on focus
             emptySearch:true,
             //callback function for when tags are changed
-                //tagValue: value of tag that was changed
-                //action e.g. removed, added, sorted
+            //tagValue: value of tag that was changed
+            //action e.g. removed, added, sorted
             tagsChanged:function (tagValue, action, element) {
                 ;
-            }
+            },
+            maxTags:undefined,
+            //should 'paste' event trigger 'blur', thus potentially adding a new tag
+            // (true for backwards compatibility)
+            blurOnPaste:true
         },
 
         _splitAt:/\ |,/g,
         _existingAtIndex:0,
-        _pasteMetaKeyPressed:false,
         _keys:{
             backspace:[8],
             enter:[13],
@@ -69,7 +72,7 @@
             //add any initial tags added through html to the array
             this.element.children('li').each(function () {
                 var tag = $(this);
-                var tagValue = tag.attr('tagValue');
+                var tagValue = tag.attr('tagValue') || tag.data('value');
                 self.options.initialTags.push({label:tag.text(), value:(tagValue ? tagValue : tag.text())});
             });
 
@@ -112,18 +115,24 @@
             this.options.source = this.options.tagSource;
             this.options.select = function (event, ui) {
                 self.input.data('autoCompleteTag', true);
-                clearTimeout(self.timer);
+            clearTimeout(self.timer);
+            if (self.options.maxTags !== undefined && self.tagsArray.length == self.options.maxTags) {
+                self.input.val("");
+            }
+            else {
                 if (ui.item.label === undefined)
                     self._addTag(ui.item.value);
                 else
                     self._addTag(ui.item.label, ui.item.value);
-                return false;
             }
+
+            return false;
+        },
 
             this.options.focus = function (event, ui) {
                 if (ui.item.label !== undefined && /^key/.test(event.originalEvent.originalEvent.type)) {
                     self.input.val(ui.item.label);
-                    self.input.attr('tagValue', ui.item.value);
+                    self.input.data('value', ui.item.value);
                     return false;
                 }
             };
@@ -157,25 +166,20 @@
                 if (lastLi.hasClass('selected'))
                     lastLi.removeClass('selected');
 
-                _pasteMetaKeyPressed = e.metaKey;
                 self.lastKey = e.which;
             });
 
-            this.input.keyup(function (e) {
-
-                if (_pasteMetaKeyPressed && (e.which == 91 || e.which == 86))
-                    $(this).blur();
-
-                // timeout for the fast copy pasters
-                window.setTimeout(function () {
-                    _pasteMetaKeyPressed = e.metaKey;
-                }, 250);
+            this.input.bind("paste", function (e) {
+                if (self.options.blurOnPaste) {
+                    var input = $(this);
+                    self.timer = setTimeout(function () { input.blur(); }, 0);
+                }
             });
 
             //setup blur handler
             this.input.blur(function (e) {
                 self.currentLabel = $(this).val();
-                self.currentValue = $(this).attr('tagValue');
+                self.currentValue = $(this).data('value');
                 if (self.options.allowNewTags) {
                     self.timer = setTimeout(function () {
                         self._addTag(self.currentLabel, self.currentValue);
@@ -183,7 +187,7 @@
                         self.currentLabel = '';
                     }, 400);
                 }
-                $(this).val('').removeAttr('tagValue');
+                $(this).val('').removeData('value');
                 return false;
             });
 
@@ -195,7 +199,9 @@
             }
 
             if (this.options.select) {
-                this.select = $('<select class="tagit-hiddenSelect" name="' + this.element.attr('name') + '" multiple="multiple"></select>');
+                this.select = $('<select class="tagit-hiddenSelect" name="' +
+                    (this.element.attr('name') || this.element.data('name')) +
+                    '" multiple="multiple"></select>');
                 this.element.after(this.select);
             }
             this._initialTags();
@@ -258,7 +264,7 @@
             if (this.options.select)
                 this._popSelect(tag);
             if (this.options.tagsChanged)
-                this.options.tagsChanged(tag.value || tag.label, 'popped', null);
+                this.options.tagsChanged(tag.value || tag.label, 'popped', tag);
             return;
         },
 
@@ -344,8 +350,8 @@
         },
 
         _isTabKey:function (keyCode) {
-          var tabKeys = this._keys['tab'];
-          return $.inArray(keyCode, tabKeys) > -1;
+            var tabKeys = this._keys['tab'];
+            return $.inArray(keyCode, tabKeys) > -1;
         },
 
         _removeTag:function () {
@@ -437,9 +443,13 @@
 
         add:function (label, value) {
             if(typeof(label) == "object")
-                return this._addTag({label: label, value: value});
+                return this._addTag(label.label, label.value);
             else
                 return this._addTag(label, value);
+        },
+
+        autocomplete: function(){
+            return this.input.data("autocomplete");
         },
 
         tag:function (label, value, element) {
@@ -449,7 +459,29 @@
                 value:(value === undefined ? label : value),
                 element:element,
                 index:self.tagsArray.length
+            };
+        },
+
+        remove:function (label, value) {
+            if (this.tagsArray.length == 0)
+                return false;
+
+            label = this._lowerIfCaseInsensitive(label);
+            value = this._lowerIfCaseInsensitive(value);
+
+            for (var i = 0; i < this.tagsArray.length; i++) {
+                if (this._lowerIfCaseInsensitive(this.tagsArray[i].value) == value || this._lowerIfCaseInsensitive(this.tagsArray[i].label) == label) {
+                    break;
+                }
             }
+
+            if (i >= 0 && i < this.tagsArray.length) {
+                var tag = this.tagsArray[i];
+                tag.element.remove();
+                this._popTag(tag);
+                return true;
+            }
+            return false;
         }
 
 
