@@ -26,4 +26,12 @@ class HostsController < ApplicationController
     restful @host
   end
 
+  def destroy
+    @host = Host.find(params[:id])
+    @host.destroy
+    @host.agent.destroy if @host.agent
+
+    restful @host
+  end
+
 end

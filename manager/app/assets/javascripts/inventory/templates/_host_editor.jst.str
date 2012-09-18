@@ -49,6 +49,7 @@
 
 <div class="modal-footer">
   <div class="controls">
+    <button class="btn btn-danger delete pull-left">Delete</button>
     <button class="btn cancel" data-dismiss="modal">Cancel</button>
     <button class="btn btn-primary save">Save</button>
   </div>
