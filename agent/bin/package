@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+bundle package --all
+cp -a `bundle show bundler` vendor/cache/
+
+cd $(dirname $(readlink -f $0))/..
+rm -rf pkg/bixby
+mkdir -p pkg/bixby
+cp -a --target-directory=pkg/bixby/ bin/ lib/ repo/ vendor/ Gemfile*
+cd pkg
+tar -czf bixby-agent.tar.gz bixby/*
+cd ..
