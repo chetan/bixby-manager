@@ -2,7 +2,7 @@
 module Bixby
 class Repository
 
-  VENDOR_URI = "https://github.com/chetan/devops_repo.git"
+  VENDOR_URI = "https://github.com/chetan/bixby-repo.git"
 
   class << self
 
