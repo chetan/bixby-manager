@@ -37,6 +37,16 @@ GIT
       crack (>= 0.1.7)
 
 GIT
+  remote: https://github.com/chetan/bixby-common.git
+  revision: e6223dbdbaa1503d90c37ca1e939b74b028dc7a7
+  specs:
+    bixby-common (0.2.0)
+      curb
+      multi_json
+      oj
+      systemu
+
+GIT
   remote: https://github.com/chetan/coffee-script.git
   revision: d3e5f8c9cbda4ce6575a0b35810eee0dfa9b079b
   branch: gem
@@ -52,16 +62,6 @@ GIT
       curb_threadpool
       multi_json
       rake
-
-GIT
-  remote: https://github.com/chetan/devops_common.git
-  revision: 7615092b2e47ac2e0234d2427387fd38c86b8d17
-  specs:
-    bixby_common (0.2.0)
-      curb
-      multi_json
-      oj
-      systemu
 
 GIT
   remote: https://github.com/colszowka/simplecov.git
@@ -357,7 +357,7 @@ DEPENDENCIES
   acts_as_tree
   awesome_print
   bahia
-  bixby_common!
+  bixby-common!
   cane
   coffee-script
   coffee-script-source!
