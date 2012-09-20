@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# thin shellscript wrapper to avoid shebang line problems
-# see: http://stackoverflow.com/a/3260240
-/usr/bin/env ruby -KU $(readlink -f $(dirname $0))/agent.rb $*
