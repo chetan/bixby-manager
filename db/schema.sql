@@ -101,6 +101,7 @@ CREATE  TABLE IF NOT EXISTS `users` (
   `password` VARCHAR(255) NULL ,
   `name` VARCHAR(255) NULL ,
   `email` VARCHAR(255) NULL ,
+  `phone` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_users_orgs1` (`org_id` ASC) ,
   CONSTRAINT `fk_users_orgs1`

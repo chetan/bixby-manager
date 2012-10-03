@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121003190127) do
+ActiveRecord::Schema.define(:version => 20121003221707) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                     :null => false
@@ -187,6 +187,7 @@ ActiveRecord::Schema.define(:version => 20121003190127) do
     t.string  "password"
     t.string  "name"
     t.string  "email"
+    t.string  "phone"
   end
 
   add_index "users", ["org_id"], :name => "fk_users_orgs1"
