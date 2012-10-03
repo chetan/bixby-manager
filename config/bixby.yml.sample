@@ -1,23 +1,44 @@
 
 development:
-  redis: "localhost:6379"
-  #scheduler: "resque"
   manager:
     root: "/opt/mgr"
     uri:  "http://localhost:3000"
+  redis: "localhost:6379"
+  scheduler: "resque"
+  metrics: "opentsdb"
+  opentsdb:
+    host: "localhost"
+    port: 4242
+  twilio:
+    account_sid:
+    auth_token:
 
 
 test:
-  redis: "localhost:6379"
-  #scheduler: "resque"
   manager:
     root: "/opt/mgr"
     uri:  "http://localhost:3000"
+  redis: "localhost:6379"
+  scheduler: "resque"
+  metrics: "opentsdb"
+  opentsdb:
+    host: "localhost"
+    port: 4242
+  twilio:
+    account_sid:
+    auth_token:
 
 
 production:
-  redis: "localhost:6379"
-  #scheduler: "resque"
   manager:
     root: "/opt/mgr"
     uri:  "http://localhost:3000"
+  redis: "localhost:6379"
+  scheduler: "resque"
+  metrics: "opentsdb"
+  opentsdb:
+    host: "localhost"
+    port: 4242
+  twilio:
+    account_sid:
+    auth_token:
