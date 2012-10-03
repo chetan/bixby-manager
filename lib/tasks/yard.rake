@@ -1,7 +1,10 @@
 
 require 'yard'
+
+bixby_common_path = File.join(Bundler.definition.specs["bixby-common"].first.gem_dir, "lib/**/*.rb")
+
 YARD::Rake::YardocTask.new do |t|
-  t.files   = [ 'lib/**/*.rb', 'app/**/*.rb' ]
+  t.files   = [ 'lib/**/*.rb', 'app/**/*.rb', bixby_common_path ]
   t.options = [ '--output-dir', './yardoc', '-m', 'markdown' ]
 end
 
@@ -144,14 +147,14 @@ module Bixby
 
     ret = []
 
-    ignore_base_modules = [ "Bixby::API", "Bixby::RemoteExec::Methods" ]
+    ignore_base_modules = %w(Bixby::API Bixby::RemoteExec::Methods Bixby::RemoteExec::Crypto Bixby::HttpClient)
 
     ret << "<h1>Base class</h1>"
-    ret << show_class("API", [ "Bixby::RemoteExec::Methods" ])
+    ret << show_class("API", ignore_base_modules.reject{|m| m == "Bixby::API"})
 
     ret << "<h1>Core Modules</h1>"
-    ret << show_class("RemoteExec", [ "API"] )
-    %w(Repository Provisioning Inventory Scheduler).each do |mod|
+    ret << show_class("RemoteExec", %w(Bixby::API Bixby::RemoteExec::Crypto))
+    %w(Repository Provisioning Inventory Scheduler Notifier).each do |mod|
       ret << show_class(mod, ignore_base_modules)
     end
 
@@ -166,10 +169,10 @@ module Bixby
   def render
 
     template = <<-EOF
-!!! 5
+!!!
 %html
   %head
-    %title api!
+    %title Bixby API Reference
     %link{ :href => "http://twitter.github.com/bootstrap/assets/css/bootstrap.css", :rel => "stylesheet" }
     %link{ :href => "http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css", :rel => "stylesheet" }
     :css
@@ -191,7 +194,8 @@ module Bixby
   %body
 
     %div.container-fluid
-      %br
+      %h1
+        Bixby API Reference
       = render_api()
 
   EOF
