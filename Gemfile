@@ -26,6 +26,7 @@ gem 'simple_form'
 gem "json"
 gem "multi_json"
 gem "oj"
+gem "scrypt"
 
 gem "SystemTimer",  :platforms => :mri_18
 gem "git"
