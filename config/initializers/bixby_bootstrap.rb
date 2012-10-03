@@ -29,7 +29,6 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
 
   # setup the scheduler
   if BIXBY_CONFIG[:scheduler] then
-    # load a specific scheduler
     require "bixby/modules/scheduler/#{BIXBY_CONFIG[:scheduler]}"
   end
   require "bixby/modules/scheduler"
