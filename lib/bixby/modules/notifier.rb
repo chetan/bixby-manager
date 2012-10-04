@@ -1,5 +1,7 @@
 
 module Bixby
+
+# Notify users by various means (e.g., email, SMS, phone)
 class Notifier < API
 
   # Send an email to the given user

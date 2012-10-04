@@ -22,7 +22,7 @@ class Metrics < API
     self.class.driver()
   end
 
-  # Get metrics for the given options
+  # Get metrics matching the given options
   #
   # @param [Hash] opts
   # @option opts [String] :key          Metric key name
@@ -40,8 +40,6 @@ class Metrics < API
   #   ex: 10m-avg
   #
   # @return [Array<Hash>] Array of metrics
-  #
-  # @example
   def get(opts={})
     process_results(driver.get(opts)).first
   end
