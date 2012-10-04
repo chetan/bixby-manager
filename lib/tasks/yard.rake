@@ -101,16 +101,16 @@ module Bixby
       next if skip_method? meth, ignore_methods_from
       count += 1
       return_tag = nil
-      # if not meth.constructor?
-      #   return_tag = meth.tag("return")
-      #   if return_tag then
-      #     return_tag = "&ndash;&nbsp;&nbsp;(" + return_tag.types.join(", ") + ") "
-      #   end
-      # end
+      if not meth.constructor?
+        return_tag = meth.tag("return")
+        if return_tag then
+          return_tag = "<span class='return'>[" + return_tag.types.join(", ") + "]</span> "
+        end
+      end
       ret << "    <div class='method'>#{return_tag}<strong>#{meth.name.to_s}</strong>#{print_params(meth)}</div>"
-      # ret << "    <div class='method_summary row-fluid'>"
-      # ret << meth.docstring.gsub(/\n/, "<br/>")
-      # ret << "    </div>"
+      ret << "    <div class='method_summary row-fluid'>"
+      ret << "      " + meth.docstring.gsub(/\n/, "<br/>")
+      ret << "    </div>"
     end
 
     if count > 0 then
@@ -189,7 +189,12 @@ module Bixby
         margin-top: 10px;
       }
       div.method_summary {
+        font-size: smaller;
+        color: grey;
         margin-bottom: 10px;
+      }
+      span.return {
+        font-style: italic;
       }
   %body
 
