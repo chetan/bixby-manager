@@ -122,8 +122,8 @@ class Metrics < API
   #
   # @param [String] key       Metric key name
   # @param [Fixnum] value     Value, can be either integer or decimal
-  # @param [Time] timestamp   Time at which value was recorded
-  # @param [Hash] metadata    Additional tags to record
+  # @param [Time] timestamp   Time at which value was recorded (default: current time)
+  # @param [Hash] metadata    Additional tags to record (default: none)
   def put(key, value, timestamp = Time.new, metadata = {})
     driver.put(key, value, timestamp, metadata)
   end
@@ -217,7 +217,6 @@ class Metrics < API
     return metrics.map { |m| m }
   end
 
-
   # Process raw results
   #
   # @param [Array<Array>] array of metric responses from the driver
@@ -246,6 +245,7 @@ class Metrics < API
     return metrics
   end
 
+  # currently unused method
   def create_cache_key(opts)
     key = []
     [:key, :start_time, :end_time, :agg, :downsample].each { |k| key << opts[k] }
