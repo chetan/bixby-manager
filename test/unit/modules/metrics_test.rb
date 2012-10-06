@@ -3,6 +3,9 @@ require 'test_helper'
 
 class Bixby::Test::Modules::Metrics < ActiveSupport::TestCase
 
+  class FooDriver < Bixby::Metrics::Driver
+  end
+
   def setup
     SimpleCov.command_name 'test:modules:metrics'
     WebMock.reset!
@@ -129,8 +132,29 @@ EOF
     test_get_check(m.check.id)
   end
 
-  class FooDriver < Bixby::Metrics::Driver
+  def test_add_annotations
+    Bixby::Metrics.new.add_annotation("foo.bar")
+    a = Annotation.all
+    assert a
+    refute_empty a
+    a = a.first
+    assert_equal "foo.bar", a.name
+
+    Bixby::Metrics.new.add_annotation("foobar", ["baz", "test"])
+    a = Annotation.last
+    assert a
+    assert a.tags
+    refute_empty a.tags
+    assert_equal 2, a.tags.size
+    assert_equal "baz", a.tags.first.to_s
+
+    a = Annotation.tagged_with(["baz"]).first
+    assert a
+    assert a.tags
+    assert_equal 2, a.tags.size
+    assert_equal "baz", a.tags.first.to_s
   end
+
 
 
 

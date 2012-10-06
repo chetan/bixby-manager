@@ -187,6 +187,18 @@ class Metrics < API
 
   end
 
+  # Create a new annotation
+  #
+  # @param [String] name              name of event
+  # @param [Array<String>] tags       list of tags (default: none)
+  # @param [Time] timestamp           timestamp of event (defaut: now)
+  # @param [String] detail            extra detail for event
+  def add_annotation(name, tags=[], timestamp=Time.new, detail=nil)
+    a = Annotation.new(:name => name, :tag_list => tags.join(","),
+                       :created_at => timestamp, :detail => detail)
+    a.save!
+  end
+
 
   private
 
