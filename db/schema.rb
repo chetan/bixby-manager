@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121003221707) do
+ActiveRecord::Schema.define(:version => 20121006012002) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                     :null => false
@@ -27,6 +27,12 @@ ActiveRecord::Schema.define(:version => 20121003221707) do
 
   add_index "agents", ["host_id"], :name => "fk_agents_hosts1"
   add_index "agents", ["id"], :name => "id_UNIQUE", :unique => true
+
+  create_table "annotations", :force => true do |t|
+    t.string   "name"
+    t.string   "detail"
+    t.datetime "created_at"
+  end
 
   create_table "checks", :force => true do |t|
     t.integer "host_id",                                         :null => false
@@ -76,6 +82,14 @@ ActiveRecord::Schema.define(:version => 20121003221707) do
   end
 
   add_index "hosts", ["org_id"], :name => "fk_hosts_orgs1"
+
+  create_table "hosts_annotations", :id => false, :force => true do |t|
+    t.integer "host_id",       :null => false
+    t.integer "annotation_id", :null => false
+  end
+
+  add_index "hosts_annotations", ["annotation_id"], :name => "index_hosts_annotations_on_annotation_id"
+  add_index "hosts_annotations", ["host_id"], :name => "index_hosts_annotations_on_host_id"
 
   create_table "hosts_host_groups", :id => false, :force => true do |t|
     t.integer "host_id",       :null => false
