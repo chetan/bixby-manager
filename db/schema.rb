@@ -29,10 +29,13 @@ ActiveRecord::Schema.define(:version => 20121006012002) do
   add_index "agents", ["id"], :name => "id_UNIQUE", :unique => true
 
   create_table "annotations", :force => true do |t|
+    t.integer  "host_id",    :null => false
     t.string   "name"
     t.string   "detail"
     t.datetime "created_at"
   end
+
+  add_index "annotations", ["host_id"], :name => "index_annotations_on_host_id"
 
   create_table "checks", :force => true do |t|
     t.integer "host_id",                                         :null => false
@@ -82,14 +85,6 @@ ActiveRecord::Schema.define(:version => 20121006012002) do
   end
 
   add_index "hosts", ["org_id"], :name => "fk_hosts_orgs1"
-
-  create_table "hosts_annotations", :id => false, :force => true do |t|
-    t.integer "host_id",       :null => false
-    t.integer "annotation_id", :null => false
-  end
-
-  add_index "hosts_annotations", ["annotation_id"], :name => "index_hosts_annotations_on_annotation_id"
-  add_index "hosts_annotations", ["host_id"], :name => "index_hosts_annotations_on_host_id"
 
   create_table "hosts_host_groups", :id => false, :force => true do |t|
     t.integer "host_id",       :null => false

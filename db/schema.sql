@@ -414,7 +414,8 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `annotations` ;
 
 CREATE  TABLE IF NOT EXISTS `annotations` (
-  `id` INT UNSIGNED NOT NULL ,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `host_id` INT UNSIGNED NULL ,
   `name` VARCHAR(255) NOT NULL ,
   `detail` TEXT NULL ,
   `created_at` DATETIME NULL ,
