@@ -11,16 +11,21 @@ def prefork
 end
 
 def bootstrap_tests
-  TestGuard.load_simplecov do
-    merge_timeout 7200
 
-    add_filter '/test/'
-    add_filter '/config/'
+  begin
+    require 'simplecov'
+      SimpleCov.start do
+      merge_timeout 7200
 
-    add_group 'Controllers', 'app/controllers'
-    add_group 'Models', 'app/models'
-    add_group 'Helpers', 'app/helpers'
-    add_group 'Libraries', 'lib'
+      add_filter '/test/'
+      add_filter '/config/'
+
+      add_group 'Controllers', 'app/controllers'
+      add_group 'Models', 'app/models'
+      add_group 'Helpers', 'app/helpers'
+      add_group 'Libraries', 'lib'
+    end
+  rescue Exception => ex
   end
 
   begin
