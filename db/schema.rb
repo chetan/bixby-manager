@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(:version => 20121006012002) do
   add_index "agents", ["id"], :name => "id_UNIQUE", :unique => true
 
   create_table "annotations", :force => true do |t|
-    t.integer  "host_id",    :null => false
+    t.integer  "host_id"
     t.string   "name"
     t.string   "detail"
     t.datetime "created_at"

@@ -15,7 +15,7 @@ module Bixby::ARTableMigration
       self.column(col_id, type, opts)
       self.column(col_type, "string", opts)
     else
-      opts[:null] = (col == :parent_id)
+      opts[:null] = (col == :parent_id) if not opts.include? :null
       self.column(col, type, opts)
     end
   end
