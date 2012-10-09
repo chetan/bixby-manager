@@ -5,28 +5,22 @@ def prefork
     # add to library load path
     $: << root
   end
+  require "test_guard"
   require "test_prefork"
   require "test_setup"
 end
 
 def bootstrap_tests
-  begin
-    require 'simplecov'
-    SimpleCov.start do
-      merge_timeout 7200
+  TestGuard.load_simplecov do
+    merge_timeout 7200
 
-      add_filter '/test/'
-      add_filter '/config/'
+    add_filter '/test/'
+    add_filter '/config/'
 
-      add_group 'Controllers', 'app/controllers'
-      add_group 'Models', 'app/models'
-      add_group 'Helpers', 'app/helpers'
-      add_group 'Libraries', 'lib'
-    end
-    # SimpleCov.at_exit do
-    #   SimpleCov.result.format!
-    # end
-  rescue Exception => ex
+    add_group 'Controllers', 'app/controllers'
+    add_group 'Models', 'app/models'
+    add_group 'Helpers', 'app/helpers'
+    add_group 'Libraries', 'lib'
   end
 
   begin
