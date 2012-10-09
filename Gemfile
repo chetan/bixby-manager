@@ -42,10 +42,10 @@ gem "pony"
 
 # scheduler module
 gem "hiredis"
-gem "redis", ">= 2.2.0", :require => ["redis/connection/hiredis", "redis"]
+gem "redis", "~> 3.0", :require => ["redis/connection/hiredis", "redis"]
 gem "resque", :git => "https://github.com/defunkt/resque.git"
 gem "resque-scheduler",
-  :git => "git://github.com/chetan/resque-scheduler.git",
+  :git => "git@github.com:bvandenbos/resque-scheduler.git",
   :require => ["resque_scheduler"]
 gem "redis-lock"
 
