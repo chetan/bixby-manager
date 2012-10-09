@@ -75,7 +75,8 @@ group :development do
     # newrelic
     gem 'newrelic_rpm'
     gem 'rpm_contrib'
-    gem 'newrelic-redis'
+    # disabling due to incompat with current redis gem
+    # gem 'newrelic-redis'
 
     # docs
     gem "yard"

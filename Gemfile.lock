@@ -220,10 +220,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.3.6)
     mysql2 (0.3.11)
-    newrelic-redis (1.3.2)
-      newrelic_rpm (~> 3.0)
-      redis (< 4.0)
-    newrelic_rpm (3.4.0.1)
+    newrelic_rpm (3.4.2.1)
     oj (1.3.4)
     open4 (1.3.0)
     polyglot (0.3.3)
@@ -387,7 +384,6 @@ DEPENDENCIES
   mocha
   multi_json
   mysql2
-  newrelic-redis
   newrelic_rpm
   oj
   pony
