@@ -15,7 +15,7 @@ class Scheduler
       end
 
       def schedule_at_with_queue(timestamp, job, queue="schedules")
-        ::Resque.enqueue_at_with_queue(queue, timestamp, job.name, job.args)
+        ::Resque.enqueue_at_with_queue(queue, timestamp, job.class, *job.queue_args)
       end
 
     end
