@@ -31,12 +31,12 @@ module Bixby
   #   Foo.new.hello("joe")
   #
   #   # outputs:
-  #
-  #   (orig) hello joe
-  #   (before) yo joe
-  #   (before) hulloooo joe
-  #   (orig) hello joe
-  #   (after) sup joe
+  #   #
+  #   # (orig) hello joe
+  #   # (before) yo joe
+  #   # (before) hulloooo joe
+  #   # (orig) hello joe
+  #   # (after) sup joe
   #
   module Hooks
 
