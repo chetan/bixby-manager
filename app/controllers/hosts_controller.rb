@@ -5,19 +5,20 @@ class HostsController < ApplicationController
     name 'Hosts'
     short 'Hosts'
     path '/hosts'
-    version '1.0 - 3.4.2012'
-    formats ['json', 'xml']
-    param :id, Fixnum, :desc => "User ID", :required => false
-    param :user, Hash, :desc => 'Param description for all methods' do
-      param :username, String, :required => true,
-            :desc => "Username for login"
-      param :password, String, :required => true,
-            :desc => "Password for login"
-    end
+    version '1.0'
+    formats ['json']
+    error :code => 401, :desc => "Unauthorized"
     description <<-DOC
-      Full description of this resource.
+      Host CRUD operations
     DOC
   end
+
+
+  api :GET, "/hosts", "List all hosts"
+  description "List all hosts, optionally filtering by query params"
+  param :q, String, :desc => "query string"
+  example " 'host': {...} "
+  see "hosts#index"
 
   def index
     query = params[:q] || params[:query]
@@ -30,10 +31,22 @@ class HostsController < ApplicationController
     restful @hosts
   end
 
+
+  api :GET, "/hosts/:id", "Show a specific host"
+  param :id, Fixnum, :desc => "Host id", :required => true
+  example " 'host': {...} "
+  see "hosts#show"
+
   def show
     @host = Host.find(params[:id])
     restful @host
   end
+
+
+  api :PUT, "/hosts/:id", "Update a host"
+  param :id, Fixnum, :desc => "Host id", :required => true
+  example " 'host': {...} "
+  see "hosts#update"
 
   def update
     @host = Host.find(params[:id])
@@ -43,6 +56,12 @@ class HostsController < ApplicationController
 
     restful @host
   end
+
+
+  api :DELETE, "/hosts/:id", "Decommission a host"
+  param :id, Fixnum, :desc => "Host id", :required => true
+  example " 'host': {...} "
+  see "hosts#destroy"
 
   def destroy
     @host = Host.find(params[:id])

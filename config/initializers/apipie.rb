@@ -3,7 +3,7 @@ Apipie.configure do |config|
   config.app_name = "Bixby"
   config.copyright = "&copy; 2012 Pixelcop Research, Inc."
   config.doc_base_url = "/apidoc"
-  config.api_base_url = "/"
+  config.api_base_url = ""
   config.use_cache = Rails.env.production?
   config.api_controllers_matcher = File.join(Rails.root, "app", "controllers", "**","*.rb")
   config.markup = Apipie::Markup::Markdown.new

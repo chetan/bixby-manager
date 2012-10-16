@@ -1,5 +1,7 @@
 Bixby::Application.routes.draw do
 
+  apipie if Rails.env.development?
+
   root :to => "inventory#index"
 
   match '/api' => 'api#handle'
@@ -25,8 +27,6 @@ Bixby::Application.routes.draw do
       match "/command/:command_id/opts" => "commands#opts"
     end
   end
-
-  apipie if Rails.env.development?
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
