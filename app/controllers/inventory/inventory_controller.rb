@@ -1,5 +1,5 @@
 
-class InventoryController < ApplicationController
+class Inventory::InventoryController < ApplicationController
 
   def index
     @hosts = Host.all
