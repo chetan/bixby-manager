@@ -26,6 +26,8 @@ Bixby::Application.routes.draw do
     end
   end
 
+  apipie if Rails.env.development?
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

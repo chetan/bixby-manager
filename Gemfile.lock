@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/Pajk/apipie-rails.git
+  revision: bfeff412b1653fa92e48555e9129c131ec804ce5
+  specs:
+    apipie-rails (0.0.12)
+
+GIT
   remote: git://github.com/chetan/jst_str.git
   revision: 5cde3c23ea59cc4e06c027da9ad96b05491fec4d
   specs:
@@ -221,6 +227,7 @@ GEM
     multi_json (1.3.6)
     mysql2 (0.3.11)
     newrelic_rpm (3.4.2.1)
+    oauth (0.4.7)
     oj (1.3.4)
     open4 (1.3.0)
     polyglot (0.3.3)
@@ -280,6 +287,8 @@ GEM
       redis
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rev (0.3.2)
       iobuffer (>= 0.1.3)
     rpm_contrib (2.1.11)
@@ -355,6 +364,7 @@ DEPENDENCIES
   SystemTimer
   acts-as-taggable-on
   acts_as_tree
+  apipie-rails!
   awesome_print
   bahia
   bixby-common!
@@ -385,6 +395,7 @@ DEPENDENCIES
   multi_json
   mysql2
   newrelic_rpm
+  oauth
   oj
   pony
   pry
@@ -399,6 +410,7 @@ DEPENDENCIES
   redis-lock
   resque!
   resque-scheduler!
+  rest-client
   rev
   rpm_contrib
   ruby-debug

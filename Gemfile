@@ -81,6 +81,9 @@ group :development do
     # docs
     gem "yard"
     gem "redcarpet"
+    gem 'apipie-rails', :git => 'git://github.com/Pajk/apipie-rails.git'
+    gem "rest-client"
+    gem "oauth"
 
     # utils
     gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
