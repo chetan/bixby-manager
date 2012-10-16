@@ -15,4 +15,5 @@ config/bixby.yml
 db/devops_schema.mwb.bak
 .yardoc/
 yardoc/
+doc/apidoc*
 public/assets
