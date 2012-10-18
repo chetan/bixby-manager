@@ -419,7 +419,13 @@ CREATE  TABLE IF NOT EXISTS `annotations` (
   `name` VARCHAR(255) NOT NULL ,
   `detail` TEXT NULL ,
   `created_at` DATETIME NULL ,
-  PRIMARY KEY (`id`) )
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_annotations_hosts1_idx` (`host_id` ASC) ,
+  CONSTRAINT `fk_annotations_hosts1`
+    FOREIGN KEY (`host_id` )
+    REFERENCES `hosts` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -442,6 +448,35 @@ CREATE  TABLE IF NOT EXISTS `hosts_annotations` (
   CONSTRAINT `fk_hosts_annotations_annotations1`
     FOREIGN KEY (`annotation_id` )
     REFERENCES `annotations` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alerts`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alerts` ;
+
+CREATE  TABLE IF NOT EXISTS `alerts` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `check_id` INT UNSIGNED NULL ,
+  `metric_id` INT UNSIGNED NULL ,
+  `threshold` DECIMAL(20,2) NOT NULL ,
+  `sign` CHAR(2) NOT NULL ,
+  `created_at` DATETIME NOT NULL ,
+  `updated_at` DATETIME NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_alerts_checks1_idx` (`check_id` ASC) ,
+  INDEX `fk_alerts_metrics1_idx` (`metric_id` ASC) ,
+  CONSTRAINT `fk_alerts_checks1`
+    FOREIGN KEY (`check_id` )
+    REFERENCES `checks` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_alerts_metrics1`
+    FOREIGN KEY (`metric_id` )
+    REFERENCES `metrics` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
