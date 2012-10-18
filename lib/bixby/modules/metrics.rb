@@ -1,6 +1,15 @@
 
 module Bixby
+
+# Metrics collection and retrieval APIs
+#
+# Offered hooks:
+#
+#   * #put\_check\_results
+#
 class Metrics < API
+
+  extend Bixby::Hooks
 
   class << self
 
@@ -130,6 +139,8 @@ class Metrics < API
 
   # Store the results of one or more Checks. Each result may contain multiple metrics.
   #
+  # Fires the :put_check_result hook on completion, passing results as the only param.
+  #
   # @param [Hash] results
   # @option results [Fixnum] :check_id
   # @option results [String] :key             base key name
@@ -185,6 +196,7 @@ class Metrics < API
       end # results.each
     end # transaction
 
+    run_hook(:put_check_result, results)
   end
 
   # Create a new annotation
