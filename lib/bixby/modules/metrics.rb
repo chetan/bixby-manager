@@ -196,7 +196,8 @@ class Metrics < API
       end # results.each
     end # transaction
 
-    run_hook(:put_check_result, results)
+    self.class.run_hook(:put_check_result, results)
+    nil
   end
 
   # Create a new annotation

@@ -47,7 +47,7 @@ EOF
       "key"=>"hardware.storage.disk"}
 
     mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /hardware/ and v.include? 1329775841.to_s }.times(4)
-    assert Bixby::Metrics.new.put_check_result(m)
+    Bixby::Metrics.new.put_check_result(m)
 
     # make sure metrics records got written
     assert Metric.find(:all).size == 4
