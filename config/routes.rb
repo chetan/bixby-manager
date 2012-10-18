@@ -1,13 +1,12 @@
 Bixby::Application.routes.draw do
 
-  root :to => "inventory#index"
+  root :to => "inventory::hosts#index"
 
   match '/api' => 'api#handle'
 
   resources :hosts
 
-  match "/inventory" => "inventory#index"
-
+  match "/inventory" => "inventory::hosts#index"
   namespace :inventory do
     match "/search/:query" => "hosts#index"
     resources :hosts do
