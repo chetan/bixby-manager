@@ -462,6 +462,7 @@ CREATE  TABLE IF NOT EXISTS `alerts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `check_id` INT UNSIGNED NULL ,
   `metric_id` INT UNSIGNED NULL ,
+  `severity` SMALLINT UNSIGNED NOT NULL ,
   `threshold` DECIMAL(20,2) NOT NULL ,
   `sign` CHAR(2) NOT NULL ,
   `created_at` DATETIME NOT NULL ,

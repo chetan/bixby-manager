@@ -12,6 +12,7 @@ class Bixby::Test::Models::Alert < Bixby::Test::TestCase
     m = FactoryGirl.create(:metric)
     a = Alert.new
     a.metric = m
+    a.severity = Alert::Severity::CRITICAL
     a.threshold = 7
     a.sign = :gt
     a.save!

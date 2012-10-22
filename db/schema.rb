@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20121018224530) do
   create_table "alerts", :force => true do |t|
     t.integer  "check_id"
     t.integer  "metric_id"
+    t.integer  "severity",   :limit => 2
     t.decimal  "threshold",               :precision => 20, :scale => 2
     t.string   "sign",       :limit => 2
     t.datetime "created_at",                                             :null => false

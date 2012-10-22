@@ -5,6 +5,11 @@ class Alert < ActiveRecord::Base
   belongs_to :check
   belongs_to :metric
 
+  module Severity
+    UNKNOWN  = 0
+    WARNING  = 1
+    CRITICAL = 2
+  end
 
   # alert sign must be one of the following
   #
@@ -55,6 +60,14 @@ class Alert < ActiveRecord::Base
 
     end
 
+  end
+
+  def critical?
+    self.severity == Severity::CRITICAL
+  end
+
+  def warning?
+    self.severity == Severity::WARNING
   end
 
 end
