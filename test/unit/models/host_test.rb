@@ -4,7 +4,7 @@ require "test_helper"
 class Bixby::Test::Models::Host < ActiveSupport::TestCase
 
   def setup
-    SimpleCov.command_name 'test:modules:metrics'
+    SimpleCov.command_name 'test:models:host'
     DatabaseCleaner.start
   end
 

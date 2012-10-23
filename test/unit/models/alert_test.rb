@@ -5,7 +5,7 @@ class Bixby::Test::Models::Alert < Bixby::Test::TestCase
 
   def setup
     super
-    SimpleCov.command_name 'test:modules:metrics'
+    SimpleCov.command_name 'test:models:alert'
   end
 
   def test_for_metric

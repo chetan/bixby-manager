@@ -4,7 +4,7 @@ require "test_helper"
 class Bixby::Test::Models::Metric < ActiveSupport::TestCase
 
   def setup
-    SimpleCov.command_name 'test:modules:metrics'
+    SimpleCov.command_name 'test:models::metric'
     DatabaseCleaner.start
     WebMock.reset!
     @body1 = <<-EOF
