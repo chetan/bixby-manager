@@ -22,7 +22,7 @@ module Bixby::ARTableMigration
 
   # Override integer method to create unsigned ints by default.
   # To get a signed int, pass { :unsigned => false }
-  def integer(*args)
+  def int(*args)
     opts = args.extract_options!
     type = @base.type_to_sql(:integer, opts.delete(:limit), opts.delete(:precision), opts.delete(:scale)) rescue type
     unsigned = opts.include?(:unsigned) ? opts[:unsigned] : true # unsigned by default

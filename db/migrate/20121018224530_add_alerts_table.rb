@@ -4,7 +4,7 @@ class AddAlertsTable < ActiveRecord::Migration
       t.add_id  :id
       t.add_id  :check_id, :null => true
       t.add_id  :metric_id, :null => true
-      t.integer :severity, :limit => 2
+      t.int     :severity, :limit => 2
       t.decimal :threshold, :precision => 20, :scale => 2
       t.char    :sign, :limit => 2
       t.timestamps
