@@ -1,3 +1,5 @@
+
+# Serialize a value as a JSON string
 class JSONColumn
   def initialize(default={})
     @default = default
