@@ -38,16 +38,7 @@ EOF
 
   def test_put_check_result
 
-    c = FactoryGirl.create(:check)
-
-    m = {"timestamp"=>1329775841, "metrics"=>[
-        {"metrics"=>{"size"=>297, "used"=>202, "free"=>94, "usage"=>69},
-         "metadata"=>{"mount"=>"/", "type"=>"hfs"}}],
-      "errors"=>[], "status"=>"OK", "check_id"=>c.id,
-      "key"=>"hardware.storage.disk"}
-
-    mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /hardware/ and v.include? 1329775841.to_s }.times(4)
-    Bixby::Metrics.new.put_check_result(m)
+    put_check_result()
 
     # make sure metrics records got written
     assert Metric.find(:all).size == 4
@@ -66,6 +57,18 @@ EOF
     assert_equal "/", tags.first.value
     assert_equal "type", tags.last.key
 
+  end
+
+  def test_put_check_result_hook
+    count = 0
+    Bixby::Metrics.add_hook(:put_check_result) do |results|
+      count += 1
+      assert_equal 1, results.size
+      assert_equal 1329775841, results[0]["timestamp"].to_i
+    end
+    put_check_result()
+
+    assert_equal 1, count
   end
 
   def test_driver_must_override_methods
@@ -159,6 +162,24 @@ EOF
 
 
   private
+
+  def put_check_result
+    c = FactoryGirl.create(:check)
+    m = {
+          "timestamp" => 1329775841,
+          "metrics" => [
+            {
+              "metrics"  => { "size"=>297, "used"=>202, "free"=>94, "usage"=>69 },
+              "metadata" => { "mount"=>"/", "type"=>"hfs" }
+            }
+          ],
+        "errors"=>[], "status"=>"OK", "check_id"=>c.id,
+        "key"=>"hardware.storage.disk"
+    }
+
+    mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /hardware/ and v.include? 1329775841.to_s }.times(4)
+    Bixby::Metrics.new.put_check_result(m)
+  end
 
   def test_get_host(host)
     stub, req = create_req()
