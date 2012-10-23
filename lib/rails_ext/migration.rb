@@ -47,9 +47,10 @@ class ActiveRecord::Migration
 
   # Add a foreign key constraint to a table
   #
-  # @param [String] table         table on which to add the constraint
-  # @param [Stirng] other_table   table to which we will refer
-  def add_fk(table, other_table)
+  # @param [Symbol] table         table on which to add the constraint
+  # @param [Symbol] other_table   table to which we will refer
+  # @param [Symbol] column        column in 'table' if it differs from 'other_table_id' (default: nil)
+  def add_fk(table, other_table, column = nil)
 
     if other_table == :parent or other_table == :parent_id then
       # self reference
@@ -60,9 +61,9 @@ class ActiveRecord::Migration
     else
       # standard fk
       fk_name = "fk_#{table}_#{other_table.to_s.pluralize}"
-      o_fk = other_table.to_s.foreign_key
-      add_index table, o_fk, :order => { o_fk => :asc }
-      execute "ALTER TABLE #{table} ADD CONSTRAINT `#{fk_name}` FOREIGN KEY (`#{other_table.to_s.foreign_key}` ) REFERENCES `#{other_table.to_s.pluralize}` (`id` ) ON DELETE NO ACTION ON UPDATE NO ACTION"
+      fk_col = column || other_table.to_s.foreign_key
+      add_index table, fk_col, :order => { fk_col => :asc }
+      execute "ALTER TABLE #{table} ADD CONSTRAINT `#{fk_name}` FOREIGN KEY (`#{fk_col}` ) REFERENCES `#{other_table.to_s.pluralize}` (`id` ) ON DELETE NO ACTION ON UPDATE NO ACTION"
     end
   end
 

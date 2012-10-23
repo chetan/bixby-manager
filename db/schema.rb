@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121018224530) do
+ActiveRecord::Schema.define(:version => 20121023155314) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                     :null => false
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(:version => 20121018224530) do
   add_index "alerts", ["metric_id"], :name => "index_alerts_on_metric_id"
 
   create_table "annotations", :force => true do |t|
-    t.integer  "host_id",    :null => false
+    t.integer  "host_id",    :null => true
     t.string   "name"
     t.string   "detail"
     t.datetime "created_at"
@@ -75,6 +75,15 @@ ActiveRecord::Schema.define(:version => 20121018224530) do
   end
 
   add_index "commands", ["repo_id"], :name => "fk_commands_repos1"
+
+  create_table "escalation_policies", :force => true do |t|
+    t.string   "name"
+    t.integer  "on_call_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "escalation_policies", ["on_call_id"], :name => "index_escalation_policies_on_on_call_id"
 
   create_table "host_groups", :force => true do |t|
     t.integer "org_id",    :null => false
@@ -151,6 +160,20 @@ ActiveRecord::Schema.define(:version => 20121018224530) do
 
   add_index "metrics_metadata", ["metadata_id"], :name => "fk_metrics_metadata_metadata1"
   add_index "metrics_metadata", ["metric_id"], :name => "fk_metrics_metadata_metrics1"
+
+  create_table "on_calls", :force => true do |t|
+    t.string   "name"
+    t.integer  "rotation_period", :limit => 2
+    t.integer  "handoff_day",     :limit => 1
+    t.time     "handoff_time"
+    t.integer  "current_user_id"
+    t.string   "users"
+    t.datetime "next_handoff"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "on_calls", ["current_user_id"], :name => "index_on_calls_on_current_user_id"
 
   create_table "orgs", :force => true do |t|
     t.integer "tenant_id"

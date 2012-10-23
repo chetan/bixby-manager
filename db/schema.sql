@@ -483,6 +483,53 @@ CREATE  TABLE IF NOT EXISTS `alerts` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `on_calls`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `on_calls` ;
+
+CREATE  TABLE IF NOT EXISTS `on_calls` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NOT NULL ,
+  `rotation_period` SMALLINT UNSIGNED NOT NULL ,
+  `handoff_day` TINYINT UNSIGNED NOT NULL ,
+  `handoff_time` TIME NOT NULL ,
+  `current_user_id` INT UNSIGNED NULL ,
+  `users` VARCHAR(255) NULL ,
+  `next_handoff` DATETIME NOT NULL ,
+  `created_at` DATETIME NULL ,
+  `updated_at` DATETIME NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_on_calls_users1_idx` (`current_user_id` ASC) ,
+  CONSTRAINT `fk_on_calls_users1`
+    FOREIGN KEY (`current_user_id` )
+    REFERENCES `users` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `escalation_policies`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `escalation_policies` ;
+
+CREATE  TABLE IF NOT EXISTS `escalation_policies` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NOT NULL ,
+  `on_call_id` INT UNSIGNED NOT NULL ,
+  `created_at` DATETIME NOT NULL ,
+  `updated_at` DATETIME NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_escalation_policies_on_calls1_idx` (`on_call_id` ASC) ,
+  CONSTRAINT `fk_escalation_policies_on_calls1`
+    FOREIGN KEY (`on_call_id` )
+    REFERENCES `on_calls` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

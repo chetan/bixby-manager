@@ -50,6 +50,17 @@ FactoryGirl.define do
     unit "GB"
   end
 
+  factory :on_call do
+    name "prod support"
+    rotation_period 7
+    handoff_day 0
+    t = Time.new
+    t = Time.local(t.year, t.month, t.day, 12, 0) # noon
+    handoff_time t
+    association :current_user, :factory => :user
+    next_handoff Time.new.next_week.change(:hour => t.hour, :min => t.min)
+  end
+
   factory :metadata do
     key "uptime"
     value "34 days"
@@ -82,7 +93,9 @@ FactoryGirl.define do
   end
 
   factory :user do
-    :org
+    association :org
+    username "chetan"
+    email "test@fw2.net"
   end
 
 end
