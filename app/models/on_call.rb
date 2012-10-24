@@ -1,6 +1,7 @@
 
 class OnCall < ActiveRecord::Base
 
+  belongs_to :org
   has_one :current_user, :class_name => User
 
   serialize :users, CSVColumn.new

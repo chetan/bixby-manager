@@ -51,6 +51,7 @@ FactoryGirl.define do
   end
 
   factory :on_call do
+    association :org
     name "prod support"
     rotation_period 7
     handoff_day 0

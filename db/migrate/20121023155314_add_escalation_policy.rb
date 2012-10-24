@@ -2,6 +2,7 @@ class AddEscalationPolicy < ActiveRecord::Migration
   def up
     create_table :on_calls, { :id => false } do |t|
       t.add_id  :id
+      t.add_id  :org_id
       t.string  :name
       t.int     :rotation_period, :limit => 2
       t.int     :handoff_day, :limit => 1
@@ -12,14 +13,17 @@ class AddEscalationPolicy < ActiveRecord::Migration
       t.timestamps
     end
     add_fk :on_calls, :user, :current_user_id
+    add_fk :on_calls, :org
 
     create_table :escalation_policies, { :id => false } do |t|
       t.add_id  :id
+      t.add_id  :org_id
       t.string  :name
       t.add_id  :on_call_id, :null => true
       t.timestamps
     end
     add_fk :escalation_policies, :on_call
+    add_fk :escalation_policies, :org
   end
 
   def down
