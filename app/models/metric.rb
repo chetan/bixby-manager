@@ -1,7 +1,9 @@
 
 class Metric < ActiveRecord::Base
 
-  METADATA_SOURCE = 2
+  if not Metric.const_defined? :METADATA_SOURCE then
+    METADATA_SOURCE = 2
+  end
 
   belongs_to :check
   has_and_belongs_to_many :tags, :class_name => :Metadata, :join_table => "metrics_metadata"
