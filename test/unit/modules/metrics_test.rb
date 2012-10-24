@@ -1,23 +1,18 @@
 
 require 'test_helper'
 
-class Bixby::Test::Modules::Metrics < ActiveSupport::TestCase
+class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
 
   class FooDriver < Bixby::Metrics::Driver
   end
 
   def setup
+    super
     SimpleCov.command_name 'test:modules:metrics'
-    WebMock.reset!
     @body = <<-EOF
 hardware.storage.disk.free 1336748410 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
 hardware.storage.disk.free 1336748470 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
 EOF
-    DatabaseCleaner.start
-  end
-
-  def teardown
-    DatabaseCleaner.clean
   end
 
   def test_require_class

@@ -5,6 +5,7 @@ module Bixby
     class TestCase < ActiveSupport::TestCase
       def setup
         DatabaseCleaner.start
+        WebMock.reset!
       end
       def teardown
         DatabaseCleaner.clean
