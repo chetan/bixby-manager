@@ -117,6 +117,9 @@ class Monitoring < API
       if alert.test_value(metric.last_value) then
         # raise a notification
         user = OnCall.for_org(metric.org).current_user
+        # store history
+        AlertHistory.record(metric, alert, user)
+        # notify (email only for now)
         MonitoringMailer.alert(metric, alert, user).deliver
       end
     end

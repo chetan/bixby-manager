@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121023155314) do
+ActiveRecord::Schema.define(:version => 20121024040345) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                     :null => false
@@ -27,6 +27,23 @@ ActiveRecord::Schema.define(:version => 20121023155314) do
 
   add_index "agents", ["host_id"], :name => "fk_agents_hosts1"
   add_index "agents", ["id"], :name => "id_UNIQUE", :unique => true
+
+  create_table "alert_histories", :force => true do |t|
+    t.integer  "alert_id",                                                     :null => false
+    t.integer  "user_notified_id",                                             :null => false
+    t.datetime "created_at"
+    t.integer  "check_id",                                                     :null => false
+    t.integer  "metric_id",                                                    :null => false
+    t.integer  "severity",         :limit => 2
+    t.decimal  "threshold",                     :precision => 20, :scale => 2
+    t.string   "sign",             :limit => 2
+    t.decimal  "value",                         :precision => 20, :scale => 2
+  end
+
+  add_index "alert_histories", ["alert_id"], :name => "index_alert_histories_on_alert_id"
+  add_index "alert_histories", ["check_id"], :name => "index_alert_histories_on_check_id"
+  add_index "alert_histories", ["metric_id"], :name => "index_alert_histories_on_metric_id"
+  add_index "alert_histories", ["user_notified_id"], :name => "index_alert_histories_on_user_notified_id"
 
   create_table "alerts", :force => true do |t|
     t.integer  "check_id"

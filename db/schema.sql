@@ -178,6 +178,7 @@ CREATE  TABLE IF NOT EXISTS `checks` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_checks_agents1_idx` (`agent_id` ASC) ,
   INDEX `fk_checks_commands1_idx` (`command_id` ASC) ,
+  INDEX `fk_checks_hosts1_idx` (`host_id` ASC) ,
   CONSTRAINT `fk_checks_agents1`
     FOREIGN KEY (`agent_id` )
     REFERENCES `agents` (`id` )
@@ -186,6 +187,11 @@ CREATE  TABLE IF NOT EXISTS `checks` (
   CONSTRAINT `fk_checks_commands1`
     FOREIGN KEY (`command_id` )
     REFERENCES `commands` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_checks_hosts1`
+    FOREIGN KEY (`host_id` )
+    REFERENCES `hosts` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -539,6 +545,44 @@ CREATE  TABLE IF NOT EXISTS `escalation_policies` (
   CONSTRAINT `fk_escalation_policies_orgs1`
     FOREIGN KEY (`org_id` )
     REFERENCES `orgs` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alert_histories`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alert_histories` ;
+
+CREATE  TABLE IF NOT EXISTS `alert_histories` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `alert_id` INT UNSIGNED NOT NULL ,
+  `user_notified_id` INT UNSIGNED NOT NULL ,
+  `created_at` DATETIME NOT NULL ,
+  `check_id` INT UNSIGNED NULL ,
+  `metric_id` INT UNSIGNED NULL ,
+  `severity` SMALLINT NOT NULL ,
+  `threshold` DECIMAL(20,2) NOT NULL ,
+  `sign` CHAR(2) NOT NULL ,
+  `value` DECIMAL(20,2) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_alert_history_alerts1_idx` (`alert_id` ASC) ,
+  INDEX `fk_alert_history_checks1_idx` (`check_id` ASC) ,
+  INDEX `fk_alert_history_metrics1_idx` (`metric_id` ASC) ,
+  CONSTRAINT `fk_alert_history_alerts1`
+    FOREIGN KEY (`alert_id` )
+    REFERENCES `alerts` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_alert_history_checks1`
+    FOREIGN KEY (`check_id` )
+    REFERENCES `checks` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_alert_history_metrics1`
+    FOREIGN KEY (`metric_id` )
+    REFERENCES `metrics` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

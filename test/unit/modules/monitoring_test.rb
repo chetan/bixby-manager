@@ -32,6 +32,16 @@ class Bixby::Test::Modules::Monitoring < Bixby::Test::TestCase
 
     refute_empty ActionMailer::Base.deliveries
     assert_equal 1, ActionMailer::Base.deliveries.size
+
+    # check that history was recorded
+    ah = AlertHistory.all
+    refute_empty ah
+    assert_equal 1, ah.size
+
+    ah = ah.first
+    assert ah
+    assert_equal a.id, ah.alert_id
+    assert_equal 280, ah.threshold
   end
 
 
