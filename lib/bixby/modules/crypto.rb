@@ -55,7 +55,7 @@ module Bixby
       #
       # @return [OpenSSL::PKey::RSA] private key file
       def server_key_for_agent(agent)
-        OpenSSL::PKey::RSA.new(agent.host.org.tenant.private_key)
+        OpenSSL::PKey::RSA.new(agent.tenant.private_key)
       end
 
     end # Crypto

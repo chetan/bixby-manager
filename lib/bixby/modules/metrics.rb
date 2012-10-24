@@ -179,12 +179,12 @@ class Metrics < API
 
           # attach extra metadata before storing
           if not (metadata[:host] or metadata["host"]) then
-            metadata[:host] = check.agent.host.hostname || check.agent.host.ip
+            metadata[:host] = check.host.hostname || check.host.ip
           end
           metadata[:host_id]     = check.host.id
           metadata[:check_id]    = check.id
-          metadata[:org_id]      = check.agent.host.org.id
-          metadata[:tenant_id]   = check.agent.host.org.tenant.id
+          metadata[:org_id]      = check.org.id
+          metadata[:tenant_id]   = check.tenant.id
 
           # save
           metric["metrics"].each do |k,v|

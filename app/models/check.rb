@@ -9,6 +9,20 @@ class Check < ActiveRecord::Base
 
   serialize :args, JSONColumn.new
 
+  # Shortcut accessor for this Check's Org
+  #
+  # @return [Org]
+  def org
+    self.host.org
+  end
+
+  # Shortcut accessor for this Check's Tenant
+  #
+  # @return [Tenant]
+  def tenant
+    self.org.tenant
+  end
+
   # Get a list of MetricInfo that this check provides
   def metrics
     @metrics ||= MetricInfo.where("command_id = ?", self.command_id)
