@@ -2,7 +2,7 @@
 class OnCall < ActiveRecord::Base
 
   belongs_to :org
-  has_one :current_user, :class_name => User
+  has_one :current_user, :class_name => User, :foreign_key => :id
 
   serialize :users, CSVColumn.new
 
