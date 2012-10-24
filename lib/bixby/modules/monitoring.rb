@@ -6,6 +6,10 @@ class Monitoring < API
   GET_OPTIONS = "--options"
   GET_METRICS = "--monitor"
 
+  Bixby::Metrics.add_hook(:put_check_result) do |metrics|
+    Monitoring.new.test_metrics(metrics)
+  end
+
   # Get command options specific to the specified agent
   #
   # @param [Agent] agent
@@ -99,6 +103,27 @@ class Monitoring < API
 
     return check
   end
+
+  # Test the given list of metrics for alerts
+  #
+  # @param [Array<Metric>] metrics
+  def test_metrics(metrics)
+
+    metrics.each do |metric|
+
+      alert = Alert.for_metric(metric).first
+      next if alert.blank?
+
+      if alert.test_value(metric.last_value) then
+        # raise a notification
+        user = OnCall.for_org(metric.org).current_user
+        MonitoringMailer.alert(metric, alert, user).deliver
+      end
+    end
+
+  end
+
+
 
   private
 
