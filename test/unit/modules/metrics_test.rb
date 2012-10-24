@@ -61,10 +61,11 @@ EOF
 
   def test_put_check_result_hook
     count = 0
-    Bixby::Metrics.add_hook(:put_check_result) do |results|
+    Bixby::Metrics.add_hook(:put_check_result) do |metrics|
       count += 1
-      assert_equal 1, results.size
-      assert_equal 1329775841, results[0]["timestamp"].to_i
+      assert_equal 4, metrics.size
+      assert_kind_of Metric, metrics.first
+      assert metrics.first.key =~ /size/
     end
     put_check_result()
 

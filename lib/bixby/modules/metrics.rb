@@ -153,12 +153,14 @@ class Metrics < API
   def put_check_result(results)
 
     results = array(results)
+    metrics = []
 
     ActiveRecord::Base.transaction do
       results.each do |result|
 
         # TODO [security] validate check ownership
         check = Check.find(result["check_id"].to_i)
+        time = result["timestamp"].to_i
 
         result["metrics"].each do |metric|
 
@@ -170,8 +172,9 @@ class Metrics < API
             key = "#{base}#{k}"
             m = Metric.for(check, key, metadata)
             m.last_value = v
-            m.touch
+            m.updated_at = time
             m.save!
+            metrics << m
           end
 
           # attach extra metadata before storing
@@ -184,7 +187,6 @@ class Metrics < API
           metadata[:tenant_id]   = check.agent.host.org.tenant.id
 
           # save
-          time = result["timestamp"].to_i
           metric["metrics"].each do |k,v|
             key = "#{base}#{k}"
             put(key, v, time, metadata)
@@ -196,7 +198,7 @@ class Metrics < API
       end # results.each
     end # transaction
 
-    self.class.run_hook(:put_check_result, results)
+    self.class.run_hook(:put_check_result, metrics)
     nil
   end
 
