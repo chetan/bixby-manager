@@ -33,7 +33,7 @@ class Alert < ActiveRecord::Base
   #
   # @param [Float] val    value to test
   # @return [Boolean]     true if value passes the threshold test
-  def test(val)
+  def test_value(val)
 
     t = self.threshold
 

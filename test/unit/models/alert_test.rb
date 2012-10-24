@@ -32,28 +32,28 @@ class Bixby::Test::Models::Alert < Bixby::Test::TestCase
     a.threshold = 7
     a.sign = :gt
 
-    assert a.test(45)
-    refute a.test(7)
-    refute a.test(6)
+    assert a.test_value(45)
+    refute a.test_value(7)
+    refute a.test_value(6)
 
     a.sign = :lt
-    assert a.test(5)
-    refute a.test(9)
+    assert a.test_value(5)
+    refute a.test_value(9)
 
     a.sign = :ne
-    assert a.test(8)
+    assert a.test_value(8)
 
     a.sign = :eq
-    assert a.test(7)
+    assert a.test_value(7)
 
     a.sign = :ge
-    assert a.test(7)
-    assert a.test(8)
+    assert a.test_value(7)
+    assert a.test_value(8)
 
     a.sign = :le
-    assert a.test(7)
-    assert a.test(6)
-    assert a.test(7.00000)
+    assert a.test_value(7)
+    assert a.test_value(6)
+    assert a.test_value(7.00000)
 
   end
 
