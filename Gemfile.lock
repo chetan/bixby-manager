@@ -183,6 +183,7 @@ GEM
     factory_girl_rails (4.1.0)
       factory_girl (~> 4.1.0)
       railties (>= 3.0.0)
+    ffi (1.0.11-java)
     git (1.2.5)
     growl (1.0.3)
     guard (1.4.0)
@@ -204,6 +205,14 @@ GEM
     jwt (0.1.4)
       json (>= 1.2.4)
     kgio (2.7.4)
+    launchy (2.1.0)
+      addressable (~> 2.2.6)
+    launchy (2.1.0-java)
+      addressable (~> 2.2.6)
+      ffi (~> 1.0.9)
+      spoon (~> 0.0.1)
+    letter_opener (1.0.0)
+      launchy (>= 2.0.4)
     linecache (0.46)
       rbx-require-relative (> 0.0.4)
     listen (0.5.3)
@@ -361,7 +370,6 @@ DEPENDENCIES
   cane
   coffee-script
   coffee-script-source!
-  colorize
   continuum!
   cool.io
   curb
@@ -370,14 +378,13 @@ DEPENDENCIES
   delete_paranoid
   factory_girl_rails
   git
-  growl
-  guard
   haml
   haml_assets
   hirb
   hiredis
   json
   jst_str!
+  letter_opener
   lorem_ipsum!
   memcached
   minitest

@@ -71,6 +71,7 @@ group :development do
     gem "ruby-debug",   :platforms => :mri_18
     gem "debugger",     :platforms => :mri_19
     gem "awesome_print"
+    gem "letter_opener"
 
     # newrelic
     gem 'newrelic_rpm'
@@ -88,11 +89,6 @@ group :development do
     gem "pry-rails"
     gem "hirb"
     gem "sextant"
-
-    gem "test_guard", :git => "https://github.com/chetan/test_guard.git"
-    gem 'rb-fsevent', '~> 0.9.1' if RbConfig::CONFIG['target_os'] =~ /darwin(1.+)?$/i
-    gem 'rb-inotify', '~> 0.8.8', :github => 'mbj/rb-inotify' if RbConfig::CONFIG['target_os'] =~ /linux/i
-    gem 'wdm',        '~> 0.0.3' if RbConfig::CONFIG['target_os'] =~ /mswin|mingw/i
 
     # coverage
     gem "rcov",       :platforms => :mri_18
@@ -116,7 +112,9 @@ group :development do
     gem "factory_girl_rails"
 
     # test utils
-    gem "guard"
-    gem "growl"
-    gem "colorize"
+    gem "test_guard", :git => "https://github.com/chetan/test_guard.git"
+    gem 'rb-fsevent', '~> 0.9.1' if RbConfig::CONFIG['target_os'] =~ /darwin(1.+)?$/i
+    gem 'rb-inotify', '~> 0.8.8', :github => 'mbj/rb-inotify' if RbConfig::CONFIG['target_os'] =~ /linux/i
+    gem 'wdm',        '~> 0.0.3' if RbConfig::CONFIG['target_os'] =~ /mswin|mingw/i
+
 end
