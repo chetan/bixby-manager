@@ -5,6 +5,8 @@ class Alert < ActiveRecord::Base
   belongs_to :check
   belongs_to :metric
 
+  serialize :sign, SymbolColumn.new
+
   module Severity
     UNKNOWN  = 0
     WARNING  = 1
