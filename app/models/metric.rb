@@ -10,6 +10,13 @@ class Metric < ActiveRecord::Base
 
   attr_accessor :data, :metadata
 
+  # Shortcut accessor for this Metric's Org
+  #
+  # @return [Org]
+  def org
+    self.check.org
+  end
+
   # Find an existing Metric or return a new instance
   #
   # @param [Check] check
