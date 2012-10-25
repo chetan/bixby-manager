@@ -73,15 +73,14 @@ GIT
 
 GIT
   remote: https://github.com/chetan/test_guard.git
-  revision: 87e79592d1102acde8ca06cb305a40557ead01f4
+  revision: e3b6aff9d09d522a6acc1e8a1b439f982fd74e61
   specs:
-    test_guard (0.1.1)
+    test_guard (0.1.2)
       awesome_print
-      colorize
       growl
       guard
-      hirb
       simplecov
+      simplecov-console
 
 GIT
   remote: https://github.com/colszowka/simplecov.git
