@@ -3,7 +3,7 @@ require "test_helper"
 
 class Bixby::Test::Views::Models::Host < Bixby::Test::TestCase
 
-  def test_convert_host
+  def test_convert
     host = FactoryGirl.create(:host)
     host.update_attributes({:tag_list => "db,prod", :alias => "testing", :desc => "blarney stone"})
     host.metadata += FactoryGirl.create_list(:metadata, 2)
