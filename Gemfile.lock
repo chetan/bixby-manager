@@ -14,9 +14,9 @@ GIT
 
 GIT
   remote: git://github.com/chetan/simplecov-html.git
-  revision: 172b4e5c1252fb1ba1c35a12580e9d9405507632
+  revision: 5e0c7c3022926c4ed1db47057841cbbabadf969c
   specs:
-    simplecov-html (0.5.3)
+    simplecov-html (0.7.1)
 
 GIT
   remote: git@github.com:bvandenbos/resque-scheduler.git
@@ -29,9 +29,9 @@ GIT
 
 GIT
   remote: https://github.com/bblimke/webmock.git
-  revision: 887bf32ec8a57fc8a457a25afdc398ce3988b8b3
+  revision: 5662ca4c2fdb5e9d63deca99a86d6dd99bb12c48
   specs:
-    webmock (1.8.7)
+    webmock (1.8.11)
       addressable (>= 2.2.7)
       crack (>= 0.1.7)
 
@@ -76,11 +76,11 @@ GIT
 
 GIT
   remote: https://github.com/colszowka/simplecov.git
-  revision: 3feee29196ac663bbc7acdaf7c8be7b17130b910
+  revision: d4ed33b3876fe6f1e808bed60e134e2f8adf6267
   specs:
-    simplecov (0.6.4)
+    simplecov (0.7.1)
       multi_json (~> 1.0)
-      simplecov-html (~> 0.5.3)
+      simplecov-html (~> 0.7.1)
 
 GIT
   remote: https://github.com/defunkt/resque.git
@@ -151,8 +151,9 @@ GEM
     bahia (0.7.2)
       open4 (~> 1.3.0)
     builder (3.0.4)
-    cane (1.4.0)
-    coderay (1.0.7)
+    cane (2.4.0)
+      parallel
+    coderay (1.0.8)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
@@ -163,19 +164,19 @@ GEM
     crack (0.3.1)
     curb (0.8.1)
     curb_threadpool (0.5.2)
-    daemons (1.1.8)
+    daemons (1.1.9)
     database_cleaner (0.8.0)
-    debugger (1.1.4)
+    debugger (1.2.1)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.1.1)
-      debugger-ruby_core_source (~> 1.1.3)
+      debugger-ruby_core_source (~> 1.1.4)
     debugger-linecache (1.1.2)
       debugger-ruby_core_source (>= 1.1.1)
-    debugger-ruby_core_source (1.1.3)
+    debugger-ruby_core_source (1.1.4)
     delete_paranoid (1.0.4)
       activerecord
     erubis (2.7.0)
-    eventmachine (0.12.10)
+    eventmachine (1.0.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.1.0)
@@ -189,8 +190,8 @@ GEM
     guard (1.4.0)
       listen (>= 0.4.2)
       thor (>= 0.14.6)
-    haml (3.1.6)
-    haml_assets (0.1.0)
+    haml (3.1.7)
+    haml_assets (0.2.1)
       haml
       tilt
     hike (1.2.1)
@@ -222,16 +223,17 @@ GEM
       treetop (~> 1.4.8)
     memcached (1.4.3)
     metaclass (0.0.1)
-    method_source (0.8)
+    method_source (0.8.1)
     mime-types (1.19)
-    minitest (3.2.0)
-    mocha (0.12.0)
+    minitest (4.1.0)
+    mocha (0.12.7)
       metaclass (~> 0.0.1)
     multi_json (1.3.6)
     mysql2 (0.3.11)
     newrelic_rpm (3.4.2.1)
     oj (1.3.4)
     open4 (1.3.0)
+    parallel (0.5.19)
     polyglot (0.3.3)
     pony (1.4)
       mail (> 2.0)
@@ -244,8 +246,8 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.3.1)
       spoon (~> 0.0)
-    pry-rails (0.1.6)
-      pry
+    pry-rails (0.2.2)
+      pry (>= 0.9.10)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -270,7 +272,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rainbows (4.3.1)
+    rainbows (4.4.1)
       kgio (~> 2.5)
       rack (~> 1.1)
       unicorn (~> 4.1)
@@ -283,7 +285,7 @@ GEM
       rcov
     rdoc (3.12)
       json (~> 1.4)
-    redcarpet (2.1.1)
+    redcarpet (2.2.2)
     redis (3.0.2)
     redis-lock (0.1.0)
       redis
@@ -310,14 +312,14 @@ GEM
     sextant (0.1.3)
       activesupport (>= 3.2)
       rails (>= 3.2)
-    simple_form (2.0.2)
+    simple_form (2.0.4)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     sinatra (1.3.3)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
       tilt (~> 1.3, >= 1.3.3)
-    slop (3.3.2)
+    slop (3.3.3)
     spoon (0.0.1)
     spork-rails (3.2.0)
       rails (>= 3.0.0, < 3.3.0)
@@ -327,7 +329,7 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     systemu (2.5.2)
-    thin (1.4.1)
+    thin (1.5.0)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
@@ -346,13 +348,13 @@ GEM
     uglifier (1.2.6)
       execjs (>= 0.3.0)
       multi_json (~> 1.3)
-    unicorn (4.3.1)
+    unicorn (4.4.0)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
     vegas (0.1.11)
       rack (>= 1.0.0)
-    yard (0.8.2.1)
+    yard (0.8.3)
     yui-compressor (0.9.6)
       POpen4 (>= 0.1.4)
 
