@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/simplecov-html.git
-  revision: 5e0c7c3022926c4ed1db47057841cbbabadf969c
+  revision: 726120a3cb00d6389601e98d29d0e47d9bea5e44
   specs:
     simplecov-html (0.7.1)
 
@@ -26,6 +26,15 @@ GIT
       redis (>= 2.0.1)
       resque (>= 1.20.0)
       rufus-scheduler
+
+GIT
+  remote: git@github.com:chetan/simplecov-console.git
+  revision: 718adc40541692b965d876d711029f95896d7f2e
+  specs:
+    simplecov-console (0.1.0)
+      colorize
+      hirb
+      simplecov
 
 GIT
   remote: https://github.com/bblimke/webmock.git
@@ -427,6 +436,7 @@ DEPENDENCIES
   sextant
   simple_form
   simplecov!
+  simplecov-console!
   simplecov-html!
   spork!
   spork-rails

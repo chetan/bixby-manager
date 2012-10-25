@@ -94,12 +94,13 @@ group :development do
     gem "rcov_rails", :platforms => :mri_18
     gem "simplecov",  :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git", :require => false
     gem "simplecov-html", :platforms => :mri_19, :git => "git://github.com/chetan/simplecov-html.git", :require => false
+    gem "simplecov-console", :platforms => :mri_19, :git => "git@github.com:chetan/simplecov-console.git", :require => false
 
     # quality
     gem "cane", :platforms => :mri_19
 
     # test tools (frameworks, mock, runners, etc)
-    gem 'rake-hooks'
+    gem 'rake-hooks', :require => false
     gem 'webmock', :git => 'https://github.com/bblimke/webmock.git', :require => false
     gem "minitest"
     gem 'mocha', :require => false
