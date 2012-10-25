@@ -44,6 +44,7 @@ FactoryGirl.define do
   end
 
   factory :metric_info do
+    association :command
     metric "hardware.storage.disk.free"
     desc "sample metric description"
     label "$mount"

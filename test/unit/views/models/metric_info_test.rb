@@ -1,0 +1,18 @@
+
+require "test_helper"
+
+class Bixby::Test::Views::Models::Host < Bixby::Test::TestCase
+
+  def test_convert_host
+    m = FactoryGirl.create(:metric_info)
+    json = ApiView::Engine.render(m, nil)
+    h = MultiJson.load(json)
+
+    assert h
+    %w(id metric unit desc label).each do |key|
+      assert_includes h, key
+    end
+    refute_includes h, "command_id"
+  end
+
+end
