@@ -23,6 +23,11 @@ module Bixby
 
     module Controllers
     end
+
+    module Views
+      module Models
+      end
+    end
   end
 
 end
