@@ -5,16 +5,18 @@ def prefork
     # add to library load path
     $: << root
   end
+  if not ENV['DRB'] then
+    load_simplecov()
+  end
   require "test_guard"
   require "test_prefork"
   require "test_setup"
 end
 
-def bootstrap_tests
-
+def load_simplecov
   begin
     require 'simplecov'
-      SimpleCov.start do
+    SimpleCov.start do
       merge_timeout 7200
 
       add_filter '/test/'
@@ -26,6 +28,14 @@ def bootstrap_tests
       add_group 'Libraries', 'lib'
     end
   rescue Exception => ex
+    warn "simplecov not available"
+  end
+end
+
+def bootstrap_tests
+
+  if ENV['DRB'] then
+    load_simplecov()
   end
 
   begin

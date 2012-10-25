@@ -74,10 +74,9 @@ group :development do
     gem "letter_opener"
 
     # newrelic
-    gem 'newrelic_rpm'
-    gem 'rpm_contrib'
-    # disabling due to incompat with current redis gem
-    # gem 'newrelic-redis'
+    gem 'newrelic_rpm', :require => false
+    gem 'rpm_contrib', :require => false
+    gem 'newrelic-redis', :require => false
 
     # docs
     gem "yard"
@@ -93,13 +92,14 @@ group :development do
     # coverage
     gem "rcov",       :platforms => :mri_18
     gem "rcov_rails", :platforms => :mri_18
-    gem "simplecov",  :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git"
-    gem "simplecov-html", :platforms => :mri_19, :git => "git://github.com/chetan/simplecov-html.git"
+    gem "simplecov",  :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git", :require => false
+    gem "simplecov-html", :platforms => :mri_19, :git => "git://github.com/chetan/simplecov-html.git", :require => false
 
     # quality
     gem "cane", :platforms => :mri_19
 
     # test tools (frameworks, mock, runners, etc)
+    gem 'rake-hooks'
     gem 'webmock', :git => 'https://github.com/bblimke/webmock.git', :require => false
     gem "minitest"
     gem 'mocha', :require => false
