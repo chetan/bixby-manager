@@ -9,7 +9,6 @@ begin
     cane.no_style = true
   end
 
-  task :default => :quality
 rescue LoadError
   warn "cane not available, quality task not provided."
 end
