@@ -1,16 +1,7 @@
 
 require 'test_helper'
 
-class Bixby::Test::Modules::Scheduler < ActiveSupport::TestCase
-
-  def setup
-    SimpleCov.command_name 'test:modules:scheduler'
-    DatabaseCleaner.start
-  end
-
-  def teardown
-    DatabaseCleaner.clean
-  end
+class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
 
   def test_require_class
     require "bixby/modules/scheduler"

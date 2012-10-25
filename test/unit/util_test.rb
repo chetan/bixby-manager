@@ -1,11 +1,7 @@
 
 require 'test_helper'
 
-class Bixby::Test::Util < ActiveSupport::TestCase
-
-  def setup
-    SimpleCov.command_name 'test:util'
-  end
+class Bixby::Test::Util < Bixby::Test::TestCase
 
   def test_const_exists?
     assert const_exists? "Object"

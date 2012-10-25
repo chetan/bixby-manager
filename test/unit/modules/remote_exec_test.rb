@@ -2,17 +2,7 @@
 require 'test_helper'
 
 module Bixby
-class Test::Modules::RemoteExec < ActiveSupport::TestCase
-
-  def setup
-    SimpleCov.command_name 'test:modules:remote_exec'
-    WebMock.reset!
-    DatabaseCleaner.start
-  end
-
-  def teardown
-    DatabaseCleaner.clean
-  end
+class Test::Modules::RemoteExec < Bixby::Test::TestCase
 
   def test_create_spec
       c = CommandSpec.new(:repo => "support", :bundle => "foobar")

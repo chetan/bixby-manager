@@ -3,11 +3,6 @@ require "test_helper"
 
 class Bixby::Test::Models::OnCall < Bixby::Test::TestCase
 
-  def setup
-    super
-    SimpleCov.command_name 'test:models:on_call'
-  end
-
   def test_users
     o = FactoryGirl.build(:on_call)
     assert_nil o.next_user

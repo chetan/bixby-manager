@@ -1,12 +1,10 @@
 
 require "test_helper"
 
-class Bixby::Test::Models::Metric < ActiveSupport::TestCase
+class Bixby::Test::Models::Metric < Bixby::Test::TestCase
 
   def setup
-    SimpleCov.command_name 'test:models::metric'
-    DatabaseCleaner.start
-    WebMock.reset!
+    super
     @body1 = <<-EOF
 hardware.storage.disk.free 1336748410 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
 EOF
@@ -19,10 +17,6 @@ EOF
     mi = FactoryGirl.build(:metric_info)
     mi.command_id = m.check.command.id
     mi.save!
-  end
-
-  def teardown
-    DatabaseCleaner.clean
   end
 
   def test_metrics_for_host

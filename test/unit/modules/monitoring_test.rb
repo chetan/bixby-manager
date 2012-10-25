@@ -4,7 +4,7 @@ require 'test_helper'
 class Bixby::Test::Modules::Monitoring < Bixby::Test::TestCase
 
   def setup
-    SimpleCov.command_name 'test:modules:monitoring'
+    super
     @check ||= FactoryGirl.create(:check)
     oncall = FactoryGirl.build(:on_call)
     oncall.org = @check.org

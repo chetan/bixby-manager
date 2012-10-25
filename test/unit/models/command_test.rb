@@ -1,16 +1,7 @@
 
 require "test_helper"
 
-class Bixby::Test::Models::Command < ActiveSupport::TestCase
-
-  def setup
-    SimpleCov.command_name 'test:models:command'
-    DatabaseCleaner.start
-  end
-
-  def teardown
-    DatabaseCleaner.clean
-  end
+class Bixby::Test::Models::Command < Bixby::Test::TestCase
 
   def test_path
     cmd = FactoryGirl.create(:command)

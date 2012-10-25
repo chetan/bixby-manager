@@ -4,16 +4,7 @@ require 'test_helper'
 require 'digest'
 
 module Bixby
-class Test::Modules::Inventory < ActiveSupport::TestCase
-
-  def setup
-    SimpleCov.command_name 'test:modules:inventory'
-    DatabaseCleaner.start
-  end
-
-  def teardown
-    DatabaseCleaner.clean
-  end
+class Test::Modules::Inventory < Bixby::Test::TestCase
 
   def test_nil_pw
 

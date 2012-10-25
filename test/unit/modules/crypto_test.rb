@@ -1,16 +1,10 @@
 require 'test_helper'
 
 module Bixby
-class Test::Modules::Crypto < ActiveSupport::TestCase
-
-  def setup
-    SimpleCov.command_name 'test:modules:crypto'
-    WebMock.reset!
-    DatabaseCleaner.start
-  end
+class Test::Modules::Crypto < Bixby::Test::TestCase
 
   def teardown
-    DatabaseCleaner.clean
+    super
     BIXBY_CONFIG[:crypto] = false
   end
 

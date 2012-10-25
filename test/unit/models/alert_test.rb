@@ -3,11 +3,6 @@ require "test_helper"
 
 class Bixby::Test::Models::Alert < Bixby::Test::TestCase
 
-  def setup
-    super
-    SimpleCov.command_name 'test:models:alert'
-  end
-
   def test_for_metric
     m = FactoryGirl.create(:metric)
     a = Alert.new

@@ -1,16 +1,7 @@
 
 require "test_helper"
 
-class Bixby::Test::Models::Host < ActiveSupport::TestCase
-
-  def setup
-    SimpleCov.command_name 'test:models:host'
-    DatabaseCleaner.start
-  end
-
-  def teardown
-    DatabaseCleaner.clean
-  end
+class Bixby::Test::Models::Host < Bixby::Test::TestCase
 
   def test_to_string
     h = Host.new

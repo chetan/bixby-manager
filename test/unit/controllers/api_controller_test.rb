@@ -27,7 +27,6 @@ class API < ActionController::TestCase
 
   def setup
     @controller = ApiController.new
-    SimpleCov.command_name 'test:controllers:api'
   end
 
   def test_post_invalid
