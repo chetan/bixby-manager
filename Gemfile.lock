@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/simplecov-html.git
-  revision: 726120a3cb00d6389601e98d29d0e47d9bea5e44
+  revision: 6328490fbafcb873303b6dd1bb228867dacd03b6
   specs:
     simplecov-html (0.7.1)
 
