@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(:version => 20121024040345) do
     t.integer  "alert_id",                                                     :null => false
     t.integer  "user_notified_id",                                             :null => false
     t.datetime "created_at"
-    t.integer  "check_id",                                                     :null => false
-    t.integer  "metric_id",                                                    :null => false
+    t.integer  "check_id"
+    t.integer  "metric_id"
     t.integer  "severity",         :limit => 2
     t.decimal  "threshold",                     :precision => 20, :scale => 2
     t.string   "sign",             :limit => 2
