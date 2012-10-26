@@ -15,7 +15,7 @@ EOF
     m = FactoryGirl.create(:metric)
     @host = m.check.host
     mi = FactoryGirl.build(:metric_info)
-    mi.command_id = m.check.command.id
+    mi.command = m.check.command
     mi.save!
   end
 
@@ -44,7 +44,8 @@ EOF
     assert_kind_of Array, metrics
     assert_equal 1, metrics.size
 
-    m = MultiJson.load(ApiView::Engine.render(metrics.first, nil))
+    json = ApiView::Engine.render(metrics.first, nil)
+    m = MultiJson.load(json)
     assert_kind_of Hash, m
     %w{check_id key status desc unit data metadata}.each { |k| assert m.include?(k), "includes #{k}" }
     refute m.include? "created_at"
