@@ -1,7 +1,7 @@
 
 require "test_helper"
 
-class Bixby::Test::Views::Models::Host < Bixby::Test::TestCase
+class Bixby::Test::Views::Models::MetricInfo < Bixby::Test::TestCase
 
   def test_convert
     m = FactoryGirl.create(:metric_info)
