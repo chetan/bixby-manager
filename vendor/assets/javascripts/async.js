@@ -1,4 +1,5 @@
-// Library source: https://github.com/caolan/async
+// source: https://github.com/caolan/async
+// rev: 96a7da519adc9e8cb3c187a2da4945f5edea71d3 (2012-10-04)
 /*global setTimeout: false, console: false */
 (function () {
 
@@ -7,13 +8,6 @@
     // global on the server, window in the browser
     var root = this,
         previous_async = root.async;
-
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = async;
-    }
-    else {
-        root.async = async;
-    }
 
     async.noConflict = function () {
         root.async = previous_async;
@@ -92,7 +86,7 @@
                 else {
                     completed += 1;
                     if (completed === arr.length) {
-                        callback();
+                        callback(null);
                     }
                 }
             });
@@ -114,7 +108,7 @@
                 else {
                     completed += 1;
                     if (completed === arr.length) {
-                        callback();
+                        callback(null);
                     }
                     else {
                         iterate();
@@ -135,30 +129,30 @@
         var running = 0;
 
         (function replenish () {
-          if (completed === arr.length) {
-              return callback();
-          }
+            if (completed === arr.length) {
+                return callback();
+            }
 
-          while (running < limit && started < arr.length) {
-            iterator(arr[started], function (err) {
-              if (err) {
-                  callback(err);
-                  callback = function () {};
-              }
-              else {
-                  completed += 1;
-                  running -= 1;
-                  if (completed === arr.length) {
-                      callback();
-                  }
-                  else {
-                      replenish();
-                  }
-              }
-            });
-            started += 1;
-            running += 1;
-          }
+            while (running < limit && started < arr.length) {
+                started += 1;
+                running += 1;
+                iterator(arr[started - 1], function (err) {
+                    if (err) {
+                        callback(err);
+                        callback = function () {};
+                    }
+                    else {
+                        completed += 1;
+                        running -= 1;
+                        if (completed === arr.length) {
+                            callback();
+                        }
+                        else {
+                            replenish();
+                        }
+                    }
+                });
+            }
         })();
     };
 
@@ -401,7 +395,7 @@
             var ready = function () {
                 return _reduce(requires, function (a, x) {
                     return (a && results.hasOwnProperty(x));
-                }, true);
+                }, true) && !results.hasOwnProperty(k);
             };
             if (ready()) {
                 task[task.length - 1](taskCallback, results);
@@ -687,7 +681,22 @@
     async.unmemoize = function (fn) {
       return function () {
         return (fn.unmemoized || fn).apply(null, arguments);
-      }
+      };
     };
+
+    // AMD / RequireJS
+    if (typeof define !== 'undefined' && define.amd) {
+        define('async', [], function () {
+            return async;
+        });
+    }
+    // Node.js
+    else if (typeof module !== 'undefined' && module.exports) {
+        module.exports = async;
+    }
+    // included directly via <script> tag
+    else {
+        root.async = async;
+    }
 
 }());
