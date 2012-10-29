@@ -25,7 +25,7 @@ class RemoteExec < API
 
       if ret.code != 404 then
         # error we can't handle, return
-        return ret
+        return CommandResponse.from_json_response(ret)
       end
 
       # try to provision it, then try again
