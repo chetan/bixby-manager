@@ -1,7 +1,8 @@
 
 require 'test_helper'
 
-class Bixby::Test::Modules::Monitoring < Bixby::Test::TestCase
+module Bixby
+class Test::Modules::Monitoring < Bixby::Test::TestCase
 
   def setup
     super
@@ -14,6 +15,23 @@ class Bixby::Test::Modules::Monitoring < Bixby::Test::TestCase
   def test_require_class
     require "bixby/modules/monitoring"
     assert Bixby.const_defined? :Monitoring
+  end
+
+  def test_update_check_config
+
+    stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
+        r = MultiJson.load(req.body)
+        r["operation"] == "exec" and r["params"]["command"] == "ruby_wrapper.rb" and req.body =~ /update_check_config.rb/
+      }.
+        to_return(:status => 200, :body => JsonResponse.new("success", "", {:status => 0, :stdout => ""}).to_json)
+        # with(:body => "{\"operation\":\"exec\",\"params\":{\"bundle\":\"system/monitoring\",\"command\":\"ruby_wrapper.rb\",\"repo\":\"vendor\",\"stdin\":\"[{\\\"interval\\\":null,\\\"retry\\\":null,\\\"timeout\\\":null,\\\"command\\\":{\\\"bundle\\\":\\\"foo\\\",\\\"command\\\":\\\"bar\\\",\\\"repo\\\":\\\"repo\\\",\\\"stdin\\\":\\\"{\\\\\\\"check_id\\\\\\\":2}\\\"}}]\",\"digest\":\"0e75fa55f550f8abb6c726356ea9d2c65a4cec2abd762a37b29b13898a9eaafb\",\"args\":\"vendor/system/monitoring/bin/update_check_config.rb -- \"}}").
+
+    check = FactoryGirl.create(:check)
+    ret = Bixby::Monitoring.new.update_check_config(check.agent)
+
+    assert_requested(stub)
+    assert_kind_of CommandResponse, ret
+
   end
 
   def test_alerting_on_metrics
@@ -65,3 +83,4 @@ class Bixby::Test::Modules::Monitoring < Bixby::Test::TestCase
   end
 
 end
+end # Bixby
