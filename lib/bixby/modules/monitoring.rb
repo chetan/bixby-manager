@@ -50,12 +50,7 @@ class Monitoring < API
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",
                                :command => "update_check_config.rb", :stdin => config.to_json )
 
-    ret = exec_mon(agent, command)
-    if ret.error? then
-      return ret
-    end
-
-    # restart_mon_daemon(agent)
+    return exec_mon(agent, command) # TODO handle err here?
   end
 
   # Restart the monitoring daemon. Starts if not already running.
