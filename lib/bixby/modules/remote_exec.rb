@@ -13,7 +13,7 @@ class RemoteExec < API
     # @param [Agent] agent
     # @param [CommandSpec] command
     #
-    # @return [JsonResponse, CommandResponse]
+    # @return [CommandResponse]
     def exec(agent, command)
 
       command = create_spec(command)
@@ -29,17 +29,15 @@ class RemoteExec < API
       end
 
       # try to provision it, then try again
-      pret = Provisioning.new.provision(agent, command)
-
-      if not pret.success? then
-        # failed to provision, bail out
-        return pret # TODO raise err?
+      ret = Provisioning.new.provision(agent, command)
+      if not ret.success? then
+        return CommandResponse.from_json_response(ret)
       end
 
+      # try to exec again
       ret = exec_api(agent, "exec", command.to_hash)
       if not ret.success? then
-        # TODO raise err?
-        return ret
+        return CommandResponse.from_json_response(ret)
       end
 
       return CommandResponse.new(ret.data)

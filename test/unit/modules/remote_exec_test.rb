@@ -50,7 +50,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     url = "http://2.2.2.2:18000/"
     res = []
     res << JsonResponse.bundle_not_found(cmd).to_json
-    res << JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json
+    res << JsonResponse.new(JsonResponse::SUCCESS, "", {:status => 0, :stdout => "frobnicator echoed"}).to_json
 
     stub = stub_request(:post, url).with { |req|
       j = MultiJson.load(req.body)
@@ -71,6 +71,42 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     assert_equal 0, ret.status
     assert_equal "frobnicator echoed", ret.stdout
     assert ret.success?
+  end
+
+  def test_provision_failure
+
+    # setup command
+    BundleRepository.path = "#{Rails.root}/test"
+    repo  = Repo.new(:name => "support")
+    agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
+    cmd   = Command.new(:bundle => "test_bundle", :command => "echo", :repo => repo)
+
+    # stub out requests/responses
+    url = "http://2.2.2.2:18000/"
+    res = []
+    res << JsonResponse.bundle_not_found(cmd).to_json
+
+    # the exec request
+    stub = stub_request(:post, url).with { |req|
+      j = MultiJson.load(req.body)
+      jp = j["params"]
+      j["operation"] == "exec" and jp["repo"] == "support" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
+    }.to_return { { :status => 200, :body => res.shift } }
+
+    # the provision request
+    stub2 = stub_request(:post, url).with { |req|
+      req.body =~ %r{system\\?/provisioning} and req.body =~ /get_bundle.rb/
+    }.to_return(:status => 200, :body => JsonResponse.new(JsonResponse::FAIL, "", {}).to_json).times(3)
+
+    # try to exec
+    ret = Bixby::RemoteExec.exec(agent, cmd)
+
+    assert_requested(stub, :times => 1)
+    assert_requested(stub2, :times => 1)
+
+    assert_equal CommandResponse, ret.class
+    refute_equal 0, ret.status
+    assert ret.error?
   end
 
 end # Test::Modules::RemoteExec
