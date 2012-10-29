@@ -31,7 +31,7 @@ class RemoteExec < API
       # try to provision it, then try again
       ret = Provisioning.new.provision(agent, command)
       if not ret.success? then
-        return CommandResponse.from_json_response(ret)
+        return CommandResponse.from_json_response(ret) # TODO raise err?
       end
 
       # try to exec again
@@ -50,37 +50,28 @@ class RemoteExec < API
     # @param [CommandSpec] command
     # @param [CommandSpec] sub_command
     #
-    # @return [JsonResponse, CommandResponse]
+    # @return [CommandResponse]
     def exec_with_wrapper(agent, command, sub_command)
 
       ret = exec(agent, command)
-      if not ret.kind_of? CommandResponse then
-        return ret # TODO raise err
-      end
-
       if ret.success? then
         return ret
       end
 
+      # when using a wrapper, the subcomand error will be returned
+      # via a message on stdout instead of via a 404 JsonResponse code
       if ret.stdout !~ /(Bundle|Command)NotFound/ then
         # some other error
         return ret
       end
 
-      pret = Provisioning.new.provision(agent, sub_command)
-
-      if not pret.success? then
-        # failed to provision, bail out
-        return pret # TODO raise err?
-      end
-
-      ret = exec_api(agent, "exec", command.to_hash)
+      ret = Provisioning.new.provision(agent, sub_command)
       if not ret.success? then
-        # TODO raise err?
-        return ret
+        return ret # TODO raise err?
       end
 
-      return CommandResponse.new(ret.data)
+      # return result, whether success or fail
+      return exec(agent, command)
     end
 
     # Convert various inputs to a CommandSpec wrapper
