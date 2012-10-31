@@ -103,23 +103,40 @@ class Monitoring < API
   #
   # @param [Array<Metric>] metrics
   def test_metrics(metrics)
-
     metrics.each do |metric|
 
       alert = Alert.for_metric(metric).first
       next if alert.blank?
 
+      user = OnCall.for_org(metric.org).current_user
+
       if alert.test_value(metric.last_value) then
-        # raise a notification
-        user = OnCall.for_org(metric.org).current_user
+        # alert is triggered, raise a notification
+
+        if alert.severity == metric.status then
+          next # already in this state, skip
+        end
+
         # store history
         AlertHistory.record(metric, alert, user)
+        metric.status = alert.severity # warning or critical for now
+        metric.save!
+
+        # notify (email only for now)
+        MonitoringMailer.alert(metric, alert, user).deliver
+
+      else
+        # alert is back to normal level
+        AlertHistory.record(metric, alert, user)
+        metric.status = Metric::Status::NORMAL
+        metric.save!
+
         # notify (email only for now)
         MonitoringMailer.alert(metric, alert, user).deliver
       end
-    end
 
-  end
+    end # metrics.each
+  end # test_metrics()
 
 
 

@@ -9,8 +9,8 @@ class Alert < ActiveRecord::Base
 
   module Severity
     UNKNOWN  = 0
-    WARNING  = 1
-    CRITICAL = 2
+    WARNING  = 2
+    CRITICAL = 3
   end
 
   # alert sign must be one of the following

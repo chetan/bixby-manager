@@ -60,6 +60,27 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert ah
     assert_equal a.id, ah.alert_id
     assert_equal 280, ah.threshold
+
+    # if we alert again, there should be no state change
+    put_check_result()
+
+    refute_empty ActionMailer::Base.deliveries
+    assert_equal 1, ActionMailer::Base.deliveries.size # still 1
+    assert_equal 1, AlertHistory.all.size
+
+    # now modify the alert so it returns to normal on next put
+    a.threshold = 300
+    a.save!
+
+    put_check_result()
+    assert_equal 2, ActionMailer::Base.deliveries.size
+    assert_equal 2, AlertHistory.all.size
+
+    ah = AlertHistory.last
+    assert_equal a.id, ah.alert_id
+    assert_equal 300, ah.threshold
+    assert_equal Alert::Severity::CRITICAL, ah.severity
+
   end
 
 

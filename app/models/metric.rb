@@ -3,6 +3,13 @@ class Metric < ActiveRecord::Base
 
   if not Metric.const_defined? :METADATA_SOURCE then
     METADATA_SOURCE = 2
+
+    module Status
+      UNKNOWN  = 0
+      NORMAL   = 1
+      WARNING  = 2
+      CRITICAL = 3
+    end
   end
 
   belongs_to :check
@@ -103,6 +110,17 @@ class Metric < ActiveRecord::Base
     Bixby::Metrics.new.get_for_check(check_id, time_start, time_end, tags, agg, downsample)
   end
 
+  def normal?
+    self.status == Status::NORMAL
+  end
+
+  def warning?
+    self.status == Status::WARNING
+  end
+
+  def critical?
+    self.status == Status::CRITICAL
+  end
 
 
   private
