@@ -155,6 +155,12 @@ GEM
     builder (3.0.4)
     cane (2.4.0)
       parallel
+    capistrano (2.13.5)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.1.0)
     coderay (1.0.8)
     coffee-script (2.2.0)
       coffee-script-source
@@ -198,6 +204,7 @@ GEM
     haml_assets (0.2.1)
       haml
       tilt
+    highline (1.6.15)
     hike (1.2.1)
     hirb (0.7.0)
     hiredis (0.4.5)
@@ -235,6 +242,13 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.3.6)
     mysql2 (0.3.11)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.6.1)
+    net-ssh-gateway (1.1.0)
+      net-ssh (>= 1.99.1)
     newrelic-redis (1.3.2)
       newrelic_rpm (~> 3.0)
       redis (< 4.0)
@@ -313,6 +327,8 @@ GEM
       linecache (>= 0.3)
     rufus-scheduler (2.0.17)
       tzinfo (>= 0.3.23)
+    rvm-capistrano (1.2.7)
+      capistrano (>= 2.0.0)
     sass (3.2.1)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
@@ -380,6 +396,7 @@ DEPENDENCIES
   bahia
   bixby-common!
   cane
+  capistrano
   coffee-script
   coffee-script-source!
   continuum!
@@ -422,6 +439,7 @@ DEPENDENCIES
   rev
   rpm_contrib
   ruby-debug
+  rvm-capistrano
   sass
   sass-rails
   scrypt

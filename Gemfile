@@ -88,6 +88,10 @@ group :development do
     gem "hirb"
     gem "sextant"
 
+    # deployment
+    gem "capistrano"
+    gem "rvm-capistrano"
+
     # coverage
     gem "rcov",       :platforms => :mri_18
     gem "rcov_rails", :platforms => :mri_18
