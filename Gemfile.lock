@@ -7,12 +7,6 @@ GIT
       tilt (>= 1.3.3)
 
 GIT
-  remote: git://github.com/chetan/lorem_ipsum.git
-  revision: 9428ef995f254f59ea70016b8b21607c742d08af
-  specs:
-    lorem_ipsum (0.0.2)
-
-GIT
   remote: git://github.com/chetan/simplecov-html.git
   revision: 6328490fbafcb873303b6dd1bb228867dacd03b6
   specs:
@@ -403,7 +397,6 @@ DEPENDENCIES
   json
   jst_str!
   letter_opener
-  lorem_ipsum!
   memcached
   minitest
   mocha

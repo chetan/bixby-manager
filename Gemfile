@@ -83,7 +83,6 @@ group :development do
     gem "redcarpet"
 
     # utils
-    gem "lorem_ipsum", :git => 'git://github.com/chetan/lorem_ipsum.git'
     gem "pry"
     gem "pry-rails"
     gem "hirb"
