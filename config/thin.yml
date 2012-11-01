@@ -1,0 +1,10 @@
+---
+daemonize: true
+environment: production
+chdir: /var/www/bixby/current
+pid: tmp/pids/thin.pid
+log: log/thin.log
+address: 127.0.0.1
+port: 6000
+servers: 6
+timeout: 60
