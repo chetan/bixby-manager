@@ -1,21 +1,27 @@
 
-require 'yard'
+begin
 
-bixby_common_path = File.join(Bundler.definition.specs["bixby-common"].first.gem_dir, "lib/**/*.rb")
+  require 'yard'
 
-YARD::Rake::YardocTask.new do |t|
-  t.files   = [ 'lib/**/*.rb', 'app/**/*.rb', bixby_common_path ]
-  t.options = [ '--output-dir', './yardoc', '-m', 'markdown' ]
-end
+  bixby_common_path = File.join(Bundler.definition.specs["bixby-common"].first.gem_dir, "lib/**/*.rb")
 
-namespace :bixby do
-  desc "Generate API documentation"
-  task :api_doc => :yard do
-    html = Bixby::APIDoc.render()
-    File.open(File.join(Rails.root, 'yardoc', 'index_api.html'), 'w') do |f|
-      f.write html
+  YARD::Rake::YardocTask.new do |t|
+    t.files   = [ 'lib/**/*.rb', 'app/**/*.rb', bixby_common_path ]
+    t.options = [ '--output-dir', './yardoc', '-m', 'markdown' ]
+  end
+
+  namespace :bixby do
+    desc "Generate API documentation"
+    task :api_doc => :yard do
+      html = Bixby::APIDoc.render()
+      File.open(File.join(Rails.root, 'yardoc', 'index_api.html'), 'w') do |f|
+        f.write html
+      end
     end
   end
+
+rescue LoadError
+  warn "yard not available, documentation tasks not provided."
 end
 
 module YARD
