@@ -1,18 +1,23 @@
-/.rb*
 .DS_Store
-features_rcov
-pkg/
-coverage/
-.rvmrc
-.powrc
-.bundle
-db/*.sqlite3
+
+# logs/temp
 log/*.log
 script/log/
+script/temp/
 tmp/
+db/devops_schema.mwb.bak
+
+# config
 config/database.yml
 config/bixby.yml
-db/devops_schema.mwb.bak
+
+# build output
 .yardoc/
 yardoc/
 public/assets
+pkg/
+coverage/
+features_rcov
+.rvmrc
+.powrc
+.bundle
