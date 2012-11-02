@@ -15,7 +15,7 @@ namespace :bixby do
 
     t = Tenant.new
     t.name = args[:name]
-    t.password = Digest::MD5.new.hexdigest(args[:password])
+    t.password = SCrypt::Password.create(args[:password]).to_s
     t.private_key = OpenSSL::PKey::RSA.generate(2048).to_s
     t.save!
 

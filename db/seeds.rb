@@ -6,5 +6,5 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-t = Tenant.create(:name => "pixelcop", :password => Digest::MD5.new.hexdigest("test"))
+t = Tenant.create(:name => "pixelcop", :password => SCrypt::Password.create("test").to_s)
 o = Org.create(:name => "default", :tenant_id => t.id)
