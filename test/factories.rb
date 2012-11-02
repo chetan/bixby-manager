@@ -82,7 +82,7 @@ FactoryGirl.define do
 
   factory :org do
     association :tenant
-    name "Foo.org"
+    name "default"
   end
 
   factory :repo do
@@ -91,7 +91,7 @@ FactoryGirl.define do
   end
 
   factory :tenant do
-    password "foobar"
+    password SCrypt::Password.create("test").to_s
     private_key OpenSSL::PKey::RSA.generate(2048).to_s
     name "Foo.org"
   end

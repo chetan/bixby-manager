@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS `tenants` ;
 CREATE  TABLE IF NOT EXISTS `tenants` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NULL ,
-  `password` CHAR(32) NULL ,
+  `password` CHAR(89) NULL ,
   `private_key` TEXT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
@@ -98,7 +98,7 @@ CREATE  TABLE IF NOT EXISTS `users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `org_id` INT UNSIGNED NOT NULL ,
   `username` VARCHAR(255) NOT NULL ,
-  `password` VARCHAR(255) NULL ,
+  `password` CHAR(89) NULL ,
   `name` VARCHAR(255) NULL ,
   `email` VARCHAR(255) NULL ,
   `phone` VARCHAR(255) NULL ,

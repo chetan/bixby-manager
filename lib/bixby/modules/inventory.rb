@@ -11,18 +11,22 @@ class Inventory < API
   # @param [String] public_key
   # @param [String] hostname
   # @param [FixNum] port
-  # @param [String] password  Password for registering an Agent with the server
-  def register_agent(uuid, public_key, hostname, port, password)
+  # @param [String] tenant      Name of the tenant
+  # @param [String] password    Password for registering an Agent with the server
+  def register_agent(uuid, public_key, hostname, port, tenant, password)
 
-    tenant = Tenant.where("password = md5(?)", password).first
-    if tenant.blank? then
-      raise API::Error, "password didn't match any known tenants", caller
+    t = Tenant.where(:name => tenant).first
+    if t.blank? || SCrypt::Password.new(t.password) != password then
+      # TODO log more detailed info?
+      raise API::Error, "bad tenant and/or password", caller
     end
 
     # TODO pass org as param
-    org = Org.where(:tenant_id => tenant.id, :name => 'default').first
+    # for now, assign to default org
+    org = Org.where(:tenant_id => t.id, :name => 'default').first
     if org.nil? then
-      raise API::Error, "org not found", caller
+      # TODO log more detailed info?
+      raise API::Error, "bad tenant and/or password", caller
     end
 
     h = Host.new
