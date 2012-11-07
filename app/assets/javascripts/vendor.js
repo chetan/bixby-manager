@@ -12,7 +12,7 @@
 //= require "jquery.putcursoratend.js"
 
 // tagging
-//= require "jquery-ui"
+//= require "jquery-ui-1.8.21.min"
 //= require "jquery.tagit"
 
 // charting libs
