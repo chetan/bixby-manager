@@ -52,7 +52,7 @@ class Inventory < API
 
     a.save!
 
-    a
+    { :server_key => server_key_for_agent(a).public_key.to_s }
   end
 
   # Update Facter facts on the given Agent

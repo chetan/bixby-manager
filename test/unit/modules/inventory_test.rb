@@ -30,9 +30,11 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     http_req.expects(:remote_ip).returns(ip).twice()
 
     hostname = "foo.example.com"
-    agent = Bixby::Inventory.new(http_req).register_agent("foo", "bar", hostname, 18000, org.tenant.name, "test")
-    assert agent
-    assert_equal Agent, agent.class
+    ret = Bixby::Inventory.new(http_req).register_agent("foo", "bar", hostname, 18000, org.tenant.name, "test")
+    assert ret
+    assert_kind_of Hash, ret
+    assert_includes ret, :server_key
+    assert ret[:server_key] =~ /PUBLIC KEY/
 
     host = Host.where("hostname = ?", hostname).first
     assert host, "host created"
