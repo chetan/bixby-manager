@@ -72,9 +72,9 @@ module Bixby
     config.assets.digest  = true
 
     # minification
-    config.assets.compress       = true
-    config.assets.css_compressor = :yui
-    config.assets.js_compressor  = :uglifier
+    # config.assets.compress       = true
+    # config.assets.css_compressor = :yui
+    # config.assets.js_compressor  = :uglifier
 
     # add custom assets
     config.assets.precompile << "bixby.js"
