@@ -5,12 +5,15 @@ require 'bixby/file_download'
 
 class ApiController < ApplicationController
 
+  include Bixby::RemoteExec::Crypto
+
   skip_before_filter :verify_authenticity_token
 
   def handle
 
     begin
 
+      @agent = nil
       ret = handle_request()
 
       # return response
@@ -18,21 +21,28 @@ class ApiController < ApplicationController
         return send_file(ret.filename, :filename => File.basename(ret.filename))
 
       elsif ret.kind_of? Bixby::JsonResponse then
-        return render(:json => ret.to_json)
+        return render(:json => crypt(ret.to_json))
       end
 
-      return render(:json => Bixby::JsonResponse.new(:success, nil, ret).to_json)
+      return render(:json => crypt(Bixby::JsonResponse.new(:success, nil, ret).to_json))
 
     rescue Exception => ex
       puts ex
       puts ex.backtrace
-      return render(:json => Bixby::JsonResponse.new(:fail, ex.message, ex, 500).to_json)
+      return render(:json => crypt(Bixby::JsonResponse.new(:fail, ex.message, ex, 500).to_json))
     end
 
   end # handle
 
 
   private
+
+  def crypt(res)
+    if not crypto_enabled? then
+      return res
+    end
+    return encrypt_for_agent(@agent, res)
+  end
 
   # Handle the API request
   #
@@ -98,6 +108,11 @@ class ApiController < ApplicationController
     body = request.body.read.strip
     if body.blank? then
       return Bixby::JsonResponse.invalid_request
+    end
+
+    # decrypt the body if necessary
+    if crypto_enabled? then
+      (@agent, body) = decrypt(body)
     end
 
     begin

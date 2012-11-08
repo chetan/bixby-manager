@@ -26,7 +26,13 @@ module Controllers
 class API < ActionController::TestCase
 
   def setup
+    super
     @controller = ApiController.new
+  end
+
+  def teardown
+    super
+    BIXBY_CONFIG[:crypto] = false
   end
 
   def test_post_invalid
@@ -61,6 +67,21 @@ class API < ActionController::TestCase
     post :handle
 
     res = JsonResponse.from_json(@response.body)
+    assert res
+    assert res.success?
+    assert "hello joe", res.data
+  end
+
+  def test_encrypted_request
+    BIXBY_CONFIG[:crypto] = true
+
+    agent = FactoryGirl.create(:agent)
+    @request.env['RAW_POST_DATA'] = encrypt_for_server(agent, JsonRequest.new("hello:hi", "joe").to_json)
+    post :handle
+
+    # decrypt response
+    body = decrypt_from_server(agent, @response.body)
+    res = JsonResponse.from_json(body)
     assert res
     assert res.success?
     assert "hello joe", res.data
@@ -112,6 +133,20 @@ class API < ActionController::TestCase
     refute res.success?
     assert res.message =~ /unsupported operation/
     assert_equal 400, res.code
+  end
+
+  def encrypt_for_server(agent, payload)
+    server_pem = OpenSSL::PKey::RSA.new(agent.host.org.tenant.private_key)
+    agent_pem = OpenSSL::PKey::RSA.new(agent.private_key)
+    Bixby::CryptoUtil.encrypt(payload, agent.uuid, server_pem, agent_pem)
+  end
+
+  def decrypt_from_server(agent, payload)
+    server_pem = OpenSSL::PKey::RSA.new(agent.host.org.tenant.private_key)
+    agent_pem = OpenSSL::PKey::RSA.new(agent.private_key)
+    payload = StringIO.new(payload)
+    payload.readline # throw away the uuid
+    Bixby::CryptoUtil.decrypt(payload, agent_pem, server_pem)
   end
 
 end # API
