@@ -5,7 +5,7 @@ require 'bixby/file_download'
 
 class ApiController < ApplicationController
 
-  include Bixby::RemoteExec::Crypto
+  include Bixby::Crypto
 
   skip_before_filter :verify_authenticity_token
 

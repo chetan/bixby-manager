@@ -145,13 +145,13 @@ module Bixby
 
     ret = []
 
-    ignore_base_modules = %w(Bixby::API Bixby::RemoteExec::Methods Bixby::RemoteExec::Crypto Bixby::HttpClient)
+    ignore_base_modules = %w(Bixby::API Bixby::RemoteExec::Methods Bixby::Crypto Bixby::HttpClient)
 
     ret << "<h1>Base class</h1>"
     ret << show_class("API", ignore_base_modules.reject{|m| m == "Bixby::API"})
 
     ret << "<h1>Core Modules</h1>"
-    ret << show_class("RemoteExec", %w(Bixby::API Bixby::RemoteExec::Crypto))
+    ret << show_class("RemoteExec", %w(Bixby::API Bixby::Crypto))
     %w(Repository Provisioning Inventory Scheduler Notifier).each do |mod|
       ret << show_class(mod, ignore_base_modules)
     end
