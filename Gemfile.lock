@@ -40,7 +40,7 @@ GIT
 
 GIT
   remote: https://github.com/chetan/bixby-common.git
-  revision: 98e6a0e2897ec24f9fcb895ff2726967d2660568
+  revision: c9da84812cb6c47e515e297da2f6b4a74f30f1ff
   specs:
     bixby-common (0.2.0)
       curb
@@ -170,7 +170,7 @@ GEM
     cool.io (1.1.0)
       iobuffer (>= 1.0.0)
     crack (0.3.1)
-    curb (0.8.1)
+    curb (0.8.3)
     curb_threadpool (0.5.2)
     daemons (1.1.9)
     database_cleaner (0.9.1)
@@ -241,7 +241,7 @@ GEM
     minitest (4.1.0)
     mocha (0.12.7)
       metaclass (~> 0.0.1)
-    multi_json (1.3.6)
+    multi_json (1.3.7)
     mysql2 (0.3.11)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -254,7 +254,7 @@ GEM
       newrelic_rpm (~> 3.0)
       redis (< 4.0)
     newrelic_rpm (3.5.0.1)
-    oj (1.4.3)
+    oj (1.4.4)
     open4 (1.3.0)
     parallel (0.5.19)
     polyglot (0.3.3)
