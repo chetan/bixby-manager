@@ -173,9 +173,8 @@ class Monitoring < API
 
     ret = exec_with_wrapper(agent, cmd, command)
     if not ret.success? then
-      puts "exec failed with: "
-      puts ret.stdout
-      puts ret.stderr
+      puts "exec failed"
+      puts ret
       raise "exec failed"
     end
 
