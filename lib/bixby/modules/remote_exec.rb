@@ -19,13 +19,10 @@ class RemoteExec < API
       command = create_spec(command)
 
       ret = exec_api(agent, "exec", command.to_hash)
-      if ret.success? then
-        return CommandResponse.new(ret.data)
-      end
+      res = CommandResponse.from_json_response(ret)
 
-      if ret.code != 404 then
-        # error we can't handle, return
-        return CommandResponse.from_json_response(ret)
+      if ret.success? || ret.code != 404 then
+        return res
       end
 
       # try to provision it, then try again
@@ -36,11 +33,7 @@ class RemoteExec < API
 
       # try to exec again
       ret = exec_api(agent, "exec", command.to_hash)
-      if not ret.success? then
-        return CommandResponse.from_json_response(ret)
-      end
-
-      return CommandResponse.new(ret.data)
+      return CommandResponse.from_json_response(ret)
     end
 
     # Execute a command via a wrapper. Will try to provision both the wrapper itself
