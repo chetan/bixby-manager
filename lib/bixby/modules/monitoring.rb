@@ -39,10 +39,19 @@ class Monitoring < API
   # @param [Agent] agent
   def update_check_config(agent)
 
+    provisioned = {}
+
     config = []
     checks = Check.where("agent_id = ?", agent.id)
     checks.each do |check|
       command = command_for_check(check)
+
+      bundle = File.join(command.repo, command.bundle)
+      if not provisioned.include? bundle then
+        Provisioning.new.provision(agent, command)
+        provisioned[bundle] = 1
+      end
+
       config << { :interval => check.normal_interval, :retry => check.retry_interval,
                   :timeout => check.timeout, :command => command }
     end
