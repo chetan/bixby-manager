@@ -160,7 +160,7 @@ class Metrics < API
 
         # TODO [security] validate check ownership
         check = Check.find(result["check_id"].to_i)
-        time = result["timestamp"].to_i
+        time = Time.at(result["timestamp"].to_i)
 
         result["metrics"].each do |metric|
 

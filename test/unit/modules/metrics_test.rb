@@ -37,8 +37,10 @@ EOF
     # make sure metrics records got written
     assert Metric.find(:all).size == 4
     m = Metric.where(:key => "hardware.storage.disk.size").first
+
     assert m
     assert_equal 297, m.last_value.to_i
+    assert_equal 1329775841, m.updated_at.to_i
 
     assert m.tags
     assert m.tags.size == 2
@@ -50,7 +52,6 @@ EOF
     assert_equal "mount", tags.first.key
     assert_equal "/", tags.first.value
     assert_equal "type", tags.last.key
-
   end
 
   def test_put_check_result_hook
