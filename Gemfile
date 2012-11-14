@@ -12,6 +12,7 @@ end
 
 # webserver
 gem "thin", :platforms => :mri
+gem "lograge"
 
 # backend
 gem "memcached"
