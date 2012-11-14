@@ -70,7 +70,7 @@ class Monitoring < API
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",
                                :command => "mon_daemon.rb", :args => "restart" )
 
-    exec_mon(agent, command)
+    return exec_mon(agent, command)
   end
 
   # Add a check to a host
@@ -178,7 +178,9 @@ class Monitoring < API
     end
     cmd.command = "#{lang}_wrapper.rb"
     cmd.stdin = command.stdin
-    cmd.validate
+    if not cmd.command_exists? then
+      return
+    end
 
     ret = exec_with_wrapper(agent, cmd, command)
     if not ret.success? then
