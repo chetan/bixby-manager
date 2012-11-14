@@ -27,6 +27,11 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
         # with(:body => "{\"operation\":\"exec\",\"params\":{\"bundle\":\"system/monitoring\",\"command\":\"ruby_wrapper.rb\",\"repo\":\"vendor\",\"stdin\":\"[{\\\"interval\\\":null,\\\"retry\\\":null,\\\"timeout\\\":null,\\\"command\\\":{\\\"bundle\\\":\\\"foo\\\",\\\"command\\\":\\\"bar\\\",\\\"repo\\\":\\\"repo\\\",\\\"stdin\\\":\\\"{\\\\\\\"check_id\\\\\\\":2}\\\"}}]\",\"digest\":\"0e75fa55f550f8abb6c726356ea9d2c65a4cec2abd762a37b29b13898a9eaafb\",\"args\":\"vendor/system/monitoring/bin/update_check_config.rb -- \"}}").
 
     check = FactoryGirl.create(:check)
+
+    Provisioning.any_instance.expects(:provision).once.with { |agent, cmd|
+      agent == check.agent and cmd.bundle == check.command.bundle
+    }
+
     ret = Bixby::Monitoring.new.update_check_config(check.agent)
 
     assert_requested(stub)
