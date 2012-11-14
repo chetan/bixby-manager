@@ -27,6 +27,11 @@ Bixby::Application.configure do
   # enable lograge gem
   config.lograge.enabled = true
 
+  # add time to lograge
+  config.lograge.custom_options = lambda do |event|
+    { :time => event.time }
+  end
+
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
