@@ -66,19 +66,6 @@ module Bixby
 
     # Enable the asset pipeline
     config.assets.enabled = true
-
-    # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
-    config.assets.digest  = true
-
-    # minification
-    # config.assets.compress       = true
-    # config.assets.css_compressor = :yui
-    # config.assets.js_compressor  = :uglifier
-
-    # add custom assets
-    config.assets.precompile << "bixby.js"
-
   end
 end
 
