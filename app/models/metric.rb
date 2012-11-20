@@ -1,7 +1,7 @@
 
 class Metric < ActiveRecord::Base
 
-  if not Metric.const_defined? :METADATA_SOURCE then
+  if not const_defined? :METADATA_SOURCE then
     METADATA_SOURCE = 2
 
     module Status
