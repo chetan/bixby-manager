@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: commands
+#
+#  id         :integer          not null, primary key
+#  repo_id    :integer
+#  name       :string(255)
+#  bundle     :string(255)
+#  command    :string(255)
+#  options    :text
+#  updated_at :datetime
+#
+
 
 class Command < ActiveRecord::Base
 

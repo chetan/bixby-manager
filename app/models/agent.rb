@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: agents
+#
+#  id         :integer          not null, primary key
+#  host_id    :integer          not null
+#  uuid       :string(255)
+#  ip         :string(16)
+#  port       :integer          default(18000)
+#  public_key :text
+#  status     :integer          default(0), not null
+#  created_at :datetime
+#  updated_at :datetime
+#  deleted_at :datetime
+#
+
 
 class Agent < ActiveRecord::Base
 

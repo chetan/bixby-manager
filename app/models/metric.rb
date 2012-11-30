@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: metrics
+#
+#  id         :integer          not null, primary key
+#  check_id   :integer          not null
+#  name       :string(255)
+#  key        :string(255)      not null
+#  tag_hash   :string(32)       not null
+#  status     :integer
+#  last_value :decimal(20, 2)
+#  created_at :datetime         not null
+#  updated_at :datetime
+#
+
 
 class Metric < ActiveRecord::Base
 

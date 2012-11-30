@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: metadata
+#
+#  id     :integer          not null, primary key
+#  key    :string(255)      not null
+#  value  :text             default(""), not null
+#  source :integer          default(1), not null
+#
+
 
 class Metadata < ActiveRecord::Base
 

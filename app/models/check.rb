@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: checks
+#
+#  id              :integer          not null, primary key
+#  host_id         :integer          not null
+#  agent_id        :integer          not null
+#  command_id      :integer          not null
+#  args            :text
+#  normal_interval :integer
+#  retry_interval  :integer
+#  timeout         :integer
+#  plot            :boolean
+#  enabled         :boolean          default(FALSE)
+#
+
 
 class Check < ActiveRecord::Base
 

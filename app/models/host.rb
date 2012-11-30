@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: hosts
+#
+#  id         :integer          not null, primary key
+#  org_id     :integer          not null
+#  ip         :string(16)
+#  hostname   :string(255)
+#  alias      :string(255)
+#  desc       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  deleted_at :datetime
+#
+
 
 class Host < ActiveRecord::Base
 

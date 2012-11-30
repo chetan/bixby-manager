@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: metric_infos
+#
+#  id         :integer          not null, primary key
+#  command_id :integer          not null
+#  metric     :string(255)      not null
+#  unit       :string(255)
+#  desc       :string(255)
+#  label      :string(255)
+#
+
 
 class MetricInfo < ActiveRecord::Base
 

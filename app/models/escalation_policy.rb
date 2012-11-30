@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: escalation_policies
+#
+#  id         :integer          not null, primary key
+#  org_id     :integer          not null
+#  name       :string(255)
+#  on_call_id :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 
 class EscalationPolicy < ActiveRecord::Base
 

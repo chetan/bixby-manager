@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: on_calls
+#
+#  id              :integer          not null, primary key
+#  org_id          :integer          not null
+#  name            :string(255)
+#  rotation_period :integer
+#  handoff_day     :integer
+#  handoff_time    :time
+#  current_user_id :integer
+#  users           :string(255)
+#  next_handoff    :datetime
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 
 class OnCall < ActiveRecord::Base
 

@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: orgs
+#
+#  id        :integer          not null, primary key
+#  tenant_id :integer
+#  name      :string(255)
+#
+
 
 class Org < ActiveRecord::Base
 

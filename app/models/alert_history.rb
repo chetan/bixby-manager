@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: alert_histories
+#
+#  id               :integer          not null, primary key
+#  alert_id         :integer          not null
+#  user_notified_id :integer          not null
+#  created_at       :datetime
+#  check_id         :integer
+#  metric_id        :integer
+#  severity         :integer
+#  threshold        :decimal(20, 2)
+#  sign             :string(2)
+#  value            :decimal(20, 2)
+#
+
 
 class AlertHistory < ActiveRecord::Base
 

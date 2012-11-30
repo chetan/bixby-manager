@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: alerts
+#
+#  id         :integer          not null, primary key
+#  check_id   :integer
+#  metric_id  :integer
+#  severity   :integer
+#  threshold  :decimal(20, 2)
+#  sign       :string(2)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 
 # Describes an alerting threshold
 class Alert < ActiveRecord::Base
