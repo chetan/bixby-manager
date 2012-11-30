@@ -85,6 +85,7 @@ group :development do
     # docs
     gem "yard"
     gem "redcarpet"
+    gem "annotate", ">= 2.5.0"
 
     # utils
     gem "pry"
@@ -124,6 +125,5 @@ group :development do
     gem 'rb-inotify', :require => false
     gem 'rb-fsevent', :require => false
     gem 'rb-fchange', :require => false
-    #gem 'wdm',        '~> 0.0.3' if RbConfig::CONFIG['target_os'] =~ /mswin|mingw/i
 
 end

@@ -147,6 +147,8 @@ GEM
     acts_as_tree (1.1.0)
       activerecord (>= 3.0.0)
     addressable (2.3.2)
+    annotate (2.5.0)
+      rake
     ansi (1.4.3)
     arel (3.0.2)
     awesome_print (1.1.0)
@@ -428,6 +430,7 @@ DEPENDENCIES
   SystemTimer
   acts-as-taggable-on
   acts_as_tree
+  annotate (>= 2.5.0)
   awesome_print
   bahia
   bixby-common!
