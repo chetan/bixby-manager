@@ -19,6 +19,9 @@ gem "memcached"
 gem "mysql2"
 gem "curb"
 
+# misc
+gem "exception_notification"
+
 # view related
 gem 'haml'
 gem 'simple_form'
