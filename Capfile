@@ -2,9 +2,11 @@
 load 'deploy'
 load 'deploy/assets'
 
+RAILS_ROOT = File.expand_path(File.dirname(__FILE__))
+
 # config extensions
-require File.join(File.expand_path(File.dirname(__FILE__)), 'config/deploy/capistrano_db_yml.rb')
-require File.join(File.expand_path(File.dirname(__FILE__)), 'config/deploy/bixby_yml.rb')
+require File.join(RAILS_ROOT, 'config/deploy/capistrano_db_yml.rb')
+require File.join(RAILS_ROOT, 'config/deploy/bixby_yml.rb')
 
 # bundler
 require "bundler/capistrano"
@@ -27,31 +29,7 @@ set :deploy_to, "/var/www/#{application}"
 set :deploy_via, :remote_cache
 set :rails_env, 'production'
 
-task :uname do
-  run "uname -a"
-end
-
-namespace :deploy do
-
-  desc "Start the Thin processes"
-  task :start do
-    run  <<-CMD
-      cd /var/www/bixby/current; bundle exec thin start -C config/thin.yml
-    CMD
-  end
-
-  desc "Stop the Thin processes"
-  task :stop do
-    run <<-CMD
-      cd /var/www/bixby/current; bundle exec thin stop -C config/thin.yml
-    CMD
-  end
-
-  desc "Restart the Thin processes"
-  task :restart do
-    run <<-CMD
-      cd /var/www/bixby/current; bundle exec thin restart -C config/thin.yml
-    CMD
-  end
-
+# custom tasks
+%w(uname thin).each do |t|
+  load File.join(RAILS_ROOT, "lib/capistrano/#{t}.rb")
 end
