@@ -61,9 +61,7 @@ group :assets do
     gem 'sass-rails'
     gem 'jst_str', :git => "git://github.com/chetan/jst_str.git"
     gem "coffee-script"
-    gem "coffee-script-source", :git => "https://github.com/chetan/coffee-script.git", :branch => "gem"
-    # adds :coffeescript filter to haml
-    # gem "coffee-filter"
+    gem "coffee-script-source"
     gem 'haml_assets'
     gem 'yui-compressor'
     gem 'uglifier'
@@ -93,8 +91,8 @@ group :development do
     gem "sextant" # displays routes at http://localhost:3000/rails/routes in dev mode
 
     # deployment
-    gem "capistrano"
-    gem "rvm-capistrano"
+    gem "capistrano",     :require => false
+    gem "rvm-capistrano", :require => false
 
     # coverage
     gem "rcov",       :platforms => :mri_18
@@ -104,7 +102,7 @@ group :development do
     gem "simplecov-console", :platforms => :mri_19, :git => "git@github.com:chetan/simplecov-console.git", :require => false
 
     # quality
-    gem "cane", :platforms => :mri_19
+    gem "cane", :platforms => :mri_19, :require => false
 
     # test tools (frameworks, mock, runners, etc)
     gem 'rake-hooks', :require => false
