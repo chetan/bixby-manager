@@ -444,7 +444,6 @@ DEPENDENCIES
   git
   haml
   haml_assets
-  hirb
   hiredis
   json
   jst_str!

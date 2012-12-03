@@ -90,8 +90,7 @@ group :development do
     # utils
     gem "pry"
     gem "pry-rails"
-    gem "hirb"
-    gem "sextant"
+    gem "sextant" # displays routes at http://localhost:3000/rails/routes in dev mode
 
     # deployment
     gem "capistrano"
