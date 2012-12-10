@@ -74,6 +74,8 @@ group :development do
     gem "debugger",     :platforms => :mri_19
     gem "awesome_print"
     gem "letter_opener"
+    gem "better_errors"
+    gem "binding_of_caller"
 
     # newrelic
     gem 'newrelic_rpm', :require => false
