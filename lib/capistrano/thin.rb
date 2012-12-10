@@ -5,7 +5,7 @@ namespace :thin do
     task action.to_sym do
       extra = (action == "restart" ? "-O -w 10" : "") # restart one-by-one with 10 sec wait
       run  <<-CMD
-        cd /var/www/bixby/current; bundle exec thin #{action} #{extra} -C config/thin.yml
+        cd /var/www/bixby/current; bundle exec thin #{action} #{extra} -C config/deploy/thin.yml
       CMD
     end
   end
