@@ -29,10 +29,9 @@ cmd = "bundle exec thin"
   God.watch do |w|
     w.group = "thin-bixby"
     w.name = w.group + "-#{number}"
+    w.log = "#{RAILS_ROOT}/log/god.#{w.name}.log"
 
     w.interval = 30.seconds
-
-    w.log = "#{RAILS_ROOT}/log/god.#{w.name}.log"
 
     w.uid = config["user"] if config["user"]
     w.gid = config["group"] if config["group"]
