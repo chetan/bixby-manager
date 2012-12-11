@@ -18,7 +18,7 @@ end
 require 'curb'
 require 'curb_threadpool'
 require 'webmock'
-require 'mocha'
+require 'mocha/setup'
 
 class ActiveSupport::TestCase
 
