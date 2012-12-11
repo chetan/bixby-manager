@@ -28,6 +28,7 @@ class API < ActionController::TestCase
   def setup
     super
     @controller = ApiController.new
+    @agent = FactoryGirl.create(:agent)
   end
 
   def teardown
@@ -62,7 +63,6 @@ class API < ActionController::TestCase
   end
 
   def test_valid_request
-    agent = FactoryGirl.create(:agent)
     @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:hi", "joe").to_json
     post :handle
 
@@ -75,12 +75,11 @@ class API < ActionController::TestCase
   def test_encrypted_request
     BIXBY_CONFIG[:crypto] = true
 
-    agent = FactoryGirl.create(:agent)
-    @request.env['RAW_POST_DATA'] = encrypt_for_server(agent, JsonRequest.new("hello:hi", "joe").to_json)
+    @request.env['RAW_POST_DATA'] = encrypt_for_server(@agent, JsonRequest.new("hello:hi", "joe").to_json)
     post :handle
 
     # decrypt response
-    body = decrypt_from_server(agent, @response.body)
+    body = decrypt_from_server(@agent, @response.body)
     res = JsonResponse.from_json(body)
     assert res
     assert res.success?
@@ -88,7 +87,6 @@ class API < ActionController::TestCase
   end
 
   def test_params_array
-    agent = FactoryGirl.create(:agent)
     @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:msg", %w(hi there)).to_json
     post :handle
 
@@ -99,7 +97,6 @@ class API < ActionController::TestCase
   end
 
   def test_params_hash
-    agent = FactoryGirl.create(:agent)
     @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:hash", {:msg => "yo boss"}).to_json
     post :handle
 
@@ -110,7 +107,6 @@ class API < ActionController::TestCase
   end
 
   def test_catch_exception
-    agent = FactoryGirl.create(:agent)
     @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:err", "joe").to_json
     post :handle
 
@@ -120,6 +116,32 @@ class API < ActionController::TestCase
     assert_equal 500, res.code
     assert_equal "ahhh", res.message
   end
+
+  def test_is_async
+    assert Bixby.is_async?(Bixby::Metrics, :put_check_result)
+  end
+
+  def test_async_call_is_scheduled
+    @request.env['RAW_POST_DATA'] = JsonRequest.new("metrics:put_check_result", [ "foo", "bar"]).to_json
+
+    Bixby.expects(:is_async?).once.with{ |klass, method|
+      klass == Bixby::Metrics && method == :put_check_result
+    }.returns(true)
+
+    Bixby.expects(:do_async).once.with do |klass, method, args|
+      klass == Bixby::Metrics && method == :put_check_result && (args.kind_of? Array and args.first == "foo")
+    end
+
+    Bixby::Metrics.any_instance.expects(:put_check_result).never
+
+    post :handle
+    res = JsonResponse.from_json(@response.body)
+    assert res
+    assert res.success?
+    assert_nil res.data
+  end
+
+
 
   private
 

@@ -201,6 +201,7 @@ class Metrics < API
     self.class.run_hook(:put_check_result, metrics)
     nil
   end
+  Bixby.set_async(Bixby::Metrics, :put_check_result)
 
   # Create a new annotation
   #

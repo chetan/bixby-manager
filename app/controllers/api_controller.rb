@@ -46,7 +46,7 @@ class ApiController < ApplicationController
 
   # Handle the API request
   #
-  # @return [JsonResponse]
+  # @return [Object, JsonResponse] response can be either a JsonResponse or any other type
   def handle_request
 
     # extract JsonRequest
@@ -80,7 +80,12 @@ class ApiController < ApplicationController
 
     # execute request
 
-    # req = http request object
+    # req = JsonRequest instance
+    if Bixby.is_async? mod.class, op then
+      Bixby.do_async(mod.class, op, req.params)
+      return nil
+    end
+
     if req.params.kind_of? Hash then
       return mod.send(op, HashWithIndifferentAccess.new(req.params))
     elsif req.params.kind_of? Array then
