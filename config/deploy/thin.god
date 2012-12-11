@@ -32,7 +32,7 @@ cmd = "bundle exec thin"
 
     w.interval = 30.seconds
 
-    w.log = "#{RAILS_ROOT}/log/god.#{number}.log"
+    w.log = "#{RAILS_ROOT}/log/god.#{w.name}.log"
 
     w.uid = config["user"] if config["user"]
     w.gid = config["group"] if config["group"]
