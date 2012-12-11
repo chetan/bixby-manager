@@ -59,7 +59,7 @@ gem 'continuum', :git => "https://github.com/chetan/continuum.git"
 group :assets do
     gem 'sass'
     gem 'sass-rails'
-    gem 'jst_str', :git => "git://github.com/chetan/jst_str.git"
+    gem 'jst_str', :git => "https://github.com/chetan/jst_str.git"
     gem "coffee-script"
     gem "coffee-script-source"
     gem 'haml_assets'
@@ -100,8 +100,8 @@ group :development do
     gem "rcov",       :platforms => :mri_18
     gem "rcov_rails", :platforms => :mri_18
     gem "simplecov",  :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git", :require => false
-    gem "simplecov-html", :platforms => :mri_19, :git => "git://github.com/chetan/simplecov-html.git", :require => false
-    gem "simplecov-console", :platforms => :mri_19, :git => "git@github.com:chetan/simplecov-console.git", :require => false
+    gem "simplecov-html", :platforms => :mri_19, :git => "https://github.com/chetan/simplecov-html.git", :require => false
+    gem "simplecov-console", :platforms => :mri_19, :git => "https://github.com/chetan/simplecov-console.git", :require => false
 
     # quality
     gem "cane", :platforms => :mri_19, :require => false

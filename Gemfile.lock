@@ -1,18 +1,4 @@
 GIT
-  remote: git://github.com/chetan/jst_str.git
-  revision: 5cde3c23ea59cc4e06c027da9ad96b05491fec4d
-  specs:
-    jst_str (1.0.0)
-      sprockets (>= 2.0.3)
-      tilt (>= 1.3.3)
-
-GIT
-  remote: git://github.com/chetan/simplecov-html.git
-  revision: 6328490fbafcb873303b6dd1bb228867dacd03b6
-  specs:
-    simplecov-html (0.7.1)
-
-GIT
   remote: git@github.com:bvandenbos/resque-scheduler.git
   revision: 55642290d9282629b39ddb471dbc9879cc5b7608
   specs:
@@ -20,15 +6,6 @@ GIT
       redis (>= 2.0.1)
       resque (>= 1.20.0)
       rufus-scheduler
-
-GIT
-  remote: git@github.com:chetan/simplecov-console.git
-  revision: 718adc40541692b965d876d711029f95896d7f2e
-  specs:
-    simplecov-console (0.1.0)
-      colorize
-      hirb
-      simplecov
 
 GIT
   remote: https://github.com/chetan/bixby-common.git
@@ -51,6 +28,29 @@ GIT
       rake
 
 GIT
+  remote: https://github.com/chetan/jst_str.git
+  revision: 5cde3c23ea59cc4e06c027da9ad96b05491fec4d
+  specs:
+    jst_str (1.0.0)
+      sprockets (>= 2.0.3)
+      tilt (>= 1.3.3)
+
+GIT
+  remote: https://github.com/chetan/simplecov-console.git
+  revision: 718adc40541692b965d876d711029f95896d7f2e
+  specs:
+    simplecov-console (0.1.0)
+      colorize
+      hirb
+      simplecov
+
+GIT
+  remote: https://github.com/chetan/simplecov-html.git
+  revision: 6328490fbafcb873303b6dd1bb228867dacd03b6
+  specs:
+    simplecov-html (0.7.1)
+
+GIT
   remote: https://github.com/chetan/test_guard.git
   revision: e3b6aff9d09d522a6acc1e8a1b439f982fd74e61
   specs:
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/colszowka/simplecov.git
-  revision: d4ed33b3876fe6f1e808bed60e134e2f8adf6267
+  revision: 87e81cc05a7d4c97f603c2e730d93ffef497a677
   specs:
     simplecov (0.7.1)
       multi_json (~> 1.0)
