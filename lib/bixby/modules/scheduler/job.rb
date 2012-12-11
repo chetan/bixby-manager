@@ -24,7 +24,7 @@ class Scheduler
     def self.perform(*args)
       klass = args.shift.constantize
       method = args.shift
-      klass.new.send(method, *@args)
+      klass.new.send(method, *args)
     end
 
     # Returns arguments for use by Resque
