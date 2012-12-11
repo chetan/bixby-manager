@@ -3,6 +3,16 @@ require 'test_helper'
 
 class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
 
+  def setup
+    super
+    Resque.reset_delayed_queue
+  end
+
+  def teardown
+    super
+    Resque.reset_delayed_queue
+  end
+
   def test_require_class
     require "bixby/modules/scheduler"
     assert Bixby.const_defined? :Scheduler
@@ -14,19 +24,16 @@ class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
   end
 
   def test_schedule_at
-    Resque.reset_delayed_queue
     Bixby::Scheduler.new.schedule_at((Time.new+30), Bixby::Scheduler::Job.new("foobar", {}))
     assert_equal 1, Resque.redis.zcard("delayed_queue_schedule") # key is namespaced
   end
 
   def test_schedule_in
-    Resque.reset_delayed_queue
     Bixby::Scheduler.new.schedule_in(30, Bixby::Scheduler::Job.new("foobar", {}))
     assert_equal 1, Resque.redis.zcard("delayed_queue_schedule") # key is namespaced
   end
 
   def test_schedule_in_with_queue
-    Resque.reset_delayed_queue
     Bixby::Scheduler.new.schedule_in_with_queue(30, Bixby::Scheduler::Job.new("foobar", {}), "foo")
     assert_equal 1, Resque.redis.zcard("delayed_queue_schedule") # key is namespaced
   end
