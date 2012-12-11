@@ -31,14 +31,6 @@ GIT
       simplecov
 
 GIT
-  remote: https://github.com/bblimke/webmock.git
-  revision: 5662ca4c2fdb5e9d63deca99a86d6dd99bb12c48
-  specs:
-    webmock (1.8.11)
-      addressable (>= 2.2.7)
-      crack (>= 0.1.7)
-
-GIT
   remote: https://github.com/chetan/bixby-common.git
   revision: e5e47bb75020d3c509d5b61d819e439f63fd8a85
   specs:
@@ -411,6 +403,9 @@ GEM
       raindrops (~> 0.7)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    webmock (1.9.0)
+      addressable (>= 2.2.7)
+      crack (>= 0.1.7)
     yard (0.8.3)
     yui-compressor (0.9.6)
       POpen4 (>= 0.1.4)
@@ -493,6 +488,6 @@ DEPENDENCIES
   turn
   twilio-ruby
   uglifier
-  webmock!
+  webmock
   yard
   yui-compressor

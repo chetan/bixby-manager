@@ -108,7 +108,7 @@ group :development do
 
     # test tools (frameworks, mock, runners, etc)
     gem 'rake-hooks', :require => false
-    gem 'webmock', :git => 'https://github.com/bblimke/webmock.git', :require => false
+    gem 'webmock', :require => false
     gem "minitest"
     gem 'mocha', :require => false
     gem "turn"
