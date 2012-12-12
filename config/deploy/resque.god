@@ -2,7 +2,7 @@ rails_env   = ENV['RAILS_ENV']  || "production"
 rails_root  = ENV['RAILS_ROOT'] || "/var/www/bixby/current"
 num_workers = rails_env == 'production' ? 5 : 2
 
-num_workers.times do |num|
+(num_workers.times.to_a << "scheduler").each do |num|
   God.watch do |w|
     w.dir      = "#{rails_root}"
     w.group    = 'resque-bixby'
@@ -11,7 +11,8 @@ num_workers.times do |num|
     w.log      = "#{rails_root}/log/god.#{w.name}.log"
 
     w.env      = {"QUEUE"=>"*", "RAILS_ENV"=>rails_env}
-    w.start    = "bundle exec rake -f #{rails_root}/Rakefile environment resque:work"
+    cmd        = num.kind_of?(Fixnum) ? "work" : "scheduler"
+    w.start    = "bundle exec rake -f #{rails_root}/Rakefile environment resque:#{cmd}"
 
     w.uid = 'chetan'
     w.gid = 'chetan'
