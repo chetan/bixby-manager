@@ -6,7 +6,7 @@ rails_env = ENV['RAILS_ENV'] || 'production'
 rails_root = ENV['RAILS_ROOT'] || "/var/www/bixby/current"
 
 God.watch do |w|
-  w.name = "unicorn"
+  w.name = "unicorn-bixby"
   w.log = "#{rails_root}/log/god.#{w.name}.log"
   w.dir = rails_root
   w.pid_file = "#{rails_root}/tmp/pids/unicorn.pid"
