@@ -485,6 +485,7 @@ DEPENDENCIES
   turn
   twilio-ruby
   uglifier
+  unicorn
   webmock
   yard
   yui-compressor
