@@ -313,8 +313,6 @@ GEM
       json (~> 1.4)
     redcarpet (2.2.2)
     redis (3.0.2)
-    redis-lock (0.1.0)
-      redis
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
     resque (1.23.0)
@@ -465,7 +463,6 @@ DEPENDENCIES
   rcov_rails
   redcarpet
   redis (~> 3.0)
-  redis-lock
   resque
   resque-scheduler!
   rev
