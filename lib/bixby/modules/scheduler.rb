@@ -13,12 +13,20 @@ class Scheduler < API
 
     # Fetch the active driver
     #
-    # @return [Bixby::Scheduler::Driver] driver instance
+    # @return [Bixby::Scheduler::Driver] driver class
     def driver
+      return @driver if @driver
       if @drivers.empty? then
         raise "No available drivers!"
       end
-      @drivers.last
+      @driver = @drivers.last
+    end
+
+    # Set the active driver
+    #
+    # @param [Bixby::Scheduler::Driver] driver class
+    def driver=(new_driver)
+      @driver = new_driver
     end
 
     # Configure the active driver

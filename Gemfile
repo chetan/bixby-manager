@@ -52,6 +52,7 @@ gem "resque" #, :git => "https://github.com/defunkt/resque.git"
 gem "resque-scheduler",
   :git => "git@github.com:bvandenbos/resque-scheduler.git",
   :require => ["resque_scheduler"]
+gem "sidekiq"
 
 # metrics module
 gem 'continuum', :git => "https://github.com/chetan/continuum.git"
