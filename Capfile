@@ -11,9 +11,11 @@ require File.join(RAILS_ROOT, 'config/deploy/bixby_yml.rb')
 # bundler
 require "bundler/capistrano"
 set :bundle_without, [:development, :test]
+set :bundle_flags, "--quiet"
+set :bundle_dir, ""
 
 # rvm
-set :rvm_ruby_string, 'ruby-1.9.3-p286'
+set :rvm_ruby_string, 'ruby-1.9.3-p327'
 require "rvm/capistrano"
 
 set :stages, %w(production staging)
@@ -30,6 +32,6 @@ set :deploy_via, :remote_cache
 set :rails_env, 'production'
 
 # custom tasks
-%w(uname thin resque deploy).each do |t|
+%w(uname resque unicorn deploy).each do |t|
   load File.join(RAILS_ROOT, "lib/capistrano/#{t}.rb")
 end
