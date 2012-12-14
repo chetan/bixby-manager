@@ -48,7 +48,7 @@ def bootstrap_tests
 
   # require files in order to force coverage reports
   [ "lib", "app" ].each do |d|
-    Dir.glob(File.join(Rails.root, d, "**/*.rb")).each{ |f| require f }
+    Dir.glob(File.join(Rails.root, d, "**/*.rb")).each{ |f| next if f =~ %r{lib/capistrano}; require f }
   end
 end
 
