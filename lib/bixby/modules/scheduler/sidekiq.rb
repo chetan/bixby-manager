@@ -27,6 +27,7 @@ class Scheduler
 
           ::Sidekiq.configure_server do |config|
             config.redis = { :url => server }
+            config.poll_interval = 5
           end
 
           # When in Unicorn, this block needs to go in unicorn's `after_fork` callback:
