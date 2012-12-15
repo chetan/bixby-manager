@@ -25,7 +25,7 @@ Bixby::Application.routes.draw do
     end
   end
 
-  if BIXBY_CONFIG[:scheduler] == "sidekiq" then
+  if Object.const_defined? :BIXBY_CONFIG and BIXBY_CONFIG[:scheduler] == "sidekiq" then
     require "sidekiq/web"
     mount Sidekiq::Web => "/sidekiq"
   end
