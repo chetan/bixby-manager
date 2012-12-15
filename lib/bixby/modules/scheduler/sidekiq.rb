@@ -7,7 +7,6 @@ class Scheduler
 
   class Job
     include ::Sidekiq::Worker
-    sidekiq_options :retry => false, :queue => :schedules
     def perform(*args)
       self.class.perform(*args)
     end
