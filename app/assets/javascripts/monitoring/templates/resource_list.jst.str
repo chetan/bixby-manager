@@ -1,5 +1,5 @@
 
-<h3>Resources for <%= host.get("ip") %></h3>
+<h3>Resources for <%= host.name() %></h3>
 
 <% if (checks.length == 0) { %>
 
