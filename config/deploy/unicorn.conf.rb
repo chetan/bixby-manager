@@ -3,7 +3,6 @@ listen 8080, :tcp_nopush => true
 worker_processes 6
 # timeout 60
 
-working_directory "/var/www/bixby/current"
 pid "/var/www/bixby/shared/pids/unicorn.pid"
 stdout_path "/var/www/bixby/shared/log/unicorn.log"
 stderr_path "/var/www/bixby/shared/log/unicorn.log"
@@ -17,7 +16,7 @@ GC.respond_to?(:copy_on_write_friendly=) and
 check_client_connection false
 
 before_exec do |server|
-  ENV['BUNDLE_GEMFILE'] = "#{working_directory}/Gemfile"
+  ENV['BUNDLE_GEMFILE'] = "/var/www/bixby/current/Gemfile"
 end
 
 before_fork do |server, worker|
