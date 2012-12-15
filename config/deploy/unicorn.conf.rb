@@ -16,6 +16,10 @@ GC.respond_to?(:copy_on_write_friendly=) and
 # timeout 60
 check_client_connection false
 
+before_exec do |server|
+  ENV['BUNDLE_GEMFILE'] = "#{working_directory}/Gemfile"
+end
+
 before_fork do |server, worker|
   # the following is highly recomended for Rails + "preload_app true"
   # as there's no need for the master process to hold a connection
