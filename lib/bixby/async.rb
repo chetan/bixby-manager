@@ -38,8 +38,7 @@ module Bixby
     # @param [Symbol] method              method
     # @param [Array] args                 Array or method params
     def do_async(klass, method, args)
-      args = [ args ] if not args.kind_of? Array
-      job = Bixby::Scheduler::Job.new(klass, method, args)
+      job = Bixby::Scheduler::Job.create(klass, method, args)
       Bixby::Scheduler.new.schedule_in(0, job)
     end
 

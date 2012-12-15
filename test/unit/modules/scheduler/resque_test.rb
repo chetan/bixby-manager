@@ -17,18 +17,18 @@ class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
     end
 
     def test_schedule_at
-      Bixby::Scheduler.new.schedule_at((Time.new+30), Bixby::Scheduler::Job.new("foobar", {}))
+      Bixby::Scheduler.new.schedule_at((Time.new+30), Bixby::Scheduler::Job.create("foobar", {}))
       assert Resque.redis.exists "delayed_queue_schedule"
       assert_equal 1, Resque.redis.zcard("delayed_queue_schedule") # key is namespaced
     end
 
     def test_schedule_in
-      Bixby::Scheduler.new.schedule_in(30, Bixby::Scheduler::Job.new("foobar", {}))
+      Bixby::Scheduler.new.schedule_in(30, Bixby::Scheduler::Job.create("foobar", {}))
       assert_equal 1, Resque.redis.zcard("delayed_queue_schedule") # key is namespaced
     end
 
     def test_schedule_in_with_queue
-      Bixby::Scheduler.new.schedule_in_with_queue(30, Bixby::Scheduler::Job.new("foobar", {}), "foo")
+      Bixby::Scheduler.new.schedule_in_with_queue(30, Bixby::Scheduler::Job.create("foobar", {}), "foo")
       assert_equal 1, Resque.redis.zcard("delayed_queue_schedule") # key is namespaced
     end
 

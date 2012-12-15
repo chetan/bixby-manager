@@ -14,10 +14,17 @@ class Scheduler
 
     attr_accessor :klass, :method, :args
 
-    def initialize(klass, method, args = [])
-      @klass = klass
-      @method = method
-      @args = args
+    def self.create(klass, method, args = [])
+      job = new
+      job.klass = klass
+      job.method = method
+      job.args = args.kind_of?(Array) ? args : [args]
+
+      return job
+    end
+
+    # Empty constructor for use by scheduling libraries (sidekiq)
+    def initialize
     end
 
     # Called by Resque worker. Expects as input the output of #queue_args
