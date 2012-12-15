@@ -34,7 +34,7 @@ class Scheduler
       klass.new.send(method, *args)
     end
 
-    # Returns arguments for use by Resque
+    # Returns arguments needed by perform for running this job
     def queue_args
       [@klass.to_s, @method.to_s] + @args
     end
