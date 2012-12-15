@@ -8,7 +8,7 @@ God.watch do |w|
   w.log      = "#{rails_root}/log/god.#{w.name}.log"
 
   w.env      = {"QUEUE"=>"*", "RAILS_ENV"=>rails_env}
-  w.start    = "bundle exec sidekiq -e #{rails_env} -c 25" # 25 is default
+  w.start    = "bundle exec sidekiq -e #{rails_env} -c 25 -q schedules" # 25 is default
 
   w.uid = 'chetan'
   w.gid = 'chetan'
