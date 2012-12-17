@@ -7,7 +7,6 @@ gem 'bixby-common', :git => "https://github.com/chetan/bixby-common.git"
 # webserver
 gem "thin",     :platforms => :mri
 gem "unicorn",  :platforms => :mri
-gem "lograge"
 
 # backend
 gem "memcached",                        :platforms => [:mri, :rbx]
@@ -17,6 +16,7 @@ gem "activerecord-jdbcmysql-adapter",   :platforms => :jruby
 gem "curb"                              # need jruby alternative
 
 # misc
+gem "lograge"
 gem "exception_notification"
 
 # view related
