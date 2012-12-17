@@ -4,12 +4,6 @@ gem 'rails', '~>3.2'
 
 gem 'bixby-common', :git => "https://github.com/chetan/bixby-common.git"
 
-group :threads do
-  gem "rainbows", :platforms => :mri
-  gem "rev",      :platforms => :mri
-  gem "cool.io"
-end
-
 # webserver
 gem "thin",     :platforms => :mri
 gem "unicorn",  :platforms => :mri
@@ -84,13 +78,13 @@ group :development do
     gem "binding_of_caller", :platforms => [:mri_19, :rbx] # used by better_errors for advanced features
 
     # newrelic
-    gem 'newrelic_rpm', :require => false
-    gem 'rpm_contrib', :require => false
-    gem 'newrelic-redis', :require => false
+    gem 'newrelic_rpm',     :require => false
+    gem 'rpm_contrib',      :require => false
+    gem 'newrelic-redis',   :require => false
 
     # docs
     gem "yard"
-    gem "redcarpet"
+    gem "redcarpet", :platforms => [:mri, :rbx]
     gem "annotate", ">= 2.5.0"
 
     # utils
@@ -103,11 +97,11 @@ group :development do
     gem "rvm-capistrano", :require => false
 
     # coverage
-    gem "rcov",       :platforms => :mri_18
-    gem "rcov_rails", :platforms => :mri_18
-    gem "simplecov",  :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git", :require => false
-    gem "simplecov-html", :platforms => :mri_19, :git => "https://github.com/chetan/simplecov-html.git", :require => false
-    gem "simplecov-console", :platforms => :mri_19, :git => "https://github.com/chetan/simplecov-console.git", :require => false
+    gem "rcov",                 :platforms => :mri_18
+    gem "rcov_rails",           :platforms => :mri_18
+    gem "simplecov",            :platforms => :mri_19, :git => "https://github.com/colszowka/simplecov.git", :require => false
+    gem "simplecov-html",       :platforms => :mri_19, :git => "https://github.com/chetan/simplecov-html.git", :require => false
+    gem "simplecov-console",    :platforms => :mri_19, :git => "https://github.com/chetan/simplecov-console.git", :require => false
 
     # quality
     gem "cane", :platforms => :mri_19, :require => false

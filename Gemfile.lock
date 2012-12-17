@@ -147,8 +147,6 @@ GEM
     colorize (0.5.8)
     columnize (0.3.6)
     connection_pool (0.9.2)
-    cool.io (1.1.0)
-      iobuffer (>= 1.0.0)
     crack (0.3.1)
     curb (0.8.3)
     curb_threadpool (0.5.2)
@@ -203,7 +201,6 @@ GEM
     http_parser.rb (0.5.3)
     http_parser.rb (0.5.3-java)
     i18n (0.6.1)
-    iobuffer (1.1.2)
     jdbc-mysql (5.1.13)
     journey (1.0.4)
     jruby-memcached (0.5.1)
@@ -294,10 +291,6 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rainbows (4.4.2)
-      kgio (~> 2.5)
-      rack (~> 1.1)
-      unicorn (~> 4.1)
     raindrops (0.10.0)
     rake (10.0.3)
     rake-hooks (1.2.3)
@@ -326,8 +319,6 @@ GEM
       redis (>= 2.0.1)
       resque (>= 1.20.0)
       rufus-scheduler
-    rev (0.3.2)
-      iobuffer (>= 0.1.3)
     rpm_contrib (2.1.11)
       newrelic_rpm (>= 3.1.1)
       newrelic_rpm (>= 3.1.1)
@@ -444,7 +435,6 @@ DEPENDENCIES
   coffee-script
   coffee-script-source
   continuum!
-  cool.io
   curb
   database_cleaner
   debugger
@@ -473,7 +463,6 @@ DEPENDENCIES
   pry
   pry-rails
   rails (~> 3.2)
-  rainbows
   rake-hooks
   rb-fchange
   rb-fsevent
@@ -484,7 +473,6 @@ DEPENDENCIES
   redis (~> 3.0)
   resque
   resque-scheduler
-  rev
   rpm_contrib
   ruby-debug
   rvm-capistrano
