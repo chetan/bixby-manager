@@ -32,7 +32,7 @@ gem "json",         :platforms => [:mri, :rbx]
 gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
 gem "json-jruby",   :platforms => :jruby
-gem "scrypt"
+gem "scrypt"        # need jruby alternative
 
 gem "SystemTimer",  :platforms => :mri_18
 gem "git"
