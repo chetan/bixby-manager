@@ -78,7 +78,7 @@ GIT
 
 GIT
   remote: https://github.com/sporkrb/spork.git
-  revision: a07c59d6652d81e8863b7ae5767e943fd272b5da
+  revision: 8ac98544869c3b4c5cf1f664b2d9281bb75c7e3e
   specs:
     spork (1.0.0rc3)
 
@@ -302,7 +302,7 @@ GEM
       rack (~> 1.1)
       unicorn (~> 4.1)
     raindrops (0.10.0)
-    rake (10.0.2)
+    rake (10.0.3)
     rake-hooks (1.2.3)
       rake
     rb-fchange (0.0.6)
@@ -367,7 +367,7 @@ GEM
       tilt (~> 1.3.3)
     slop (3.3.3)
     spoon (0.0.1)
-    spork-rails (3.2.0)
+    spork-rails (3.2.1)
       rails (>= 3.0.0, < 3.3.0)
       spork (>= 1.0rc0)
     sprockets (2.2.2)
