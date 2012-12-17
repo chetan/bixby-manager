@@ -21,7 +21,6 @@ gem "exception_notification"
 
 # view related
 gem 'haml'
-gem 'simple_form'
 
 # bixby requirements
 gem "json",         :platforms => [:mri, :rbx]
