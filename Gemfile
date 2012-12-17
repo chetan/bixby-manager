@@ -18,7 +18,7 @@ gem "lograge"
 # backend
 gem "memcached"
 gem "mysql2"
-gem "curb"
+gem "curb"          # need jruby alternative
 
 # misc
 gem "exception_notification"
@@ -46,12 +46,12 @@ gem "twilio-ruby"
 gem "pony"
 
 # scheduler module
+# though hiredis is an extension, it should degrade gracefull for jruby
 gem "hiredis"
 gem "redis", "~> 3.0", :require => ["redis/connection/hiredis", "redis"]
-gem "resque" #, :git => "https://github.com/defunkt/resque.git"
-gem "resque-scheduler",
-  :git => "git@github.com:bvandenbos/resque-scheduler.git",
-  :require => ["resque_scheduler"]
+
+gem "resque"
+gem "resque-scheduler", :require => ["resque_scheduler"]
 
 gem "sidekiq"
 gem "slim"     # for sidekiq web ui
