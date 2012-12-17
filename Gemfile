@@ -34,7 +34,6 @@ gem "oj",           :platforms => [:mri, :rbx]
 gem "json-jruby",   :platforms => :jruby
 gem "scrypt"        # need jruby alternative
 
-gem "SystemTimer",  :platforms => :mri_18
 gem "git"
 
 # rails plugins

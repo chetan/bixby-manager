@@ -89,7 +89,6 @@ GEM
       Platform (>= 0.4.0)
       open4
     Platform (0.4.0)
-    SystemTimer (1.2.3)
     actionmailer (3.2.9)
       actionpack (= 3.2.9)
       mail (~> 2.4.4)
@@ -430,7 +429,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  SystemTimer
   acts-as-taggable-on
   acts_as_tree
   annotate (>= 2.5.0)
