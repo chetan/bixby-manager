@@ -79,7 +79,7 @@ group :development do
     gem "awesome_print"
     gem "letter_opener"
     gem "better_errors"
-    gem "binding_of_caller"
+    gem "binding_of_caller", :platforms => [:mri_19, :rbx] # used by better_errors for advanced features
 
     # newrelic
     gem 'newrelic_rpm', :require => false
