@@ -455,6 +455,7 @@ DEPENDENCIES
   haml_assets
   hiredis
   json
+  json-jruby
   jst_str!
   letter_opener
   lograge

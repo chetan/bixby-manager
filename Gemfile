@@ -11,8 +11,8 @@ group :threads do
 end
 
 # webserver
-gem "thin", :platforms => :mri
-gem "unicorn", :platforms => :mri
+gem "thin",     :platforms => :mri
+gem "unicorn",  :platforms => :mri
 gem "lograge"
 
 # backend
@@ -28,9 +28,10 @@ gem 'haml'
 gem 'simple_form'
 
 # bixby requirements
-gem "json"
+gem "json",         :platforms => [:mri, :rbx]
 gem "multi_json"
-gem "oj"
+gem "oj",           :platforms => [:mri, :rbx]
+gem "json-jruby",   :platforms => :jruby
 gem "scrypt"
 
 gem "SystemTimer",  :platforms => :mri_18
