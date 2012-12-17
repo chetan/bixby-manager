@@ -16,9 +16,11 @@ gem "unicorn",  :platforms => :mri
 gem "lograge"
 
 # backend
-gem "memcached"
-gem "mysql2"
-gem "curb"          # need jruby alternative
+gem "memcached",                        :platforms => [:mri, :rbx]
+gem "jruby-memcached",                  :platforms => :jruby
+gem "mysql2",                           :platforms => [:mri, :rbx]
+gem "activerecord-jdbcmysql-adapter",   :platforms => :jruby
+gem "curb"                              # need jruby alternative
 
 # misc
 gem "exception_notification"

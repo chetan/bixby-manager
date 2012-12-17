@@ -101,6 +101,10 @@ GEM
       activesupport (= 3.2.9)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
+    activerecord-jdbc-adapter (1.2.2.1)
+    activerecord-jdbcmysql-adapter (1.2.2.1)
+      activerecord-jdbc-adapter (~> 1.2.2.1)
+      jdbc-mysql (~> 5.1.0)
     activeresource (3.2.9)
       activemodel (= 3.2.9)
       activesupport (= 3.2.9)
@@ -200,7 +204,9 @@ GEM
     http_parser.rb (0.5.3-java)
     i18n (0.6.1)
     iobuffer (1.1.2)
+    jdbc-mysql (5.1.13)
     journey (1.0.4)
+    jruby-memcached (0.5.1)
     json (1.7.5)
     json (1.7.5-java)
     json-jruby (1.4.3.1-java)
@@ -424,6 +430,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-jdbcmysql-adapter
   acts-as-taggable-on
   acts_as_tree
   annotate (>= 2.5.0)
@@ -448,6 +455,7 @@ DEPENDENCIES
   haml
   haml_assets
   hiredis
+  jruby-memcached
   json
   json-jruby
   jst_str!
