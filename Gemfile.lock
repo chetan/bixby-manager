@@ -210,7 +210,6 @@ GEM
     jruby-memcached (0.5.1)
     json (1.7.5)
     json (1.7.5-java)
-    json-jruby (1.4.3.1-java)
     jwt (0.1.5)
       multi_json (>= 1.0)
     kgio (2.7.4)
@@ -448,7 +447,6 @@ DEPENDENCIES
   hiredis
   jruby-memcached
   json
-  json-jruby
   jst_str!
   letter_opener
   lograge

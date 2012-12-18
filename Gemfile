@@ -1,5 +1,9 @@
 source 'http://rubygems.org'
 
+# need jruby alternative for:
+# curb
+# scrypt
+
 gem 'rails', '~>3.2'
 
 gem 'bixby-common', :git => "https://github.com/chetan/bixby-common.git"
@@ -13,7 +17,8 @@ gem "memcached",                        :platforms => [:mri, :rbx]
 gem "jruby-memcached",                  :platforms => :jruby
 gem "mysql2",                           :platforms => [:mri, :rbx]
 gem "activerecord-jdbcmysql-adapter",   :platforms => :jruby
-gem "curb"                              # need jruby alternative
+gem "curb",                             :platforms => [:mri, :rbx]
+gem "curb_threadpool",                  :platforms => [:mri, :rbx]
 
 # misc
 gem "lograge"
@@ -23,11 +28,10 @@ gem "exception_notification"
 gem 'haml'
 
 # bixby requirements
-gem "json",         :platforms => [:mri, :rbx]
+gem "json",         :platforms => [:mri, :rbx, :jruby]
 gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
-gem "json-jruby",   :platforms => :jruby
-gem "scrypt"        # need jruby alternative
+gem "scrypt"
 
 gem "git"
 
