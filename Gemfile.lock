@@ -43,14 +43,18 @@ GIT
 
 GIT
   remote: https://github.com/chetan/test_guard.git
-  revision: e3b6aff9d09d522a6acc1e8a1b439f982fd74e61
+  revision: 7dbe658afc09718285c2009cb9b42e5c7949581f
   specs:
     test_guard (0.1.2)
       awesome_print
       growl
       guard
+      rb-fchange
+      rb-fsevent
+      rb-inotify
       simplecov
       simplecov-console
+      turn
 
 GIT
   remote: https://github.com/colszowka/simplecov.git
