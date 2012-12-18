@@ -14,7 +14,7 @@ God.watch do |w|
   w.interval = 30.seconds # default
 
   # unicorn needs to be run from the rails root
-  w.start = "bundle exec unicorn_rails -c #{rails_root}/config/deploy/unicorn.conf.rb -E #{rails_env} -D"
+  w.start = "bundle exec unicorn -c #{rails_root}/config/deploy/unicorn.conf.rb -E #{rails_env} -D"
 
   # QUIT gracefully shuts down workers
   w.stop = "kill -QUIT `cat #{w.pid_file}`"
@@ -109,7 +109,7 @@ Thread.new do
       # 31580 275444 unicorn_rails worker[15] -c /data/github/current/config/unicorn.rb -E production -D
       # pid ram command
 
-      lines = `ps -e -www -o pid,rss,command | grep '[u]nicorn_rails worker'`.split("\n")
+      lines = `ps -e -www -o pid,rss,command | grep '[u]nicorn worker'`.split("\n")
       lines.each do |line|
         parts = line.split(' ')
         if parts[1].to_i > unicorn_worker_memory_limit
