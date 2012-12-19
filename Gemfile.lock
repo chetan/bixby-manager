@@ -1,11 +1,10 @@
 GIT
   remote: https://github.com/chetan/bixby-common.git
-  revision: e5e47bb75020d3c509d5b61d819e439f63fd8a85
+  revision: 54b5024ff1721eb3f2c81f4ea00b91f865243ee0
   specs:
-    bixby-common (0.2.0)
-      curb
+    bixby-common (0.3.0)
+      httpi
       multi_json
-      oj
       systemu
 
 GIT
@@ -204,6 +203,8 @@ GEM
     hiredis (0.4.5-java)
     http_parser.rb (0.5.3)
     http_parser.rb (0.5.3-java)
+    httpi (2.0.0)
+      rack
     i18n (0.6.1)
     jdbc-mysql (5.1.13)
     journey (1.0.4)
@@ -253,7 +254,7 @@ GEM
       newrelic_rpm (~> 3.0)
       redis (< 4.0)
     newrelic_rpm (3.5.3.25)
-    oj (1.4.7)
+    oj (2.0.0)
     open4 (1.3.0)
     parallel (0.5.21)
     polyglot (0.3.3)
@@ -436,6 +437,7 @@ DEPENDENCIES
   coffee-script-source
   continuum!
   curb
+  curb_threadpool
   database_cleaner
   debugger
   delete_paranoid

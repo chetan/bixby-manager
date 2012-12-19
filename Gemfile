@@ -18,7 +18,7 @@ gem "jruby-memcached",                  :platforms => :jruby
 gem "mysql2",                           :platforms => [:mri, :rbx]
 gem "activerecord-jdbcmysql-adapter",   :platforms => :jruby
 gem "curb",                             :platforms => [:mri, :rbx]
-gem "curb_threadpool",                  :platforms => [:mri, :rbx]
+gem "curb_threadpool",                  :platforms => [:mri, :rbx] # used in continuum gem
 
 # misc
 gem "lograge"
