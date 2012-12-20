@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 # need jruby alternative for:
-# curb
+# curb_threadpool
 # scrypt
 
 gem 'rails', '~>3.2'
@@ -19,8 +19,9 @@ gem "mysql2",                           :platforms => [:mri, :rbx]
 gem "activerecord-jdbcmysql-adapter",   :platforms => :jruby
 gem "curb",                             :platforms => [:mri, :rbx]
 gem "curb_threadpool",                  :platforms => [:mri, :rbx] # used in continuum gem
+gem "httpclient",                       :platforms => :jruby
 
-# misc
+# misc/production support
 gem "lograge"
 gem "exception_notification"
 
@@ -37,8 +38,8 @@ gem "git"
 
 # rails plugins
 gem "acts-as-taggable-on"
-gem "acts_as_tree"
-gem "delete_paranoid" # https://github.com/socialcast/delete_paranoid
+gem "acts_as_tree"      # replace with closure_tree (better perf)?
+gem "delete_paranoid"   # https://github.com/socialcast/delete_paranoid
 
 # notifications module
 gem "twilio-ruby"
