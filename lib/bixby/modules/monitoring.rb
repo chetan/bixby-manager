@@ -134,7 +134,7 @@ class Monitoring < API
         # notify (email only for now)
         MonitoringMailer.alert(metric, alert, user).deliver
 
-      else
+      elsif metric.status > Metric::Status::NORMAL then
         # alert is back to normal level
         AlertHistory.record(metric, alert, user)
         metric.status = Metric::Status::NORMAL

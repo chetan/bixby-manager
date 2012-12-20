@@ -86,6 +86,11 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert_equal 300, ah.threshold
     assert_equal Alert::Severity::CRITICAL, ah.severity
 
+    # make sure we don't alert again
+    put_check_result()
+    assert_equal 2, ActionMailer::Base.deliveries.size
+    assert_equal 2, AlertHistory.all.size
+
   end
 
 
