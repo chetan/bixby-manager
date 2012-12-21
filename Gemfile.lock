@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/chetan/bixby-common.git
-  revision: 54b5024ff1721eb3f2c81f4ea00b91f865243ee0
+  revision: d2892a2dc206f61c55efe0955ebfd85b64ed9b7c
   specs:
     bixby-common (0.3.0)
       httpi
@@ -203,6 +203,7 @@ GEM
     hiredis (0.4.5-java)
     http_parser.rb (0.5.3)
     http_parser.rb (0.5.3-java)
+    httpclient (2.3.0.1)
     httpi (2.0.0)
       rack
     i18n (0.6.1)
@@ -447,6 +448,7 @@ DEPENDENCIES
   haml
   haml_assets
   hiredis
+  httpclient
   jruby-memcached
   json
   jst_str!
