@@ -45,7 +45,6 @@ class Stark.App
     if !@router.start() && @default_route?
       @log "no routes matched, using default: #{@default_route}"
       @router.route(@default_route)
-      @router.changeURL(@current_state.create_url())
 
   add_state: (state) ->
     s = new state()
