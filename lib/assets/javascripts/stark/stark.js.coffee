@@ -118,6 +118,7 @@ class Stark.App
   # @param [State] state
   # @param [View] view
   copy_data_from_state: (state, view) ->
+    return if not state.models?
     _.each _.keys(state.models), (key) ->
       view.set key, state[key]
 
