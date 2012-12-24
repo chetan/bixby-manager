@@ -1,0 +1,29 @@
+<div class="container-fluid">
+<h1>BIXBY</h1>
+  <div class="row-fluid">
+  <form class="form-vertical">
+    <fieldset>
+      <div class="control-group">
+
+        <label class="control-label">Username
+          <div class="controls">
+            <input type="text" class="username span12" value="">
+          </div>
+        </label>
+
+        <label class="control-label">Password
+          <div class="controls">
+            <input type="password" class="password span12">
+          </div>
+        </label>
+
+        <div class="controls">
+          <button class="btn btn-primary login">Login</button>
+        </div>
+
+      </div> <!-- control-group -->
+    </fieldset>
+  </form>
+
+  </div>
+</div>

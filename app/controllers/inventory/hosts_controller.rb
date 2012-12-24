@@ -1,5 +1,5 @@
 
-class Inventory::HostsController < ApplicationController
+class Inventory::HostsController < UiController
 
   def index
     query = params[:q] || params[:query]
