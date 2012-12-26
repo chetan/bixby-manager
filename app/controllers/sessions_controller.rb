@@ -9,28 +9,16 @@ class SessionsController < UiController
   def create
     u = params[:username]
     p = params[:password]
-    if u.blank? or p.blank? then
+    user_session = UserSession.new(:email => u, :password => p, :remember_me => true)
+    if not user_session.save then
       return render :text => "error", :status => 401
     end
-
-    user = User.where(:email => u).first
-    if user.nil? then
-      # doesn't exist
-    end
-
-    if not user.test_password(p) then
-      # bad pass
-    end
-
-    # TODO replace with proper auth/session (authlogic?)
-    session[:logged_in] = user.id
-
-    restful user
+    restful User.find_by_email(user_session.email)
   end
 
   # GET to logout
   def destroy
-    session.delete :logged_in
+    current_user_session.destroy if current_user_session
     render :text => "ok"
   end
 

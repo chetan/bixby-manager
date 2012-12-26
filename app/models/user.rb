@@ -16,13 +16,10 @@ class User < ActiveRecord::Base
 
   belongs_to :org
 
-  # Test the given password against the one on file
-  #
-  # @param [String] pw      plaintext password (unhashed)
-  #
-  # @return [Boolean] Returns true if passwords match
-  def test_password(pw)
-    SCrypt::Password.new(self.password) == pw
+  acts_as_authentic do |config|
+    config.login_field :email
+    config.crypted_password_field :crypted_password
+    config.crypto_provider Authlogic::CryptoProviders::SCrypt
   end
 
 end

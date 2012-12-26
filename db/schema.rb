@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121211005932) do
+ActiveRecord::Schema.define(:version => 20121226191858) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                     :null => false
@@ -60,12 +60,12 @@ ActiveRecord::Schema.define(:version => 20121211005932) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "host_id"
-    t.string   "name",       :null => false
-    t.text     "detail"
+    t.string   "name"
+    t.string   "detail"
     t.datetime "created_at"
   end
 
-  add_index "annotations", ["host_id"], :name => "fk_annotations_hosts1_idx"
+  add_index "annotations", ["host_id"], :name => "index_annotations_on_host_id"
 
   create_table "checks", :force => true do |t|
     t.integer "host_id",                                         :null => false
@@ -223,6 +223,16 @@ ActiveRecord::Schema.define(:version => 20121211005932) do
 
   add_index "resources", ["host_id"], :name => "fk_resources_hosts1"
 
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id",                       :null => false
     t.integer  "taggable_id"
@@ -248,14 +258,25 @@ ActiveRecord::Schema.define(:version => 20121211005932) do
   end
 
   create_table "users", :force => true do |t|
-    t.integer "org_id",   :null => false
-    t.string  "username", :null => false
-    t.string  "password"
-    t.string  "name"
-    t.string  "email"
-    t.string  "phone"
+    t.integer  "org_id",                            :null => false
+    t.string   "username",                          :null => false
+    t.string   "crypted_password"
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone"
+    t.string   "persistence_token",                 :null => false
+    t.string   "perishable_token",                  :null => false
+    t.integer  "login_count",        :default => 0, :null => false
+    t.integer  "failed_login_count", :default => 0, :null => false
+    t.datetime "last_request_at"
+    t.datetime "current_login_at"
+    t.datetime "last_login_at"
+    t.string   "current_login_ip"
+    t.string   "last_login_ip"
   end
 
+  add_index "users", ["last_request_at"], :name => "index_users_on_last_request_at"
   add_index "users", ["org_id"], :name => "fk_users_orgs1"
+  add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
 
 end

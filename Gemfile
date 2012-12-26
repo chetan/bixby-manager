@@ -33,6 +33,7 @@ gem "json",         :platforms => [:mri, :rbx, :jruby]
 gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
 gem "scrypt"
+gem "authlogic"
 gem "acts_as_tenant"
 
 gem "git"
@@ -81,6 +82,7 @@ group :development do
     gem "letter_opener"
     gem "better_errors"
     gem "binding_of_caller", :platforms => [:mri_19, :rbx] # used by better_errors for advanced features
+    gem "xray", :require => "xray/thread_dump_signal_handler"
 
     # newrelic
     gem 'newrelic_rpm',     :require => false

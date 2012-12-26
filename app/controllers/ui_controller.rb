@@ -4,10 +4,13 @@ class UiController < ApplicationController
   before_filter :apply_current_tenant
 
   def current_user
-    # TODO replace with proper auth/session (authlogic?)
-    return @current_user if not @current_user.nil?
-    return nil if session[:logged_in].blank?
-    @current_user = User.find(session[:logged_in])
+    return @current_user if defined?(@current_user)
+    @current_user = current_user_session && current_user_session.user
+  end
+
+  def current_user_session
+    return @current_user_session if defined?(@current_user_session)
+    @current_user_session = UserSession.find
   end
 
   def apply_current_tenant
