@@ -9,5 +9,5 @@ jQuery ->
       url:  "login"
       tab:  ""
 
-      views:      [ _bv.PageLayout, _bv.Login ]
+      views:      [ _bv.Login ]
   )
