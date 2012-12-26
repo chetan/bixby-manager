@@ -5,6 +5,11 @@ namespace "Bixby.view", (exports, top) ->
     template: "login"
     el: "#body"
 
+    app_events: {
+      "state:activate": ->
+        $("input.username").putCursorAtEnd();
+    }
+
     events: {
       "submit form": (e) ->
         e.preventDefault()
