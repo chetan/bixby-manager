@@ -53,8 +53,8 @@ class Stark.View extends Backbone.View
   # List of models to bind to this view
   bindings: null
 
-  # Set false to avoid redrawing on state changes
-  redraw: true
+  # Set true to avoid redrawing on state changes
+  reuse: false
 
   # List of sub-views
   views: null

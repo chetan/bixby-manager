@@ -129,7 +129,8 @@ class Stark.App
     @log "render_views "
 
     if @current_state?
-      @trigger("state:deactivate", state)
+      @log @current_state
+      @trigger("state:deactivate", @current_state)
       @current_state.deactivate()
       @current_state.dispose(state)
 
@@ -137,8 +138,9 @@ class Stark.App
     # create views
     _.eachR @, state.views, (v) ->
 
-      if @current_state? && _.include(@current_state.views, v) && v.prototype.redraw == false
+      if @current_state? && _.include(@current_state.views, v) && v.prototype.reuse == true
         @log "not going to redraw #{v.name}"
+        state._views.push _.find(@current_state._views, (i) -> i instanceof v)
         return
 
       @log "creating view #{state.name}::#{v.name}"

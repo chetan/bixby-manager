@@ -2,7 +2,7 @@ namespace "Bixby.view", (exports, top) ->
 
   class exports.PageLayout extends Stark.View
 
-    redraw: false
+    reuse: true
     el: "#body"
     template: "page_layout"
 
