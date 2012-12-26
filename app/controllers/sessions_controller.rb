@@ -30,6 +30,8 @@ class SessionsController < UiController
 
   # GET to logout
   def destroy
+    session.delete :logged_in
+    render :text => "ok"
   end
 
 end

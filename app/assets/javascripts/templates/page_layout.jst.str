@@ -22,7 +22,7 @@
               <a href="#">Preferences</a>
             </li>
             <li>
-              <a href="#">Logout</a>
+              <a id="logout">Logout</a>
             </li>
           </ul>
         </li>

@@ -12,6 +12,15 @@ namespace "Bixby.view", (exports, top) ->
       ".tab.monitoring a": [ "monitoring" ]
     }
 
+    events: {
+      "click a#logout": (e) ->
+        v = @
+        $.ajax("/logout", {
+          success: ->
+            v.transition "login"
+        })
+    }
+
     app_events: {
       "state:activate": (state) ->
         if state.tab? and state.tab != @current_tab
