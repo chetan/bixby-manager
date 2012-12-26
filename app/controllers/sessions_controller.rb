@@ -25,7 +25,7 @@ class SessionsController < UiController
     # TODO replace with proper auth/session (authlogic?)
     session[:logged_in] = user.id
 
-    render :text => "success"
+    restful user
   end
 
   # GET to logout

@@ -50,6 +50,9 @@ class ApplicationController < ActionController::Base
   #
   # @param [Object] obj
   def restful(obj)
+    if request.headers["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest" then
+      return render :text => to_api(obj), :as => :json
+    end
     respond_to do |format|
       format.html
       format.any(:xml, :json) { render :text => to_api(obj) }
