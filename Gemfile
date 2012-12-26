@@ -33,6 +33,7 @@ gem "json",         :platforms => [:mri, :rbx, :jruby]
 gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
 gem "scrypt"
+gem "acts_as_tenant"
 
 gem "git"
 

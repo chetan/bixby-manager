@@ -1,15 +1,20 @@
 
 class UiController < ApplicationController
-  before_filter :login_required
+  before_filter :login_required?
+  before_filter :apply_current_tenant
 
   def current_user
-    # if session[:logged_in] == true then
-    #   return true
-    # end
-    return nil
+    # TODO replace with proper auth/session (authlogic?)
+    return @current_user if not @current_user.nil?
+    return nil if session[:logged_in].blank?
+    @current_user = User.find(session[:logged_in])
   end
 
-  def login_required
+  def apply_current_tenant
+    set_current_tenant(self.current_user.org.tenant)
+  end
+
+  def login_required?
     if not current_user.nil?
       # return show_logged_in_user_notifications
       return

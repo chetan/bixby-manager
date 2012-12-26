@@ -5,7 +5,7 @@ class SessionsController < UiController
   def new
   end
 
-  # POST to login
+  # POST to log in
   def create
     u = params[:username]
     p = params[:password]
@@ -23,7 +23,7 @@ class SessionsController < UiController
     end
 
     # TODO replace with proper auth/session (authlogic?)
-    session[:logged_in] = true
+    session[:logged_in] = user.id
 
     render :text => "success"
   end

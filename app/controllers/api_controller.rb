@@ -118,6 +118,7 @@ class ApiController < ApplicationController
     # decrypt the body if necessary
     if crypto_enabled? then
       (@agent, body) = decrypt(body)
+      set_current_tenant(@agent.tenant)
     end
 
     begin
