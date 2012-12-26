@@ -11,7 +11,7 @@ class UiController < ApplicationController
   end
 
   def apply_current_tenant
-    set_current_tenant(self.current_user.org.tenant)
+    set_current_tenant(current_user.org.tenant) if not current_user.nil?
   end
 
   def login_required?
