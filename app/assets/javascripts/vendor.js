@@ -9,7 +9,8 @@
 //= require "spin.min"
 //= require "sprintf"
 //= require "Markdown.Converter"
-//= require "jquery.putcursoratend.js"
+//= require "jquery.putcursoratend"
+//= require "mailcheck.min"
 
 // tagging
 //= require "jquery-ui"

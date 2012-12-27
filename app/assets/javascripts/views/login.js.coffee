@@ -11,11 +11,15 @@ namespace "Bixby.view", (exports, top) ->
     }
 
     events: {
+      "blur input.username": (e) ->
+        $(e.target).mailcheck({
+          suggested: (el, suggestion) ->
+            # TODO show alert/notification
+            console.log "Did you mean " + suggestion.full + "?"
+        })
+
       "submit form": (e) ->
         e.preventDefault()
-
-        # TODO implement mailcheck.js on username
-
         user = $("input.username").val()
         pass = $("input.password").val()
 
