@@ -146,6 +146,7 @@ class Stark.App
 
       @log "creating view #{state.name}::#{v.name}"
       view = new v()
+      view.set "current_user", @current_user
       @copy_data_from_state state, view
       view.app = @
       view.state = state
