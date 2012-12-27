@@ -3,6 +3,9 @@ class SessionsController < UiController
 
   # display login page
   def new
+    if not current_user.nil? then
+      redirect_to root_path
+    end
   end
 
   # POST to log in

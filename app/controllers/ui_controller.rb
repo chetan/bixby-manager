@@ -19,12 +19,11 @@ class UiController < ApplicationController
 
   def login_required?
     if not current_user.nil?
-      # return show_logged_in_user_notifications
-      return
+      return false
     end
 
     # don't redirect when trying to login
-    return if params["controller"] == "sessions" && %w{new create}.include?(params["action"])
+    return false if params["controller"] == "sessions" && %w{new create}.include?(params["action"])
 
     session[:return_to] = request.url
     qp = params.clone
