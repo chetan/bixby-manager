@@ -2,7 +2,7 @@ namespace "Bixby.view", (exports, top) ->
 
   class exports.NavSearch extends Stark.Partial
 
-    reuse: false
+    reuse: true
     template: "nav_search"
 
     app_events: {
