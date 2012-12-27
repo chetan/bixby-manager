@@ -4,7 +4,7 @@
 #
 #  id          :integer          not null, primary key
 #  name        :string(255)
-#  password    :string(89)
+#  password    :string(255)
 #  private_key :text
 #
 
