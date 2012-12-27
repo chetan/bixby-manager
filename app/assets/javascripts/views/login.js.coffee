@@ -24,10 +24,10 @@ namespace "Bixby.view", (exports, top) ->
           type: "POST",
           data: _.csrf({username: user, password: pass}),
           success: (data, textStatus, jqXHR) ->
+            view.app.current_user = new Bixby.model.User(JSON.parse(data))
             view.transition "inventory"
           error: (jqXHR, textStatus, errorThrown) ->
-            # display error
-            alert("error logging in")
+            alert("Invalid username or password")
         })
 
     }

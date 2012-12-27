@@ -17,6 +17,7 @@ namespace "Bixby.view", (exports, top) ->
         v = @
         $.ajax("/logout", {
           success: ->
+            v.app.current_user = null
             v.transition "login"
         })
     }
