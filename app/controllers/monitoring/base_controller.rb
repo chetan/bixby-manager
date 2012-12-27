@@ -1,4 +1,4 @@
 
-class Monitoring::BaseController < ApplicationController
+class Monitoring::BaseController < UiController
 
 end
