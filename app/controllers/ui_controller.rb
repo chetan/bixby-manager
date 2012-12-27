@@ -31,7 +31,11 @@ class UiController < ApplicationController
     # don't redirect when trying to login
     return false if params["controller"] == "sessions" && %w{new create}.include?(params["action"])
 
-    session[:return_to] = request.url
+    u = URI.parse(request.url)
+    s = u.path
+    s += "?" + u.query if u.query
+    session[:return_to] = s
+
     qp = params.clone
     qp.delete(:controller)
     qp.delete(:action)

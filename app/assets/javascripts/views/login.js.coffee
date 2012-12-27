@@ -28,8 +28,12 @@ namespace "Bixby.view", (exports, top) ->
           type: "POST",
           data: _.csrf({username: user, password: pass}),
           success: (data, textStatus, jqXHR) ->
-            view.app.current_user = new Bixby.model.User(JSON.parse(data))
-            view.transition "inventory"
+            ret = JSON.parse(data)
+            view.app.current_user = new Bixby.model.User(ret.user)
+            return if ret.redir && view.app.router.route(ret.redir) == true
+
+            # send to default route
+            view.app.router.route(view.app.default_route)
           error: (jqXHR, textStatus, errorThrown) ->
             alert("Invalid username or password")
         })

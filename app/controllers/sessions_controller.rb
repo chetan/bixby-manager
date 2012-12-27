@@ -16,7 +16,10 @@ class SessionsController < UiController
     if not user_session.save then
       return render :text => "error", :status => 401
     end
-    restful User.find_by_email(user_session.email)
+
+    ret = { :user => User.find_by_email(user_session.email) }
+    ret[:redir] = session.delete(:return_to) if session.include? :return_to
+    restful ret
   end
 
   # GET to logout
