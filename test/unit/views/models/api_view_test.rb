@@ -32,6 +32,17 @@ class Bixby::Test::Views::Models::ApiView < Bixby::Test::TestCase
     run_tests(f)
   end
 
+  def test_hash_with_objects
+    u = FactoryGirl.create(:user)
+    h = { :user => u, :foo => "bar" }
+
+    t = ApiView::Engine.convert(h)
+    assert_kind_of Hash, t
+    assert_equal "bar", t[:foo]
+    assert_kind_of Hash, t[:user]
+    assert_equal u.username, t[:user][:username]
+  end
+
   private
 
   def run_tests(f)

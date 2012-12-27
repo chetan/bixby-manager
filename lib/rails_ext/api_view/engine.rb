@@ -32,17 +32,20 @@ module ApiView
       # @return [Object]
       def convert(obj)
 
-        if obj.kind_of? String then
+        if [String, Fixnum, Float].include? obj.class then
           return obj # already converted
         end
 
-        clazz = obj.respond_to?(:first) ? obj.first.class : obj.class
-        converter = ApiView.converter_for(clazz)
+        if obj.kind_of?(Hash) then
+          ret = {}
+          obj.each{ |k,v| ret[k] = convert(v) }
+          return ret
 
-        if obj.respond_to?(:map) then
-          ret = obj.map { |o| converter.convert(o) }
+        elsif obj.respond_to?(:map) then
+          return obj.map { |o| convert(o) }
+
         else
-          ret = converter.convert(obj)
+          return ApiView.converter_for(obj.class).convert(obj)
         end
 
       end
