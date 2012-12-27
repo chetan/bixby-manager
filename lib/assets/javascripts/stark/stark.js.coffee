@@ -129,7 +129,6 @@ class Stark.App
     @log "render_views "
 
     if @current_state?
-      @log @current_state
       @trigger("state:deactivate", @current_state)
       @current_state.deactivate()
       @current_state.dispose(state)
