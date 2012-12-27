@@ -92,6 +92,7 @@ class Stark.App
 
     state_data or= {}
     if @data?
+      @current_user = @data.current_user
       _.extend state_data, @data
       @data = null # clear any bootstrapped data
 
@@ -100,6 +101,7 @@ class Stark.App
     state.bind_app_events()
     state.params = state_data.params if state_data.params?
 
+    state_data.current_user = @current_user
     @log "got state_data", state_data
 
     # load data into state, retrieve models which are missing

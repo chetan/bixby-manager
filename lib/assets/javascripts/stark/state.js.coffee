@@ -62,6 +62,7 @@ class Stark.State
   # Copy state_data into the local scope
   # Return an array of any missing models so they can be loaded
   load_data: (data) ->
+    @current_user = data.current_user
     needed = []
     _.eachR @, @models, (model, key) ->
       if data[key]

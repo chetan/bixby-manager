@@ -24,7 +24,7 @@ class UiController < ApplicationController
 
   def login_required?
     if current_user
-      bootstrap current_user
+      bootstrap current_user, :name => :current_user
       return false
     end
 

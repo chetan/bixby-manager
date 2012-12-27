@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   # @param [Object] *models           List of models to bootstrap
   # @param [Hash] options             Options hash
   # @option options [String] :type    The name of the Backbone.js Model class to map to
+  # @option options [String] :name    The key name to bootstrap as
   def bootstrap(*args)
     opts = args.extract_options!
     args.each do |obj|
@@ -80,25 +81,26 @@ class ApplicationController < ActionController::Base
   def bootstrap_obj(obj, opts)
 
     type = opts.delete(:type)
+    name = opts.delete(:name)
     if type.nil? then
 
       if obj.kind_of? ActiveRecord::Base then
         type = obj.class.to_s
-        name = type.downcase
+        name ||= type.downcase
 
       elsif obj.kind_of? ActiveRecord::Relation or obj.kind_of? Array then
         return if obj.empty?
         type = obj.first.class.to_s + "List"
-        name = obj.first.class.to_s.pluralize.downcase
+        name ||= obj.first.class.to_s.pluralize.downcase
       end
 
     else
-      name = type.to_s.pluralize.downcase
+      name ||= type.to_s.pluralize.downcase
       type = type.to_s + "List"
     end
 
     @bootstrap << {
-      :name  => name,
+      :name  => name.to_s,
       :model => type,
       :data  => to_api(obj)
     }
