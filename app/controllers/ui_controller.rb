@@ -10,6 +10,11 @@ class UiController < ApplicationController
 
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
+
+    UserSession.with_scope(:find_options => {:joins => :org}) do
+      UserSession.find
+    end
+
     @current_user_session = UserSession.find
   end
 
