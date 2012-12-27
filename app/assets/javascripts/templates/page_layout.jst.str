@@ -19,9 +19,6 @@
           <a href="#href1" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.name() %></a>
           <ul class="dropdown-menu">
             <li>
-              <a href="#">Preferences</a>
-            </li>
-            <li>
               <a id="logout">Logout</a>
             </li>
           </ul>
