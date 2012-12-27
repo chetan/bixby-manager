@@ -18,7 +18,8 @@ class UiController < ApplicationController
   end
 
   def login_required?
-    if not current_user.nil?
+    if current_user
+      bootstrap current_user
       return false
     end
 
