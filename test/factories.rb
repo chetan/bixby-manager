@@ -13,6 +13,8 @@ FactoryGirl.define do
 
   sequence(:uuid) { |n| "uuid-#{n}" }
   sequence(:pubkey) { |n|  }
+  sequence(:username) { |n| "chetan#{n}" }
+  sequence(:email_id) { |n| "test#{n}@fw2.net" }
 
   factory :agent do
     ip "2.2.2.2"
@@ -98,8 +100,10 @@ FactoryGirl.define do
 
   factory :user do
     association :org
-    username "chetan"
-    email "test@fw2.net"
+    username { generate(:username) }
+    email { generate(:email_id) }
+    password "foobar"
+    password_confirmation "foobar"
   end
 
 end
