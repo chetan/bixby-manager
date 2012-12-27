@@ -35,6 +35,10 @@ class Stark.Router
   constructor: ->
     Backbone.history or= new Backbone.History
 
+  # Start the routing engine. Will attempt to match the current window.location
+  # against all the registered routes.
+  #
+  # @return [Boolean] true if a route was matched
   start: ->
     @log "starting history"
     return Backbone.history.start({ pushState: true })
