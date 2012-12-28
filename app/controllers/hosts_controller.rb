@@ -1,5 +1,5 @@
 
-class HostsController < ApplicationController
+class HostsController < UiController
 
   def index
     query = params[:q] || params[:query]
