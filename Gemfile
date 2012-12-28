@@ -34,7 +34,6 @@ gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
 gem "scrypt"
 gem "authlogic"
-gem "acts_as_tenant"
 
 gem "git"
 
