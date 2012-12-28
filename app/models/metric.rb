@@ -30,6 +30,8 @@ class Metric < ActiveRecord::Base
   belongs_to :check
   has_and_belongs_to_many :tags, :class_name => :Metadata, :join_table => "metrics_metadata"
 
+  multi_tenant :via => :check
+
   attr_accessor :data, :metadata
 
   # Shortcut accessor for this Metric's Org

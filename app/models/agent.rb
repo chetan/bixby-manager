@@ -19,6 +19,7 @@ class Agent < ActiveRecord::Base
 
   belongs_to :host
   acts_as_paranoid
+  multi_tenant :via => :host
 
   STATUS_NEW      = 0
   STATUS_ACTIVE   = 1
@@ -44,13 +45,6 @@ class Agent < ActiveRecord::Base
   # @return [Org]
   def org
     self.host.org
-  end
-
-  # Shortcut accessor for this Agent's Tenant
-  #
-  # @return [Tenant]
-  def tenant
-    self.org.tenant
   end
 
   def uri

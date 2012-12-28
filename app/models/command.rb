@@ -16,6 +16,8 @@ class Command < ActiveRecord::Base
 
   belongs_to :repo
 
+  multi_tenant :via => :repo
+
   serialize :options, JSONColumn.new
 
   def path

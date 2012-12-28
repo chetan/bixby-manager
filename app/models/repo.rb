@@ -15,8 +15,8 @@
 class Repo < ActiveRecord::Base
 
   belongs_to :org
-
   has_many :commands
+  multi_tenant :via => :org
 
   def path
     if org_id.nil? and name == "vendor" then

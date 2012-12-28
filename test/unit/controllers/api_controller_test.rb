@@ -34,6 +34,7 @@ class API < ActionController::TestCase
   def teardown
     super
     BIXBY_CONFIG[:crypto] = false
+    MultiTenant.current_tenant = nil
   end
 
   def test_post_invalid

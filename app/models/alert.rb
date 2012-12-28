@@ -19,6 +19,8 @@ class Alert < ActiveRecord::Base
   belongs_to :check
   belongs_to :metric
 
+  multi_tenant :via => :check
+
   serialize :sign, SymbolColumn.new
 
   module Severity

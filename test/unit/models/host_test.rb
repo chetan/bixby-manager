@@ -84,4 +84,37 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
     assert_empty Host.search("foo=baz")
     assert_empty Host.search("bar=baz")
   end
+
+  def test_tenant_security
+
+    h = FactoryGirl.create(:host)
+    assert h.respond_to? :tenant
+    assert h.tenant
+    assert_equal h.org.tenant, h.tenant
+
+    h2 = FactoryGirl.create(:host)
+    refute_equal h.tenant, h2.tenant
+
+    MultiTenant.current_tenant = h.tenant
+
+    # now try to load h2 and fail
+    assert_throws(MultiTenant::AccessException) do
+      Host.find(h2.id)
+    end
+
+    # doesn't throw
+    Host.find(h.id)
+
+    MultiTenant.current_tenant = nil
+    Host.find(h2.id)
+
+    MultiTenant.current_tenant = h2.tenant
+    Host.find(h2.id)
+
+    # this will throw
+    assert_throws(MultiTenant::AccessException) do
+      Host.all
+    end
+
+  end
 end

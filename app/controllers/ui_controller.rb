@@ -1,7 +1,7 @@
 
 class UiController < ApplicationController
   before_filter :login_required?
-  before_filter :apply_current_tenant
+  before_filter :set_current_tenant
 
   def current_user
     return @current_user if defined?(@current_user)
@@ -18,8 +18,8 @@ class UiController < ApplicationController
     @current_user_session = UserSession.find
   end
 
-  def apply_current_tenant
-    set_current_tenant(current_user.org.tenant) if not current_user.nil?
+  def set_current_tenant
+    MultiTenant.current_tenant = current_user.tenant if current_user
   end
 
   def login_required?

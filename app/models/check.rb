@@ -23,6 +23,8 @@ class Check < ActiveRecord::Base
 
   has_many :metrics
 
+  multi_tenant :via => :host
+
   serialize :args, JSONColumn.new
 
   # Shortcut accessor for this Check's Org
@@ -30,13 +32,6 @@ class Check < ActiveRecord::Base
   # @return [Org]
   def org
     self.host.org
-  end
-
-  # Shortcut accessor for this Check's Tenant
-  #
-  # @return [Tenant]
-  def tenant
-    self.org.tenant
   end
 
   # Get a list of MetricInfo that this check provides

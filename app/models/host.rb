@@ -23,6 +23,8 @@ class Host < ActiveRecord::Base
   has_and_belongs_to_many :metadata, :class_name => :Metadata, :join_table => "hosts_metadata"
   has_and_belongs_to_many :groups, :class_name => :HostGroup, :join_table => "hosts_host_groups"
 
+  multi_tenant :via => :org
+
   def to_s
     if self.alias() then
       self.alias()

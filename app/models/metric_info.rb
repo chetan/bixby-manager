@@ -15,6 +15,8 @@ class MetricInfo < ActiveRecord::Base
 
   belongs_to :command
 
+  multi_tenant :via => :command
+
   # Retrieve the MetricInfo for the given Command
   #
   # @param [Command] command

@@ -15,6 +15,7 @@ class EscalationPolicy < ActiveRecord::Base
 
   belongs_to :org
   has_one :on_call
+  multi_tenant :via => :org
 
   # Get the EscalationPolicy rotation for the given Org
   #

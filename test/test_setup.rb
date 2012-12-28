@@ -9,6 +9,7 @@ module Bixby
       end
       def teardown
         DatabaseCleaner.clean
+        MultiTenant.current_tenant = nil
       end
     end
 

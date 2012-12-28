@@ -21,6 +21,8 @@ class AlertHistory < ActiveRecord::Base
   belongs_to :check
   belongs_to :metric
 
+  multi_tenant :via => :check
+
   belongs_to :user_notified, :class_name => User
 
   def self.record(metric, alert, user)

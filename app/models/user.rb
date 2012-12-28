@@ -24,6 +24,7 @@
 class User < ActiveRecord::Base
 
   belongs_to :org
+  multi_tenant :via => :org
 
   acts_as_authentic do |config|
     config.login_field :email

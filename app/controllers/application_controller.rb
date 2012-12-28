@@ -3,8 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   respond_to :html, :json
   before_filter :init_bootstrap
-
-  set_current_tenant_through_filter
+  multi_tenant
 
   protected
 
