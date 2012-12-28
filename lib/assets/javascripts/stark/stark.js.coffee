@@ -90,6 +90,10 @@ class Stark.App
       @log "same state, should we cancel transition?"
       # return
 
+    # save a copy for possible redir
+    old_state_data = {}
+    _.extend old_state_data, state_data
+
     state_data or= {}
     if @data?
       @current_user = @data.current_user
@@ -109,6 +113,12 @@ class Stark.App
     if needed? && needed.length > 0
       app = @
       Backbone.multi_fetch needed, (err, results) ->
+        if err and err.status >= 400 and err.status < 500
+          # session timeout
+          app.redir = [ state_name, state_data ]
+          state.dispose() # trash state we were building
+          return app.transition "login"
+
         app.render_views(state)
     else
       @render_views(state)

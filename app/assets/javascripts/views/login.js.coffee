@@ -30,7 +30,12 @@ namespace "Bixby.view", (exports, top) ->
           success: (data, textStatus, jqXHR) ->
             ret = JSON.parse(data)
             view.app.current_user = new Bixby.model.User(ret.user)
-            return if ret.redir && view.app.router.route(ret.redir) == true
+            if ret.redir && view.app.router.route(ret.redir) == true
+              return
+            if view.app.redir
+              r = view.app.redir
+              view.app.redir = null
+              return view.app.transition r[0], r[1]
 
             # send to default route
             view.app.router.route(view.app.default_route)

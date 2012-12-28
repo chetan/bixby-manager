@@ -31,6 +31,11 @@ class UiController < ApplicationController
     # don't redirect when trying to login
     return false if params["controller"] == "sessions" && %w{new create}.include?(params["action"])
 
+    if request.xhr? or request.format != "text/html" then
+      # return an error response instead
+      return render :text => "not logged in", :status => 401
+    end
+
     u = URI.parse(request.url)
     s = u.path
     s += "?" + u.query if u.query
