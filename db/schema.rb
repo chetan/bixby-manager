@@ -60,12 +60,12 @@ ActiveRecord::Schema.define(:version => 20121226191858) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "host_id"
-    t.string   "name"
-    t.string   "detail"
+    t.string   "name",       :null => false
+    t.text     "detail"
     t.datetime "created_at"
   end
 
-  add_index "annotations", ["host_id"], :name => "index_annotations_on_host_id"
+  add_index "annotations", ["host_id"], :name => "fk_annotations_hosts1_idx"
 
   create_table "checks", :force => true do |t|
     t.integer "host_id",                                         :null => false
