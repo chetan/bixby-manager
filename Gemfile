@@ -82,6 +82,7 @@ group :development do
     gem "better_errors"
     gem "binding_of_caller", :platforms => [:mri_19, :rbx] # used by better_errors for advanced features
     gem "xray", :require => "xray/thread_dump_signal_handler"
+    gem "quiet_assets"
 
     # newrelic
     gem 'newrelic_rpm',     :require => false
