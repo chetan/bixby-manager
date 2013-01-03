@@ -1,29 +1,31 @@
-<div class="container-fluid">
-<h1>BIXBY</h1>
-  <div class="row-fluid">
-  <form class="form-vertical">
-    <fieldset>
-      <div class="control-group">
+<div class="container">
+  <div class="row">
+    <div class="span4 offset4">
 
-        <label class="control-label">Username
+      <h1>BIXBY</h1>
+
+      <form class="form-vertical">
+        <div class="control-group">
+
+          <label class="control-label"><small><strong>USERNAME</strong></small>
+            <div class="controls">
+              <input type="text" class="username" value="">
+            </div>
+          </label>
+
+          <label class="control-label"><small><strong>PASSWORD</strong></small>
+            <div class="controls">
+              <input type="password" class="password">
+            </div>
+          </label>
+
           <div class="controls">
-            <input type="text" class="username span12" value="">
+            <button class="btn btn-primary login">Login</button>
           </div>
-        </label>
 
-        <label class="control-label">Password
-          <div class="controls">
-            <input type="password" class="password span12">
-          </div>
-        </label>
+        </div> <!-- control-group -->
+      </form>
 
-        <div class="controls">
-          <button class="btn btn-primary login">Login</button>
-        </div>
-
-      </div> <!-- control-group -->
-    </fieldset>
-  </form>
-
+    </div>
   </div>
 </div>
