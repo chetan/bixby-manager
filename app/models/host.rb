@@ -58,6 +58,20 @@ class Host < ActiveRecord::Base
     return @meta
   end
 
+  # Find all hosts which the given user has access to
+  # (based on Org)
+  #
+  # @param [User] user
+  #
+  # @return [Array<Host>]
+  def self.all_for_user(user)
+    return nil if user.nil?
+    where(:org_id => user.org)
+  end
+  class << self
+    alias_method :for_user, :all_for_user
+  end
+
   # Search for hosts matching the given terms
   #
   # Fields searched for keywords: hostname, ip, alias, desc

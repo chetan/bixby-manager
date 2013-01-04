@@ -117,4 +117,21 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
     end
 
   end
+
+  def test_for_user
+    h = FactoryGirl.create(:host)
+    h2 = FactoryGirl.create(:host)
+    u = FactoryGirl.create(:user)
+    u.org = h.org
+    u.save
+
+    assert_equal h.org, u.org
+    assert_equal 2, Host.all.size
+
+    hosts = Host.all_for_user(u)
+    assert_equal 1, hosts.size
+    assert_equal 1, Host.for_user(u).size
+    assert_equal h, hosts.first
+  end
+
 end
