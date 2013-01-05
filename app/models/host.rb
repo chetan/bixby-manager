@@ -79,9 +79,10 @@ class Host < ActiveRecord::Base
   # Search by metadata: foo=bar
   #
   # @param [String] terms
+  # @param [User] user to scope for
   #
   # @result [Array<Host>]
-  def self.search(terms)
+  def self.search(terms, user)
 
     keys = []
     tags = []
@@ -108,13 +109,13 @@ class Host < ActiveRecord::Base
 
     # find by tag
     if not tags.empty? then
-      hosts = Host.tagged_with(tags)
+      hosts = Host.for_user(user).tagged_with(tags)
       if hosts.empty? then
         return []
       end
 
     else
-      hosts = Host.all # FIXME use keyword search? # restrict to ORG etc
+      hosts = Host.for_user(user)
     end
 
     # filter by metadata
