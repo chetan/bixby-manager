@@ -2,7 +2,7 @@
 class Monitoring::HostsController < Monitoring::BaseController
 
   def index
-    @hosts = Host.all
+    @hosts = Host.for_user(current_user)
   end
 
   def show
