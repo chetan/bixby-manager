@@ -34,6 +34,7 @@ gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
 gem "scrypt"
 gem "authlogic"
+gem "api-auth"
 
 gem "git"
 

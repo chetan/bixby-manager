@@ -29,6 +29,11 @@ class API < ActionController::TestCase
     super
     @controller = ApiController.new
     @agent = FactoryGirl.create(:agent)
+
+    # common req options
+    @request.request_method = "POST"
+    @request.env["Content-Type"] = "text/json"
+    @request.path = "/api"
   end
 
   def teardown
@@ -76,11 +81,12 @@ class API < ActionController::TestCase
   def test_encrypted_request
     BIXBY_CONFIG[:crypto] = true
 
-    @request.env['RAW_POST_DATA'] = encrypt_for_server(@agent, JsonRequest.new("hello:hi", "joe").to_json)
+    @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:hi", "joe").to_json
+    ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
     post :handle
 
-    # decrypt response
-    body = decrypt_from_server(@agent, @response.body)
+    # validate response
+    body = @response.body
     res = JsonResponse.from_json(body)
     assert res
     assert res.success?
@@ -156,6 +162,10 @@ class API < ActionController::TestCase
     refute res.success?
     assert res.message =~ /unsupported operation/
     assert_equal 400, res.code
+  end
+
+  def key_for(key)
+    OpenSSL::PKey::RSA.new(key)
   end
 
   def encrypt_for_server(agent, payload)

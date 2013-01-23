@@ -11,15 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121226191858) do
+ActiveRecord::Schema.define(:version => 20130123000556) do
 
   create_table "agents", :force => true do |t|
-    t.integer  "host_id",                                     :null => false
+    t.integer  "host_id",                                      :null => false
     t.string   "uuid"
     t.string   "ip",         :limit => 16
-    t.integer  "port",       :limit => 2,  :default => 18000
+    t.integer  "port",       :limit => 2,   :default => 18000
     t.text     "public_key"
-    t.integer  "status",     :limit => 2,  :default => 0,     :null => false
+    t.string   "access_key", :limit => 32,                     :null => false
+    t.string   "secret_key", :limit => 128,                    :null => false
+    t.integer  "status",     :limit => 2,   :default => 0,     :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"

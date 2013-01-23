@@ -21,28 +21,21 @@ class ApiController < ApplicationController
         return send_file(ret.filename, :filename => File.basename(ret.filename))
 
       elsif ret.kind_of? Bixby::JsonResponse then
-        return render(:json => crypt(ret.to_json))
+        return render(:json => ret.to_json)
       end
 
-      return render(:json => crypt(Bixby::JsonResponse.new(:success, nil, ret).to_json))
+      return render(:json => Bixby::JsonResponse.new(:success, nil, ret).to_json)
 
     rescue Exception => ex
       puts ex
       puts ex.backtrace
-      return render(:json => crypt(Bixby::JsonResponse.new(:fail, ex.message, ex, 500).to_json))
+      return render(:json => Bixby::JsonResponse.new(:fail, ex.message, ex, 500).to_json)
     end
 
   end # handle
 
 
   private
-
-  def crypt(res)
-    if not crypto_enabled? then
-      return res
-    end
-    return encrypt_for_agent(@agent, res)
-  end
 
   # Handle the API request
   #
@@ -117,7 +110,10 @@ class ApiController < ApplicationController
 
     # decrypt the body if necessary
     if crypto_enabled? then
-      (@agent, body) = decrypt(body)
+      @agent = Agent.where(:access_key => ApiAuth.access_id(request)).first
+      if not ApiAuth.authentic?(request, @agent.secret_key) then
+        raise "authentication failed"
+      end
       MultiTenant.current_tenant = @agent.tenant
     end
 

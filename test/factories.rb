@@ -23,6 +23,9 @@ FactoryGirl.define do
     public_key {  }
     association :host
 
+    access_key { Bixby::CryptoUtil.generate_access_key }
+    secret_key { Bixby::CryptoUtil.generate_secret_key }
+
     before(:create) do |agent|
       agent.instance_eval do
         pair = OpenSSL::PKey::RSA.generate(2048)
