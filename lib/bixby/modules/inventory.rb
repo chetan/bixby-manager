@@ -42,6 +42,8 @@ class Inventory < API
     a.port = port
     a.uuid = uuid
     a.public_key = public_key
+    a.access_key = Bixby::CryptoUtil.generate_access_key
+    a.secret_key = Bixby::CryptoUtil.generate_secret_key
 
     if not a.valid? then
       # validate this agent first
@@ -52,7 +54,9 @@ class Inventory < API
 
     a.save!
 
-    { :server_key => server_key_for_agent(a).public_key.to_s }
+    { :server_key => server_key_for_agent(a).public_key.to_s,
+      :access_key => a.access_key,
+      :secret_key => a.secret_key }
   end
 
   # Update Facter facts on the given Agent

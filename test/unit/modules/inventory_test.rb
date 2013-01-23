@@ -33,8 +33,18 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     ret = Bixby::Inventory.new(http_req).register_agent("foo", "bar", hostname, 18000, org.tenant.name, "test")
     assert ret
     assert_kind_of Hash, ret
+    assert_equal 3, ret.keys.size
     assert_includes ret, :server_key
+    assert_includes ret, :access_key
+    assert_includes ret, :secret_key
     assert ret[:server_key] =~ /PUBLIC KEY/
+    assert_equal 32, ret[:access_key].length
+    assert_equal 128, ret[:secret_key].length
+
+    a = Agent.where(:uuid => "foo").first
+    assert a, "agent created"
+    assert_equal ret[:access_key], a.access_key
+    assert_equal ret[:secret_key], a.secret_key
 
     host = Host.where("hostname = ?", hostname).first
     assert host, "host created"
