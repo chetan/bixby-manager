@@ -3,6 +3,7 @@ listen 8080, :tcp_nopush => true
 worker_processes 6
 # timeout 60
 
+working_directory "/var/www/bixby/current"
 pid "/var/www/bixby/shared/pids/unicorn.pid"
 stdout_path "/var/www/bixby/shared/log/unicorn.log"
 stderr_path "/var/www/bixby/shared/log/unicorn.log"
