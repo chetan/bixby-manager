@@ -5,9 +5,16 @@ def prefork
     # add to library load path
     $: << root
   end
+
+  require "rubygems"
+  if not defined? ::Bundler then
+    require "bundler/setup"
+  end
+
   if not ENV['DRB'] then
     load_simplecov()
   end
+
   require "test_guard"
   require "test_prefork"
   require "test_setup"
