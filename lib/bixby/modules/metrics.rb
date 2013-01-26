@@ -261,7 +261,7 @@ class Metrics < API
     metrics = []
     results.each do |met|
       if not met or met.empty? then
-        metrics << met
+        metrics << {} # just return an empty hash instead of whatever we got
         next
       end
 

@@ -27,6 +27,23 @@ EOF
     common_tests(metrics)
   end
 
+  def test_load_data
+    m = Metric.first
+    assert m
+    assert_kind_of Metric, m
+
+    stub = stub_request(:get, /:4242/).with { |req|
+      u = req.uri.to_s
+      u =~ /ascii=true/ && u =~ /sum:hardware.storage.disk.free/ &&
+        u =~ /check_id=#{m.check.id}/
+    }
+
+    m.load_data!
+    assert_requested(stub)
+    refute m.data
+    refute m.metadata
+  end
+
   def test_metrics_for_host_no_downsample
     stub2, req2 = create_req(@body2, false)
     stub1, req1 = create_req(@body1)
