@@ -126,6 +126,19 @@ EOF
     test_get_check(m.check)
   end
 
+  def test_get_for_check_no_results
+    m = FactoryGirl.create(:metric)
+
+    stub, req = create_req("")
+    ret = Bixby::Metrics.new.get_for_check(m.check, Time.new-86400, Time.new, {:foo=>"bar"})
+
+    assert_requested(stub)
+    assert ret
+    assert_kind_of Metric, ret
+    assert_nil ret.data
+    assert_nil ret.metadata
+  end
+
   def test_get_for_check_by_id
     m = FactoryGirl.create(:metric)
     test_get_check(m.check.id)
@@ -214,11 +227,13 @@ EOF
     assert_equal 7, metric.metadata.size
   end
 
-  def create_req
+  def create_req(body=nil)
+    body ||= @body
+    puts "going to return body:\n#{body}"
     stub = stub_request(:get, /:4242/).with { |req|
       uri = req.uri.to_s
       uri =~ /m=sum:hardware.storage.disk.free/ and uri =~ /foo=bar/
-    }.to_return(:status => 200, :body => @body)
+    }.to_return(:status => 200, :body => body)
 
     s = Time.new - 86400
     e = Time.new
