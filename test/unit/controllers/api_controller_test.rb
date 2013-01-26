@@ -32,7 +32,7 @@ class API < ActionController::TestCase
 
     # common req options
     @request.request_method = "POST"
-    @request.env["Content-Type"] = "text/json"
+    @request.env["Content-Type"] = "application/json"
     @request.path = "/api"
   end
 
