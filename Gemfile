@@ -78,7 +78,10 @@ group :development do
     # debugging
     gem "ruby-debug",   :platforms => :mri_18
     gem "debugger",     :platforms => :mri_19
+    gem "debugger-pry", :require => "debugger/pry", :platforms => :mri_19
     gem "awesome_print"
+
+    # rails debugging helpers
     gem "letter_opener"
     gem "better_errors"
     gem "binding_of_caller", :platforms => [:mri_19, :rbx] # used by better_errors for advanced features
