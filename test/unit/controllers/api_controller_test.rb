@@ -93,6 +93,20 @@ class API < ActionController::TestCase
     assert "hello joe", res.data
   end
 
+  def test_encrypted_request_fails
+    BIXBY_CONFIG[:crypto] = true
+
+    @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:hi", "joe").to_json
+    ApiAuth.sign!(@request, "asdf", @agent.secret_key)
+    post :handle
+
+    body = @response.body
+    res = JsonResponse.from_json(body)
+    assert res
+    refute res.success?
+    assert_equal 401, res.code
+  end
+
   def test_params_array
     @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:msg", %w(hi there)).to_json
     post :handle

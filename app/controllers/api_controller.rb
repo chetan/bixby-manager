@@ -111,8 +111,8 @@ class ApiController < ApplicationController
     # decrypt the body if necessary
     if crypto_enabled? then
       @agent = Agent.where(:access_key => ApiAuth.access_id(request)).first
-      if not ApiAuth.authentic?(request, @agent.secret_key) then
-        raise "authentication failed"
+      if not (@agent and ApiAuth.authentic?(request, @agent.secret_key)) then
+        return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
       end
       MultiTenant.current_tenant = @agent.tenant
     end
