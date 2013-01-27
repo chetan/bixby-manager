@@ -20,9 +20,9 @@ class Repo < ActiveRecord::Base
 
   def path
     if org_id.nil? and name == "vendor" then
-      File.join(Bixby::BundleRepository.path, name)
+      File.join(Bixby.repo_path, name)
     else
-      File.join(Bixby::BundleRepository.path, "#{sprintf('%04d', org_id)}_#{name}")
+      File.join(Bixby.repo_path, "#{sprintf('%04d', org_id)}_#{name}")
     end
   end
 

@@ -42,7 +42,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
 
   def test_exec_with_provision
 
-    BundleRepository.path = "#{Rails.root}/test"
+    Bixby.repo_path = "#{Rails.root}/test"
     repo  = Repo.new(:name => "support")
     agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
     cmd   = Command.new(:bundle => "test_bundle", :command => "echo", :repo => repo)
@@ -76,7 +76,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
   def test_provision_failure
 
     # setup command
-    BundleRepository.path = "#{Rails.root}/test"
+    Bixby.repo_path = "#{Rails.root}/test"
     repo  = Repo.new(:name => "support")
     agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
     cmd   = Command.new(:bundle => "test_bundle", :command => "echo", :repo => repo)
