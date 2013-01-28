@@ -27,8 +27,9 @@ class Provisioning < API
     noargs.env = nil
 
     provision = CommandSpec.new({
-                  :repo => "local", # only command that exists in "local" repo
-                  :bundle => "system/provisioning", :command => "get_bundle.rb",
+                  :repo => "vendor",
+                  :bundle => "system/provisioning",
+                  :command => "get_bundle.rb",
                   :stdin => noargs.to_json })
 
     return exec_api(agent, "exec", provision.to_hash)
