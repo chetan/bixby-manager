@@ -31,7 +31,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
       j = MultiJson.load(req.body)
       jp = j["params"]
-      j["operation"] == "exec" and jp["repo"] == "vendor" and jp["bundle"] == "foobar" and jp["command"] == "baz"
+      j["operation"] == "shell_exec" and jp["repo"] == "vendor" and jp["bundle"] == "foobar" and jp["command"] == "baz"
     }.to_return(:status => 200, :body => JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json)
 
     ret = Bixby::RemoteExec.exec(agent, cmd)
@@ -55,7 +55,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     stub = stub_request(:post, url).with { |req|
       j = MultiJson.load(req.body)
       jp = j["params"]
-      j["operation"] == "exec" and jp["repo"] == "support" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
+      j["operation"] == "shell_exec" and jp["repo"] == "support" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
     }.to_return { { :status => 200, :body => res.shift } }
 
     stub2 = stub_request(:post, url).with { |req|
@@ -90,7 +90,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     stub = stub_request(:post, url).with { |req|
       j = MultiJson.load(req.body)
       jp = j["params"]
-      j["operation"] == "exec" and jp["repo"] == "support" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
+      j["operation"] == "shell_exec" and jp["repo"] == "support" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
     }.to_return { { :status => 200, :body => res.shift } }
 
     # the provision request

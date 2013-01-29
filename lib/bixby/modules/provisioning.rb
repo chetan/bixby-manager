@@ -32,7 +32,7 @@ class Provisioning < API
                   :command => "get_bundle.rb",
                   :stdin => noargs.to_json })
 
-    return exec_api(agent, "exec", provision.to_hash)
+    return exec_api(agent, "shell_exec", provision.to_hash)
   end
 
   # List files in bundle specified by CommandSpec
