@@ -19,10 +19,9 @@ class RemoteExec < API
       command = create_spec(command)
 
       ret = exec_api(agent, "shell_exec", command.to_hash)
-      res = CommandResponse.from_json_response(ret)
 
       if ret.success? || ret.code != 404 then
-        return res
+        return CommandResponse.from_json_response(ret)
       end
 
       # try to provision it, then try again
