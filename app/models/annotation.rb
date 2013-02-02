@@ -4,8 +4,8 @@
 #
 #  id         :integer          not null, primary key
 #  host_id    :integer
-#  name       :string(255)
-#  detail     :string(255)
+#  name       :string(255)      not null
+#  detail     :text
 #  created_at :datetime
 #
 

@@ -8,6 +8,8 @@
 #  ip         :string(16)
 #  port       :integer          default(18000)
 #  public_key :text
+#  access_key :string(32)       not null
+#  secret_key :string(128)      not null
 #  status     :integer          default(0), not null
 #  created_at :datetime
 #  updated_at :datetime
