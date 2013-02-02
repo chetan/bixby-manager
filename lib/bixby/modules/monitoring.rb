@@ -14,29 +14,44 @@ class Monitoring < API
   #
   # @param [Agent] agent
   # @param [CommandSpec] command
+  #
   # @return [Hash] list of options with their possible values
+  # @raise [CommandException]
   def get_command_options(agent, command)
-    return exec_mon(agent, command, GET_OPTIONS)
+    command = create_spec(command)
+    command.args = GET_OPTIONS
+    ret = exec(agent, command)
+    ret.raise!
+    return ret.decode
   end
 
   # Manually initiate a Check and return the response Hash
   #
   # @param [Check] check
+  #
   # @return [Hash]
   #   * :key [String] base key name
   #   * :status [String] OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT
   #   * :timestamp [FixNum]
   #   * :metrics [Hash] key/value pairs of metrics
   #   * :errors [Array<String>] list of errors, if any
+  #
+  # @raise [CommandException]
   def run_check(check)
     command = command_for_check(check)
-    return exec_mon(check.agent, command, GET_METRICS)
+    command.args = GET_METRICS
+    ret = exec(check.agent, command)
+    ret.raise!
+    return ret.decode
   end
 
   # Update the check configuration for the specified Agent and restart the
   # monitoring daemon.
   #
   # @param [Agent] agent
+  #
+  # @return [CommandResponse]
+  # @raise [CommandException]
   def update_check_config(agent)
 
     provisioned = {}
@@ -59,18 +74,21 @@ class Monitoring < API
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",
                                :command => "update_check_config.rb", :stdin => config.to_json )
 
-    return exec_mon(agent, command) # TODO handle err here?
+    return exec(agent, command) # TODO handle err here?
   end
 
   # Restart the monitoring daemon. Starts if not already running.
   #
   # @param [Agent] agent
+  #
+  # @return [CommandResponse]
+  # @raise [CommandException]
   def restart_mon_daemon(agent)
 
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",
                                :command => "mon_daemon.rb", :args => "restart" )
 
-    return exec_mon(agent, command)
+    return exec(agent, command)
   end
 
   # Add a check to a host
@@ -80,6 +98,7 @@ class Monitoring < API
   # @param [Hash] args  Arguments for the check
   #
   # @return [Check]
+  # @raise [CommandException]
   def add_check(host, command, args)
 
     config = create_spec(command).load_config()
@@ -160,44 +179,6 @@ class Monitoring < API
     check.args[:check_id] = check.id
     command.stdin = check.args.to_json
     return command
-  end
-
-  # run with wrapper cmd
-  def exec_mon(agent, command, args = "")
-
-    command = create_spec(command)
-    args = command.args if args.blank?
-
-    cmd = CommandSpec.new(:repo => "vendor",
-            :bundle => "system/monitoring",
-            :args => File.join(command.relative_path, "bin", command.command) + " -- #{args}")
-
-    lang = "ruby"
-    if command.command =~ /\.rb$/ then
-      lang = "ruby"
-    end
-    cmd.command = "#{lang}_wrapper.rb"
-    cmd.stdin = command.stdin
-    if not cmd.command_exists? then
-      return
-    end
-
-    ret = exec_with_wrapper(agent, cmd, command)
-    if not ret.success? then
-      puts "exec failed"
-      puts ret
-      raise "exec failed"
-    end
-
-    # TODO should we return CommandResponse here?
-    if ret.stdout then
-      begin
-        return MultiJson.load(ret.stdout)
-      rescue Exception => ex
-      end
-    end
-
-    return ret
   end
 
 end

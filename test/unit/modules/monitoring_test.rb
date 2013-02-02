@@ -21,9 +21,9 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
         r = MultiJson.load(req.body)
-        r["operation"] == "shell_exec" and r["params"]["command"] == "ruby_wrapper.rb" and req.body =~ /update_check_config.rb/
+        r["operation"] == "shell_exec" and r["params"]["command"] == "update_check_config.rb"
       }.
-        to_return(:status => 200, :body => JsonResponse.new("success", "", {:status => 0, :stdout => ""}).to_json)
+        to_return(:status => 200, :body => cmd_res_json())
 
     check = FactoryGirl.create(:check)
 
@@ -92,8 +92,44 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
   end
 
+  def test_get_options
+
+    stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
+      r = MultiJson.load(req.body)
+      r["operation"] == "shell_exec" and r["params"]["args"] == "--options" and r["params"]["command"] == @check.command.command
+    }.to_return(:status => 200, :body => cmd_res_json(0, "{}"))
+
+    ret = Bixby::Monitoring.new.get_command_options(@check.agent, @check.command)
+    assert_requested stub
+    assert ret
+    assert_kind_of Hash, ret
+  end
+
+  def test_run_check
+
+    stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
+      r = MultiJson.load(req.body)
+      r["operation"] == "shell_exec" and r["params"]["args"] == "--monitor" and r["params"]["command"] == @check.command.command
+    }.to_return(:status => 200, :body => cmd_res_json(0, "{}"))
+
+    ret = Bixby::Monitoring.new.run_check(@check)
+    assert_requested stub
+    assert ret
+    assert_kind_of Hash, ret
+  end
+
 
   private
+
+  def cmd_res_json(status=0, stdout=nil, stderr=nil)
+    res = JsonResponse.new(status == 0 ? "success" : "fail")
+    res.data = {
+      :status => status,
+      :stdout => stdout,
+      :stderr => stderr
+    }
+    return res.to_json
+  end
 
   def put_check_result
     m = {
