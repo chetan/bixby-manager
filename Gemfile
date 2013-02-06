@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 # need jruby alternative for:
 # curb_threadpool
@@ -7,6 +7,7 @@ source 'http://rubygems.org'
 gem 'rails', '~>3.2'
 
 gem 'bixby-common', :git => "https://github.com/chetan/bixby-common.git"
+# gem 'bixby-common', :path => "../common"
 
 # webserver
 gem "thin",     :platforms => :mri
