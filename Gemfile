@@ -64,6 +64,7 @@ gem "sinatra"  # for sidekiq web ui
 gem 'continuum', :git => "https://github.com/chetan/continuum.git"
 
 group :assets do
+    gem 'turbo-sprockets-rails3'
     gem 'sass'
     gem 'sass-rails'
     gem 'jst_str', :git => "https://github.com/chetan/jst_str.git"
