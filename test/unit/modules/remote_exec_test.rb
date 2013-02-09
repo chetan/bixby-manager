@@ -4,6 +4,12 @@ require 'test_helper'
 module Bixby
 class Test::Modules::RemoteExec < Bixby::Test::TestCase
 
+  def setup
+    super
+    ENV["BIXBY_HOME"] = File.join(Rails.root, "test", "support", "root_dir")
+    Bixby.instance_eval{ @client = nil; @root = nil }
+  end
+
   def test_create_spec
       c = CommandSpec.new(:repo => "support", :bundle => "foobar")
       assert_equal c, Bixby::RemoteExec.create_spec(c)
@@ -42,8 +48,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
 
   def test_exec_with_provision
 
-    Bixby.repo_path = "#{Rails.root}/test"
-    repo  = Repo.new(:name => "support")
+    repo  = Repo.new(:name => "vendor")
     agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
     cmd   = Command.new(:bundle => "test_bundle", :command => "echo", :repo => repo)
 
@@ -55,7 +60,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     stub = stub_request(:post, url).with { |req|
       j = MultiJson.load(req.body)
       jp = j["params"]
-      j["operation"] == "shell_exec" and jp["repo"] == "support" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
+      j["operation"] == "shell_exec" and jp["repo"] == "vendor" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
     }.to_return { { :status => 200, :body => res.shift } }
 
     stub2 = stub_request(:post, url).with { |req|
@@ -76,8 +81,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
   def test_provision_failure
 
     # setup command
-    Bixby.repo_path = "#{Rails.root}/test"
-    repo  = Repo.new(:name => "support")
+    repo  = Repo.new(:name => "vendor")
     agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
     cmd   = Command.new(:bundle => "test_bundle", :command => "echo", :repo => repo)
 
@@ -90,7 +94,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     stub = stub_request(:post, url).with { |req|
       j = MultiJson.load(req.body)
       jp = j["params"]
-      j["operation"] == "shell_exec" and jp["repo"] == "support" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
+      j["operation"] == "shell_exec" and jp["repo"] == "vendor" and jp["bundle"] == "test_bundle" and jp["command"] == "echo"
     }.to_return { { :status => 200, :body => res.shift } }
 
     # the provision request

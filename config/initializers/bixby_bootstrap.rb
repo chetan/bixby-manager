@@ -23,8 +23,7 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
   BIXBY_CONFIG = bixby_config[::Rails.env].with_indifferent_access
 
   # setup bundle repo, manager uri
-  manager_root = File.expand_path(BIXBY_CONFIG[:manager][:root])
-  Bixby.repo_path = File.join(manager_root, "repo")
+  ENV["BIXBY_HOME"] = File.expand_path(BIXBY_CONFIG[:manager][:root])
   Bixby.manager_uri = BIXBY_CONFIG[:manager][:uri]
 
   # setup the scheduler
