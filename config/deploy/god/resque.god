@@ -11,7 +11,7 @@ num_workers = RAILS_ENV == 'production' ? 5 : 2
 
     w.env      = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV }
     cmd        = num.kind_of?(Fixnum) ? "work" : "scheduler"
-    w.start    = "#{BIN_PATH}/bundle exec rake -f #{RAILS_ROOT}/Rakefile environment resque:#{cmd}"
+    w.start    = "#{RVM_WRAPPER} bundle exec rake -f #{RAILS_ROOT}/Rakefile environment resque:#{cmd}"
 
     w.uid = 'chetan'
     w.gid = 'chetan'

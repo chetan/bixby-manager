@@ -17,7 +17,7 @@ config_path = "#{RAILS_ROOT}/config/deploy/thin.yml"
 config = YAML.load_file(config_path)
 num_servers = config["servers"] ||= 1
 
-cmd = "#{BIN_PATH}/bundle exec thin"
+cmd = "#{RVM_WRAPPER} bundle exec thin"
 
 (0...num_servers).each do |i|
 

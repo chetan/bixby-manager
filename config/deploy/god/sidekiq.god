@@ -1,12 +1,12 @@
 
 God.watch do |w|
-  w.dir      = "#{RAILS_ROOT}"
+  w.dir      = RAILS_ROOT
   w.name     = "sidekiq-bixby"
   w.interval = 30.seconds
   w.log      = "#{RAILS_ROOT}/log/god.#{w.name}.log"
 
   w.env      = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV }
-  w.start    = "#{BIN_PATH}/bundle exec sidekiq -e #{RAILS_ENV} -c 25 -q schedules" # 25 is default
+  w.start    = "#{RVM_WRAPPER} bundle exec sidekiq -e #{RAILS_ENV} -c 25 -q schedules" # 25 is default
 
   w.uid = 'chetan'
   w.gid = 'chetan'
