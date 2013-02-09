@@ -2,19 +2,16 @@
 # https://gist.github.com/208581
 # http://unicorn.bogomips.org/SIGNALS.html
 
-rails_env = ENV['RAILS_ENV'] || 'production'
-rails_root = ENV['RAILS_ROOT'] || "/var/www/bixby/current"
-
 God.watch do |w|
   w.name = "unicorn-bixby"
-  w.log = "#{rails_root}/log/god.#{w.name}.log"
-  w.dir = rails_root
-  w.pid_file = "#{rails_root}/tmp/pids/unicorn.pid"
+  w.log = "#{RAILS_ROOT}/log/god.#{w.name}.log"
+  w.dir = RAILS_ROOT
+  w.pid_file = "#{RAILS_ROOT}/tmp/pids/unicorn.pid"
 
   w.interval = 30.seconds # default
 
   # unicorn needs to be run from the rails root
-  w.start = "bundle exec unicorn -c #{rails_root}/config/deploy/unicorn.conf.rb -E #{rails_env} -D"
+  w.start = "#{BIN_PATH}/bundle exec unicorn -c #{RAILS_ROOT}/config/deploy/unicorn.conf.rb -E #{RAILS_ENV} -D"
 
   # QUIT gracefully shuts down workers
   w.stop = "kill -QUIT `cat #{w.pid_file}`"

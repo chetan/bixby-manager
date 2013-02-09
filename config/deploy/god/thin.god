@@ -12,13 +12,12 @@
 # https://github.com/macournoyer/thin/blob/master/example/thin.god
 require 'yaml'
 
-RAILS_ROOT = "/var/www/bixby/current"
 config_path = "#{RAILS_ROOT}/config/deploy/thin.yml"
 
 config = YAML.load_file(config_path)
 num_servers = config["servers"] ||= 1
 
-cmd = "bundle exec thin"
+cmd = "#{BIN_PATH}/bundle exec thin"
 
 (0...num_servers).each do |i|
 
