@@ -1,4 +1,6 @@
 
+# TODO move vars to config file
+
 ENV["USE_RUBY_VERSION"] = "ruby-1.9.3-p385"
 
 USER  = "chetan"
