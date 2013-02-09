@@ -13,8 +13,8 @@ num_workers = RAILS_ENV == 'production' ? 5 : 2
     cmd        = num.kind_of?(Fixnum) ? "work" : "scheduler"
     w.start    = "#{RVM_WRAPPER} bundle exec rake -f #{RAILS_ROOT}/Rakefile environment resque:#{cmd}"
 
-    w.uid = 'chetan'
-    w.gid = 'chetan'
+    w.uid = USER
+    w.gid = GROUP
 
     # restart if memory gets too high
     w.transition(:up, :restart) do |on|

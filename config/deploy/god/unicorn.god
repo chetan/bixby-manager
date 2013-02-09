@@ -22,8 +22,8 @@ God.watch do |w|
   w.start_grace = 10.seconds
   w.restart_grace = 10.seconds
 
-  w.uid = 'chetan'
-  w.gid = 'chetan'
+  w.uid = USER
+  w.gid = GROUP
 
   w.behavior(:clean_pid_file)
 

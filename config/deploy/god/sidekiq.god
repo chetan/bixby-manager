@@ -8,8 +8,8 @@ God.watch do |w|
   w.env      = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV }
   w.start    = "#{RVM_WRAPPER} bundle exec sidekiq -e #{RAILS_ENV} -c 25 -q schedules" # 25 is default
 
-  w.uid = 'chetan'
-  w.gid = 'chetan'
+  w.uid = USER
+  w.gid = GROUP
 
   # restart if memory gets too high
   w.transition(:up, :restart) do |on|

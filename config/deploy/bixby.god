@@ -1,6 +1,9 @@
 
 ENV["USE_RUBY_VERSION"] = "ruby-1.9.3-p385"
 
+USER  = "chetan"
+GROUP = "chetan"
+
 RAILS_ENV    = ENV['RAILS_ENV']  = 'production'
 RAILS_ROOT   = ENV['RAILS_ROOT'] = '/var/www/bixby/current'
 
