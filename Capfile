@@ -5,8 +5,8 @@ load 'deploy/assets'
 RAILS_ROOT = File.expand_path(File.dirname(__FILE__))
 
 # config extensions
-require File.join(RAILS_ROOT, 'config/deploy/capistrano_db_yml.rb')
-require File.join(RAILS_ROOT, 'config/deploy/bixby_yml.rb')
+require File.join(RAILS_ROOT, 'config/deploy/cap/capistrano_db_yml.rb')
+require File.join(RAILS_ROOT, 'config/deploy/cap/bixby_yml.rb')
 
 # setup bundler
 require "bundler/capistrano"
