@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130123000556) do
+ActiveRecord::Schema.define(:version => 20130212205232) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -28,7 +28,6 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
   end
 
   add_index "agents", ["host_id"], :name => "fk_agents_hosts1"
-  add_index "agents", ["id"], :name => "index_agents_id_UNIQUE", :unique => true
 
   create_table "alert_histories", :force => true do |t|
     t.integer  "alert_id",                                                     :null => false
@@ -83,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
 
   add_index "checks", ["agent_id"], :name => "fk_checks_agents1"
   add_index "checks", ["command_id"], :name => "fk_checks_commands1"
+  add_index "checks", ["host_id"], :name => "checks_host_id_fk"
 
   create_table "commands", :force => true do |t|
     t.integer  "repo_id"
@@ -112,7 +112,6 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
     t.string  "name",      :null => false
   end
 
-  add_index "host_groups", ["id"], :name => "index_host_groups_id_UNIQUE", :unique => true
   add_index "host_groups", ["org_id"], :name => "fk_host_groups_orgs1"
   add_index "host_groups", ["parent_id"], :name => "fk_host_groups_host_groups1"
 
@@ -203,7 +202,6 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
     t.string  "name"
   end
 
-  add_index "orgs", ["id"], :name => "index_orgs_id_UNIQUE", :unique => true
   add_index "orgs", ["tenant_id"], :name => "fk_orgs_tenants1"
 
   create_table "repos", :force => true do |t|
@@ -215,7 +213,6 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
     t.datetime "updated_at"
   end
 
-  add_index "repos", ["id"], :name => "index_repos_id_UNIQUE", :unique => true
   add_index "repos", ["org_id"], :name => "fk_repos_orgs1"
 
   create_table "resources", :force => true do |t|
@@ -245,7 +242,6 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["id"], :name => "index_taggings_id_UNIQUE", :unique => true
   add_index "taggings", ["tag_id"], :name => "fk_taggings_tags1"
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
@@ -280,5 +276,57 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
   add_index "users", ["last_request_at"], :name => "index_users_on_last_request_at"
   add_index "users", ["org_id"], :name => "fk_users_orgs1"
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
+
+  add_foreign_key "agents", "hosts", :name => "fk_agents_hosts1"
+
+  add_foreign_key "alert_histories", "alerts", :name => "fk_alert_histories_alerts"
+  add_foreign_key "alert_histories", "checks", :name => "fk_alert_histories_checks"
+  add_foreign_key "alert_histories", "metrics", :name => "fk_alert_histories_metrics"
+  add_foreign_key "alert_histories", "users", :name => "fk_alert_histories_users", :column => "user_notified_id"
+
+  add_foreign_key "alerts", "checks", :name => "fk_alerts_checks"
+  add_foreign_key "alerts", "metrics", :name => "fk_alerts_metrics"
+
+  add_foreign_key "annotations", "hosts", :name => "fk_annotations_hosts1"
+
+  add_foreign_key "checks", "agents", :name => "fk_checks_agents1"
+  add_foreign_key "checks", "commands", :name => "fk_checks_commands1"
+  add_foreign_key "checks", "hosts", :name => "checks_host_id_fk"
+
+  add_foreign_key "commands", "repos", :name => "fk_commands_repos1"
+
+  add_foreign_key "escalation_policies", "on_calls", :name => "fk_escalation_policies_on_calls"
+  add_foreign_key "escalation_policies", "orgs", :name => "fk_escalation_policies_orgs"
+
+  add_foreign_key "host_groups", "host_groups", :name => "fk_host_groups_host_groups1", :column => "parent_id"
+  add_foreign_key "host_groups", "orgs", :name => "fk_host_groups_orgs1"
+
+  add_foreign_key "hosts", "orgs", :name => "fk_hosts_orgs1"
+
+  add_foreign_key "hosts_host_groups", "host_groups", :name => "fk_hosts_host_groups_host_groups1"
+  add_foreign_key "hosts_host_groups", "hosts", :name => "fk_hosts_host_groups_hosts1"
+
+  add_foreign_key "hosts_metadata", "hosts", :name => "fk_hosts_metadata_hosts1"
+  add_foreign_key "hosts_metadata", "metadata", :name => "fk_hosts_metadata_metadata1", :column => "metadata_id"
+
+  add_foreign_key "metric_infos", "commands", :name => "fk_command_keys_commands1"
+
+  add_foreign_key "metrics", "checks", :name => "fk_metrics_checks1"
+
+  add_foreign_key "metrics_metadata", "metadata", :name => "fk_metrics_metadata_metadata1", :column => "metadata_id"
+  add_foreign_key "metrics_metadata", "metrics", :name => "fk_metrics_metadata_metrics1"
+
+  add_foreign_key "on_calls", "orgs", :name => "fk_on_calls_orgs"
+  add_foreign_key "on_calls", "users", :name => "fk_on_calls_users", :column => "current_user_id"
+
+  add_foreign_key "orgs", "tenants", :name => "fk_orgs_tenants1"
+
+  add_foreign_key "repos", "orgs", :name => "fk_repos_orgs1"
+
+  add_foreign_key "resources", "hosts", :name => "fk_resources_hosts1"
+
+  add_foreign_key "taggings", "tags", :name => "fk_taggings_tags1"
+
+  add_foreign_key "users", "orgs", :name => "fk_users_orgs1"
 
 end
