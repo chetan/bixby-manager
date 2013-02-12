@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/chetan/bixby-common.git
-  revision: 056be138cf7e6addd155a97a0ad9bdce245024a3
+  revision: 8ed5975701bc112e6c749a6f15b08336c9b8b7cc
   specs:
-    bixby-common (0.3.6)
+    bixby-common (0.3.7)
       httpi
       logging
       multi_json
@@ -55,7 +55,7 @@ GIT
 
 GIT
   remote: https://github.com/colszowka/simplecov.git
-  revision: 73c6a6c48400b726fe0d643dc281eac7151f0d45
+  revision: 31a4ef485d964e1f7e9afb857404b098cc8fa3b9
   specs:
     simplecov (0.7.1)
       multi_json (~> 1.0)
@@ -102,10 +102,13 @@ GEM
       activesupport (= 3.2.12)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activerecord-jdbc-adapter (1.2.6)
-    activerecord-jdbcmysql-adapter (1.2.6)
-      activerecord-jdbc-adapter (~> 1.2.6)
+    activerecord-jdbc-adapter (1.2.7)
+    activerecord-jdbcmysql-adapter (1.2.7)
+      activerecord-jdbc-adapter (~> 1.2.7)
       jdbc-mysql (~> 5.1.0)
+    activerecord-jdbcpostgresql-adapter (1.2.7)
+      activerecord-jdbc-adapter (~> 1.2.7)
+      jdbc-postgres (>= 9.1, < 9.3)
     activeresource (3.2.12)
       activemodel (= 3.2.12)
       activesupport (= 3.2.12)
@@ -205,6 +208,7 @@ GEM
       rack
     i18n (0.6.1)
     jdbc-mysql (5.1.22.1)
+    jdbc-postgres (9.2.1002.1)
     journey (1.0.4)
     jruby-memcached (0.5.1)
     json (1.7.7)
@@ -241,7 +245,7 @@ GEM
     minitest (4.6.0)
     mocha (0.13.2)
       metaclass (~> 0.0.1)
-    multi_json (1.5.1)
+    multi_json (1.6.0)
     mysql2 (0.3.11)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
@@ -257,14 +261,15 @@ GEM
     oj (2.0.4)
     open4 (1.3.0)
     parallel (0.6.2)
+    pg (0.14.1)
     polyglot (0.3.3)
     pony (1.4)
       mail (> 2.0)
-    pry (0.9.11.4)
+    pry (0.9.12)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
-    pry (0.9.11.4-java)
+    pry (0.9.12-java)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
@@ -416,6 +421,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcmysql-adapter
+  activerecord-jdbcpostgresql-adapter
   acts-as-taggable-on
   acts_as_tree
   annotate (>= 2.5.0)
@@ -457,6 +463,7 @@ DEPENDENCIES
   newrelic-redis
   newrelic_rpm
   oj
+  pg
   pony
   pry
   pry-rails
