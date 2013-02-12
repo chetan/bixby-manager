@@ -16,6 +16,10 @@ gem "unicorn",  :platforms => :mri
 # backend
 gem "memcached",                        :platforms => [:mri, :rbx]
 gem "jruby-memcached",                  :platforms => :jruby
+
+# adds foreign key support to activerecord
+gem "foreigner"
+
 gem "mysql2",                           :platforms => [:mri, :rbx]
 gem "activerecord-jdbcmysql-adapter",   :platforms => :jruby
 
