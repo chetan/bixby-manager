@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
   end
 
   add_index "agents", ["host_id"], :name => "fk_agents_hosts1"
-  add_index "agents", ["id"], :name => "id_UNIQUE", :unique => true
+  add_index "agents", ["id"], :name => "index_agents_id_UNIQUE", :unique => true
 
   create_table "alert_histories", :force => true do |t|
     t.integer  "alert_id",                                                     :null => false
@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
     t.string  "name",      :null => false
   end
 
-  add_index "host_groups", ["id"], :name => "id_UNIQUE", :unique => true
+  add_index "host_groups", ["id"], :name => "index_host_groups_id_UNIQUE", :unique => true
   add_index "host_groups", ["org_id"], :name => "fk_host_groups_orgs1"
   add_index "host_groups", ["parent_id"], :name => "fk_host_groups_host_groups1"
 
@@ -203,7 +203,7 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
     t.string  "name"
   end
 
-  add_index "orgs", ["id"], :name => "id_UNIQUE", :unique => true
+  add_index "orgs", ["id"], :name => "index_orgs_id_UNIQUE", :unique => true
   add_index "orgs", ["tenant_id"], :name => "fk_orgs_tenants1"
 
   create_table "repos", :force => true do |t|
@@ -215,7 +215,7 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
     t.datetime "updated_at"
   end
 
-  add_index "repos", ["id"], :name => "id_UNIQUE", :unique => true
+  add_index "repos", ["id"], :name => "index_repos_id_UNIQUE", :unique => true
   add_index "repos", ["org_id"], :name => "fk_repos_orgs1"
 
   create_table "resources", :force => true do |t|
@@ -245,7 +245,7 @@ ActiveRecord::Schema.define(:version => 20130123000556) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["id"], :name => "id_UNIQUE", :unique => true
+  add_index "taggings", ["id"], :name => "index_taggings_id_UNIQUE", :unique => true
   add_index "taggings", ["tag_id"], :name => "fk_taggings_tags1"
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
