@@ -1,3 +1,3 @@
 
-# load migration extensions
-require 'rails_ext/migration'
+# load activerecord extensions
+require 'rails_ext'
