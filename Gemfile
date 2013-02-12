@@ -19,6 +19,7 @@ gem "jruby-memcached",                  :platforms => :jruby
 
 # adds foreign key support to activerecord
 gem "foreigner"
+gem "immigrant"
 
 gem "mysql2",                           :platforms => [:mri, :rbx]
 gem "activerecord-jdbcmysql-adapter",   :platforms => :jruby
