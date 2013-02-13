@@ -158,13 +158,13 @@ EOF
     assert a.tags
     refute_empty a.tags
     assert_equal 2, a.tags.size
-    assert_equal "baz", a.tags.first.to_s
+    assert_equal "foobar", a.name
 
     a = Annotation.tagged_with(["baz"]).first
     assert a
     assert a.tags
     assert_equal 2, a.tags.size
-    assert_equal "baz", a.tags.first.to_s
+    assert_equal "foobar", a.name
   end
 
 
