@@ -1,13 +1,20 @@
 
+#
+# https://github.com/mperham/sidekiq/wiki/Signals
+
 God.watch do |w|
   w.dir      = RAILS_ROOT
   w.name     = "sidekiq-bixby"
-  w.interval = 30.seconds
   w.log      = "#{RAILS_ROOT}/log/god.#{w.name}.log"
+  w.pid_file = "#{RAILS_ROOT}/tmp/pids/sidekiq.pid"
+
+  w.interval = 30.seconds
 
   w.env      = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV }
-  w.start    = "#{RVM_WRAPPER} bundle exec sidekiq -e #{RAILS_ENV} -c 25 -q schedules" # 25 is default
-  w.stop     = "kill -INT `cat #{w.pid_file}`"
+  # 25 threads is default
+  # t=30 - timeout seconds before force shutdown when TERM is received
+  w.start    = "#{RVM_WRAPPER} bundle exec sidekiq -e #{RAILS_ENV} -P #{w.pid_file} -L #{RAILS_ROOT}/log/sidekiq.log -t 30 -c 25 -q schedules"
+  w.stop     = "kill -TERM `cat #{w.pid_file}`"
 
   w.uid = USER
   w.gid = GROUP
