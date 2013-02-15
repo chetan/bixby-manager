@@ -13,19 +13,16 @@ God.watch do |w|
   w.env      = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV }
   # 25 threads is default
   # t=30 - timeout seconds before force shutdown when TERM is received
-  w.start    = "#{RVM_WRAPPER} bundle exec sidekiq -e #{RAILS_ENV} -P #{w.pid_file} -L #{RAILS_ROOT}/log/sidekiq.log -t 30 -c 25 -q schedules"
+  w.start    = "#{RVM_WRAPPER} bundle exec sidekiq -e #{RAILS_ENV} -P #{w.pid_file} -L #{RAILS_ROOT}/log/sidekiq.log -t 30 -d -c 25 -q schedules"
   w.stop     = "kill -TERM `cat #{w.pid_file}`"
+
+  w.start_grace = 10.seconds
+  w.restart_grace = 10.seconds
 
   w.uid = USER
   w.gid = GROUP
 
-  # restart if memory gets too high
-  w.transition(:up, :restart) do |on|
-    on.condition(:memory_usage) do |c|
-      c.above = 350.megabytes
-      c.times = 2
-    end
-  end
+  w.behavior(:clean_pid_file)
 
   # determine the state on startup
   w.transition(:init, { true => :up, false => :start }) do |on|
@@ -38,20 +35,40 @@ God.watch do |w|
   w.transition([:start, :restart], :up) do |on|
     on.condition(:process_running) do |c|
       c.running = true
-      c.interval = 5.seconds
     end
 
     # failsafe
     on.condition(:tries) do |c|
-      c.times = 5
+      c.times = 8
+      c.within = 2.minutes
       c.transition = :start
-      c.interval = 5.seconds
     end
   end
 
   # start if process is not running
   w.transition(:up, :start) do |on|
     on.condition(:process_exits)
+  end
+
+  # restart if memory gets too high
+  w.transition(:up, :restart) do |on|
+    on.condition(:memory_usage) do |c|
+      c.above = 350.megabytes
+      c.times = 2
+    end
+  end
+
+  # lifecycle
+  w.lifecycle do |on|
+    on.condition(:flapping) do |c|
+      c.to_state = [:start, :restart]
+      c.times = 5
+      c.within = 5.minute
+      c.transition = :unmonitored
+      c.retry_in = 10.minutes
+      c.retry_times = 5
+      c.retry_within = 2.hours
+    end
   end
 
 end
