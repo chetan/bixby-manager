@@ -1,5 +1,5 @@
   <script type="text/javascript">
-<% @bootstrap and @bootstrap.each do |boot| %>
+<% @bootstrap.each do |boot| %>
     Bixby.app.bootstrap({
       <%
       if boot[:model] =~ /List$/ or boot[:data].kind_of? Array then
