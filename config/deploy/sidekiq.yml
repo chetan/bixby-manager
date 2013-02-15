@@ -1,0 +1,12 @@
+---
+:verbose:      false
+:daemon:       true
+:pidfile:      /var/www/bixby/shared/pids/sidekiq.pid
+:logfile:      /var/www/bixby/shared/log/sidekiq.log
+# t=30 - timeout seconds before force shutdown when TERM is received
+:timeout:      30
+# 25 threads is default
+:concurrency:  25
+:queues:
+  - ["*"]
+  - ["schedules"]

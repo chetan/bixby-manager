@@ -11,9 +11,7 @@ God.watch do |w|
   w.interval = 30.seconds
 
   w.env      = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV }
-  # 25 threads is default
-  # t=30 - timeout seconds before force shutdown when TERM is received
-  w.start    = "#{RVM_WRAPPER} bundle exec sidekiq -e #{RAILS_ENV} -P #{w.pid_file} -L #{RAILS_ROOT}/log/sidekiq.log -t 30 -d -c 25 -q schedules"
+  w.start    = "#{RVM_WRAPPER} bundle exec sidekiq -e #{RAILS_ENV} -d -C #{RAILS_ROOT}/config/deploy/sidekiq.yml"
   w.stop     = "kill -TERM `cat #{w.pid_file}`"
 
   w.start_grace = 10.seconds
