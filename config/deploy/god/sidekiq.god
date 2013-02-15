@@ -1,5 +1,5 @@
 
-#
+# https://github.com/mperham/sidekiq/wiki/Advanced-Options
 # https://github.com/mperham/sidekiq/wiki/Signals
 
 God.watch do |w|
