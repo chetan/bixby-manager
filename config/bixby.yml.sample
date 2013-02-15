@@ -30,6 +30,12 @@ test:
 
 
 production:
+  # used by deployment scripts
+  ruby:   "ruby-1.9.3-p385"
+  rvm:    "system" # system or user
+  user:   "bixby"
+  group:  "bixby"
+  # bixby config
   manager:
     root: "/opt/mgr"
     uri:  "http://localhost:3000"
