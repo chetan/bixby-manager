@@ -1,5 +1,7 @@
 
 development:
+  default_tenant: "pixelcop"
+  default_tenant_pw: "test"
   manager:
     root: "/opt/mgr"
     uri:  "http://localhost:3000"
@@ -15,6 +17,8 @@ development:
 
 
 test:
+  default_tenant: "pixelcop"
+  default_tenant_pw: "test"
   manager:
     root: "/opt/mgr"
     uri:  "http://localhost:3000"
@@ -30,6 +34,9 @@ test:
 
 
 production:
+  # used to seed db with an initial tenant
+  default_tenant: "pixelcop"
+  default_tenant_pw: "test"
   # used by deployment scripts
   ruby:   "ruby-1.9.3-p385"
   rvm:    "system" # system or user

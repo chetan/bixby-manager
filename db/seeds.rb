@@ -6,5 +6,11 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-t = Tenant.create(:name => "pixelcop", :password => SCrypt::Password.create("test").to_s)
+config = YAML.load_file(File.open(File.join(::Rails.root.to_s, "config", "bixby.yml")))[Rails.env]
+t = Tenant.create(
+  :name        => config["default_tenant"],
+  :password    => SCrypt::Password.create(config["default_tenant_pw"]).to_s,
+  :private_key => OpenSSL::PKey::RSA.generate(2048).to_s
+  )
+
 o = Org.create(:name => "default", :tenant_id => t.id)
