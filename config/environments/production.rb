@@ -25,12 +25,12 @@ Bixby::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # minification
-  # config.assets.compress       = true
-  # config.assets.css_compressor = :yui
-  # config.assets.js_compressor  = :uglifier
+  config.assets.compress       = true
+  config.assets.css_compressor = :yui
+  config.assets.js_compressor  = :uglifier
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile << "bixby.js"
+  # config.assets.precompile << "bixby.js"
 
   # Version of your assets, change this if you want to expire all your assets
   config.assets.version = '1.0'
