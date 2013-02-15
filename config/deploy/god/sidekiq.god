@@ -7,6 +7,7 @@ God.watch do |w|
 
   w.env      = { "QUEUE" => "*", "RAILS_ENV" => RAILS_ENV }
   w.start    = "#{RVM_WRAPPER} bundle exec sidekiq -e #{RAILS_ENV} -c 25 -q schedules" # 25 is default
+  w.stop     = "kill -INT `cat #{w.pid_file}`"
 
   w.uid = USER
   w.gid = GROUP
