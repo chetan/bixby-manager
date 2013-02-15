@@ -62,6 +62,13 @@ GIT
       simplecov-html (~> 0.7.1)
 
 GIT
+  remote: https://github.com/loe/ruby-yui-compressor.git
+  revision: 819f37720f2bed34fab4f4b5ab92d27c7c0f22ac
+  specs:
+    yui-compressor (0.9.6)
+      POpen4 (>= 0.1.4)
+
+GIT
   remote: https://github.com/sporkrb/spork-testunit.git
   revision: 8087255296d20dc8e2ff45d4e4c09b09d3078a8d
   specs:
@@ -417,8 +424,6 @@ GEM
       crack (>= 0.1.7)
     xray (1.1)
     yard (0.8.4.1)
-    yui-compressor (0.9.6)
-      POpen4 (>= 0.1.4)
 
 PLATFORMS
   java
@@ -512,4 +517,4 @@ DEPENDENCIES
   webmock
   xray
   yard
-  yui-compressor
+  yui-compressor!

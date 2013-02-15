@@ -80,7 +80,7 @@ group :assets do
     gem "coffee-script"
     gem "coffee-script-source"
     gem 'haml_assets'
-    gem 'yui-compressor'
+    gem 'yui-compressor', :git => "https://github.com/loe/ruby-yui-compressor.git"
     gem 'uglifier'
 end
 
