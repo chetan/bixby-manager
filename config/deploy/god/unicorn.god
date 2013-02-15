@@ -3,14 +3,13 @@
 # http://unicorn.bogomips.org/SIGNALS.html
 
 God.watch do |w|
+  w.dir = RAILS_ROOT
   w.name = "unicorn-bixby"
   w.log = "#{RAILS_ROOT}/log/god.#{w.name}.log"
-  w.dir = RAILS_ROOT
   w.pid_file = "#{RAILS_ROOT}/tmp/pids/unicorn.pid"
 
   w.interval = 30.seconds # default
 
-  # unicorn needs to be run from the rails root
   w.start = "#{RVM_WRAPPER} bundle exec unicorn -c #{RAILS_ROOT}/config/deploy/unicorn.conf.rb -E #{RAILS_ENV} -D"
 
   # QUIT gracefully shuts down workers
