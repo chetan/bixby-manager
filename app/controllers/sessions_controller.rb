@@ -4,7 +4,7 @@ class SessionsController < UiController
   # display login page
   def new
     if not current_user.nil? then
-      redirect_to root_path
+      redirect_to inventory_path
     end
   end
 
