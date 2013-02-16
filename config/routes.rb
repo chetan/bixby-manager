@@ -1,9 +1,8 @@
 Bixby::Application.routes.draw do
 
-  root :to => "inventory::hosts#index"
+  root :to => 'sessions#new'
 
   match '/api' => 'api#handle'
-
 
   match 'login'  => 'sessions#new',     :as => :login, :via => :get
   match 'login'  => 'sessions#create',  :as => :login, :via => :post
