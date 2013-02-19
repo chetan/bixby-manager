@@ -7,7 +7,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
   def setup
     super
     ENV["BIXBY_HOME"] = File.join(Rails.root, "test", "support", "root_dir")
-    Bixby.instance_eval{ @client = nil; @root = nil }
+    Bixby.instance_eval{ @client = nil }
   end
 
   def test_create_spec

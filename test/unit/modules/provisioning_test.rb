@@ -8,7 +8,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
     super
 
     ENV["BIXBY_HOME"] = File.join(Rails.root, "test", "support", "root_dir")
-    Bixby.instance_eval{ @client = nil; @root = nil }
+    Bixby.instance_eval{ @client = nil }
 
     @repo  = Repo.new(:name => "vendor")
     @agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
