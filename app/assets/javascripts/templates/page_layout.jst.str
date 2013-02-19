@@ -34,22 +34,7 @@
 <div class="container-fluid">
   <div class="row-fluid">
 
-    <div class="span2">
-      <div class="well">
-        <h5>Sidebar</h5>
-        <ul>
-          <li>foo</li>
-          <li>bar</li>
-        </ul>
-      </div> <!-- well -->
-    </div>
-
-    <div class="span10">
-      <div class="row-fluid">
-        <div id="content" class="span12">
-
-        </div>
-      </div>
+    <div id="content" class="span12">
     </div>
 
   </div>
