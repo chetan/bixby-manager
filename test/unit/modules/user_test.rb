@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
+class Bixby::Test::Modules::User < Bixby::Test::TestCase
 
   def test_create_tenant
     t = Bixby::User.new.create_tenant("foobar", "secret")
