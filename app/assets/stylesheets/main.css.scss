@@ -30,3 +30,6 @@ tr.actionable:hover td:first-child a.action_btn {
 a {
   cursor: pointer;
 }
+
+@import "inventory";
+@import "monitoring";
