@@ -167,7 +167,6 @@ class API < ActionController::TestCase
   private
 
   def unsupported_op(op, param)
-    agent = FactoryGirl.create(:agent)
     @request.env['RAW_POST_DATA'] = JsonRequest.new(op, param).to_json
     post :handle
 
