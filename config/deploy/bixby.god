@@ -1,8 +1,6 @@
 
-# TODO move vars to config file
-
-RAILS_ENV    = ENV['RAILS_ENV']  = 'production'
-RAILS_ROOT   = ENV['RAILS_ROOT'] = '/var/www/bixby/current'
+RAILS_ENV    = (ENV['RAILS_ENV']  ||= 'production')
+RAILS_ROOT   = (ENV['RAILS_ROOT'] ||= '/var/www/bixby/current')
 
 RVM_WRAPPER  = File.join(RAILS_ROOT, "config", "deploy", "rvm_wrapper.sh")
 
