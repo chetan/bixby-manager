@@ -162,6 +162,22 @@ class API < ActionController::TestCase
     assert_nil res.data
   end
 
+  def test_agent_register_succeeds
+
+    # testing with crypto enabled, registration should still occur
+    BIXBY_CONFIG[:crypto] = true
+
+    org = FactoryGirl.create(:org)
+    params = [ "my_uuid", "my_key", "testhost", 18000, org.tenant.name, "test" ]
+    req = JsonRequest.new("inventory:register_agent", params)
+    @request.env['RAW_POST_DATA'] = req.to_json
+
+    post :handle
+    res = JsonResponse.from_json(@response.body)
+    assert res
+    assert res.success?
+  end
+
 
 
   private

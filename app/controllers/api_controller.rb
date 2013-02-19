@@ -71,6 +71,17 @@ class ApiController < ApplicationController
     end
 
 
+    # authenticate the request but still allow agent registration
+    if crypto_enabled? and !(mod.kind_of? Bixby::Inventory and op == :register_agent) then
+      request.body.rewind if request.body.respond_to?(:rewind)
+      @agent = Agent.where(:access_key => ApiAuth.access_id(request)).first
+      if not (@agent and ApiAuth.authentic?(request, @agent.secret_key)) then
+        return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
+      end
+      MultiTenant.current_tenant = @agent.tenant
+    end
+
+
     # execute request
 
     # req = JsonRequest instance
@@ -103,16 +114,6 @@ class ApiController < ApplicationController
   # @return [JsonRequest]
   def extract_request
 
-    # authenticate the request
-    if crypto_enabled? then
-      @agent = Agent.where(:access_key => ApiAuth.access_id(request)).first
-      if not (@agent and ApiAuth.authentic?(request, @agent.secret_key)) then
-        return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
-      end
-      MultiTenant.current_tenant = @agent.tenant
-    end
-
-    request.body.rewind if request.body.respond_to?(:rewind)
     body = request.body.read.strip
     if body.blank? then
       return Bixby::JsonResponse.invalid_request
