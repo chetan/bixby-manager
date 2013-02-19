@@ -1,4 +1,10 @@
 
+input.install {
+  @include font-family-monospace;
+  font-size: 12px;
+  width: 500px;
+}
+
 div.host_list {
 }
 
