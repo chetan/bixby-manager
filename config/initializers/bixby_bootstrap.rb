@@ -22,6 +22,12 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
   end
   BIXBY_CONFIG = bixby_config[::Rails.env].with_indifferent_access
 
+  # set rails secret token
+  if Rails.env != "test" and BIXBY_CONFIG[:secret_token].blank? then
+    raise "secret_token not set in bixby.yml for the '#{::Rails.env}' environment!"
+  end
+  Bixby::Application.config.secret_token = BIXBY_CONFIG[:secret_token]
+
   # setup bundle repo, manager uri
   ENV["BIXBY_HOME"] = File.expand_path(BIXBY_CONFIG[:manager][:root])
   Bixby.manager_uri = BIXBY_CONFIG[:manager][:uri]
