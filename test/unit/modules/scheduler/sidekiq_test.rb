@@ -8,6 +8,16 @@ Sidekiq::Client.singleton_class.class_eval do
   alias_method :raw_push, :raw_push_old
 end
 
+# override to inject MockRedis
+module Sidekiq
+  class RedisConnection
+    def self.build_client(url, namespace, driver)
+      MockRedis.new
+    end
+    private_class_method :build_client
+  end
+end
+
 class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
   class SidekiqDriver < Bixby::Test::TestCase
 
@@ -20,28 +30,29 @@ class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
       super
       Bixby::Scheduler.driver = Bixby::Scheduler::Sidekiq
       Bixby::Scheduler.configure(BIXBY_CONFIG)
+      @job = Bixby::Scheduler::Job.create(Foobar, :baz, nil)
     end
 
     def teardown
       super
       toggle_inline_testing(false)
-      ::Resque.redis.flushdb
+      Sidekiq.redis{ |r| r.flushdb }
     end
 
     def test_schedule_at
       Sidekiq::Client.expects(:raw_push).once().with{ |normed, payload|
         (normed["at"] <= Time.new.to_i+30) && normed["class"] == "Bixby::Scheduler::Job"
       }
-      Bixby::Scheduler.new.schedule_at((Time.new+30), Bixby::Scheduler::Job.create("foobar", {}))
+      Bixby::Scheduler.new.schedule_at((Time.new+30), @job)
     end
 
     def test_schedule_in
-      Bixby::Scheduler.new.schedule_in(30, Bixby::Scheduler::Job.create("foobar", {}))
+      Bixby::Scheduler.new.schedule_in(30, @job)
       Sidekiq.redis{ |r| assert r.exists("schedule") }
     end
 
     def test_schedule_immediately
-      Bixby::Scheduler.new.schedule_in(0, Bixby::Scheduler::Job.create("foobar", {}))
+      Bixby::Scheduler.new.schedule_in(0, @job)
       Sidekiq.redis{ |r|
         refute r.exists("schedule")
         assert r.exists("queues")
@@ -49,7 +60,7 @@ class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
     end
 
     def test_schedule_in_with_queue
-      Bixby::Scheduler.new.schedule_in_with_queue(30, Bixby::Scheduler::Job.create("foobar", {}), "foo")
+      Bixby::Scheduler.new.schedule_in_with_queue(30, @job, "foo")
       Sidekiq.redis{ |r| assert r.exists("schedule") }
     end
 

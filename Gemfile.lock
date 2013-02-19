@@ -253,6 +253,7 @@ GEM
     minitest (4.6.0)
     mocha (0.13.2)
       metaclass (~> 0.0.1)
+    mock_redis (0.6.3)
     multi_json (1.6.1)
     mysql2 (0.3.11)
     net-scp (1.1.0)
@@ -471,6 +472,7 @@ DEPENDENCIES
   memcached
   minitest
   mocha
+  mock_redis
   multi_json
   mysql2
   newrelic-redis

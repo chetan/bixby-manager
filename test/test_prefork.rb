@@ -19,6 +19,7 @@ require 'curb'
 require 'curb_threadpool'
 require 'webmock'
 require 'mocha/setup'
+require 'mock_redis'
 
 class ActiveSupport::TestCase
 

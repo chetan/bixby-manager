@@ -1,5 +1,4 @@
 
-
 require 'test_helper'
 
 class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
@@ -9,6 +8,7 @@ class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
       super
       Bixby::Scheduler.driver = Bixby::Scheduler::Resque
       Bixby::Scheduler.configure(BIXBY_CONFIG)
+      Resque.redis = MockRedis.new
     end
 
     def teardown

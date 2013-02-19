@@ -3,11 +3,6 @@ require 'test_helper'
 
 class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
 
-  def teardown
-    super
-    Resque.redis.flushdb
-  end
-
   def test_require_class
     require "bixby/modules/scheduler"
     require "bixby/modules/scheduler/sidekiq"

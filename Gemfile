@@ -143,6 +143,7 @@ group :development do
     gem "spork-rails", :require => false
     gem "database_cleaner"
     gem "factory_girl_rails"
+    gem "mock_redis"
 
     # test utils
     gem "test_guard", :git => "https://github.com/chetan/test_guard.git"
