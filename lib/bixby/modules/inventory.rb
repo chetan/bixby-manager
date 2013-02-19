@@ -16,7 +16,7 @@ class Inventory < API
   def register_agent(uuid, public_key, hostname, port, tenant, password)
 
     t = Tenant.where(:name => tenant).first
-    if t.blank? || SCrypt::Password.new(t.password) != password then
+    if t.blank? || !t.test_password(password) then
       # TODO log more detailed info?
       raise API::Error, "bad tenant and/or password", caller
     end

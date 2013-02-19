@@ -13,4 +13,8 @@ class Tenant < ActiveRecord::Base
 
   has_many :orgs
 
+  def test_password(pw)
+    SCrypt::Password.new(password) == pw
+  end
+
 end

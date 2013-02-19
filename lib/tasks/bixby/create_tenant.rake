@@ -11,18 +11,6 @@ namespace :bixby do
       exit 1
     end
 
-    # TODO dupe name check
-
-    t = Tenant.new
-    t.name = args[:name]
-    t.password = SCrypt::Password.create(args[:password]).to_s
-    t.private_key = OpenSSL::PKey::RSA.generate(2048).to_s
-    t.save!
-
-    o = Org.new
-    o.tenant = t
-    o.name = "default"
-    o.save!
-
+    Bixby::User.new.create_tenant(args[:name], args[:password])
   end
 end
