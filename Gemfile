@@ -86,6 +86,9 @@ end
 
 group :development do
 
+    gem "sqlite3", :platforms => :mri
+    gem "activerecord-jdbcsqlite3-adapter", :platforms => "jruby"
+
     # debugging
     gem "ruby-debug",   :platforms => :mri_18
     gem "debugger",     :platforms => :mri_19
