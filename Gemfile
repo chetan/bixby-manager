@@ -32,6 +32,10 @@ gem "curb_threadpool",                  :platforms => [:mri, :rbx] # used in con
 gem "httpclient",                       :platforms => :jruby
 
 # misc/production support
+gem "logging"
+gem "logging-rails", :require => "logging/rails",
+                     :git     => "https://github.com/chetan/logging-rails.git",
+                     :branch  => "bixby"
 gem "lograge"
 gem "exception_notification"
 

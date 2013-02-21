@@ -1,7 +1,7 @@
 .DS_Store
 
 # logs/temp
-log/*.log
+log/
 script/log/
 script/temp/
 tmp/

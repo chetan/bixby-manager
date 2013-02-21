@@ -1,3 +1,4 @@
+
 Bixby::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -38,5 +39,11 @@ Bixby::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
-end
 
+
+  # Set the logging destination(s)
+  config.log_to = %w[stdout file]
+
+  # Show the logging configuration on STDOUT
+  config.show_log_configuration = true
+end
