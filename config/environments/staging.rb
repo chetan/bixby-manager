@@ -44,23 +44,6 @@ Bixby::Application.configure do
   # make sure the webserver passes the X-Forwarded-Proto header!
   # config.force_ssl = true
 
-  # See everything in the log (default is :info)
-  # config.log_level = :debug
-
-  # Prepend all log lines with the following tags
-  config.log_tags = [ :subdomain, :uuid ]
-
-  # Use a different logger for distributed setups
-  # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
-
-  # enable lograge gem
-  config.lograge.enabled = true
-
-  # add time to lograge
-  config.lograge.custom_options = lambda do |event|
-    { :time => event.time }
-  end
-
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
@@ -80,4 +63,27 @@ Bixby::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+
+  ###############
+  # LOGGING SETUP
+
+  config.log_level = :info
+
+  # Prepend all log lines with the following tags
+  config.log_tags = [ :subdomain, :uuid ]
+
+  # enable lograge gem
+  config.lograge.enabled = true
+
+  # add time to lograge
+  config.lograge.custom_options = lambda do |event|
+    { :time => event.time }
+  end
+
+  # Set the logging destination(s)
+  config.log_to = %w[file]
+
+  # Show the logging configuration on STDOUT
+  config.show_log_configuration = false
 end
