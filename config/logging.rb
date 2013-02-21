@@ -7,7 +7,8 @@ Logging::Rails.configure do |config|
   # The default layout used by the appenders.
   # '%.1l, [%d] %5l -- %c: %m\n'
   # '[%d] %-5l %c : %m\n'
-  layout = Logging.layouts.pattern(:pattern => '[%d] %-5l %c : %m\n')
+  pattern = '%.1l, [%d] %5l -- %c: %m\n'
+  layout = Logging.layouts.pattern(:pattern => pattern)
 
   # Setup a color scheme called 'bright' than can be used to add color codes
   # to the pattern layout. Color schemes should only be used with appenders
@@ -33,7 +34,7 @@ Logging::Rails.configure do |config|
   Logging.appenders.stdout( 'stdout',
     :auto_flushing => true,
     :layout => Logging.layouts.pattern(
-      :pattern => '[%d] %-5l %c : %m\n',
+      :pattern => pattern,
       :color_scheme => 'bright'
     )
   ) if config.log_to.include? 'stdout'
