@@ -140,44 +140,62 @@ class Monitoring < API
   #
   # @param [Array<Metric>] metrics
   def test_metrics(metrics)
+
+    all_alerts = get_all_alerts(metrics)
     metrics.each do |metric|
 
-      alert = Alert.for_metric(metric).first
-      next if alert.blank?
+      alerts = all_alerts.find_all { |a|
+        a.metric_id == metric.id or a.check_id == metric.check_id
+      }
+      next if alerts.blank?
 
-      user = OnCall.for_org(metric.org).current_user
+      alerts.each do |alert|
 
-      if alert.test_value(metric.last_value) then
-        # alert is triggered, raise a notification
+        user = OnCall.for_org(metric.org).current_user
 
-        if alert.severity == metric.status then
-          next # already in this state, skip
+        if alert.test_value(metric.last_value) then
+          # alert is triggered, raise a notification
+
+          if alert.severity == metric.status then
+            next # already in this state, skip
+          end
+
+          # store history
+          AlertHistory.record(metric, alert, user)
+          metric.status = alert.severity # warning or critical for now
+          metric.save!
+
+          # notify (email only for now)
+          MonitoringMailer.alert(metric, alert, user).deliver
+
+        elsif metric.status > Metric::Status::NORMAL then
+          # alert is back to normal level
+          AlertHistory.record(metric, alert, user)
+          metric.status = Metric::Status::NORMAL
+          metric.save!
+
+          # notify (email only for now)
+          MonitoringMailer.alert(metric, alert, user).deliver
         end
 
-        # store history
-        AlertHistory.record(metric, alert, user)
-        metric.status = alert.severity # warning or critical for now
-        metric.save!
-
-        # notify (email only for now)
-        MonitoringMailer.alert(metric, alert, user).deliver
-
-      elsif metric.status > Metric::Status::NORMAL then
-        # alert is back to normal level
-        AlertHistory.record(metric, alert, user)
-        metric.status = Metric::Status::NORMAL
-        metric.save!
-
-        # notify (email only for now)
-        MonitoringMailer.alert(metric, alert, user).deliver
-      end
-
+      end # alerts.each
     end # metrics.each
   end # test_metrics()
 
 
 
   private
+
+  # Get all alerts matching the list of metrics (in a single query)
+  def get_all_alerts(metrics)
+    metric_ids = []
+    check_ids = []
+    metrics.each do |m|
+      metric_ids << m.id
+      check_ids << m.check_id
+    end
+    return Alert.where("metric_id IN (?) OR check_id IN (?)", metric_ids, check_ids)
+  end
 
   # Create a CommandSpec for the given Check
   #
