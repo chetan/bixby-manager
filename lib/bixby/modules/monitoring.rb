@@ -54,6 +54,8 @@ class Monitoring < API
   # @raise [CommandException]
   def update_check_config(agent)
 
+    agent = get_model(agent, Agent)
+
     provisioned = {}
 
     config = []
@@ -91,7 +93,8 @@ class Monitoring < API
     return exec(agent, command)
   end
 
-  # Add a check to a host
+  # Add a check to a host. Updates the associated agent's configs in the
+  # background.
   #
   # @param [Host] host
   # @param [Command] command
@@ -101,6 +104,7 @@ class Monitoring < API
   # @raise [CommandException]
   def add_check(host, command, args)
 
+    host = get_model(host, Host)
     config = create_spec(command).load_config()
 
     # create resource name
@@ -123,6 +127,11 @@ class Monitoring < API
     check.plot            = true
     check.enabled         = true
     check.save!
+
+    # update checks in bg
+    job = Bixby::Scheduler::Job.create(Bixby::Monitoring, :update_check_config,
+            host.agent.id)
+    Bixby::Scheduler.new.schedule_in(0, job)
 
     return check
   end

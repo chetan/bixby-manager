@@ -17,6 +17,18 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert Bixby.const_defined? :Monitoring
   end
 
+  def test_add_check
+    agent = FactoryGirl.create(:agent)
+
+    Bixby::Scheduler.any_instance.expects(:schedule_in).once.with { |time, job|
+      time == 0 && job.method == :update_check_config && job.args.first == agent.id
+    }
+
+    ret = Bixby::Monitoring.new.add_check(agent.host.id, @check.command, nil)
+    assert_kind_of Check, ret
+
+  end
+
   def test_update_check_config
 
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
