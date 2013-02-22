@@ -48,6 +48,8 @@ class RemoteExec < API
         CommandSpec.new(command)
       elsif command.kind_of? String then
         CommandSpec.from_json(command)
+      elsif command.kind_of? Fixnum then
+        Command.find(command).to_command_spec
       else
         command
       end

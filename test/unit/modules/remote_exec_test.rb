@@ -27,6 +27,10 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
       assert_equal "baz", cs.command
       assert_equal "foobar", cs.bundle
 
+      cmd.save!
+      cs = Bixby::RemoteExec.create_spec(cmd.id)
+      assert_equal "baz", cs.command
+      assert_equal "foobar", cs.bundle
   end
 
   def test_exec
