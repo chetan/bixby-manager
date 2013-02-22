@@ -39,13 +39,21 @@ Logging::Rails.configure do |config|
     )
   ) if config.log_to.include? 'stdout'
 
+
   # Configure an appender that will write log events to a file. The file will
   # be rolled on a daily basis, and the past 7 rolled files will be kept.
   # Older files will be deleted. The default pattern layout is used when
   # formatting log events into strings.
   #
+
+  # sidekiq filename hack - we want to send sidekiq logs to a different file
+  filename = config.paths['log'].first
+  if Object.const_defined? :Sidekiq and Sidekiq.server? then
+    filename = File.join(File.dirname(filename), "sidekiq-rails-#{Rails.env}.log")
+  end
+
   Logging.appenders.rolling_file( 'file',
-    :filename => config.paths['log'].first,
+    :filename => filename,
     :keep => 7,
     :age => 'daily',
     :truncate => false,
