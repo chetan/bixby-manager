@@ -31,14 +31,14 @@ class Inventory < API
 
     h = Host.new
     h.org_id = org.id
-    h.ip = @http_request.remote_ip
+    h.ip = @http_request.ip
     h.hostname = hostname
     h.tag_list = "new"
     h.save!
 
     a = Agent.new
     a.host_id = h.id
-    a.ip = @http_request.remote_ip
+    a.ip = h.ip
     a.port = port
     a.uuid = uuid
     a.public_key = public_key

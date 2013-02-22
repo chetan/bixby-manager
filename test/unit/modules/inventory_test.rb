@@ -26,8 +26,7 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     org = FactoryGirl.create(:org)
 
     ip = "4.4.4.4"
-    http_req = mock()
-    http_req.expects(:remote_ip).returns(ip).twice()
+    http_req = mock_ip("4.4.4.4")
 
     hostname = "foo.example.com"
     ret = Bixby::Inventory.new(http_req).register_agent("foo", "bar", hostname, 18000, org.tenant.name, "test")
@@ -56,9 +55,7 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
 
   def test_validation_failure
     org = FactoryGirl.create(:org)
-
-    http_req = mock()
-    http_req.expects(:remote_ip).returns("4.4.4.4").twice()
+    http_req = mock_ip("4.4.4.4")
 
     assert_throws(Bixby::API::Error) do
       Bixby::Inventory.new(http_req).register_agent("foo", "bar", "foo.example.com", nil, org.tenant.name, "test")
@@ -105,6 +102,12 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
 
 
   private
+
+  def mock_ip(ip)
+    http_req = mock()
+    http_req.expects(:ip).returns(ip).once()
+    return http_req
+  end
 
 
 end
