@@ -1,5 +1,12 @@
 
 module Bixby
+
+# Bixby Scheduling API
+#
+# @example Basic usage
+#    job = Bixby::Scheduler::Job.create(Bixby::Monitoring, :update_check_config, agent.id)
+#    Bixby::Scheduler.new.schedule_in(0, job)
+#
 class Scheduler < API
 
   class << self

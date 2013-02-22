@@ -6,10 +6,15 @@ class Scheduler
   #
   # @!attribute [rw] klass
   #   @return [Class] class which contains the target method
+  #
   # @!attribute [rw] method
   #   @return [Symbol] target method
+  #
   # @!attribute [rw] args
-  #   @return [Array] list of arguments to pass to method call
+  #   @return [Array] list of arguments to pass to method call. Objects should
+  #                   be passed as basic types when possible. For example,
+  #                   models can generally be passed as IDs (the method should
+  #                   then do a lookup)
   class Job
 
     attr_accessor :klass, :method, :args
