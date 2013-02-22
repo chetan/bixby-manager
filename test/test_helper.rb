@@ -1,4 +1,12 @@
 
+def spork_running?
+  ENV.include? "DRB"
+end
+
+def zeus_running?
+  File.exists? '.zeus.sock'
+end
+
 def prefork
   root = File.expand_path(File.dirname(__FILE__))
   if not $:.include? root then
@@ -11,7 +19,9 @@ def prefork
     require "bundler/setup"
   end
 
-  if not ENV['DRB'] then
+  if not(spork_running? or zeus_running?) then
+    # load now if neither spork (DRB) or zeus are running
+    # (usually during manual rake test run)
     load_simplecov()
   end
 
@@ -21,6 +31,7 @@ def prefork
 end
 
 def load_simplecov
+  return if ENV["SIMPLECOV_STARTED"]
   begin
     require 'simplecov'
     SimpleCov.start do
@@ -34,6 +45,7 @@ def load_simplecov
       add_group 'Helpers', 'app/helpers'
       add_group 'Libraries', 'lib'
     end
+    ENV["SIMPLECOV_STARTED"] = "1"
   rescue Exception => ex
     warn "simplecov not available"
   end
@@ -41,7 +53,7 @@ end
 
 def bootstrap_tests
 
-  if ENV['DRB'] then
+  if spork_running? or zeus_running? then
     load_simplecov()
   end
 
@@ -74,6 +86,9 @@ if Object.const_defined? :Spork then
 
   # Spork.after_each_run do
   # end
+
+elsif zeus_running? then
+  prefork()
 
 else
   # normal 'rake test'
