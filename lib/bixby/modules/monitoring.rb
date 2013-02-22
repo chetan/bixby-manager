@@ -194,7 +194,7 @@ class Monitoring < API
       metric_ids << m.id
       check_ids << m.check_id
     end
-    return Alert.where("metric_id IN (?) OR check_id IN (?)", metric_ids, check_ids)
+    return Alert.where("metric_id IN (?) OR check_id IN (?)", metric_ids, check_ids.sort.uniq)
   end
 
   # Create a CommandSpec for the given Check
