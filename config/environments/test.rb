@@ -45,4 +45,10 @@ Bixby::Application.configure do
 
   # Raise exception on mass assignment protection for Active Record models
   config.active_record.mass_assignment_sanitizer = :strict
+
+  # Set the logging destination(s)
+  config.log_to = %w[file]
+
+  # Show the logging configuration on STDOUT
+  config.show_log_configuration = false
 end
