@@ -16,6 +16,10 @@ _.eachR = (context, list, func) ->
 _.bindR = (context, func, args...) ->
   @bind func, context, args...
 
+# setTimeoutR - allows passing timeout as first param
+window.setTimeoutR = (timeout, func) ->
+  window.setTimeout(func, timeout)
+
 # alias away the sync method
 Backbone._sync = Backbone.sync
 

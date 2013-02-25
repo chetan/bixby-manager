@@ -3,6 +3,9 @@ input.install {
   @include font-family-monospace;
   font-size: 12px;
   width: 500px;
+  // override bootstrap styles for readonly fields
+  cursor: default;
+  background-color: white;
 }
 
 div.host_list {

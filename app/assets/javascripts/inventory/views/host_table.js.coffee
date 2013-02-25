@@ -7,8 +7,9 @@ namespace "Bixby.view.inventory", (exports, top) ->
     bindings: [ "hosts" ]
 
     events: {
-      "focus input.install": (e) ->
-        e.target.select()
+      "focusin input.install": (e) ->
+        setTimeoutR 0, ->
+          e.target.select()
     }
 
     render: ->
