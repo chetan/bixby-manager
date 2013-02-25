@@ -14,6 +14,7 @@
   <p>Let's get started by adding some hosts. Simply run the following on each server:</p>
   <div class="input-prepend">
     <span class="add-on">$</span>
-    <input class="install" type="text" value="\\curl -sL https://get.bixby.io | bash -s <%= current_user.g('tenant') %> <%= manager_uri %>">
+    <input class="install" type="text" readonly="readonly"
+      value="\\curl -sL https://get.bixby.io | bash -s <%= current_user.g('tenant') %> <%= manager_uri %>">
   </div>
 <% } %>
