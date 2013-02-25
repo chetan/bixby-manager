@@ -9,13 +9,13 @@
 
           <label class="control-label"><small><strong>USERNAME</strong></small>
             <div class="controls">
-              <input type="text" class="username" value="">
+              <input type="text" name="username" class="username" value="">
             </div>
           </label>
 
           <label class="control-label"><small><strong>PASSWORD</strong></small>
             <div class="controls">
-              <input type="password" class="password">
+              <input type="password" name="password" class="password">
             </div>
           </label>
 
