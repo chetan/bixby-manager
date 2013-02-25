@@ -8,6 +8,7 @@ window.Stark or= {}
 class Stark.App
 
   # attributes
+  env: "development"
   current_state: null
   states: {}
 
@@ -17,7 +18,10 @@ class Stark.App
   router: new Stark.Router
   default_route: null
 
-  constructor: ->
+  constructor: (env, default_route) ->
+    @env = env
+    @default_route = default_route
+
     @router.app = @
     @subscribe('app:route', @matchRoute)
 
