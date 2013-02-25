@@ -8,8 +8,14 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     events: {
       "focusin input.install": (e) ->
+        $(e.target).mouseup (e) ->
+          setTimeoutR 0, ->
+            e.target.select()
+          $(this).unbind()
+
         setTimeoutR 0, ->
           e.target.select()
+
     }
 
     render: ->
