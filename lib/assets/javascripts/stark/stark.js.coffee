@@ -9,6 +9,7 @@ class Stark.App
 
   # attributes
   env: "development"
+  current_user: null
   current_state: null
   states: {}
 
@@ -16,10 +17,17 @@ class Stark.App
   data: {}
 
   router: new Stark.Router
+  login_route: null
   default_route: null
 
-  constructor: (env, default_route) ->
+  # Create a new Stark application
+  #
+  # @param [String] env             the environment in which we're running (e.g., Rails.env)
+  # @param [String] login_route     route to forward to when user is not logged in
+  # @param [String] default_route   default route to use when logged in
+  constructor: (env, login_route, default_route) ->
     @env = env
+    @login_route = login_route
     @default_route = default_route
 
     @router.app = @
@@ -45,10 +53,17 @@ class Stark.App
       if kp and not JST[kp]
         JST[kp] = JST[k]
 
+    if @data?
+      @current_user = @data.current_user
 
-    if !@router.start() && @default_route?
-      @log "no routes matched, using default: #{@default_route}"
-      @router.route(@default_route)
+    if !@router.start()
+      @log "no routes matched"
+      if @current_user?
+        @log "appear to be logged in, using default route: #{@default_route}"
+        return @router.route(@default_route)
+
+      @log "sending to login page: #{@login_route}"
+      @router.route(@login_route)
 
   add_state: (state) ->
     s = new state()
@@ -121,7 +136,7 @@ class Stark.App
           # session timeout
           app.redir = [ state_name, state_data ]
           state.dispose() # trash state we were building
-          return app.transition "login"
+          return app.transition app.login_route
 
         app.render_views(state)
     else
