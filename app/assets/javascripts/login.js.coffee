@@ -1,13 +1,12 @@
 
-jQuery ->
-  _bv = Bixby.view
+#= require_tree "./views"
 
-  Bixby.app.add_state(
-    class extends Stark.State
+Bixby.app.add_state(
+  class extends Stark.State
 
-      name: "login"
-      url:  "login"
-      tab:  ""
+    name: "login"
+    url:  "login"
+    tab:  ""
 
-      views:      [ _bv.Login ]
-  )
+    views:      [ Bixby.view.Login ]
+)
