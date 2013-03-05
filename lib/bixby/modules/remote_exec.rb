@@ -65,12 +65,15 @@ class RemoteExec < API
     def exec_api(agent, operation, params)
       begin
         uri = agent.uri
-        post = JsonRequest.new(operation, params).to_json
+        post = JsonRequest.new(operation, params)
+        debug { "uri: " + uri }
+        debug { post.to_s }
+
         if crypto_enabled? then
-          ret = http_post(uri, encrypt_for_agent(agent, post))
+          ret = http_post(uri, encrypt_for_agent(agent, post.to_json))
           res = decrypt_from_agent(agent, ret)
         else
-          res = http_post_json(uri, post)
+          res = http_post_json(uri, post.to_json)
         end
         return JsonResponse.from_json(res)
       rescue Curl::Err::CurlError => ex

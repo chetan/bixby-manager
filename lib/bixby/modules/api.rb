@@ -11,6 +11,8 @@ class API
   class Error < Exception
   end
 
+  include Bixby::Log
+
   attr_accessor :http_request, :json_request
 
   # @param [ActionDispatch::Request] http_req   HTTP Request object
