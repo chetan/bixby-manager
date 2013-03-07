@@ -10,8 +10,8 @@ Bixby.monitoring.render_metric = (s, metric) ->
 
   el = $(s + " .graph")[0]
 
-  data = metric.get("data")
-  if !data
+  vals = metric.tuples()
+  if !vals || vals.length == 0
     return
 
   # draw footer
@@ -22,11 +22,9 @@ Bixby.monitoring.render_metric = (s, metric) ->
       unit = " " + metric.unit
     else
       unit = "%"
-  footer_text = sprintf("Last Value: %0.2f%s", data[data.length-1].y, unit)
+  last_val = vals[vals.length-1][1]
+  footer_text = sprintf("Last Value: %0.2f%s", last_val, unit)
   footer.text(footer_text)
-
-  vals = _.map data, (v) ->
-    [ new Date(v.x * 1000), v.y ]
 
   opts = {
     labels: [ "Date/Time", "v" ]
@@ -78,9 +76,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
           end: parseInt(maxX / 1000)
         })
         Backbone.multi_fetch [ new_met ], (err, results) ->
-          vals = _.map new_met.get("data"), (v) ->
-            [ new Date(v.x * 1000), v.y ]
-          g.updateOptions({ file: vals })
+          g.updateOptions({ file: new_met.tuples() })
 
   }
   g.updateOptions(opts);

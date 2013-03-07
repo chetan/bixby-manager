@@ -11,8 +11,12 @@ namespace 'Bixby.model', (exports, top) ->
       host_id = @host_id || @get("host_id")
       id = @id || @get("id")
       s = "/monitoring/hosts/#{host_id}/metrics/#{id}?"
-      if @get("start") and @get("end")
-        s += "&start=#{@get("start")}&end=#{@get("end")}"
+      if @get("start")
+        s += "&start=" + @get("start")
+      if @get("end")
+        s += "&end=" + @get("end")
+      if @get("downsample")
+        s += "&downsample=" + @get("downsample")
       return s
 
     # get only the metric attributes (the actual data elements)
@@ -24,6 +28,12 @@ namespace 'Bixby.model', (exports, top) ->
           metrics.push(v)
 
       return metrics
+
+    # Return list of tuples with time in millisec
+    tuples: ->
+      vals = _.map @get("data"), (v) ->
+        [ new Date(v.x * 1000), v.y ]
+
 
 
 
