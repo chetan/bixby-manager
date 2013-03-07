@@ -74,6 +74,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
           host_id: metric.get("metadata").host_id
           start: parseInt(minX / 1000)
           end: parseInt(maxX / 1000)
+          downsample: "1m-avg"
         })
         Backbone.multi_fetch [ new_met ], (err, results) ->
           g.updateOptions({ file: new_met.tuples() })
