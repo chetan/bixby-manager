@@ -12,25 +12,27 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
 
   def test_create_spec
       c = CommandSpec.new(:repo => "support", :bundle => "foobar")
-      assert_equal c, Bixby::RemoteExec.create_spec(c)
+      assert_equal c, Bixby::RemoteExec.new.create_spec(c)
 
       c = CommandSpec.new(:repo => "support", :bundle => "foobar")
-      s = Bixby::RemoteExec.create_spec(c.to_json)
+      s = Bixby::RemoteExec.new.create_spec(c.to_json)
       assert_equal c.repo, s.repo
       assert_equal c.bundle, s.bundle
 
       repo = Repo.new(:name => "vendor")
-      cmd = Command.new(:bundle => "foobar", :command => "baz", :repo => repo)
-      cs = Bixby::RemoteExec.create_spec(cmd)
+      cmd = Command.new(:bundle => "test_bundle", :command => "cat", :repo => repo)
+      cs = Bixby::RemoteExec.new.create_spec(cmd)
 
       assert_not_equal cs, cmd
-      assert_equal "baz", cs.command
-      assert_equal "foobar", cs.bundle
+      assert_equal "cat", cs.command
+      assert_equal "test_bundle", cs.bundle
+      assert cs.command_exists?
+      assert cs.digest
 
       cmd.save!
-      cs = Bixby::RemoteExec.create_spec(cmd.id)
-      assert_equal "baz", cs.command
-      assert_equal "foobar", cs.bundle
+      cs = Bixby::RemoteExec.new.create_spec(cmd.id)
+      assert_equal "cat", cs.command
+      assert_equal "test_bundle", cs.bundle
   end
 
   def test_exec
@@ -44,7 +46,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
       j["operation"] == "shell_exec" and jp["repo"] == "vendor" and jp["bundle"] == "foobar" and jp["command"] == "baz"
     }.to_return(:status => 200, :body => JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json)
 
-    ret = Bixby::RemoteExec.exec(agent, cmd)
+    ret = Bixby::RemoteExec.new.exec(agent, cmd)
 
     assert_requested(stub)
     assert ret.success?
@@ -71,7 +73,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
       req.body =~ %r{system\\?/provisioning} and req.body =~ /get_bundle.rb/
     }.to_return(:status => 200, :body => JsonResponse.new("success", "", {}).to_json).times(3)
 
-    ret = Bixby::RemoteExec.exec(agent, cmd)
+    ret = Bixby::RemoteExec.new.exec(agent, cmd)
 
     assert_requested(stub, :times => 2)
     assert_requested(stub2, :times => 1)
@@ -107,7 +109,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     }.to_return(:status => 200, :body => JsonResponse.new(JsonResponse::FAIL, "", {}).to_json).times(3)
 
     # try to exec
-    ret = Bixby::RemoteExec.exec(agent, cmd)
+    ret = Bixby::RemoteExec.new.exec(agent, cmd)
 
     assert_requested(stub, :times => 1)
     assert_requested(stub2, :times => 1)

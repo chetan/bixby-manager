@@ -101,11 +101,6 @@ class RemoteExec < API
 
   end
 
-  # TODO get rid of class methods / fix tests to use only instance methods
-  class << self
-    include Methods
-  end
-
 end # RemoteExec
 
 class API

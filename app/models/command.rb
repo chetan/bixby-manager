@@ -25,9 +25,9 @@ class Command < ActiveRecord::Base
   end
 
   def to_command_spec
-    c = Bixby::CommandSpec.new(self.attributes)
-    c.repo = self.repo.name
-    return c
+    attrs = self.attributes
+    attrs["repo"] = repo.name
+    return Bixby::CommandSpec.new(attrs)
   end
 
 end

@@ -56,7 +56,7 @@ class Test::Modules::Crypto < Bixby::Test::TestCase
     }.to_return(:status => 200, :body => crypt)
 
     BIXBY_CONFIG[:crypto] = true
-    ret = Bixby::RemoteExec.exec(agent, cmd)
+    ret = Bixby::RemoteExec.new.exec(agent, cmd)
 
     assert_requested(stub)
     assert ret.success?
