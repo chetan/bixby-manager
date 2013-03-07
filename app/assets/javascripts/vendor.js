@@ -11,6 +11,7 @@
 //= require "Markdown.Converter"
 //= require "jquery.putcursoratend"
 //= require "mailcheck.min"
+//= require "moment.min"
 
 // tagging
 //= require "jquery-ui"
