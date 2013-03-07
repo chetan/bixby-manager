@@ -6,6 +6,9 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
   def setup
     super
+    ENV["BIXBY_HOME"] = File.join(Rails.root, "test", "support", "root_dir")
+    Bixby.instance_eval{ @client = nil }
+
     @check ||= FactoryGirl.create(:check)
     oncall = FactoryGirl.build(:on_call)
     oncall.org = @check.org
@@ -108,7 +111,10 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
       r = MultiJson.load(req.body)
-      r["operation"] == "shell_exec" and r["params"]["args"] == "--options" and r["params"]["command"] == @check.command.command
+      rp = r["params"]
+      r["operation"] == "shell_exec" and rp["args"] == "--options" and
+        rp["command"] == @check.command.command and
+        rp.include? "digest" and rp["digest"] =~ /^2429629015110c29/
     }.to_return(:status => 200, :body => cmd_res_json(0, "{}"))
 
     ret = Bixby::Monitoring.new.get_command_options(@check.agent, @check.command)
@@ -121,7 +127,10 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
       r = MultiJson.load(req.body)
-      r["operation"] == "shell_exec" and r["params"]["args"] == "--monitor" and r["params"]["command"] == @check.command.command
+      rp = r["params"]
+      r["operation"] == "shell_exec" and rp["args"] == "--monitor" and
+        rp["command"] == @check.command.command and
+        rp.include? "digest" and rp["digest"] =~ /^2429629015110c29/
     }.to_return(:status => 200, :body => cmd_res_json(0, "{}"))
 
     ret = Bixby::Monitoring.new.run_check(@check)
