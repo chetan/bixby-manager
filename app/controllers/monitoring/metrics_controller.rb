@@ -11,7 +11,7 @@ class Monitoring::MetricsController < Monitoring::BaseController
 
   def show
     metric = Metric.find(params[:id].to_i)
-    metric.load_data!
+    metric.load_data!(params[:start], params[:end], {}, "sum", params[:downsample])
 
     bootstrap metric, metric.check, metric.check.host
     restful metric
