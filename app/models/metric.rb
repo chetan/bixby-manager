@@ -32,7 +32,7 @@ class Metric < ActiveRecord::Base
 
   multi_tenant :via => :check
 
-  attr_accessor :data, :metadata
+  attr_accessor :data, :metadata, :query
 
   # Shortcut accessor for this Metric's Org
   #
@@ -84,6 +84,7 @@ class Metric < ActiveRecord::Base
         check_id = res["check_id"]
         check = Check.find(check_id.to_i)
         res.data = metrics(check, time_start, time_end, tags, agg).data
+        res.query[:downsample] = nil
       end
     end
 
@@ -107,6 +108,7 @@ class Metric < ActiveRecord::Base
     metrics = self.metrics(time_start, time_end, tags, agg, downsample).first
     self.data = metrics[:vals]
     self.metadata = metrics[:tags]
+    self.query = { :start => time_start, :end => time_end, :tags => tags, :downsample => downsample }
   end
 
 
