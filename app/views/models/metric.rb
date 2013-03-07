@@ -8,9 +8,24 @@ module Bixby
 
       def self.convert(obj)
         hash = attrs(obj, :id, :check_id, :key, :name, :last_value, :status,
-          :updated_at, :metadata, :query)
+          :updated_at, :metadata)
 
-        hash[:data] = ::Metric.for_ui(obj.data)
+        if obj.data.blank? then
+          hash[:data] = obj.data
+        else
+          hash[:data] = obj.data.map { |d| { :x => d[:time].to_i, :y => d[:val] } }
+        end
+
+        if obj.query.blank? then
+          hash[:query] = {}
+        else
+          hash[:query] = {
+            :start      => obj.query[:start].to_i,
+            :end        => obj.query[:end].to_i,
+            :tags       => obj.query[:tags],
+            :downsample => obj.query[:downsample]
+          }
+        end
 
         # attach metric info
         mi = ::MetricInfo.for(obj.check.command, hash[:key]).first

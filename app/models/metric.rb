@@ -111,15 +111,6 @@ class Metric < ActiveRecord::Base
     self.query = { :start => time_start, :end => time_end, :tags => tags, :downsample => downsample }
   end
 
-
-  def self.for_ui(data)
-    if data.blank? then
-      data
-    else
-      data.map { |d| { :x => d[:time], :y => d[:val] } }
-    end
-  end
-
   def self.metrics(check_id, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
     time_start = Time.new - 86400 if time_start.nil?
     time_end = Time.new if time_end.nil?
