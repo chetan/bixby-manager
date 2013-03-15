@@ -85,7 +85,6 @@ Bixby.monitoring.render_metric = (s, metric) ->
 
 # just for reference, rendering using rickshaw
 Bixby.monitoring.render_with_rickshaw = (s, metric) ->
-  super() # render()
 
   # display graphs
   @resources.each (res) ->
