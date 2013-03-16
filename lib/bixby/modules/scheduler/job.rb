@@ -17,6 +17,9 @@ class Scheduler
   #                   then do a lookup)
   class Job
 
+    include Bixby::Log
+    extend Bixby::Log
+
     attr_accessor :klass, :method, :args
 
     def self.create(klass, method, args = [])

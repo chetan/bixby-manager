@@ -46,7 +46,7 @@ class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
       Bixby::Scheduler.new.schedule_at((Time.new+30), @job)
     end
 
-    def test_schedule_in
+    def test_schedule_ine
       Bixby::Scheduler.new.schedule_in(30, @job)
       Sidekiq.redis{ |r| assert r.exists("schedule") }
     end
@@ -70,6 +70,17 @@ class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
         params.kind_of?(Hash) && params["hello"] == "world"
       }
       Bixby::Scheduler.new.schedule_in(0, Bixby::Scheduler::Job.create(Foobar, :baz, {:hello => "world"}))
+    end
+
+    def test_recurring_job
+      args = [ 30, Foobar.to_s, :baz, {:hello => "world" } ]
+      Foobar.any_instance.expects(:baz).once().with{ |params|
+        params.kind_of?(Hash) && params[:hello] == "world"
+      }
+      Bixby::Scheduler.any_instance.expects(:schedule_in).once().with { |interval, job|
+        interval == 30 && job.klass = Foobar && job.method.to_s == "baz"
+      }
+      Bixby::Scheduler::RecurringJob.perform(*args)
     end
 
 
