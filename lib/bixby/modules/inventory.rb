@@ -54,6 +54,11 @@ class Inventory < API
 
     a.save!
 
+
+    # update facts in bg (10 sec delay)
+    job = Bixby::Scheduler::Job.create(Bixby::Inventory, :update_facts, h.id)
+    Bixby::Scheduler.new.schedule_in(10, job)
+
     { :server_key => server_key_for_agent(a).public_key.to_s,
       :access_key => a.access_key,
       :secret_key => a.secret_key }

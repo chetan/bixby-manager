@@ -25,6 +25,10 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
   def test_register_agent
     org = FactoryGirl.create(:org)
 
+    Bixby::Scheduler.any_instance.expects(:schedule_in).once().with { |interval, job|
+      interval == 10 && job.klass = Bixby::Inventory && job.method == :update_facts
+    }
+
     ip = "4.4.4.4"
     http_req = mock_ip("4.4.4.4")
 
