@@ -59,12 +59,17 @@ class Inventory < API
       :secret_key => a.secret_key }
   end
 
-  # Update Facter facts on the given Agent
+  # Update Facter facts on the given Host or Agent
   #
-  # @param [Agent] agent
-  def update_facts(agent)
+  # @param [Host] host      to update
+  def update_facts(host)
 
-    agent = get_model(agent, Agent)
+    if host.kind_of? Agent then
+      agent = host
+    else
+      host = get_model(host, Host)
+      agent = host.agent
+    end
 
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/inventory",
                                :command => "list_facts.rb" )
