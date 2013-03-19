@@ -11,10 +11,10 @@ Backbone.Collection.prototype.eachR = (context, func) ->
 
 # eachR - allows passing the context as the first param instead of last
 _.eachR = (context, list, func) ->
-  @each list, func, context
+  _.each list, func, context
 
 _.bindR = (context, func, args...) ->
-  @bind func, context, args...
+  _.bind func, context, args...
 
 # setTimeoutR - allows passing timeout as first param
 window.setTimeoutR = (timeout, func) ->
