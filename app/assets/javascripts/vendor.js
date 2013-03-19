@@ -14,8 +14,7 @@
 //= require "moment.min"
 
 // tagging
-//= require "jquery-ui"
-//= require "jquery.tagit"
+//= require "select2"
 
 // charting libs
 //= require "chart/dygraph"
