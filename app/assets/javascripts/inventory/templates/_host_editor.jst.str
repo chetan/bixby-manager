@@ -32,11 +32,7 @@
 
         <label class="control-label">Tags<br/>
           <div class="controls">
-            <ul class="tags span12">
-              <% _.each(host.tags(), function(tag) { %>
-                <li><%= tag %></li>
-              <% }); %>
-            </ul>
+            <input type="hidden" class="tags span12" value="<%=host.tags().join(',')%>"/>
           </div>
         </label>
 

@@ -52,7 +52,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @host.set "alias", @$("input.alias").val(), {silent: true}
       @host.set "desc", @$("textarea.desc").val(), {silent: true}
 
-      @host.set_tags _.pluck(@$("ul.tags").tagit("tags"), "value")
+      @host.set_tags @$("input.tags").val()
 
       if @host.hasChanged()
         @host.save()
@@ -64,13 +64,20 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @hide_editor()
 
     after_render: ->
-      tags = @$("ul.tags")
-      tags.tagit({
-        tagsChanged: (tag, action, el) ->
-          if action == "added" and tag.substr(0, 1) == "#"
-            tags.tagit("remove", tag)
-            tags.tagit("add", tag.substr(1))
+      # setup tag editor
+      tags = @$("input.tags")
+      tags.select2({
+        tags: []
+        tokenSeparators: [",", " "]
       })
+      tags.on "change", (e) ->
+        if e.added? and e.added.text.substr(0, 1) == "#"
+          e.val.pop()
+          e.val.push(e.added.text.substring(1))
+          tags.val(e.val)
+          setTimeoutR 0, -> # trigger async - otherwise it won't update UI
+            tags.trigger("change")
+
       @$el.modal({ show: false })
       @$el.on "shown", _.bindR(@, (ev) -> @$("input.alias").putCursorAtEnd())
       @$el.on "hidden", _.bindR @, (ev) ->
