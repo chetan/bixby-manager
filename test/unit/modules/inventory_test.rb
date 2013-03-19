@@ -88,7 +88,7 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     assert_equal "Darwin", m.last.value
 
     # second update, 1 new fact
-    jr = JsonResponse.new("success", "", { :status => 0, :stdout => {:domain => "local", :uptime => "3 days", :kernel => "Darwin"}.to_json, :stderr => nil })
+    jr = JsonResponse.new("success", "", { :status => 0, :stdout => {:domain => "local", :uptime => "4 days", :kernel => "Darwin"}.to_json, :stderr => nil })
     stub = stub_request(:post, agent.uri).with { |req|
       req.body =~ /list_facts.rb/
     }.to_return(:status => 200, :body => jr.to_json)
@@ -100,6 +100,7 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     assert_equal 3, m.size
     assert_equal "domain", m.last.key
     assert_equal "local", m.last.value
+    assert_equal "4 days", m.first.value
 
     assert_requested(stub, :times => 2)
   end

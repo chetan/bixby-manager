@@ -95,6 +95,7 @@ class Inventory < API
         mk = "#{k}_#{METADATA_FACTER}"
         if metadata.include?(mk) then
           metadata[mk].value = v
+          metadata[mk].save!
         else
           m = Metadata.for(k, v, METADATA_FACTER)
           agent.host.metadata << m
