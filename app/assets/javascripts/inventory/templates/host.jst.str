@@ -20,7 +20,7 @@
 
   <div class="row-fluid">
 
-    <h4>Facts</h4>
+    <h4>Facts <a class="btn btn-mini refresh-facts" href="#"><i class="icon-refresh"></i></a></h4>
     <div class="metadata span6">
     </div>
 

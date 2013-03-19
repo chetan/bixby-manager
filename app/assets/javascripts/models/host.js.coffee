@@ -39,7 +39,7 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.HostList extends Stark.Collection
     model: exports.Host
     url: ->
-      s = "/hosts"
+      s = "/rest/hosts"
       if @query
         s += "?q=" + @query.replace(/#/, "%23")
       return s

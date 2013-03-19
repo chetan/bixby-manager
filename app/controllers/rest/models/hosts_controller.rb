@@ -1,5 +1,5 @@
 
-class HostsController < UiController
+class Rest::Models::HostsController < UiController
 
   def index
     query = params[:q] || params[:query]
@@ -8,7 +8,6 @@ class HostsController < UiController
     else
       @hosts = Host.for_user(current_user)
     end
-    bootstrap @hosts
     restful @hosts
   end
 
@@ -31,6 +30,12 @@ class HostsController < UiController
     @host.destroy
     @host.agent.destroy if @host.agent
 
+    restful @host
+  end
+
+  def update_facts
+    @host = Host.find(params[:id])
+    Bixby::Inventory.new.update_facts(@host)
     restful @host
   end
 

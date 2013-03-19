@@ -6,6 +6,12 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     bindings: [ "host" ]
 
+    events: {
+      "click a.refresh-facts": (e) ->
+        e.preventDefault()
+        $.get("/rest/hosts/" + @host.id + "/update_facts")
+    }
+
     links: {
       "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
     }

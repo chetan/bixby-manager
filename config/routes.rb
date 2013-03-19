@@ -12,6 +12,7 @@ Bixby::Application.routes.draw do
 
   namespace :rest, :module => "rest/models" do
     resources :hosts
+    match "hosts/:id/update_facts" => "hosts#update_facts"
   end
 
   match "/inventory" => "inventory::hosts#index"
