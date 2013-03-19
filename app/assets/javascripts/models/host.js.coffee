@@ -2,7 +2,7 @@
 namespace 'Bixby.model', (exports, top) ->
 
   class exports.Host extends Stark.Model
-    urlRoot: "/hosts"
+    urlRoot: "/rest/hosts"
 
     initialize: (data) ->
       @extract_param(data, "host", true)
