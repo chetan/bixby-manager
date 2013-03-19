@@ -51,7 +51,7 @@ Bixby.app.add_state(
       needed = super(data)
       @log "opts: ", @opts
       needed = _.union(needed, @opts)
-      @spinner = new _bv.Spinner($("div.command_opts"))
+      @spinner = new _bv.Spinner($("div.command_opts").height(30).css({ padding: "20px" }))
       return needed
 
     activate: ->

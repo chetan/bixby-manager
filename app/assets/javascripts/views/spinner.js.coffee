@@ -31,7 +31,6 @@ namespace "Bixby.view", (exports, top) ->
 
     render: (target) ->
       @target = $(target)
-      # @target.height(60)
       @spinner = new window.Spinner(@opts).spin()
       @target.append(@spinner.el)
 
