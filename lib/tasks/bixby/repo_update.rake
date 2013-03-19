@@ -16,6 +16,6 @@ namespace :bixby do
   desc "update repositories from upstream sources (git pull/svn up)"
   task :update_repos => :environment do
     require 'bixby/modules/repository'
-    Bixby::Repository.update
+    Bixby::Repository.new.update
   end
 end
