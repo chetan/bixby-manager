@@ -40,10 +40,12 @@ div.host {
   }
 
   table.metadata {
-    margin-top: 10px;
     display: block;
     overflow: auto;
     max-height: 400px;
+    .popover {
+      width: 400px;
+    }
   }
 
 }

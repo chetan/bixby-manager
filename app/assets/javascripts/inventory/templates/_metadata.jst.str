@@ -1,9 +1,9 @@
 <table class="metadata table table-striped table-condensed">
 
-  <thead>
+  <thead class="header">
     <tr>
-      <td>Key</td>
-      <td>Value</td>
+      <td><h4>Key</h4></td>
+      <td><h4>Value</h4></td>
     </tr>
   </thead>
 
