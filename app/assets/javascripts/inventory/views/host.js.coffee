@@ -7,9 +7,20 @@ namespace "Bixby.view.inventory", (exports, top) ->
     bindings: [ "host" ]
 
     events: {
-      "click a.refresh-facts": (e) ->
+      "click button.refresh-facts": (e) ->
         e.preventDefault()
-        $.get("/rest/hosts/" + @host.id + "/update_facts")
+        return if $(e.target).hasClass("disabled")
+
+        # modify button to display spinner
+        $("button.refresh-facts").addClass("disabled")
+        $("button.refresh-facts i").css({visibility: "hidden"})
+        @spinner = new Bixby.view.Spinner($("button.refresh-facts"), { length: 3, width: 2, radius: 2, top: 'auto', left: '-10px' })
+
+        view = @
+        $.getJSON "/rest/hosts/" + @host.id + "/update_facts",
+          (data, status, jqXHR) ->
+            view.host = new Bixby.model.Host(data)
+            view.redraw()
     }
 
     links: {

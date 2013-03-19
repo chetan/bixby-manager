@@ -16,17 +16,24 @@ namespace "Bixby.view", (exports, top) ->
       top: '0'
       left: '0'
 
-    initialize: (target) ->
+    initialize: (target, opts) ->
       super
+
       if _.isArray(target)
         target = target[0]
+
+      if opts?
+        _.eachR @, _.keys(opts), (key) ->
+          @opts[key] = opts[key]
+
       @target = $(target)
       @render(@target)
 
     render: (target) ->
       @target = $(target)
-      @target.height(60)
-      @spinner = new window.Spinner(@opts).spin(@target[0])
+      # @target.height(60)
+      @spinner = new window.Spinner(@opts).spin()
+      @target.append(@spinner.el)
 
     stop: ->
       @spinner.stop()
