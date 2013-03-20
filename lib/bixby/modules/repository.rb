@@ -79,8 +79,7 @@ class Repository < API
   end
 
   def update_git_repo(repo)
-    logger = (RakeFileUtils.verbose_flag == true ? Logger.new(STDOUT) : nil)
-    g = Git.open(repo.path, :log => logger)
+    g = Git.open(repo.path, :log => log)
     g.pull("origin", "origin/master")
   end
 
@@ -92,7 +91,7 @@ class Repository < API
   #
   # @param [Repo] repo
   def rescan_repo(repo)
-    Rails.logger.info("* rescanning commands in #{repo.name} repository (#{repo.path})")
+    log.info("* rescanning commands in #{repo.name} repository (#{repo.path})")
     Find.find(repo.path+"/") do |path|
 
       # skip everything except for /bin/ scripts in bundle dirs
@@ -119,19 +118,19 @@ class Repository < API
 
   # create or update the command
   def add_command(repo, bundle, script)
-    Rails.logger.info("* found #{bundle} :: #{script}")
+    log.info("* found #{bundle} :: #{script}")
 
     cmds = Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script)
     if not cmds.blank? then
       cmd = cmds.first
       spec = cmd.to_command_spec
       if cmd.updated_at >= File.mtime(spec.command_file) and (!File.exists?(spec.config_file) or cmd.updated_at >= File.mtime(spec.config_file)) then
-        Rails.logger.info "* skipping (not updated)"
+        log.info "* skipping (not updated)"
         return
       end
-      Rails.logger.info("* updating existing Command")
+      log.info("* updating existing Command")
     else
-      Rails.logger.info("* creating new Command")
+      log.info("* creating new Command")
       cmd = Command.new
       cmd.repo = repo
       cmd.bundle = bundle
