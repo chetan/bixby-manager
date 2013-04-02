@@ -172,6 +172,10 @@ class API < ActionController::TestCase
     req = JsonRequest.new("inventory:register_agent", params)
     @request.env['RAW_POST_DATA'] = req.to_json
 
+    Bixby::Scheduler.any_instance.expects(:schedule_in).with do |interval, job|
+      interval == 10 and job.method == :update_facts and job.klass == Bixby::Inventory
+    end
+
     post :handle
     res = JsonResponse.from_json(@response.body)
     assert res
