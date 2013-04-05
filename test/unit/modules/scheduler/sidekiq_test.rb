@@ -46,7 +46,7 @@ class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
       Bixby::Scheduler.new.schedule_at((Time.new+30), @job)
     end
 
-    def test_schedule_ine
+    def test_schedule_in
       Bixby::Scheduler.new.schedule_in(30, @job)
       Sidekiq.redis{ |r| assert r.exists("schedule") }
     end
