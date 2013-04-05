@@ -142,6 +142,7 @@ group :development do
     gem 'mocha', :require => false
     gem "turn"
     gem "bahia"
+    gem "zeus"
     gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
     gem 'spork-testunit', :git => "https://github.com/sporkrb/spork-testunit.git", :require => false
     gem "spork-rails", :require => false
