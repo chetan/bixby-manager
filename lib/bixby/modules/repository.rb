@@ -109,7 +109,7 @@ class Repository < API
       bundle = paths[0..1].join("/")
       paths = paths[2..paths.length]
       next if paths.shift != "bin"
-      next if paths.last =~ /\.json$/
+      next if paths.last =~ /\.(json|test)$/
 
       # add it
       add_command(repo, bundle, paths.join("/"))
