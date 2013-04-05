@@ -165,7 +165,9 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
         "key"=>"hardware.storage.disk"
     }
 
-    mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /hardware/ and v.include? 1329775841.to_s }.times(4)
+    Continuum::Client.any_instance.expects(:metric).with { |n,v,t|
+      n =~ /^hardware/ && t.to_i == 1329775841 }.times(4)
+
     Bixby::Metrics.new.put_check_result(m)
   end
 

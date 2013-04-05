@@ -26,7 +26,9 @@ EOF
 
   def test_put
     t = Time.new
-    mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /foobar/ and v.include? t.to_i.to_s }.once()
+    mock = mock()
+    TCPSocket.expects(:new).returns(mock)
+    mock.stubs(:sendmsg).with{ |v| v =~ /foobar/ and v.include? t.to_i.to_s }.once()
     Bixby::Metrics.new.put("foobar", 37, t, {})
   end
 
@@ -186,7 +188,9 @@ EOF
         "key"=>"hardware.storage.disk"
     }
 
-    mock = TCPSocket.any_instance.stubs(:sendmsg).with{ |v| v =~ /hardware/ and v.include? 1329775841.to_s }.times(4)
+    mock = mock()
+    TCPSocket.expects(:new).returns(mock)
+    mock.stubs(:sendmsg).with{ |v| v =~ /hardware/ and v.include? 1329775841.to_s }.times(4)
     Bixby::Metrics.new.put_check_result(m)
   end
 
