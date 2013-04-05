@@ -16,32 +16,49 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
   end
 
   def test_list_files
-
     files = Bixby::Provisioning.new.list_files(@cmd.to_command_spec.to_hash)
     assert_equal 3, files.length
     assert files.first.keys.include? "file"
     assert files.first.keys.include? "digest"
-
   end
 
   def test_fetch_file
-
     dl = Bixby::Provisioning.new.fetch_file(@cmd, "bin/echo")
     assert dl
     assert dl.kind_of? Bixby::FileDownload
     assert_equal File.join(Bixby.repo_path, "vendor", "test_bundle", "bin/echo"), dl.filename
-
   end
 
   def test_provision_missing_bundle
-    repo  = Repo.new(:name => "vendor")
-    agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
-    cmd   = Command.new(:bundle => "test_bundle", :command => "echofoo", :repo => repo)
-
+    cmd = Command.new(:bundle => "test_bundle", :command => "echofoo", :repo => @repo)
     assert_throws RuntimeError do
-      Bixby::Provisioning.new.provision(agent, cmd)
+      Bixby::Provisioning.new.provision(@agent, cmd)
     end
+  end
 
+  def test_provision_self
+
+    res = []
+    res << JsonResponse.new("fail", "bundle not found: digest does not match ('my_old_hash_XXXX' != 'yyyy')", nil, 404).to_json
+    res << JsonResponse.new("success").to_json
+
+    # 1. call to provision test_bundle/echo command FAILS because get_bundle itself is out of date
+    # 3. second call to this stub succeeds
+    stub1 = stub_request(:post, "http://2.2.2.2:18000/").with{ |req|
+        b = req.body
+        b =~ /test_bundle/ && b =~ /echo/ && b =~ /get_bundle.rb/ && b =~ %r{system/provisioning}
+      }.to_return{ {:status => 200, :body => res.shift} }
+
+    # 2. call to provision get_bundle which succeeds
+    stub2 = stub_request(:post, "http://2.2.2.2:18000/").with{ |req|
+        b = req.body
+        b !~ /test_bundle/ && b =~ /get_bundle.rb/ && b =~ %r{system/provisioning} && b =~ /my_old_hash_XXXX/
+      }.to_return(:status => 200, :body => JsonResponse.new("success").to_json)
+
+    Bixby::Provisioning.new.provision(@agent, @cmd)
+
+    assert_requested(stub1, :times => 2)
+    assert_requested(stub2)
   end
 
 end # Test::Modules::Provisioning

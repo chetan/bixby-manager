@@ -16,23 +16,38 @@ class Provisioning < API
   def provision(agent, command)
 
     command = create_spec(command)
-
-    if not (command.bundle_exists? and command.command_exists?) then
+    if command.blank? or not(command.bundle_exists? and command.command_exists?) then
       # TODO complain
       raise "hey! *WE* don't even have that command!"
     end
 
-    noargs = command.dup
-    noargs.args = nil
-    noargs.env = nil
+    spec = create_provision_command(command)
+    ret = exec_api(agent, "shell_exec", spec)
+    if ret.success? or ret.code != 404 then
+      return ret
+    end
 
-    provision = CommandSpec.new({
-                  :repo => "vendor",
-                  :bundle => "system/provisioning",
-                  :command => "get_bundle.rb",
-                  :stdin => noargs.to_json })
+    # system/provisioning bundle is out of date. try to update it
+    if ret.message !~ /digest does not match \('(.*?)' !=/ then
+      return ret
+    end
 
-    return exec_api(agent, "shell_exec", provision.to_hash)
+    # fake the digest in the provision call
+    fake_digest = $1
+    spec_self = create_provision_command(spec)
+    spec_self[:digest] = fake_digest
+    ret = exec_api(agent, "shell_exec", spec_self)
+    if not ret.success? then
+      return ret # bail out. can't even provision ourselves!
+    end
+
+    if spec["bundle"] == "system/provisioning" then
+      # original bundle was self, so we're done here
+      return ret
+    end
+
+    # finally, provision the real spec
+    return exec_api(agent, "shell_exec", spec)
   end
 
   # List files in bundle specified by CommandSpec
@@ -60,6 +75,23 @@ class Provisioning < API
     end
 
     return nil # TODO raise err
+  end
+
+
+  private
+
+  def create_provision_command(command)
+    noargs         = command.kind_of?(Hash) ? command.dup : command.to_hash
+    noargs[:args]  = nil
+    noargs[:stdin] = nil
+    noargs[:env]   = nil
+
+    CommandSpec.new({
+      :repo    => "vendor",
+      :bundle  => "system/provisioning",
+      :command => "get_bundle.rb",
+      :stdin   => noargs.to_json
+    }).to_hash
   end
 
 end
