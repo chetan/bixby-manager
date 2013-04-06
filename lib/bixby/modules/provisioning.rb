@@ -49,6 +49,8 @@ class Provisioning < API
       return ret
     end
 
+    debug { "system/provisioning updated! continuing with #{command.bundle}" }
+
     # finally, provision the real spec
     return exec_api(agent, "shell_exec", spec)
   end
