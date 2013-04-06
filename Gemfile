@@ -80,7 +80,7 @@ group :assets do
     gem 'turbo-sprockets-rails3'
     gem 'sass'
     gem 'sass-rails'
-    gem 'jst_str', :git => "https://github.com/chetan/jst_str.git"
+    gem 'sprockets-jst-str'
     gem "coffee-script"
     gem "coffee-script-source"
     gem 'haml_assets'
