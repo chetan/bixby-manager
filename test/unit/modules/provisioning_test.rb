@@ -52,13 +52,40 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
     # 2. call to provision get_bundle which succeeds
     stub2 = stub_request(:post, "http://2.2.2.2:18000/").with{ |req|
         b = req.body
-        b !~ /test_bundle/ && b =~ /get_bundle.rb/ && b =~ %r{system/provisioning} && b =~ /my_old_hash_XXXX/
+        b !~ /test_bundle/ && b =~ /get_bundle.rb/ && b =~ %r{system/provisioning} && b =~ /digest":"my_old_hash_XXXX/
       }.to_return(:status => 200, :body => JsonResponse.new("success").to_json)
 
     Bixby::Provisioning.new.provision(@agent, @cmd)
 
     assert_requested(stub1, :times => 2)
     assert_requested(stub2)
+  end
+
+  def test_provision_self_only
+
+    res = []
+    res << JsonResponse.new("fail", "bundle not found: digest does not match ('my_old_hash_XXXX' != 'yyyy')", nil, 404).to_json
+    res << JsonResponse.new("success").to_json
+
+    # 1. call to provision test_bundle/echo command FAILS because get_bundle itself is out of date
+    stub1 = stub_request(:post, "http://2.2.2.2:18000/").with{ |req|
+        b = req.body
+        b =~ /get_bundle.rb/ && b =~ %r{system/provisioning} && b =~ /digest":"2429629015110c/
+      }.to_return{ {:status => 200, :body => res.shift} }
+
+    # 2. call to provision get_bundle which succeeds
+    stub2 = stub_request(:post, "http://2.2.2.2:18000/").with{ |req|
+        b = req.body
+        b =~ /get_bundle.rb/ && b =~ %r{system/provisioning} && b =~ /digest":"my_old_hash_XXXX/
+      }.to_return(:status => 200, :body => JsonResponse.new("success").to_json)
+
+    cmd = Command.new(:bundle => "system/provisioning", :command => "get_bundle.rb", :repo => @repo)
+    Bixby::Provisioning.new.provision(@agent, cmd)
+
+    assert_requested(stub1)
+    assert_requested(stub2)
+
+    assert_requested :post, "http://2.2.2.2:18000/", :times => 2
   end
 
 end # Test::Modules::Provisioning
