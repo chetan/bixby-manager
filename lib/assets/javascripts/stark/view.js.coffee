@@ -187,6 +187,13 @@ class Stark.View extends Backbone.View
 
     return ret
 
+  # A raw include of the contents of some other template. It will be bound with
+  # the the same variables in this view.
+  #
+  # @param [String] tpl     Template to include
+  include: (tpl) ->
+    return new Template(@jst(tpl)).render(@)
+
   # Render a partial (sub) view
   #
   # @param [Class] clazz      class name of view to render
