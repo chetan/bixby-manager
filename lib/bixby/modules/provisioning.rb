@@ -17,8 +17,8 @@ class Provisioning < API
 
     command = create_spec(command)
     if command.blank? or not(command.bundle_exists? and command.command_exists?) then
-      # TODO complain
-      raise "hey! *WE* don't even have that command!"
+      # TODO better error handling
+      raise "error: tried to provision invalid bundle or command"
     end
 
     spec = create_provision_command(command)
