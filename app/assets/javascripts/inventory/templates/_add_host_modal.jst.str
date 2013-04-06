@@ -1,0 +1,11 @@
+
+<div id="addHostModal" class="modal hide">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Add Host</h3>
+  </div>
+  <div class="modal-body">
+    <p>Simply copy and paste the below in the terminal on your new host</p>
+    <%= include("inventory/_add_host_info") %>
+  </div>
+</div>

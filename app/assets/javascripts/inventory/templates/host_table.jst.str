@@ -6,15 +6,14 @@
 
 <% if (other_hosts.length) { %>
 <h2>All hosts</h2>
+<button class="btn add_host" type="button">Add Host</button>
 <div class="host_list"></div>
 <% } %>
 
 <% if (!hosts || hosts.length === 0) { %>
   <h2>Welcome!</h2>
   <p>Let's get started by adding some hosts. Simply run the following on each server:</p>
-  <div class="input-prepend">
-    <span class="add-on">$</span>
-    <input class="install" type="text" readonly="readonly"
-      value="\\curl -sL https://get.bixby.io | bash -s <%= current_user.g('tenant') %> <%= manager_uri %>">
-  </div>
+  <%= include("inventory/_add_host_info") %>
 <% } %>
+
+<%= include("inventory/_add_host_modal") %>

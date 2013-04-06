@@ -16,6 +16,10 @@ namespace "Bixby.view.inventory", (exports, top) ->
         setTimeoutR 0, ->
           e.target.select()
 
+      "click button.add_host":(e) ->
+        e.preventDefault()
+        $("#addHostModal").modal("show")
+
     }
 
     render: ->
@@ -25,6 +29,10 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @other_hosts = @hosts.filter (h) -> !h.is_new()
 
       super()
+
+      @$("#addHostModal").modal({show: false})
+      @$("#addHostModal").on "shown", ->
+        $("#addHostModal input.install").focus()
 
       list = $(".new_host_list")
       _.eachR @, @new_hosts, (host) ->
