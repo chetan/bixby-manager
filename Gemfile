@@ -69,7 +69,7 @@ gem "redis", "~> 3.0", :require => ["redis/connection/hiredis", "redis"]
 gem "resque"
 gem "resque-scheduler", :require => ["resque_scheduler"]
 
-gem "sidekiq"
+gem "sidekiq", "~> 2.9"
 gem "slim"     # for sidekiq web ui
 gem "sinatra"  # for sidekiq web ui
 
@@ -84,7 +84,7 @@ group :assets do
     gem "coffee-script"
     gem "coffee-script-source"
     gem 'haml_assets'
-    gem 'yui-compressor', :git => "https://github.com/loe/ruby-yui-compressor.git"
+    gem 'yui-compressor', :git => "https://github.com/loe/ruby-yui-compressor.git" # use this fork for latest 2.4.7 jar
     gem 'uglifier'
 end
 
