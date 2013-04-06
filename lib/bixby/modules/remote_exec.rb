@@ -75,9 +75,15 @@ class RemoteExec < API
         else
           res = http_post_json(uri, post.to_json)
         end
-        return JsonResponse.from_json(res)
+
+        ret = JsonResponse.from_json(res)
+        debug { ret.to_s }
+        return ret
+
       rescue Curl::Err::CurlError => ex
-        return JsonResponse.new("fail", ex.message, ex.backtrace)
+        ret = JsonResponse.new("fail", ex.message, ex.backtrace)
+        debug { ret.to_s }
+        return ret
       end
     end
 
