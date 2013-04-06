@@ -29,8 +29,11 @@ class Provisioning < API
 
     # system/provisioning bundle is out of date. try to update it
     if ret.message !~ /digest does not match \('(.*?)' !=/ then
+      warn { "provision failed with an unknown error: #{ret.message}"}
       return ret
     end
+
+    debug { "provision of #{command.bundle} failed, will try to provision system/provisioning first" }
 
     # fake the digest in the provision call
     fake_digest = $1
@@ -41,8 +44,8 @@ class Provisioning < API
       return ret # bail out. can't even provision ourselves!
     end
 
-    if spec["bundle"] == "system/provisioning" then
-      # original bundle was self, so we're done here
+    if command.bundle == "system/provisioning" then
+      debug { "original bundle was system/provisioning; bailing out" }
       return ret
     end
 
