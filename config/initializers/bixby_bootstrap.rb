@@ -1,6 +1,9 @@
-# this is mainly to skip loading bixby-related coded when using 'spork'
+
+# this is mainly to skip loading bixby-related coded when using 'spork' or 'zeus'
 # instead, we load this after forking to run our tests
-if not ENV.include? "DRB" or Rails.env != "test" or ENV["BOOTSTRAPNOW"] then
+
+if Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
+  not(Module.const_defined?(:Spork) or Module.const_defined?(:Zeus)) then
 
   require 'bixby'
   require 'rails_ext'
