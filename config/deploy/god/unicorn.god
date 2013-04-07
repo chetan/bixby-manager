@@ -69,8 +69,8 @@ God.watch do |w|
     on.condition(:http_response_code) do |c|
       c.host = 'localhost'
       c.port = '8080'
-      c.path = '/'
-      c.code_is = 500
+      c.path = '/rack_health'
+      c.code_is_not = 200
       c.timeout = 10.seconds
       c.times = [3, 5] # 3 out of 5
     end
