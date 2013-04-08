@@ -67,7 +67,8 @@ module Bixby
     # Enable the asset pipeline
     config.assets.enabled = true
 
-    config.middleware.delete("Rack::Cache")
+    # disable Rack::Cache middleware
+    config.action_dispatch.rack_cache = nil
   end
 end
 
