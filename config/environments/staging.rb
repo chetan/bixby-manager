@@ -64,7 +64,7 @@ Bixby::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  config.middleware.insert_before "Rack::Cache", "Rack::Health"
+  config.middleware.insert_before "Rack::Lock", "Rack::Health"
 
   ###############
   # LOGGING SETUP
