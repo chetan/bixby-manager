@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
     config.login_field :email
     config.crypted_password_field :crypted_password
     config.crypto_provider Authlogic::CryptoProviders::SCrypt
-    config.login_timeout 1.week
+    config.logged_in_timeout 1.week
   end
 
 end
