@@ -3,9 +3,13 @@ class SessionsController < UiController
 
   # display login page
   def new
-    if not current_user.nil? then
-      redirect_to inventory_path
+    if current_user and is_valid_session? then
+      # looks we already have a properly logged in user
+      return redirect_to inventory_path
     end
+
+    # nuke current_user before login
+    current_user_session.destroy if current_user_session
   end
 
   # POST to log in

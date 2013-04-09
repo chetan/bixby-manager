@@ -23,13 +23,13 @@ class UiController < ApplicationController
   end
 
   def login_required?
-    if current_user
+    if current_user and is_valid_session? then
       bootstrap current_user, :name => :current_user
       return false
     end
 
     # don't redirect when trying to login
-    return false if params["controller"] == "sessions" && %w{new create}.include?(params["action"])
+    return false if params["controller"] == "sessions" && (params["action"] == "new" || params["action"] == "create")
 
     if request.xhr? or request.format != "text/html" then
       # return an error response instead
@@ -48,4 +48,10 @@ class UiController < ApplicationController
 
     redirect_to path
   end
+
+  # Test if the current session hash if valid
+  def is_valid_session?
+    session && session.include?("_csrf_token") && (current_user && session.include?("user_credentials"))
+  end
+
 end
