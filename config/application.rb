@@ -71,6 +71,3 @@ module Bixby
     config.action_dispatch.rack_cache = nil
   end
 end
-
-# for backbone.js; see http://backbonejs.org/#FAQ-rails
-ActiveRecord::Base.include_root_in_json = false
