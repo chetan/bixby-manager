@@ -25,7 +25,7 @@ class SessionsController < UiController
   # GET to logout
   def destroy
     current_user_session.destroy if current_user_session
-    session.clear
+    reset_session
     render :text => "ok"
   end
 
