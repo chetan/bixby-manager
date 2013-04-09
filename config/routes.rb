@@ -4,25 +4,25 @@ Bixby::Application.routes.draw do
 
   match '/api' => 'api#handle'
 
-  match 'login'  => 'sessions#new',     :as => :login, :via => :get
-  match 'login'  => 'sessions#create',  :as => :login, :via => :post
-  match 'logout' => 'sessions#destroy', :as => :logout
+  get  'login'  => 'sessions#new',     :as => :login
+  post 'login'  => 'sessions#create',  :as => :login
+  get  'logout' => 'sessions#destroy', :as => :logout
 
   resources :hosts
 
   namespace :rest, :module => "rest/models" do
     resources :hosts
-    match "hosts/:id/update_facts" => "hosts#update_facts"
+    get "hosts/:id/update_facts" => "hosts#update_facts"
   end
 
-  match "/inventory" => "inventory::hosts#index"
+  get "/inventory" => "inventory::hosts#index"
   namespace :inventory do
-    match "/search/:query" => "hosts#index"
+    get "/search/:query" => "hosts#index"
     resources :hosts do
     end
   end
 
-  match "/monitoring" => "monitoring#index"
+  get "/monitoring" => "monitoring#index"
   namespace :monitoring do
     resources :commands
     resources :hosts do
@@ -30,7 +30,7 @@ Bixby::Application.routes.draw do
       resources :checks
       resources :metrics
 
-      match "/command/:command_id/opts" => "commands#opts"
+      get "/command/:command_id/opts" => "commands#opts"
     end
   end
 
