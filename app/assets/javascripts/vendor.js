@@ -4,7 +4,7 @@
 //= require "underscore"
 //= require "backbone"
 //= require "template"
-//= require "twitter/bootstrap"
+//= require "twitter/bootstrap.min"
 //= require "async"
 //= require "spin.min"
 //= require "sprintf"
