@@ -9,7 +9,7 @@ namespace 'Bixby.model', (exports, top) ->
 
     name: ->
       name = (@get("hostname") || @get("ip"))
-      if @get("alias")?
+      if @get("alias")? && @get("alias").length > 0
         name += " (" + @get("alias") + ")"
       return name
 
