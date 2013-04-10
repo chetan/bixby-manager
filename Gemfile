@@ -32,6 +32,7 @@ gem "curb_threadpool",                  :platforms => [:mri, :rbx] # used in con
 gem "httpclient",                       :platforms => :jruby
 
 # misc/production support
+gem "secure_headers"
 gem "rack-health", :require => "rack/health"
 gem "logging"
 gem "logging-rails", :require => "logging/rails",

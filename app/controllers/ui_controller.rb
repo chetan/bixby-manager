@@ -1,5 +1,8 @@
 
 class UiController < ApplicationController
+
+  ensure_security_headers
+
   before_filter :login_required?
   before_filter :set_current_tenant
 
