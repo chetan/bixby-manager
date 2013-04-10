@@ -31,6 +31,13 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   end
   Bixby::Application.config.secret_token = BIXBY_CONFIG[:secret_token]
 
+  # use an asset host for serving static assets
+  if host = BIXBY_CONFIG[:static_asset_host] then
+    host = "//#{host}" if host[0, 2] != "//"
+    Bixby::Application.config.action_controller.asset_host = host
+    ActionController::Base.asset_host = host
+  end
+
   # setup bundle repo, manager uri
   ENV["BIXBY_HOME"] = File.expand_path(BIXBY_CONFIG[:manager][:root])
   Bixby.manager_uri = BIXBY_CONFIG[:manager][:uri]
