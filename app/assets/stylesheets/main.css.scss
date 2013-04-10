@@ -46,3 +46,13 @@ img.gravatar {
     border-radius: 3px 3px 3px 3px;
     box-shadow: 0 1px 0 #FFFFFF;
 }
+
+ul.user-menu li.dropdown a {
+    padding: 5px 5px;
+}
+
+.navbar-search {
+    input {
+        margin-bottom: 0;
+    }
+}
