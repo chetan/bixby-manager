@@ -5,3 +5,8 @@ namespace 'Bixby.model', (exports, top) ->
 
     name: ->
       @get("name") || @get("username")
+
+    gravatar: ->
+      url = "http://www.gravatar.com/avatar/"
+      email = $.trim(@get("email"))
+      return url + md5(email) + "?d=mm"

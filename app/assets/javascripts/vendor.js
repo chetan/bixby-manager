@@ -12,6 +12,7 @@
 //= require "jquery.putcursoratend"
 //= require "mailcheck.min"
 //= require "moment.min"
+//= require "md5.min"
 
 // tagging
 //= require "select2"
