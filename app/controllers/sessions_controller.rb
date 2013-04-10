@@ -22,7 +22,7 @@ class SessionsController < UiController
     end
 
     ret = { :user => User.find_by_email(user_session.email) }
-    ret[:redir] = session.delete(:return_to) if session.include? :return_to
+    ret[:redir] = URI.parse(session.delete(:return_to)).path if session.include? :return_to
     restful ret
   end
 
