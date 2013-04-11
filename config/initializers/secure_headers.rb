@@ -4,6 +4,7 @@
   config.x_frame_options = 'DENY'
   config.x_content_type_options = "nosniff"
   config.x_xss_protection = {:value => 1, :mode => false}
+  config.csp = false # disabled for now
 
   # see
   # https://github.com/twitter/secureheaders
