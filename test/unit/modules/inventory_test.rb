@@ -37,7 +37,8 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
       :uuid => "foo", :public_key => "bar",
       :hostname => hostname,
       :tenant => org.tenant.name,
-      :password => "test"
+      :password => "test",
+      :tags => "foo,bar"
       })
     assert ret
     assert_kind_of Hash, ret
@@ -59,6 +60,9 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     assert host, "host created"
     assert_equal hostname, host.hostname, "hostname is set"
     assert_equal ip, host.ip, "ip is set"
+
+    assert_equal 3, host.tags.size
+    assert_equal 3, host.tags.find_all{ |t| t.name =~ /new|foo|bar/ }.size
 
     refute_empty Host.tagged_with(["new"])
   end

@@ -38,11 +38,24 @@ class Inventory < API
       raise API::Error, "bad tenant and/or password", caller
     end
 
+    # process passed in tags
+    tags = opts[:tags]
+    if not tags.blank? then
+      if tags.kind_of? String then
+        tags = tags.split(/, /)
+      end
+      if tags.kind_of? Array then
+        tags << "new"
+        tag_list = tags.sort.uniq.join(",")
+      end
+    end
+    tag_list = "new" if tag_list.blank?
+
     h = Host.new
     h.org_id = org.id
     h.ip = @http_request.ip
     h.hostname = opts[:hostname]
-    h.tag_list = "new"
+    h.tag_list = tag_list
     h.save!
 
     a = Agent.new
@@ -62,7 +75,6 @@ class Inventory < API
     end
 
     a.save!
-
 
     # update facts in bg (10 sec delay)
     job = Bixby::Scheduler::Job.create(Bixby::Inventory, :update_facts, h.id)
