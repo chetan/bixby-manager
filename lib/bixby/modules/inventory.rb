@@ -22,7 +22,11 @@ class Inventory < API
 
     t = Tenant.where(:name => opts[:tenant]).first
     if t.blank? || !t.test_password(opts[:password]) then
-      # TODO log more detailed info?
+      if t.blank? then
+        log.warn { "register_agent: tenant '#{opts[:tenant]}' not found" }
+      else
+        log.warn { "register_agent: tenant auth failed" }
+      end
       raise API::Error, "bad tenant and/or password", caller
     end
 
@@ -30,7 +34,7 @@ class Inventory < API
     # for now, assign to default org
     org = Org.where(:tenant_id => t.id, :name => 'default').first
     if org.nil? then
-      # TODO log more detailed info?
+      log.warn { "org not found" }
       raise API::Error, "bad tenant and/or password", caller
     end
 
