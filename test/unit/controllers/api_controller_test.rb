@@ -168,9 +168,9 @@ class API < ActionController::TestCase
     BIXBY_CONFIG[:crypto] = true
 
     org = FactoryGirl.create(:org)
-    params = [{ :uuid => "my_uuid", :public_key => "my_key",
+    params = { :uuid => "my_uuid", :public_key => "my_key",
                 :hostname => "testhost", :port => 18000,
-                :tenant => org.tenant.name, :password => "test" }]
+                :tenant => org.tenant.name, :password => "test" }
 
     req = JsonRequest.new("inventory:register_agent", params)
     @request.env['RAW_POST_DATA'] = req.to_json
