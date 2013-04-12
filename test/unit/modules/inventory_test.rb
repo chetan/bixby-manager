@@ -9,7 +9,7 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
   def test_nil_pw
 
     assert_throws(Bixby::API::Error, "bad tenant and/or password") do
-      Bixby::Inventory.new.register_agent(nil, nil, nil, nil, nil, nil)
+      Bixby::Inventory.new.register_agent(nil)
     end
 
   end
@@ -18,7 +18,7 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     t = FactoryGirl.create(:tenant)
 
     assert_throws(Bixby::API::Error, "bad tenant and/or password") do
-      Bixby::Inventory.new.register_agent(nil, nil, nil, nil, t.name, "test")
+      Bixby::Inventory.new.register_agent({ :tenant => t.name, :password => "test" })
     end
   end
 
@@ -33,7 +33,12 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     http_req = mock_ip("4.4.4.4")
 
     hostname = "foo.example.com"
-    ret = Bixby::Inventory.new(http_req).register_agent("foo", "bar", hostname, 18000, org.tenant.name, "test")
+    ret = Bixby::Inventory.new(http_req).register_agent({
+      :uuid => "foo", :public_key => "bar",
+      :hostname => hostname,
+      :tenant => org.tenant.name,
+      :password => "test"
+      })
     assert ret
     assert_kind_of Hash, ret
     assert_equal 3, ret.keys.size
@@ -48,6 +53,7 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     assert a, "agent created"
     assert_equal ret[:access_key], a.access_key
     assert_equal ret[:secret_key], a.secret_key
+    assert_equal 18000, a.port, "port defaults to 18000"
 
     host = Host.where("hostname = ?", hostname).first
     assert host, "host created"
@@ -62,7 +68,11 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     http_req = mock_ip("4.4.4.4")
 
     assert_throws(Bixby::API::Error) do
-      Bixby::Inventory.new(http_req).register_agent("foo", "bar", "foo.example.com", nil, org.tenant.name, "test")
+      Bixby::Inventory.new(http_req).register_agent({
+        :uuid => "foo",
+        :tenant => org.tenant.name,
+        :password => "test"
+        })
     end
   end
 

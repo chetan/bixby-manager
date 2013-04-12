@@ -7,16 +7,21 @@ class Inventory < API
 
   # Register an Agent with the server. Also creates an associated Host record
   #
-  # @param [String] uuid
-  # @param [String] public_key
-  # @param [String] hostname
-  # @param [FixNum] port
-  # @param [String] tenant      Name of the tenant
-  # @param [String] password    Password for registering an Agent with the server
-  def register_agent(uuid, public_key, hostname, port, tenant, password)
+  # @param [Hash] opts
+  # @option opts [String] :uuid           UUID of the host
+  # @option opts [String] :public_key     Public key
+  # @option opts [String] :hostname       Hostname
+  # @option opts [String] :tenant         Name of the tenant
+  # @option opts [String] :password       Password for registering an Agent with the server
+  # @option opts [FixNum] :port           Port agent listens on (optional, default: 18000)
+  # @option opts [Array<String>] :tags    List of tags to assign to host (optional)
+  def register_agent(opts)
 
-    t = Tenant.where(:name => tenant).first
-    if t.blank? || !t.test_password(password) then
+    opts = (opts||{}).with_indifferent_access
+    opts[:port] ||= 18000
+
+    t = Tenant.where(:name => opts[:tenant]).first
+    if t.blank? || !t.test_password(opts[:password]) then
       # TODO log more detailed info?
       raise API::Error, "bad tenant and/or password", caller
     end
@@ -32,16 +37,16 @@ class Inventory < API
     h = Host.new
     h.org_id = org.id
     h.ip = @http_request.ip
-    h.hostname = hostname
+    h.hostname = opts[:hostname]
     h.tag_list = "new"
     h.save!
 
     a = Agent.new
     a.host_id = h.id
     a.ip = h.ip
-    a.port = port
-    a.uuid = uuid
-    a.public_key = public_key
+    a.port = opts[:port]
+    a.uuid = opts[:uuid]
+    a.public_key = opts[:public_key]
     a.access_key = Bixby::CryptoUtil.generate_access_key
     a.secret_key = Bixby::CryptoUtil.generate_secret_key
 
