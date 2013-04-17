@@ -5,7 +5,7 @@ module Bixby
   require "bixby/async"
 
   class << self
-    attr_accessor :ref
+    attr_accessor :ref, :ref_date
   end
 end
 
@@ -13,8 +13,10 @@ end
 rev_file = File.join(Rails.root, "REVISION")
 if File.exists? rev_file then
   Bixby.ref = File.read(rev_file).strip
+  Bixby.ref_date = File.mtime(rev_file).to_s
 else
   Bixby.ref = "HEAD"
+  Bixby.ref_date = "HEAD"
 end
 
 require 'bixby/modules'

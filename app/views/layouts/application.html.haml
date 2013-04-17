@@ -2,7 +2,7 @@
 %html{ :lang => I18n.locale }
   %head
     %title BIXBY
-    %meta{ "bixby-version" => Bixby.ref }
+    %meta{ "bixby-version" => Bixby.ref, "date" => Bixby.ref_date }
     = csrf_meta_tag
     = stylesheet_link_tag "application"
     = javascript_include_tag "application"
