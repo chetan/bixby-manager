@@ -177,6 +177,9 @@ class Metrics < API
     ActiveRecord::Base.transaction do
       results.each do |result|
 
+        # skip if not reporting any metrics
+        next if result["metrics"].blank?
+
         # TODO [security] validate check ownership
         check = Check.find(result["check_id"].to_i)
         time = Time.at(result["timestamp"].to_i)
