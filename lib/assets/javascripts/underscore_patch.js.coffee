@@ -29,15 +29,22 @@ _.csrf = (hash) ->
   hash
 
 # define a new sync method which handles Rails CSRF
-Backbone.sync = (method, model, success, error) ->
+Backbone.sync = (method, model, options) ->
   # only need a token for non-get requests
-  if (method == 'create' || method == 'update' || method == 'delete')
+  if (method == 'create' || method == 'update')
     # grab the token from the meta tag rails embeds
     # set it as a model attribute without triggering events
     model.set(_.csrf({}), {silent: true});
 
+  else if method == 'delete'
+    # model is only sent to server on create/update so we need to also add a header for deletes
+    options ||= {}
+    options.beforeSend = (xhr) ->
+      token = _.values(_.csrf({}))[0]
+      xhr.setRequestHeader "X-CSRF-Token", token
+
   # proxy the call to the old sync method
-  return Backbone._sync(method, model, success, error);
+  return Backbone._sync(method, model, options);
 
 # split which handles empty string correctly
 _.split = (str, regex) ->
