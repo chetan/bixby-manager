@@ -30,6 +30,14 @@ class Stark.App
     @login_route = login_route
     @default_route = default_route
 
+    # env helpers
+    if @env == "development"
+      @dev = @development = true
+      @prod = @production = false
+    else
+      @dev = @development = false
+      @prod = @production = true
+
     @router.app = @
     @subscribe('app:route', @matchRoute)
 
