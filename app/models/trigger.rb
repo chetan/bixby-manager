@@ -30,7 +30,7 @@ class Trigger < ActiveRecord::Base
     CRITICAL = 3
   end
 
-  # alert sign must be one of the following
+  # sign must be one of the following
   #
   # lt  less than
   # le  less than or equal to
@@ -40,7 +40,7 @@ class Trigger < ActiveRecord::Base
   # ne  not equal
   SIGNS = [ :lt, :le, :gt, :ge, :eq, :ne ]
 
-  # Find all alerts for the given Metric and it's associated Check
+  # Find all triggers for the given Metric and it's associated Check
   #
   # @param [Metric] metric
   # @return [Array<Trigger>]
