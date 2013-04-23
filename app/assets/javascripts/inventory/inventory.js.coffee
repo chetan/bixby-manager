@@ -44,7 +44,7 @@ Bixby.app.add_state(
 
     load_data: (data) ->
 
-      if data.query
+      if data.query?
         @query = data.query
       else if data.params
         data.query = @query = data.params.query
