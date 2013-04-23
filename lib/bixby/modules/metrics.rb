@@ -50,7 +50,14 @@ class Metrics < API
   #
   # @return [Array<Hash>] Array of metrics
   def get(opts={})
-    process_results(driver.get(opts)).first
+    begin
+      return process_results(driver.get(opts)).first
+    rescue Exception => ex
+      # TODO re-raise
+      log.error("failed to get metrics: #{ex.message}")
+      log.error(ex)
+      return []
+    end
   end
 
   # Retrieve multiple metrics simultaneously
@@ -60,7 +67,14 @@ class Metrics < API
   #
   # @see #get
   def multi_get(reqs=[])
-    process_results(driver.multi_get(reqs))
+    begin
+      return process_results(driver.multi_get(reqs))
+    rescue Exception => ex
+      # TODO re-raise
+      log.error("failed to get metrics: #{ex.message}")
+      log.error(ex)
+      return []
+    end
   end
 
   # Get the metrics for the given Host
