@@ -43,7 +43,7 @@ class Trigger < ActiveRecord::Base
   # Find all alerts for the given Metric and it's associated Check
   #
   # @param [Metric] metric
-  # @return [Array<Alert>]
+  # @return [Array<Trigger>]
   def self.for_metric(metric)
     return Trigger.where("metric_id = ? OR check_id = ?", metric.id, metric.check_id)
   end

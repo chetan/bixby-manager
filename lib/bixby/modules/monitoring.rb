@@ -136,49 +136,49 @@ class Monitoring < API
     return check
   end
 
-  # Test the given list of metrics for alerts
+  # Test the given list of metrics for triggers
   #
   # @param [Array<Metric>] metrics
   def test_metrics(metrics)
 
-    all_alerts = get_all_alerts(metrics)
+    all_triggers = get_all_triggers(metrics)
     metrics.each do |metric|
 
-      alerts = all_alerts.find_all { |a|
+      triggers = all_triggers.find_all { |a|
         a.metric_id == metric.id or a.check_id == metric.check_id
       }
-      next if alerts.blank?
+      next if triggers.blank?
 
-      alerts.each do |alert|
+      triggers.each do |trigger|
 
         user = OnCall.for_org(metric.org).current_user
 
-        if alert.test_value(metric.last_value) then
-          # alert is triggered, raise a notification
+        if trigger.test_value(metric.last_value) then
+          # trigger is triggered, raise a notification
 
-          if alert.severity == metric.status then
+          if trigger.severity == metric.status then
             next # already in this state, skip
           end
 
           # store history
-          AlertHistory.record(metric, alert, user)
-          metric.status = alert.severity # warning or critical for now
+          TriggerHistory.record(metric, trigger, user)
+          metric.status = trigger.severity # warning or critical for now
           metric.save!
 
           # notify (email only for now)
-          MonitoringMailer.alert(metric, alert, user).deliver
+          MonitoringMailer.alert(metric, trigger, user).deliver
 
         elsif metric.status > Metric::Status::NORMAL then
-          # alert is back to normal level
-          AlertHistory.record(metric, alert, user)
+          # trigger is back to normal level
+          TriggerHistory.record(metric, trigger, user)
           metric.status = Metric::Status::NORMAL
           metric.save!
 
           # notify (email only for now)
-          MonitoringMailer.alert(metric, alert, user).deliver
+          MonitoringMailer.alert(metric, trigger, user).deliver
         end
 
-      end # alerts.each
+      end # triggers.each
     end # metrics.each
   end # test_metrics()
 
@@ -186,15 +186,18 @@ class Monitoring < API
 
   private
 
-  # Get all alerts matching the list of metrics (in a single query)
-  def get_all_alerts(metrics)
+  # Get all triggers matching the list of metrics (in a single query)
+  def get_all_triggers(metrics)
     metric_ids = []
     check_ids = []
     metrics.each do |m|
       metric_ids << m.id
       check_ids << m.check_id
     end
-    return Alert.where("metric_id IN (?) OR check_id IN (?)", metric_ids, check_ids.sort.uniq)
+
+    return Trigger.where("metric_id IN (?) OR check_id IN (?)",
+                         metric_ids,
+                         check_ids.sort.uniq)
   end
 
   # Create a CommandSpec for the given Check

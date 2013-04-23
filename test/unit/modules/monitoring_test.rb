@@ -57,9 +57,9 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     put_check_result()
     m = Metric.where(:key => "hardware.storage.disk.size").first
 
-    a = Alert.new
+    a = Trigger.new
     a.metric = m
-    a.severity = Alert::Severity::CRITICAL
+    a.severity = Trigger::Severity::CRITICAL
     a.threshold = 280
     a.sign = :gt
     a.save!
@@ -71,13 +71,13 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert_equal 1, ActionMailer::Base.deliveries.size
 
     # check that history was recorded
-    ah = AlertHistory.all
+    ah = TriggerHistory.all
     refute_empty ah
     assert_equal 1, ah.size
 
     ah = ah.first
     assert ah
-    assert_equal a.id, ah.alert_id
+    assert_equal a.id, ah.trigger_id
     assert_equal 280, ah.threshold
 
     # if we alert again, there should be no state change
@@ -85,7 +85,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     refute_empty ActionMailer::Base.deliveries
     assert_equal 1, ActionMailer::Base.deliveries.size # still 1
-    assert_equal 1, AlertHistory.all.size
+    assert_equal 1, TriggerHistory.all.size
 
     # now modify the alert so it returns to normal on next put
     a.threshold = 300
@@ -93,17 +93,17 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     put_check_result()
     assert_equal 2, ActionMailer::Base.deliveries.size
-    assert_equal 2, AlertHistory.all.size
+    assert_equal 2, TriggerHistory.all.size
 
-    ah = AlertHistory.last
-    assert_equal a.id, ah.alert_id
+    ah = TriggerHistory.last
+    assert_equal a.id, ah.trigger_id
     assert_equal 300, ah.threshold
-    assert_equal Alert::Severity::CRITICAL, ah.severity
+    assert_equal Trigger::Severity::CRITICAL, ah.severity
 
     # make sure we don't alert again
     put_check_result()
     assert_equal 2, ActionMailer::Base.deliveries.size
-    assert_equal 2, AlertHistory.all.size
+    assert_equal 2, TriggerHistory.all.size
 
   end
 
