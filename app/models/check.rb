@@ -35,8 +35,8 @@ class Check < ActiveRecord::Base
   end
 
   # Get a list of MetricInfo that this check provides
-  def metrics
-    @metrics ||= MetricInfo.where("command_id = ?", self.command_id)
+  def metric_infos
+    @metric_infos ||= MetricInfo.where(:command_id => self.command_id)
   end
 
   def serializable_hash(opts={})
