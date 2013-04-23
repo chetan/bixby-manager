@@ -2,6 +2,7 @@
 window.Stark or= {}
 class Stark.ModelBinding
 
+  # Bind the given view to 'change' or 'destroy' events triggered on this model
   bind_view: (view) ->
 
     # check to see if any of our parents have already bound here
@@ -18,7 +19,13 @@ class Stark.ModelBinding
     @bound_views.push(view)
     model = @
     @bind "change", ->
-      @log "redraw handler fired due to model binding on: ", model
+      @log "redraw handler fired (change) due to model binding on: ", model
+      @log "redrawing view: ", @
+      @redraw()
+    , view
+
+    @bind "destroy", ->
+      @log "redraw handler fired (destroy) due to model binding on: ", model
       @log "redrawing view: ", @
       @redraw()
     , view

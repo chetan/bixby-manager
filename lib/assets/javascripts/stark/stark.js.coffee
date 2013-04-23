@@ -136,7 +136,8 @@ class Stark.App
           # session timeout
           app.redir = [ state_name, state_data ]
           state.dispose() # trash state we were building
-          return app.transition app.login_route
+          app.redir_to_login()
+          return
 
         app.render_views(state)
     else
@@ -226,6 +227,10 @@ class Stark.App
       return base[fn]
 
     return null
+
+  redir_to_login: ->
+    @log "redir_to_login()"
+    window.location = @login_route
 
 
   # Setup pub/sub

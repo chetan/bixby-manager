@@ -2,7 +2,9 @@
 //= require "json3"
 //= require "jquery"
 //= require "underscore"
+//= require "underscore_patch"
 //= require "backbone"
+//= require "backbone_patch"
 //= require "template"
 //= require "twitter/bootstrap.min"
 //= require "async"
@@ -28,5 +30,4 @@
 
 
 // pulled in from #{Rails.root}/lib/assets
-//= require "underscore_patch"
 //= require "stark"
