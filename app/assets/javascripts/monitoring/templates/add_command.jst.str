@@ -17,8 +17,7 @@
         </tr>
       </thead>
       <tbody>
-        <% log(commands);
-           commands.each(function(cmd) { %>
+        <% commands.each(function(cmd) { %>
        <tr>
           <td><input type="checkbox" class="checkbox" id="command_id_<%= cmd.id %>" value="<%= cmd.id %>"></td>
           <td><label for="command_id_<%= cmd.id %>"><%= cmd.get("name") %></label></td>
