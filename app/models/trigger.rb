@@ -1,20 +1,21 @@
 # == Schema Information
 #
-# Table name: alerts
+# Table name: triggers
 #
 #  id         :integer          not null, primary key
 #  check_id   :integer
 #  metric_id  :integer
 #  severity   :integer
 #  threshold  :decimal(20, 2)
+#  status     :string(255)
 #  sign       :string(2)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
 
-# Describes an alerting threshold
-class Alert < ActiveRecord::Base
+# Describes a threshold for some check or metric
+class Trigger < ActiveRecord::Base
 
   belongs_to :check
   belongs_to :metric
@@ -44,7 +45,7 @@ class Alert < ActiveRecord::Base
   # @param [Metric] metric
   # @return [Array<Alert>]
   def self.for_metric(metric)
-    return Alert.where("metric_id = ? OR check_id = ?", metric.id, metric.check_id)
+    return Trigger.where("metric_id = ? OR check_id = ?", metric.id, metric.check_id)
   end
 
   # Test the given value according to the set threshold & sign

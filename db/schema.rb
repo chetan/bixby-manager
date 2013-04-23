@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130212205232) do
+ActiveRecord::Schema.define(:version => 20130423191724) do
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -28,36 +28,6 @@ ActiveRecord::Schema.define(:version => 20130212205232) do
   end
 
   add_index "agents", ["host_id"], :name => "fk_agents_hosts1"
-
-  create_table "alert_histories", :force => true do |t|
-    t.integer  "alert_id",                                                     :null => false
-    t.integer  "user_notified_id",                                             :null => false
-    t.datetime "created_at"
-    t.integer  "check_id"
-    t.integer  "metric_id"
-    t.integer  "severity",         :limit => 2
-    t.decimal  "threshold",                     :precision => 20, :scale => 2
-    t.string   "sign",             :limit => 2
-    t.decimal  "value",                         :precision => 20, :scale => 2
-  end
-
-  add_index "alert_histories", ["alert_id"], :name => "index_alert_histories_on_alert_id"
-  add_index "alert_histories", ["check_id"], :name => "index_alert_histories_on_check_id"
-  add_index "alert_histories", ["metric_id"], :name => "index_alert_histories_on_metric_id"
-  add_index "alert_histories", ["user_notified_id"], :name => "index_alert_histories_on_user_notified_id"
-
-  create_table "alerts", :force => true do |t|
-    t.integer  "check_id"
-    t.integer  "metric_id"
-    t.integer  "severity",   :limit => 2
-    t.decimal  "threshold",               :precision => 20, :scale => 2
-    t.string   "sign",       :limit => 2
-    t.datetime "created_at",                                             :null => false
-    t.datetime "updated_at",                                             :null => false
-  end
-
-  add_index "alerts", ["check_id"], :name => "index_alerts_on_check_id"
-  add_index "alerts", ["metric_id"], :name => "index_alerts_on_metric_id"
 
   create_table "annotations", :force => true do |t|
     t.integer  "host_id"
@@ -255,6 +225,38 @@ ActiveRecord::Schema.define(:version => 20130212205232) do
     t.text   "private_key"
   end
 
+  create_table "trigger_histories", :force => true do |t|
+    t.integer  "trigger_id",                                                   :null => false
+    t.integer  "user_notified_id",                                             :null => false
+    t.datetime "created_at"
+    t.integer  "check_id"
+    t.integer  "metric_id"
+    t.integer  "severity",         :limit => 2
+    t.decimal  "threshold",                     :precision => 20, :scale => 2
+    t.string   "status"
+    t.string   "sign",             :limit => 2
+    t.decimal  "value",                         :precision => 20, :scale => 2
+  end
+
+  add_index "trigger_histories", ["check_id"], :name => "trigger_histories_check_id_fk"
+  add_index "trigger_histories", ["metric_id"], :name => "trigger_histories_metric_id_fk"
+  add_index "trigger_histories", ["trigger_id"], :name => "trigger_histories_trigger_id_fk"
+  add_index "trigger_histories", ["user_notified_id"], :name => "trigger_histories_user_notified_id_fk"
+
+  create_table "triggers", :force => true do |t|
+    t.integer  "check_id"
+    t.integer  "metric_id"
+    t.integer  "severity",   :limit => 2
+    t.decimal  "threshold",               :precision => 20, :scale => 2
+    t.string   "status"
+    t.string   "sign",       :limit => 2
+    t.datetime "created_at",                                             :null => false
+    t.datetime "updated_at",                                             :null => false
+  end
+
+  add_index "triggers", ["check_id"], :name => "triggers_check_id_fk"
+  add_index "triggers", ["metric_id"], :name => "triggers_metric_id_fk"
+
   create_table "users", :force => true do |t|
     t.integer  "org_id",                            :null => false
     t.string   "username",                          :null => false
@@ -278,14 +280,6 @@ ActiveRecord::Schema.define(:version => 20130212205232) do
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
 
   add_foreign_key "agents", "hosts", :name => "fk_agents_hosts1"
-
-  add_foreign_key "alert_histories", "alerts", :name => "fk_alert_histories_alerts"
-  add_foreign_key "alert_histories", "checks", :name => "fk_alert_histories_checks"
-  add_foreign_key "alert_histories", "metrics", :name => "fk_alert_histories_metrics"
-  add_foreign_key "alert_histories", "users", :name => "fk_alert_histories_users", :column => "user_notified_id"
-
-  add_foreign_key "alerts", "checks", :name => "fk_alerts_checks"
-  add_foreign_key "alerts", "metrics", :name => "fk_alerts_metrics"
 
   add_foreign_key "annotations", "hosts", :name => "fk_annotations_hosts1"
 
@@ -326,6 +320,14 @@ ActiveRecord::Schema.define(:version => 20130212205232) do
   add_foreign_key "resources", "hosts", :name => "fk_resources_hosts1"
 
   add_foreign_key "taggings", "tags", :name => "fk_taggings_tags1"
+
+  add_foreign_key "trigger_histories", "checks", :name => "trigger_histories_check_id_fk"
+  add_foreign_key "trigger_histories", "metrics", :name => "trigger_histories_metric_id_fk"
+  add_foreign_key "trigger_histories", "triggers", :name => "trigger_histories_trigger_id_fk"
+  add_foreign_key "trigger_histories", "users", :name => "trigger_histories_user_notified_id_fk", :column => "user_notified_id"
+
+  add_foreign_key "triggers", "checks", :name => "triggers_check_id_fk"
+  add_foreign_key "triggers", "metrics", :name => "triggers_metric_id_fk"
 
   add_foreign_key "users", "orgs", :name => "fk_users_orgs1"
 
