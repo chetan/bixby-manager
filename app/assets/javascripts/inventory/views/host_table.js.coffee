@@ -27,6 +27,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @manager_uri = l.protocol + "//" + l.host
       @new_hosts = @hosts.filter (h) -> h.is_new()
       @other_hosts = @hosts.filter (h) -> !h.is_new()
+      @query ?= "" # set default val
 
       super()
 
