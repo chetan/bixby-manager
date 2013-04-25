@@ -10,6 +10,11 @@ Logging::Rails.configure do |config|
   pattern = '%.1l, [%d] %5l -- %c: %m\n'
   layout = Logging.layouts.pattern(:pattern => pattern)
 
+  if Object.const_defined? :Sidekiq and Sidekiq.server? then
+    pattern = '%.1l, [%d] %5l -- %X{sidekiq} %c: %m\n'
+    layout = Logging.layouts.pattern(:pattern => pattern)
+  end
+
   # Setup a color scheme called 'bright' than can be used to add color codes
   # to the pattern layout. Color schemes should only be used with appenders
   # that write to STDOUT or STDERR; inserting terminal color codes into a file

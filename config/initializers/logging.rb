@@ -2,6 +2,8 @@
 # lower to info (always)
 ::Rails.cache.logger.level = :info
 
+require "ext/sidekiq_logging"
+
 # Use a custom logger for the Bixby::* namespace when in TEST env
 if ::Rails.env == "test" then
 
