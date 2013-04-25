@@ -1,0 +1,4 @@
+
+Run sidekiq in dev env:
+
+$ sidekiq -c 5 -e development -q "*,schedules"
