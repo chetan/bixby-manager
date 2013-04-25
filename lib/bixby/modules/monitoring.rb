@@ -87,6 +87,8 @@ class Monitoring < API
   # @raise [CommandException]
   def restart_mon_daemon(agent)
 
+    agent = get_model(agent, Agent)
+
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",
                                :command => "mon_daemon.rb", :args => "restart" )
 
