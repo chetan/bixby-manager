@@ -266,10 +266,15 @@ class Metrics < API
         metric.tags.each{ |t| all_tags[t.key] = t.value }
       end
       all_tags.merge!(tags)
+      if Time.new - metric.created_at < 3600 then
+        downsample = nil
+      end
       metric.query = { :start => start_time, :end => end_time, :tags => tags, :downsample => downsample }
       reqs << { :key => metric.key, :start_time => start_time, :end_time => end_time, :tags => all_tags, :agg => agg, :downsample => downsample }
     end
 
+    debug { "fetching metrics: " }
+    debug { reqs }
     responses = multi_get(reqs)
 
     responses.each_with_index do |data, i|
