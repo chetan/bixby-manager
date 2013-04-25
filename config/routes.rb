@@ -28,6 +28,7 @@ Bixby::Application.routes.draw do
     resources :hosts do
 
       resources :checks
+      resources :triggers
       resources :metrics
 
       get "/command/:command_id/opts" => "commands#opts"

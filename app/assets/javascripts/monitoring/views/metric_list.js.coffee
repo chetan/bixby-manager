@@ -13,6 +13,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         return { host: @host }
         ]
 
+      # add triggers on resources
+      ".add_trigger_link": [ "mon_hosts_triggers_new", (el) ->
+        return { host: @host, metrics: @metrics, checks: @checks }
+        ]
+
       # metric detail page
       "div.metric a.metric": [ "mon_hosts_resources_metric", (el) ->
           check = @checks.get $(el).attr("check_id")

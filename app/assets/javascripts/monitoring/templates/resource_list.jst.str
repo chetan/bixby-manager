@@ -1,6 +1,12 @@
 
 <h3>Resources for <%= host.name() %></h3>
 
+<p>
+  <!-- TODO: this is duped at bottom of page. only show when that is not visible -->
+  <a class="btn primary add_resource_link" host_id="<%= host.get('id') %>">Add Resource</a>
+  <a class="btn primary add_trigger_link" host_id="<%= host.get('id') %>">Add Trigger</a>
+</p>
+
 <% if (checks.length == 0) { %>
 
   <p>No checks have been configured</p>
@@ -57,4 +63,5 @@
 <br />
 <p>
   <a class="btn primary add_resource_link" host_id="<%= host.get('id') %>">Add Resource</a>
+  <a class="btn primary add_trigger_link" host_id="<%= host.get('id') %>">Add Trigger</a>
 </p>

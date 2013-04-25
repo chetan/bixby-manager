@@ -1,0 +1,26 @@
+
+<div class="content-inner">
+  <h2>Add Trigger</h2>
+  <p>Host: <%= host.get("ip") %></p>
+
+  <form method="get" id="form_add_trigger">
+  <fieldset>
+
+    <label for="metrics">Select resource</label>
+    <select name="metrics" id="metrics">
+      <option value=""></option>
+      <% metrics.each(function(metric) { %>
+        <option value="<%= metric.g('key') %>"><%= metric.g("key") %></option>
+      <% }); %>
+    </select>
+
+
+
+
+    <br/>
+    <a id="submit_trigger" class="btn primary">Add Trigger</a>
+
+  </fieldset>
+  </form>
+
+</div>

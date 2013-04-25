@@ -59,3 +59,14 @@ Bixby.app.add_state(
 
 )
 
+Bixby.app.add_state(
+  class extends Stark.State
+
+    name: "mon_hosts_triggers_new"
+    url:  "monitoring/hosts/:host_id/triggers/new"
+    tab:  "monitoring"
+
+    views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddTrigger ]
+    models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
+)
+
