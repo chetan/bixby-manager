@@ -33,4 +33,12 @@ class User < ActiveRecord::Base
     config.logged_in_timeout 1.week
   end
 
+  def self.find_by_username_or_email(login)
+    if login.include? "@" then
+      where("email = ? OR username = ?", login, login).first
+    else
+      where("username = ?", login).first
+    end
+  end
+
 end

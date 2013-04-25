@@ -16,12 +16,12 @@ class SessionsController < UiController
   def create
     u = params[:username]
     p = params[:password]
-    user_session = UserSession.new(:email => u, :password => p, :remember_me => true)
+    user_session = UserSession.new(:login => u, :password => p, :remember_me => true)
     if not user_session.save then
       return render :text => "error", :status => 401
     end
 
-    ret = { :user => User.find_by_email(user_session.email) }
+    ret = { :user => User.find_by_username_or_email(user_session.login) }
     ret[:redir] = URI.parse(session.delete(:return_to)).path if session.include? :return_to
     restful ret
   end
