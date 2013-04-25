@@ -100,6 +100,7 @@ group :development do
     gem "debugger",     :platforms => :mri_19
     gem "debugger-pry", :require => "debugger/pry", :platforms => :mri_19
     gem "awesome_print"
+    gem "coffee-rails-source-maps"
 
     # rails debugging helpers
     gem "letter_opener"
