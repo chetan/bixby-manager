@@ -43,6 +43,16 @@ class ApplicationController < ActionController::Base
     filtered
   end
 
+  # Fetch the given key as an integer
+  #
+  # @param [Symbol] key
+  #
+  # @return [Fixnum] Requested value as an integer
+  # @throws [Exception] Will raise if parma is not a string (array or hash)
+  def _id(key)
+    return params(key).to_i
+  end
+
   # Restful response
   #
   # Handles HTML request normally; XML/JSON requests are handled using
