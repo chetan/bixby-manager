@@ -4,13 +4,37 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/add_trigger"
     events: {
+
+      # update Sign in button text
       "click ul.trigger_sign a": (e) ->
         e.preventDefault()
         $("button.trigger_sign").text $(e.target).text()
         $("input.sign").val $(e.target).attr("value")
 
+      # disable auto-toggling of statuses
+      "click input.trigger_status": (e) ->
+        @no_toggle_status = true
+
+      # toggle status checkboxes when selecting severity
+      "change #severity": (e) ->
+        if @no_toggle_status? && @no_toggle_status
+          return # don't flip bits if user has manually made selections
+
+        warn = [ "WARNING", "UNKNOWN", "TIMEOUT" ]
+        if $(e.target).val() == "warning"
+          # select warning defaults
+          _.each warn, (s) ->
+            $("input.trigger_status[value='#{s}']").prop("checked", true)
+          $("input.trigger_status[value='CRITICAL']").prop("checked", false)
+
+        else
+          # select critical defaults
+          _.each warn, (s) ->
+            $("input.trigger_status[value='#{s}']").prop("checked", false)
+          $("input.trigger_status[value='CRITICAL']").prop("checked", true)
+
+      # create trigger
       "click #submit_trigger": (e) ->
-        # create trigger obj
         trigger = new Bixby.model.Trigger
         trigger.host = host = @host
         trigger.set {
