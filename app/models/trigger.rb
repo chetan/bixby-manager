@@ -13,6 +13,7 @@
 #  updated_at :datetime         not null
 #
 
+# status: OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT
 
 # Describes a threshold for some check or metric
 class Trigger < ActiveRecord::Base
@@ -46,6 +47,19 @@ class Trigger < ActiveRecord::Base
   # @return [Array<Trigger>]
   def self.for_metric(metric)
     return Trigger.where("metric_id = ? OR check_id = ?", metric.id, metric.check_id)
+  end
+
+  # Set the severity level
+  #
+  # @param [String] sev     "warning" or "critical"
+  def set_severity(sev)
+    if sev.kind_of? Fixnum then
+      @severity = sev
+    elsif sev.downcase == "warning" then
+      @severity = Severity::WARNING
+    else
+      @severity = Severity::CRITICAL
+    end
   end
 
   # Test the given value according to the set threshold & sign

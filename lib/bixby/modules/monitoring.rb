@@ -184,7 +184,27 @@ class Monitoring < API
     end # metrics.each
   end # test_metrics()
 
+  # Create a new trigger
+  #
+  # @param [Hash] opts
+  # @option opts [Check] check
+  # @option opts [Metric] metric
+  # @option opts [String] severity  "warning" or "critical"
+  # @option opts [String] sign      Treshold sign
+  # @option opts [String] threshold
+  # @option opts [Array<String] status    List of statuses which will trigger (optional)
+  def add_trigger(opts)
+    opts = opts.with_indifferent_access
+    t = Trigger.new
+    t.check_id  = opts[:check_id]
+    t.metric_id = opts[:metric_id]
+    t.set_severity(opts[:severity])
+    t.sign      = opts[:sign].to_sym
+    t.threshold = opts[:threshold]
+    t.status    = array(opts[:status]).map{ |s| s.upcase }.join(",")
 
+    t.save!
+  end
 
   private
 

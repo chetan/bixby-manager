@@ -4,20 +4,26 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/add_trigger"
     events: {
-      "click #submit_check": (e) ->
-        # show options for selected commands/checks
-        opts = []
-        host = @host
-        $("input.checkbox:checked").each (idx, el) ->
-          opt = new Bixby.model.MonitoringCommandOpts({ id: el.value })
-          opt.host = host
-          opts.push opt
+      "click ul.trigger_sign a": (e) ->
+        e.preventDefault()
+        $("button.trigger_sign").text $(e.target).text()
+        $("input.sign").val $(e.target).attr("value")
 
-        if opts.length > 0
-          @transition "mon_hosts_resources_new_opts", { host: @host, opts: opts, commands: @commands }
+      "click #submit_trigger": (e) ->
+        # create trigger obj
+        trigger = new Bixby.model.Trigger
+        trigger.host = host = @host
+        trigger.set {
+          check_id:   $("#metric option").filter(":selected").attr("check_id")
+          metric_id:  $("#metric").val()
+          severity:   $("#severity").val()
+          sign:       $("#sign").val()
+          threshold:  $("#threshold").val()
+          status:     _.map $("input.trigger_status:checked"), (el) -> $(el).val()
+        }
+
+        view = @
+        Backbone.multi_save trigger, (err, results) ->
+          view.transition "mon_view_host", { host: host }
 
     }
-
-    after_render: ->
-      @log "Metrics: ", @metrics
-      @log "@checks: ", @checks

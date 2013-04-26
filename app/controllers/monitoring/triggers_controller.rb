@@ -2,17 +2,17 @@
 class Monitoring::TriggersController < Monitoring::BaseController
 
   # GET "/monitoring/hosts/3/triggers"
-  def index
-    @host = Host.find(params[:host_id])
+  # def index
+  #   @host = Host.find(params[:host_id])
 
-    if params[:metric_id] then
-      @ret = Metric.find(params[:metric_id].to_i).check
-    else
-      @ret = Check.where(:host_id => @host)
-    end
+  #   if params[:metric_id] then
+  #     @ret = Metric.find(params[:metric_id].to_i).check
+  #   else
+  #     @ret = Check.where(:host_id => @host)
+  #   end
 
-    restful @ret
-  end
+  #   restful @ret
+  # end
 
   def new
     @host = Host.find(params[:host_id])
@@ -27,14 +27,20 @@ class Monitoring::TriggersController < Monitoring::BaseController
 
   def create
 
-    # Parameters: {"command_id"=>1, "host_id"=>"3", "args"=>{"mount"=>"/"}}
+    # Parameters:
+    # {
+    #   "host_id"   => "1",
+    #   "metric"    => "hardware.cpu.loadavg.1m",
+    #   "severity"  => "warning",
+    #   "sign"      => "ge",
+    #   "threshold" => "5",
+    #   "status"    => ["WARNING", "UNKNOWN", "TIMEOUT"],
+    # }
 
-    host = Host.find(params[:host_id])
-    command = Command.find(params[:command_id])
-    opts = params[:args]
+    options = pick(:host_id, :check_id, :metric_id, :severity, :sign, :threshold, :status)
+    trigger = Bixby::Monitoring.new.add_trigger(options)
 
-    check = Bixby::Monitoring.new.add_check(host, command, opts)
-    restful check
+    restful trigger
   end
 
 end
