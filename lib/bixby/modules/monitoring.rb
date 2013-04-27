@@ -151,9 +151,13 @@ class Monitoring < API
       }
       next if triggers.blank?
 
-      triggers.each do |trigger|
+      # make sure we have someone to notify
+      org = OnCall.for_org(metric.org)
+      next if org.blank?
+      user = org.current_user
+      next if user.blank?
 
-        user = OnCall.for_org(metric.org).current_user
+      triggers.each do |trigger|
 
         if trigger.test_value(metric.last_value) then
           # trigger is triggered, raise a notification
