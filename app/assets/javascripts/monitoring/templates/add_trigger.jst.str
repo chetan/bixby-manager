@@ -33,6 +33,7 @@
           <li><a value="lt">&lt;</a></li>
           <li><a value="le">&lt;=</a></li>
           <li><a value="eq">=</a></li>
+          <li><a value="ne">!=</a></li>
           <li><a value="ge">&gt;=</a></li>
           <li><a value="gt">&gt;</a></li>
         </ul>
