@@ -152,6 +152,7 @@ class Monitoring < API
       next if triggers.blank?
 
       # make sure we have someone to notify
+      # TODO lazy lookup? don't fetch until needed (if trigger fires)
       org = OnCall.for_org(metric.org)
       next if org.blank?
       user = org.current_user

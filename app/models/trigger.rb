@@ -20,6 +20,7 @@ class Trigger < ActiveRecord::Base
 
   belongs_to :check
   belongs_to :metric
+  has_many :actions
 
   multi_tenant :via => :check
 

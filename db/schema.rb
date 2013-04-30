@@ -11,7 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423191724) do
+ActiveRecord::Schema.define(:version => 20130430195327) do
+
+  create_table "actions", :force => true do |t|
+    t.integer "action_type", :limit => 2, :null => false
+    t.integer "target_id",                :null => false
+    t.text    "args"
+  end
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -225,9 +231,19 @@ ActiveRecord::Schema.define(:version => 20130423191724) do
     t.text   "private_key"
   end
 
+  create_table "trigger_actions", :id => false, :force => true do |t|
+    t.integer "trigger_id", :null => false
+    t.integer "action_id",  :null => false
+  end
+
+  add_index "trigger_actions", ["action_id"], :name => "trigger_actions_action_id_fk"
+  add_index "trigger_actions", ["trigger_id"], :name => "trigger_actions_trigger_id_fk"
+
   create_table "trigger_histories", :force => true do |t|
     t.integer  "trigger_id",                                                   :null => false
-    t.integer  "user_notified_id",                                             :null => false
+    t.integer  "action_type",      :limit => 2,                                :null => false
+    t.integer  "action_target_id",                                             :null => false
+    t.text     "action_args"
     t.datetime "created_at"
     t.integer  "check_id"
     t.integer  "metric_id"
@@ -241,7 +257,6 @@ ActiveRecord::Schema.define(:version => 20130423191724) do
   add_index "trigger_histories", ["check_id"], :name => "trigger_histories_check_id_fk"
   add_index "trigger_histories", ["metric_id"], :name => "trigger_histories_metric_id_fk"
   add_index "trigger_histories", ["trigger_id"], :name => "trigger_histories_trigger_id_fk"
-  add_index "trigger_histories", ["user_notified_id"], :name => "trigger_histories_user_notified_id_fk"
 
   create_table "triggers", :force => true do |t|
     t.integer  "check_id"
@@ -321,10 +336,12 @@ ActiveRecord::Schema.define(:version => 20130423191724) do
 
   add_foreign_key "taggings", "tags", :name => "fk_taggings_tags1"
 
+  add_foreign_key "trigger_actions", "actions", :name => "trigger_actions_action_id_fk"
+  add_foreign_key "trigger_actions", "triggers", :name => "trigger_actions_trigger_id_fk"
+
   add_foreign_key "trigger_histories", "checks", :name => "trigger_histories_check_id_fk"
   add_foreign_key "trigger_histories", "metrics", :name => "trigger_histories_metric_id_fk"
   add_foreign_key "trigger_histories", "triggers", :name => "trigger_histories_trigger_id_fk"
-  add_foreign_key "trigger_histories", "users", :name => "trigger_histories_user_notified_id_fk", :column => "user_notified_id"
 
   add_foreign_key "triggers", "checks", :name => "triggers_check_id_fk"
   add_foreign_key "triggers", "metrics", :name => "triggers_metric_id_fk"

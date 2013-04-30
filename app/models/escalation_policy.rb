@@ -10,7 +10,8 @@
 #  updated_at :datetime         not null
 #
 
-
+# Just a placeholder for now. Simply contains a link to the current OnCall
+# list.
 class EscalationPolicy < ActiveRecord::Base
 
   belongs_to :org

@@ -4,7 +4,9 @@
 #
 #  id               :integer          not null, primary key
 #  trigger_id       :integer          not null
-#  user_notified_id :integer          not null
+#  action_type      :integer          not null
+#  action_target_id :integer          not null
+#  action_args      :text
 #  created_at       :datetime
 #  check_id         :integer
 #  metric_id        :integer
