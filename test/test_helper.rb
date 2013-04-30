@@ -4,7 +4,7 @@ def spork_running?
 end
 
 def zeus_running?
-  File.exists? '.zeus.sock'
+  File.exists? '.zeus.sock' and Module.const_defined?(:Zeus)
 end
 
 def prefork
