@@ -21,9 +21,10 @@ class Metric < ActiveRecord::Base
 
     module Status
       UNKNOWN  = 0
-      NORMAL   = 1
+      OK       = 1
       WARNING  = 2
       CRITICAL = 3
+      TIMEOUT  = 4
     end
   end
 
@@ -120,9 +121,10 @@ class Metric < ActiveRecord::Base
     Bixby::Metrics.new.get_for_check(check_id, time_start, time_end, tags, agg, downsample)
   end
 
-  def normal?
-    self.status == Status::NORMAL
+  def ok?
+    self.status == Status::OK
   end
+  alias_method :normal?, :ok?
 
   def warning?
     self.status == Status::WARNING
@@ -132,6 +134,13 @@ class Metric < ActiveRecord::Base
     self.status == Status::CRITICAL
   end
 
+  def unknown?
+    self.status == Status::UNKNOWN
+  end
+
+  def timeout?
+    self.status == Status::TIMEOUT
+  end
 
   private
 

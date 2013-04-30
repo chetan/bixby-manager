@@ -28,6 +28,7 @@ class Trigger < ActiveRecord::Base
 
   module Severity
     UNKNOWN  = 0
+    OK       = 1 # upon returning to normal
     WARNING  = 2
     CRITICAL = 3
   end
