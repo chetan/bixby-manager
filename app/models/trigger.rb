@@ -25,6 +25,7 @@ class Trigger < ActiveRecord::Base
   multi_tenant :via => :check
 
   serialize :sign, SymbolColumn.new
+  serialize :status, CSVColumn.new
 
   module Severity
     UNKNOWN  = 0
@@ -32,6 +33,7 @@ class Trigger < ActiveRecord::Base
     WARNING  = 2
     CRITICAL = 3
   end if not const_defined? :Severity
+  Bixby::Util.create_const_map(Severity)
 
   # sign must be one of the following
   #
@@ -95,6 +97,15 @@ class Trigger < ActiveRecord::Base
 
     end
 
+  end
+
+  # Test the given metric status against the list of statuses which will
+  # fire this trigger
+  #
+  # @param [Metric::Status] val     as a Fixnum
+  def test_status(val)
+    # see if string form of Metric::Status is in list of statuses
+    self.status.include? Metric::Status.lookup(val)
   end
 
   def ok?

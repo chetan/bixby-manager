@@ -56,4 +56,26 @@ class Bixby::Test::Models::Trigger < Bixby::Test::TestCase
 
   end
 
+  def test_status_thresholds
+    m = FactoryGirl.create(:metric)
+    m = FactoryGirl.create(:metric)
+    a = Trigger.new
+    a.metric = m
+    a.severity = Trigger::Severity::WARNING
+    a.threshold = 7
+    a.sign = :gt
+    a.status = %w{ WARNING UNKNOWN TIMEOUT }
+    a.save!
+
+
+    a = Trigger.first
+
+    assert a.test_status(Metric::Status::TIMEOUT)
+    assert a.test_status(Metric::Status::WARNING)
+    assert a.test_status(Metric::Status::UNKNOWN)
+
+    refute a.test_status(Metric::Status::CRITICAL)
+    refute a.test_status(Metric::Status::OK)
+  end
+
 end
