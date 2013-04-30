@@ -13,6 +13,7 @@ hardware.storage.disk.free 1336748410 86 org_id=1 host_id=3 host=127.0.0.1 mount
 hardware.storage.disk.free 1336748470 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
 EOF
     m = FactoryGirl.create(:metric)
+
     @host = m.check.host
     mi = FactoryGirl.build(:metric_info)
     mi.command = m.check.command
@@ -21,6 +22,10 @@ EOF
 
   def test_metrics_for_host
     stub, req = create_req(@body2)
+
+    m = Metric.first
+    m.created_at = m.created_at - 86400 # force it to be "old"
+    m.save
 
     metrics = Metric.metrics_for_host(@host, nil, nil, req[:tags])
     assert_requested(stub)
@@ -45,11 +50,22 @@ EOF
   end
 
   def test_metrics_for_host_no_downsample
+    m = Metric.first
+    m.created_at = m.created_at - 86400 # force it to be "old"
+    m.save
+
     stub2, req2 = create_req(@body2, false)
     stub1, req1 = create_req(@body1)
     metrics = Metric.metrics_for_host(@host, nil, nil, req1[:tags])
     assert_requested(stub1)
     assert_requested(stub2)
+    common_tests(metrics)
+  end
+
+  def test_metrics_for_host_no_downsample_new_metric
+    stub, req = create_req(@body2, false)
+    metrics = Metric.metrics_for_host(@host, nil, nil, req[:tags])
+    assert_requested(stub)
     common_tests(metrics)
   end
 
