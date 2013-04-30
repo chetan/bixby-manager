@@ -97,6 +97,10 @@ class Trigger < ActiveRecord::Base
 
   end
 
+  def ok?
+    self.severity == Severity::OK
+  end
+
   def critical?
     self.severity == Severity::CRITICAL
   end
