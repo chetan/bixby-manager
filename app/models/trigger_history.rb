@@ -28,7 +28,7 @@ class TriggerHistory < ActiveRecord::Base
 
   belongs_to :user_notified, :class_name => User
 
-  def self.record(metric, trigger, user)
+  def self.record(metric, trigger, user, severity=nil)
     h = new()
     h.user_notified = user
 
@@ -39,7 +39,7 @@ class TriggerHistory < ActiveRecord::Base
     end
 
     h.trigger = trigger
-    h.severity = trigger.severity
+    h.severity = severity || trigger.severity
     h.threshold = trigger.threshold
     h.sign = trigger.sign
 

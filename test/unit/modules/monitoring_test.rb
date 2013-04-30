@@ -98,7 +98,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     ah = TriggerHistory.last
     assert_equal a.id, ah.trigger_id
     assert_equal 300, ah.threshold
-    assert_equal Trigger::Severity::CRITICAL, ah.severity
+    assert_equal Trigger::Severity::OK, ah.severity
 
     # make sure we don't alert again
     put_check_result()

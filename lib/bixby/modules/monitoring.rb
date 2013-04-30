@@ -175,10 +175,10 @@ class Monitoring < API
           # notify (email only for now)
           MonitoringMailer.alert(metric, trigger, user).deliver
 
-        elsif metric.status > Metric::Status::NORMAL then
+        elsif metric.status != Metric::Status::OK then
           # trigger is back to normal level
-          TriggerHistory.record(metric, trigger, user)
-          metric.status = Metric::Status::NORMAL
+          TriggerHistory.record(metric, trigger, user, Trigger::Severity::OK)
+          metric.status = Metric::Status::OK
           metric.save!
 
           # notify (email only for now)
