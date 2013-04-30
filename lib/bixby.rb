@@ -1,5 +1,6 @@
 
 module Bixby
+  require "bixby/util"
   require "bixby/file_download"
   require "bixby/hooks"
   require "bixby/async"
