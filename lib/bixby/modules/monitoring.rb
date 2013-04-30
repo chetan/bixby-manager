@@ -161,7 +161,7 @@ class Monitoring < API
       triggers.each do |trigger|
 
         if trigger.test_value(metric.last_value) then
-          # trigger is triggered, raise a notification
+          # trigger is over threshold, raise a notification
 
           if trigger.severity == metric.status then
             next # already in this state, skip
@@ -177,9 +177,9 @@ class Monitoring < API
 
         elsif metric.status != Metric::Status::OK then
           # trigger is back to normal level
-          TriggerHistory.record(metric, trigger, user, Trigger::Severity::OK)
           metric.status = Metric::Status::OK
           metric.save!
+          TriggerHistory.record(metric, trigger, user)
 
           # notify (email only for now)
           MonitoringMailer.alert(metric, trigger, user).deliver
@@ -206,7 +206,7 @@ class Monitoring < API
     t.set_severity(opts[:severity])
     t.sign      = opts[:sign].to_sym
     t.threshold = opts[:threshold]
-    t.status    = array(opts[:status]).map{ |s| s.upcase }.join(",")
+    t.status    = array(opts[:status]).map{ |s| s.upcase }
 
     t.save!
   end
