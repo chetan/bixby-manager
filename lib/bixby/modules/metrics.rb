@@ -204,14 +204,6 @@ class Metrics < API
 
           # find/save incoming metrics using passed in metadata
           metadata = metric["metadata"] || {}
-          metric["metrics"].each do |k,v|
-            key = "#{base}#{k}"
-            m = Metric.for(check, key, metadata)
-            m.last_value = v
-            m.updated_at = time
-            m.save!
-            metrics << m
-          end
 
           # attach extra metadata before storing
           if not (metadata[:host] or metadata["host"]) then
@@ -222,7 +214,17 @@ class Metrics < API
           metadata[:org_id]      = check.org.id
           metadata[:tenant_id]   = check.tenant.id
 
-          # save
+          # update last_value for all metrics
+          metric["metrics"].each do |k,v|
+            key = "#{base}#{k}"
+            m = Metric.for(check, key, metadata)
+            m.last_value = v
+            m.updated_at = time
+            m.save!
+            metrics << m
+          end
+
+          # save each metric
           metric["metrics"].each do |k,v|
             key = "#{base}#{k}"
             put(key, v, time, metadata)

@@ -83,6 +83,8 @@ FactoryGirl.define do
 
   factory :host do
     association :org
+    ip "127.0.0.1"
+    hostname "localhost"
   end
 
   factory :org do

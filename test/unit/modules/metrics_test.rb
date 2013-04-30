@@ -45,15 +45,17 @@ EOF
     assert_equal 1329775841, m.updated_at.to_i
 
     assert m.tags
-    assert m.tags.size == 2
+    assert_equal 7, m.tags.size
     assert_kind_of Metadata, m.tags.first
 
     tags = Metadata.find(:all)
     assert tags
-    assert_equal 2, tags.size
-    assert_equal "mount", tags.first.key
-    assert_equal "/", tags.first.value
-    assert_equal "type", tags.last.key
+    assert_equal 7, tags.size
+
+    assert tags.find{ |t| t.key == "mount" && t.value == "/" }
+    assert tags.find{ |t| t.key == "type" && t.value == "hfs" }
+    assert tags.find{ |t| t.key == "host_id" && t.value == Host.first.id.to_s }
+
   end
 
   def test_put_check_result_hook
