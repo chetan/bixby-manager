@@ -26,6 +26,8 @@ class Metric < ActiveRecord::Base
       CRITICAL = 3
       TIMEOUT  = 4
     end
+
+    Bixby::Util.create_const_map(Status)
   end
 
   belongs_to :check
