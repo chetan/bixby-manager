@@ -31,7 +31,7 @@ class Trigger < ActiveRecord::Base
     OK       = 1 # upon returning to normal
     WARNING  = 2
     CRITICAL = 3
-  end
+  end if not const_defined? :Severity
 
   # sign must be one of the following
   #
@@ -41,7 +41,7 @@ class Trigger < ActiveRecord::Base
   # ge  greater than or equal to
   # eq  equal
   # ne  not equal
-  SIGNS = [ :lt, :le, :gt, :ge, :eq, :ne ]
+  SIGNS = [ :lt, :le, :gt, :ge, :eq, :ne ] if not const_defined? :SIGNS
 
   # Find all triggers for the given Metric and it's associated Check
   #
