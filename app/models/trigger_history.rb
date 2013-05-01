@@ -26,9 +26,23 @@ class TriggerHistory < ActiveRecord::Base
 
   multi_tenant :via => :check
 
-  belongs_to :user_notified, :class_name => User
+  # Retrieve previous history record for the given trigger
+  #
+  # @param [Trigger] trigger
+  #
+  # @return [TriggerHistory]
+  def self.previous_for_trigger(trigger)
+    ret = where(:trigger_id => trigger.id).order("created_at DESC").limit(1)
+    ret.blank? ? nil : ret.first
+  end
 
-  def self.record(metric, trigger, user)
+  # Record the triggering event
+  #
+  # @param [Metric] metric
+  # @param [Trigger] trigger
+  #
+  # @return [TriggerHistory] new history record
+  def self.record(metric, trigger)
     h = new()
 
     if trigger.check.present? then
@@ -44,6 +58,7 @@ class TriggerHistory < ActiveRecord::Base
 
     h.value = metric.last_value
     h.save!
+    h
   end
 
 end

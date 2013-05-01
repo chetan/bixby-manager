@@ -151,41 +151,57 @@ class Monitoring < API
       }
       next if triggers.blank?
 
-      # make sure we have someone to notify
-      # TODO lazy lookup? don't fetch until needed (if trigger fires)
-      org = OnCall.for_org(metric.org)
-      next if org.blank?
-      user = org.current_user
-      next if user.blank?
+      triggered = []
+      reset = []
 
       triggers.each do |trigger|
-
-        if trigger.test_value(metric.last_value) then
-          # trigger is over threshold, raise a notification
-
-          if trigger.severity == metric.status then
-            next # already in this state, skip
-          end
-
-          # store history
-          TriggerHistory.record(metric, trigger, user)
-          metric.status = trigger.severity # warning or critical for now
-          metric.save!
-
-          # notify (email only for now)
-          MonitoringMailer.alert(metric, trigger, user).deliver
+        if trigger.test_value(metric.last_value) or trigger.test_value(metric.status) then
+          # trigger is over threshold
+          triggered << trigger
 
         elsif metric.status != Metric::Status::OK then
-          # trigger is back to normal level
-          metric.status = Metric::Status::OK
-          metric.save!
-          TriggerHistory.record(metric, trigger, user)
+          # trigger has returned to normal
+          reset << trigger
+        end
+      end # triggers.each
 
-          # notify (email only for now)
-          MonitoringMailer.alert(metric, trigger, user).deliver
+      filter_triggers(triggered).each do |trigger|
+
+        if trigger.severity == metric.status then
+          next # already in this state, skip
         end
 
-      end # triggers.each
+        # store history
+        history = TriggerHistory.record(metric, trigger)
+        metric.status = trigger.severity
+        metric.save!
+
+        # process all actions
+        trigger.actions.each do |action|
+          if action.alert? then
+            # notify
+            oncall = OnCall.find(action.target_id)
+            MonitoringMailer.alert(metric, trigger, oncall.current_user).deliver
+
+          elsif action.exec? then
+            # run command
+            cmd = Command.find(action.target_id)
+            # TODO run it
+          end
+        end
+      end # triggered
+
+      filter_triggers(reset).each do |trigger|
+        # trigger is back to normal level
+        metric.status = Metric::Status::OK
+        metric.save!
+        previous_history = TriggerHistory.previous_for_trigger(trigger)
+        history = TriggerHistory.record(metric, trigger)
+
+        # notify
+        MonitoringMailer.alert(metric, trigger, user).deliver
+      end
+
     end # metrics.each
   end # test_metrics()
 
@@ -211,7 +227,26 @@ class Monitoring < API
     t.save!
   end
 
+
   private
+
+  # Filter the given list of triggers
+  # * If any are CRITICAL, returns only those
+  # * Otherwise returns all (no filtering done)
+  #
+  # @param [Array<Trigger>] triggers
+  #
+  # @return [Array<Trigger>] filtered list of triggers
+  def filter_triggers(triggers)
+    if triggers.size > 1 then
+      # get only CRITICAL triggers
+      filtered = triggers.find_all { |t| t.severity == Triger::Severity::CRITICAL }
+    end
+    if filtered.blank? then
+      filtered = triggers
+    end
+    return filtered
+  end
 
   # Get all triggers matching the list of metrics (in a single query)
   def get_all_triggers(metrics)
