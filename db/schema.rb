@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130502174845) do
+ActiveRecord::Schema.define(:version => 20130502194703) do
 
   create_table "actions", :force => true do |t|
     t.integer "trigger_id",               :null => false
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20130502174845) do
     t.datetime "updated_at"
   end
 
+  add_index "metrics", ["check_id", "key", "tag_hash"], :name => "index_metrics_on_check_id_and_key_and_tag_hash", :unique => true
   add_index "metrics", ["check_id"], :name => "fk_metrics_checks1"
 
   create_table "metrics_metadata", :id => false, :force => true do |t|
