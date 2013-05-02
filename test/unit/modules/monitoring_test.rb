@@ -57,11 +57,17 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     put_check_result()
     m = Metric.where(:key => "hardware.storage.disk.size").first
 
-    a = Trigger.new
-    a.metric = m
-    a.severity = Trigger::Severity::CRITICAL
-    a.threshold = 280
-    a.sign = :gt
+    t = Trigger.new
+    t.metric = m
+    t.severity = Trigger::Severity::CRITICAL
+    t.threshold = 280
+    t.sign = :gt
+    t.save!
+
+    a = Action.new
+    a.trigger_id = t.id
+    a.action_type = Action::ALERT
+    a.target_id = OnCall.first.id
     a.save!
 
     # try again, this should generate an email
@@ -77,7 +83,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     ah = ah.first
     assert ah
-    assert_equal a.id, ah.trigger_id
+    assert_equal t.id, ah.trigger_id
     assert_equal 280, ah.threshold
 
     # if we alert again, there should be no state change
@@ -88,15 +94,15 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert_equal 1, TriggerHistory.all.size
 
     # now modify the alert so it returns to normal on next put
-    a.threshold = 300
-    a.save!
+    t.threshold = 300
+    t.save!
 
     put_check_result()
     assert_equal 2, ActionMailer::Base.deliveries.size
     assert_equal 2, TriggerHistory.all.size
 
     ah = TriggerHistory.last
-    assert_equal a.id, ah.trigger_id
+    assert_equal t.id, ah.trigger_id
     assert_equal 300, ah.threshold
     assert_equal Trigger::Severity::OK, ah.severity
 

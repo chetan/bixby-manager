@@ -18,6 +18,7 @@ class Action < ActiveRecord::Base
       EXEC  = 2
     end
     Bixby::Util.create_const_map(Type)
+    include Type
   end
 
   # Treat args as json and return parsed form

@@ -165,6 +165,7 @@ class Monitoring < API
         end
       end # triggers.each
 
+      # process triggers over threshold
       filter_triggers(triggered).each do |trigger|
 
         if trigger.severity == metric.status then
@@ -191,16 +192,26 @@ class Monitoring < API
         end
       end # triggered
 
+      # only proceed if all triggers did not match
+      next if not triggered.blank?
+
+      # metric is back to normal level
       filter_triggers(reset).each do |trigger|
-        # trigger is back to normal level
         metric.status = Metric::Status::OK
         metric.save!
         previous_history = TriggerHistory.previous_for_trigger(trigger)
         history = TriggerHistory.record(metric, trigger)
 
-        # notify
-        MonitoringMailer.alert(metric, trigger, user).deliver
-      end
+        # process all actions
+        trigger.actions.each do |action|
+          if action.alert? then
+            # notify
+            oncall = OnCall.find(action.target_id)
+            MonitoringMailer.alert(metric, trigger, oncall.current_user).deliver
+          end
+          # we ignore exec actions for now
+        end
+      end # reset
 
     end # metrics.each
   end # test_metrics()
