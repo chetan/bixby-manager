@@ -38,14 +38,18 @@ class Scheduler
 
       def schedule_at_with_queue(timestamp, job, queue="schedules")
         # Sidekiq::Client.push('queue' => 'my_queue', 'class' => MyWorker, 'args' => ['foo', 1, :bat => 'bar'])
+        args = {
+          'queue' => queue,
+          'class' => job.class,
+          'args'  => job.queue_args,
+          'retry' => true # TODO make configurable? necessary?
+        }
+
         timestamp = timestamp.to_i
         if timestamp > (Time.new.to_i+1) then
-          # schedule job
-          ::Sidekiq::Client.push('queue' => queue, 'class' => job.class, 'args' => job.queue_args, 'at' => timestamp)
-        else
-          # let it run immediately
-          ::Sidekiq::Client.push('queue' => queue, 'class' => job.class, 'args' => job.queue_args)
+          args['at'] = timestamp
         end
+        ::Sidekiq::Client.push(args)
       end
 
     end
