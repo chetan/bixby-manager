@@ -24,14 +24,6 @@ class OnCall < ActiveRecord::Base
 
   serialize :users, CSVColumn.new
 
-  # Get the OnCall rotation for the given Org
-  #
-  # @param [Org] org
-  # @return [OnCall]
-  def self.for_org(org)
-    return self.first(:conditions => {:org_id => org.id})
-  end
-
   # Get the next user in the rotation, if available
   #
   # @return [User]
