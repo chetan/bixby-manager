@@ -12,7 +12,10 @@ class ApplicationController < ActionController::Base
   # @param [Object] *models           List of models to bootstrap
   # @param [Hash] options             Options hash
   # @option options [String] :type    The name of the Backbone.js Model class to map to
-  # @option options [String] :name    The key name to bootstrap as
+  # @option options [String] :name    The key name to bootstrap asA
+  #
+  # Note: passing a type will force the object to be bootstrapped even if
+  #       nil or an empty array is passed in (i.e., when the finder comes up empty)
   def bootstrap(*args)
     opts = args.extract_options!
     args.each do |obj|
