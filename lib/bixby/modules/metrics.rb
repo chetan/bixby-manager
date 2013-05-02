@@ -203,7 +203,10 @@ class Metrics < API
           base = result["key"] ? result["key"]+"." : ""
 
           # find/save incoming metrics using passed in metadata
-          metadata = metric["metadata"] || {}
+
+          # note: we dup incoming metadata to avoid modifying the original
+          #       args as doing so can break job retries in sidekiq
+          metadata = metric["metadata"] ? metric["metadata"].dup : {}
 
           # attach extra metadata before storing
           if not (metadata[:host] or metadata["host"]) then
