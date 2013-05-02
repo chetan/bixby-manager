@@ -3,6 +3,7 @@
 # Table name: actions
 #
 #  id          :integer          not null, primary key
+#  trigger_id  :integer          not null
 #  action_type :integer          not null
 #  target_id   :integer          not null
 #  args        :text

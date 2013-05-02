@@ -11,13 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130430195327) do
+ActiveRecord::Schema.define(:version => 20130502174845) do
 
   create_table "actions", :force => true do |t|
+    t.integer "trigger_id",               :null => false
     t.integer "action_type", :limit => 2, :null => false
     t.integer "target_id",                :null => false
     t.text    "args"
   end
+
+  add_index "actions", ["trigger_id"], :name => "actions_trigger_id_fk"
 
   create_table "agents", :force => true do |t|
     t.integer  "host_id",                                      :null => false
@@ -231,27 +234,16 @@ ActiveRecord::Schema.define(:version => 20130430195327) do
     t.text   "private_key"
   end
 
-  create_table "trigger_actions", :id => false, :force => true do |t|
-    t.integer "trigger_id", :null => false
-    t.integer "action_id",  :null => false
-  end
-
-  add_index "trigger_actions", ["action_id"], :name => "trigger_actions_action_id_fk"
-  add_index "trigger_actions", ["trigger_id"], :name => "trigger_actions_trigger_id_fk"
-
   create_table "trigger_histories", :force => true do |t|
-    t.integer  "trigger_id",                                                   :null => false
-    t.integer  "action_type",      :limit => 2,                                :null => false
-    t.integer  "action_target_id",                                             :null => false
-    t.text     "action_args"
+    t.integer  "trigger_id",                                             :null => false
     t.datetime "created_at"
     t.integer  "check_id"
     t.integer  "metric_id"
-    t.integer  "severity",         :limit => 2
-    t.decimal  "threshold",                     :precision => 20, :scale => 2
+    t.integer  "severity",   :limit => 2
+    t.decimal  "threshold",               :precision => 20, :scale => 2
     t.string   "status"
-    t.string   "sign",             :limit => 2
-    t.decimal  "value",                         :precision => 20, :scale => 2
+    t.string   "sign",       :limit => 2
+    t.decimal  "value",                   :precision => 20, :scale => 2
   end
 
   add_index "trigger_histories", ["check_id"], :name => "trigger_histories_check_id_fk"
@@ -294,6 +286,8 @@ ActiveRecord::Schema.define(:version => 20130430195327) do
   add_index "users", ["org_id"], :name => "fk_users_orgs1"
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
 
+  add_foreign_key "actions", "triggers", :name => "actions_trigger_id_fk"
+
   add_foreign_key "agents", "hosts", :name => "fk_agents_hosts1"
 
   add_foreign_key "annotations", "hosts", :name => "fk_annotations_hosts1"
@@ -335,9 +329,6 @@ ActiveRecord::Schema.define(:version => 20130430195327) do
   add_foreign_key "resources", "hosts", :name => "fk_resources_hosts1"
 
   add_foreign_key "taggings", "tags", :name => "fk_taggings_tags1"
-
-  add_foreign_key "trigger_actions", "actions", :name => "trigger_actions_action_id_fk"
-  add_foreign_key "trigger_actions", "triggers", :name => "trigger_actions_trigger_id_fk"
 
   add_foreign_key "trigger_histories", "checks", :name => "trigger_histories_check_id_fk"
   add_foreign_key "trigger_histories", "metrics", :name => "trigger_histories_metric_id_fk"
