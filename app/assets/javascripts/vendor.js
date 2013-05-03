@@ -3,6 +3,7 @@
 //= require "jquery"
 //= require "underscore"
 //= require "underscore_patch"
+//= require "underscore.string.min"
 //= require "backbone"
 //= require "backbone_patch"
 //= require "template"

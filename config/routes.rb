@@ -15,6 +15,7 @@ Bixby::Application.routes.draw do
     get "hosts/:id/update_facts" => "hosts#update_facts"
 
     resources :on_calls
+    resources :users
   end
 
   get "/inventory" => "inventory::hosts#index"

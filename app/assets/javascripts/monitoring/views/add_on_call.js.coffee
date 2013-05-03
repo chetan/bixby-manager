@@ -5,15 +5,22 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/add_on_call"
     events: {
-      "click #submit_check": (e) ->
-        # show options for selected commands/checks
-        opts = []
-        host = @host
-        $("input.checkbox:checked").each (idx, el) ->
-          opt = new Bixby.model.MonitoringCommandOpts({ id: el.value })
-          opt.host = host
-          opts.push opt
+      "click #submit": (e) ->
+        oncall = new Bixby.model.OnCall()
+        oncall.set {
+          name:             @$("#name").val()
+          rotation_period:  @$("#rotation_period").val()
+          handoff_day:      @$("#handoff_day").val()
+          handoff_hour:     @$("#handoff_hour").val()
+          handoff_min:      @$("#handoff_min").val()
+        }
+        oncall.set_users @$("#users").val()
 
-        if opts.length > 0
-          @transition "mon_hosts_resources_new_opts", { host: @host, opts: opts, commands: @commands }
+        view = @
+        Backbone.multi_save oncall, (err, results) ->
+          view.transition "monitoring", { host: view.host }
     }
+
+    after_render: ->
+      users = @$("select#users")
+      users.select2()
