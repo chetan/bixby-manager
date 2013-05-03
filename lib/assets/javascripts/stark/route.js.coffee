@@ -49,7 +49,7 @@ class Stark.Route
     pattern = pattern.replace /:(\w+)/g, @addParamName
 
     # Create the actual regular expression
-    @regExp = new RegExp '^' + pattern + '(?=\\?|$)' # End or begin of query string
+    @regExp = new RegExp '^' + pattern + '\/?(?=\\?|$)' # End or begin of query string
 
   addParamName: (match, paramName) =>
     # Test if parameter name is reserved
