@@ -1,0 +1,23 @@
+
+<div class="content-inner">
+  <h2>Create On Call Schedule</h2>
+
+  <form id="form_create_schedule">
+
+    <fieldset>
+
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name">
+
+      <label for="rotation_period">Rotation Period</label>
+      <div class="input-append">
+        <input type="text" name="rotation_period" id="rotation_period">
+        <span class="add-on">days</span>
+      </div>
+
+    </fieldset>
+
+    <a id="submit_check" class="btn primary">Create</a>
+
+  </form>
+</div>

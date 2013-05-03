@@ -7,6 +7,17 @@ _bm = Bixby.model
 
 Bixby.app.add_state(
   class extends Stark.State
+    name:   "monitoring"
+    url:    "monitoring"
+    tab:    "montioring"
+
+    views:      [ _bv.PageLayout, _bvm.Layout, _bvm.Monitoring ]
+    models:     { oncalls: _bm.OnCallList }
+
+)
+
+Bixby.app.add_state(
+  class extends Stark.State
 
     name: "mon_view_host"
     url:  "monitoring/hosts/:host_id"

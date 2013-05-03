@@ -13,6 +13,8 @@ Bixby::Application.routes.draw do
   namespace :rest, :module => "rest/models" do
     resources :hosts
     get "hosts/:id/update_facts" => "hosts#update_facts"
+
+    resources :on_calls
   end
 
   get "/inventory" => "inventory::hosts#index"
@@ -22,8 +24,9 @@ Bixby::Application.routes.draw do
     end
   end
 
-  get "/monitoring" => "monitoring#index"
+  get "/monitoring" => "monitoring::base#index"
   namespace :monitoring do
+    resources :on_calls
     resources :commands
     resources :hosts do
 
