@@ -22,8 +22,8 @@ class Rest::Models::OnCallsController < UiController
     ts = "#{h}:#{m}"
     attrs[:handoff_time] = DateTime.parse(ts)
 
-    attrs[:users] = params[:users].split(/,/)
-    attrs[:current_user] = attrs[:users].first
+    attrs[:users] = params[:users].split(/,/).map{ |u| u.to_i }
+    attrs[:current_user_id] = attrs[:users].first
 
     oncall.update_attributes(attrs)
 
