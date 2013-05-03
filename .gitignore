@@ -5,7 +5,7 @@ log/
 script/log/
 script/temp/
 tmp/
-db/devops_schema.mwb.bak
+*/*.bak
 
 # config
 config/database.yml
