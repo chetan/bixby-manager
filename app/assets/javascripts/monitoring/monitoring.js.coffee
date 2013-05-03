@@ -9,7 +9,7 @@ Bixby.app.add_state(
   class extends Stark.State
     name:   "monitoring"
     url:    "monitoring"
-    tab:    "montioring"
+    tab:    "monitoring"
 
     views:      [ _bv.PageLayout, _bvm.Layout, _bvm.Monitoring ]
     models:     { oncalls: _bm.OnCallList }
