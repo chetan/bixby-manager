@@ -48,12 +48,12 @@ class ApplicationController < ActionController::Base
 
   # Fetch the given key as an integer
   #
-  # @param [Symbol] key
+  # @param [Symbol] key       (default: "id")
   #
   # @return [Fixnum] Requested value as an integer
   # @throws [Exception] Will raise if parma is not a string (array or hash)
-  def _id(key)
-    return params(key).to_i
+  def _id(key = :id)
+    return params[key].to_i
   end
 
   # Restful response
