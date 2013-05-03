@@ -8,7 +8,7 @@ class Monitoring::HostsController < Monitoring::BaseController
   def show
 
     # TODO error if no id
-    @host = Host.find(params[:id])
+    @host = Host.find(_id)
     @checks = Check.where(:host_id => @host)
     @metrics = Metric.metrics_for_host(@host)
 

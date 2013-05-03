@@ -12,12 +12,12 @@ class Rest::Models::HostsController < UiController
   end
 
   def show
-    @host = Host.find(params[:id])
+    @host = Host.find(_id)
     restful @host
   end
 
   def update
-    @host = Host.find(params[:id])
+    @host = Host.find(_id)
     attrs = pick(:alias, :desc)
     attrs[:tag_list] = params[:tags]
     @host.update_attributes(attrs)
@@ -26,7 +26,7 @@ class Rest::Models::HostsController < UiController
   end
 
   def destroy
-    @host = Host.find(params[:id])
+    @host = Host.find(_id)
     @host.destroy
     @host.agent.destroy if @host.agent
 
@@ -34,7 +34,7 @@ class Rest::Models::HostsController < UiController
   end
 
   def update_facts
-    @host = Host.find(params[:id])
+    @host = Host.find(_id)
     Bixby::Inventory.new.update_facts(@host)
     restful @host
   end

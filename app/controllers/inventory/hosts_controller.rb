@@ -13,7 +13,7 @@ class Inventory::HostsController < UiController
   end
 
   def show
-    @host = Host.find(params[:id])
+    @host = Host.find(_id)
     bootstrap @host
     restful @host
   end

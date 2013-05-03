@@ -10,7 +10,7 @@ class Monitoring::MetricsController < Monitoring::BaseController
   end
 
   def show
-    metric = Metric.find(params[:id].to_i)
+    metric = Metric.find(_id)
     downsample = params[:downsample] || "5m-avg"
     metric.load_data!(params[:start], params[:end], {}, "sum", downsample)
 
