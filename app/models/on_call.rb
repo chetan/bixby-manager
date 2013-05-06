@@ -18,14 +18,16 @@
 
 class OnCall < ActiveRecord::Base
 
-  module Day
-    MONDAY    = 1
-    TUESDAY   = 2
-    WEDNESDAY = 3
-    THURSDAY  = 4
-    FRIDAY    = 5
-    SATURDAY  = 6
-    SUNDAY    = 7
+  if not const_defined? :Day
+    module Day
+      MONDAY    = 1
+      TUESDAY   = 2
+      WEDNESDAY = 3
+      THURSDAY  = 4
+      FRIDAY    = 5
+      SATURDAY  = 6
+      SUNDAY    = 7
+    end
   end
 
   belongs_to :org

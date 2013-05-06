@@ -23,7 +23,9 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   if not bixby_config.include? ::Rails.env then
     raise "bixby.yml doesn't have a config for the '#{::Rails.env}' environment!"
   end
-  BIXBY_CONFIG = bixby_config[::Rails.env].with_indifferent_access
+  if not Module.const_defined? :BIXBY_CONFIG then
+    BIXBY_CONFIG = bixby_config[::Rails.env].with_indifferent_access
+  end
 
   # set rails secret token
   if Rails.env != "test" and BIXBY_CONFIG[:secret_token].blank? then
