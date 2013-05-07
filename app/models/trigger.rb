@@ -58,11 +58,11 @@ class Trigger < ActiveRecord::Base
   # @param [String] sev     "warning" or "critical"
   def set_severity(sev)
     if sev.kind_of? Fixnum then
-      @severity = sev
+      self.severity = sev
     elsif sev.downcase == "warning" then
-      @severity = Severity::WARNING
+      self.severity = Severity::WARNING
     else
-      @severity = Severity::CRITICAL
+      self.severity = Severity::CRITICAL
     end
   end
 
