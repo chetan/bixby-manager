@@ -3,9 +3,10 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.Metric extends Stark.Model
 
-    initialize: (data) ->
-      @extract_param(data, "metric", true)
-      @extract_param(data, "host")
+    initialize: (attributes, options) ->
+      super
+      @extract_param(attributes, "metric", true)
+      @extract_param(attributes, "host")
 
     url: ->
       host_id = @host_id || @get("host_id")
