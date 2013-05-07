@@ -16,7 +16,7 @@ class Stark.Model extends Backbone.Model
 
   initialize: (attributes, options) ->
     super(attributes, options)
-    bound_views = []
+    @bound_views = []
 
   # look for the given paramter name in the data hash
   # actually searches for name_id

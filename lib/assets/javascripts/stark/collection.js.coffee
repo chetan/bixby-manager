@@ -16,7 +16,7 @@ class Stark.Collection extends Backbone.Collection
 
   initialize: (attributes, options) ->
     super(attributes, options)
-    bound_views = []
+    @bound_views = []
 
   extract_param: (data, name) ->
     if ! _.isObject(data)
