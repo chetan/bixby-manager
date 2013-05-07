@@ -1,7 +1,7 @@
 
 <div class="content-inner">
   <h2>Add Trigger</h2>
-  <p>Host: <%= host.get("ip") %></p>
+  <p>Host: <%= host.name() %></p>
 
   <form method="get" id="form_add_trigger">
   <fieldset>
@@ -25,7 +25,7 @@
     <label for="threshold">Threshold</label>
     <div class="input-prepend">
       <div class="btn-group">
-        <button class="btn trigger_sign">&gt;=</button>
+        <button class="btn disabled trigger_sign" disabled="true">&gt;=</button>
         <button class="btn dropdown-toggle" data-toggle="dropdown">
           <span class="caret"></span>
         </button>
