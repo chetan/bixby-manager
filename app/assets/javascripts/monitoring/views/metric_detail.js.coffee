@@ -21,7 +21,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         view.log "loading more granular data"
         new_met = new Bixby.model.Metric({
           id: view.metric.id
-          host_id: view.metric.get("metadata").host_id
+          host_id: view.metric.get("metadata")?.host_id
           start: query.start
           end: query.end
           downsample: "5m-avg"
