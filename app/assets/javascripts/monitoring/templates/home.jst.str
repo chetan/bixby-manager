@@ -5,3 +5,24 @@
   <a class="btn primary create_schedule_link">Create Schedule</a>
 </p>
 
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Schedule Name</th>
+      <th>Users</th>
+      <th>Currently On Call</th>
+      <th>Handoff</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% oncalls.each(function(oncall) { %>
+      <tr>
+        <td><%= oncall.g('name') %></td>
+        <td><%= oncall_list(oncall) %></td>
+        <td><%= user_for(oncall).name() %></td>
+        <td><%= handoff(oncall) %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+

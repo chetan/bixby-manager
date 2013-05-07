@@ -12,7 +12,7 @@ Bixby.app.add_state(
     tab:    "monitoring"
 
     views:      [ _bv.PageLayout, _bvm.Layout, _bvm.Monitoring ]
-    models:     { oncalls: _bm.OnCallList }
+    models:     { oncalls: _bm.OnCallList, users: _bm.UserList }
 
 )
 

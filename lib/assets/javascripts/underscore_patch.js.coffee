@@ -9,6 +9,9 @@ _.mixin mixin
 _.eachR = (context, list, func) ->
   _.each list, func, context
 
+_.mapR = (context, list, func) ->
+  _.map list, func, context
+
 _.bindR = (context, func, args...) ->
   _.bind func, context, args...
 
