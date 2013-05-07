@@ -10,6 +10,11 @@ module ApiView
       end
 
       def attrs(obj, *attrs)
+        return {} if attrs.blank?
+        if attrs.size == 1 and attrs.first == :all then
+          return obj.serializable_hash
+        end
+
         ret = {}
         attrs.each do |a|
           ret[a.to_sym] = obj.send(a.to_sym)
