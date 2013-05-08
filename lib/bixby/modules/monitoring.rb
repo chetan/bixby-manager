@@ -241,6 +241,26 @@ class Monitoring < API
     t
   end
 
+  # Create a new trigger action
+  #
+  # @param [Hash] opts
+  # @option opts [Fixnum] trigger_id
+  # @option opts [String] action_type
+  # @option opts [Fixnum] target_id
+  # @option opts [String] args
+  #
+  # @return [Trigger]
+  def add_trigger_action(opts)
+    a = Action.new
+    a.trigger_id  = opts[:trigger_id]
+    a.action_type = Action::Type.lookup(opts[:action_type])
+    a.target_id   = opts[:target_id].to_i
+    a.args        = opts[:args]
+
+    a.save!
+    a
+  end
+
 
   private
 

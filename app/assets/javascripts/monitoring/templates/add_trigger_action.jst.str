@@ -37,12 +37,12 @@
   <fieldset>
 
   <label for="type">Type</label>
-  <select name="action[type]" id="type">
+  <select name="action_type" id="action_type">
     <option value="alert">Alert</option>
   </select>
 
   <label for="oncall">On Call Schedule</label>
-  <select name="action[oncall]" id="oncall">
+  <select name="oncall" id="oncall">
     <% oncalls.each(function(oncall) { %>
       <option value="<%= oncall.id %>"><%= oncall.g("name") %></option>
     <% }); %>
