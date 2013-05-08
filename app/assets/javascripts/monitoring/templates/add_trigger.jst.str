@@ -1,70 +1,67 @@
 
-<div class="content-inner">
-  <h2>Add Trigger</h2>
-  <p>Host: <%= host.name() %></p>
+<h2>Add Trigger</h2>
+<p>Host: <%= host.name() %></p>
 
-  <form method="get" id="form_add_trigger">
-  <fieldset>
+<form method="get" id="form_add_trigger">
+<fieldset>
 
-    <label for="metric">Select resource</label>
-    <select name="metric" id="metric">
-      <option value=""></option>
-      <% metrics.each(function(metric) { %>
-        <option value="<%= metric.g('id') %>"
-                check_id="<%= metric.g('check_id') %>"><%= metric.g("key") %></option>
-      <% }); %>
-    </select>
+  <label for="metric">Select resource</label>
+  <select name="metric" id="metric">
+    <option value=""></option>
+    <% metrics.each(function(metric) { %>
+      <option value="<%= metric.g('id') %>"
+              check_id="<%= metric.g('check_id') %>"><%= metric.g("key") %></option>
+    <% }); %>
+  </select>
 
-    <label for="severity">Severity</label>
-    <select name="severity" id="severity">
-      <option value="warning">Warning</option>
-      <option value="critical">Critical</option>
-    </select>
+  <label for="severity">Severity</label>
+  <select name="severity" id="severity">
+    <option value="warning">Warning</option>
+    <option value="critical">Critical</option>
+  </select>
 
 
-    <label for="threshold">Threshold</label>
-    <div class="input-prepend">
-      <div class="btn-group">
-        <button class="btn disabled trigger_sign" disabled="true">&gt;=</button>
-        <button class="btn dropdown-toggle" data-toggle="dropdown">
-          <span class="caret"></span>
-        </button>
-        <ul class="trigger_sign dropdown-menu">
-          <li><a value="lt">&lt;</a></li>
-          <li><a value="le">&lt;=</a></li>
-          <li><a value="eq">=</a></li>
-          <li><a value="ne">!=</a></li>
-          <li><a value="ge">&gt;=</a></li>
-          <li><a value="gt">&gt;</a></li>
-        </ul>
-      </div>
-      <input type="hidden" name="sign" class="sign" id="sign" value="ge">
-      <input type="text" name="threshold" id="threshold" class="span8">
+  <label for="threshold">Threshold</label>
+  <div class="input-prepend">
+    <div class="btn-group">
+      <button class="btn disabled trigger_sign" disabled="true">&gt;=</button>
+      <button class="btn dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+      </button>
+      <ul class="trigger_sign dropdown-menu">
+        <li><a value="lt">&lt;</a></li>
+        <li><a value="le">&lt;=</a></li>
+        <li><a value="eq">=</a></li>
+        <li><a value="ne">!=</a></li>
+        <li><a value="ge">&gt;=</a></li>
+        <li><a value="gt">&gt;</a></li>
+      </ul>
     </div>
+    <input type="hidden" name="sign" class="sign" id="sign" value="ge">
+    <input type="text" name="threshold" id="threshold" class="span8">
+  </div>
 
-    <!-- OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT -->
-    <label title="The selected statuses will cause this trigger to fire">Status</label>
-    <label class="checkbox inline">
-      <input type="checkbox" class="trigger_status" value="OK"> OK
-    </label>
-    <label class="checkbox inline">
-      <input type="checkbox" class="trigger_status" value="WARNING" checked="true"> WARNING
-    </label>
-    <label class="checkbox inline">
-      <input type="checkbox" class="trigger_status" value="CRITICAL"> CRITICAL
-    </label>
-    <label class="checkbox inline">
-      <input type="checkbox" class="trigger_status" value="UNKNOWN" checked="true"> UNKNOWN
-    </label>
-    <label class="checkbox inline">
-      <input type="checkbox" class="trigger_status" value="TIMEOUT" checked="true"> TIMEOUT
-    </label>
+  <!-- OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT -->
+  <label title="The selected statuses will cause this trigger to fire">Status</label>
+  <label class="checkbox inline">
+    <input type="checkbox" class="trigger_status" value="OK"> OK
+  </label>
+  <label class="checkbox inline">
+    <input type="checkbox" class="trigger_status" value="WARNING" checked="true"> WARNING
+  </label>
+  <label class="checkbox inline">
+    <input type="checkbox" class="trigger_status" value="CRITICAL"> CRITICAL
+  </label>
+  <label class="checkbox inline">
+    <input type="checkbox" class="trigger_status" value="UNKNOWN" checked="true"> UNKNOWN
+  </label>
+  <label class="checkbox inline">
+    <input type="checkbox" class="trigger_status" value="TIMEOUT" checked="true"> TIMEOUT
+  </label>
 
 
-    <br/><br/>
-    <a id="submit_trigger" class="btn primary">Add Trigger</a>
+  <br/><br/>
+  <a id="submit_trigger" class="btn primary">Add Trigger</a>
 
-  </fieldset>
-  </form>
-
-</div>
+</fieldset>
+</form>

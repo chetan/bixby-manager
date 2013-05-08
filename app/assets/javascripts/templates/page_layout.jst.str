@@ -32,10 +32,8 @@
 </div>
 
 <div class="container-fluid">
-  <div class="row-fluid">
 
-    <div id="content" class="span12">
-    </div>
-
+  <div id="content" class="span12">
   </div>
+
 </div>
