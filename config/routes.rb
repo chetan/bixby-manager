@@ -16,6 +16,7 @@ Bixby::Application.routes.draw do
 
     resources :on_calls
     resources :users
+    resources :actions
   end
 
   get "/inventory" => "inventory::hosts#index"
