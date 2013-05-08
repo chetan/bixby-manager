@@ -225,6 +225,8 @@ class Monitoring < API
   # @option opts [String] sign      Treshold sign
   # @option opts [String] threshold
   # @option opts [Array<String] status    List of statuses which will trigger (optional)
+  #
+  # @return [Trigger]
   def add_trigger(opts)
     opts = opts.with_indifferent_access
     t = Trigger.new
@@ -236,6 +238,7 @@ class Monitoring < API
     t.status    = array(opts[:status]).map{ |s| s.upcase }
 
     t.save!
+    t
   end
 
 
