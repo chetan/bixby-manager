@@ -59,6 +59,7 @@ module Bixby
     mod.const_set(:CONST_MAP, map)
     mod.class_eval do
       def self.lookup(id)
+        id.upcase! if id.kind_of? String
         self.const_get(:CONST_MAP)[id]
       end
     end
