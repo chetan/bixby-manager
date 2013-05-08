@@ -81,3 +81,14 @@ Bixby.app.add_state(
     models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
 )
 
+Bixby.app.add_state(
+  class extends Stark.State
+
+    name: "mon_hosts_actions_new"
+    url:  "monitoring/hosts/:host_id/triggers/:trigger_id/actions/new"
+    tab:  "monitoring"
+
+    views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddTriggerAction ]
+    models:     { host: _bm.Host, trigger: _bm.Trigger, oncalls: _bm.OnCallList, users: _bm.UserList }
+)
+

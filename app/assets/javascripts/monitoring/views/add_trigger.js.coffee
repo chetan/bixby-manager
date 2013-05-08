@@ -48,6 +48,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
         view = @
         Backbone.multi_save trigger, (err, results) ->
-          view.transition "mon_view_host", { host: host }
+          view.transition "mon_hosts_actions_new", { host: host, trigger: results[0] }
 
     }
