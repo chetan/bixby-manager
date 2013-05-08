@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # Extracts the given keys from params().
+  # Extracts the given keys from params(). IDs (params ending in '_id') will
+  # automatically be cast to an integer.
   #
   # The hash to filter can optionally be passed as the first paramater.
   #
@@ -31,6 +32,7 @@ class ApplicationController < ActionController::Base
   #
   #   @model.update_attributes pick(:name, :desc)
   #
+  # @param [Hash] input     Input hash (optional, default: params)
   # @param [Array] keys     Key names to filter by
   #
   # @return [Hash] filtered key/value pairs
@@ -40,8 +42,12 @@ class ApplicationController < ActionController::Base
     hash = keys.first.kind_of?(Hash) ? keys.shift : params()
 
     filtered = {}
-    hash.each do |key, value|
-      filtered[key.to_sym] = value if keys.include?(key.to_sym)
+    keys.each do |key|
+      if hash.include? key then
+        value = hash[key]
+        value = value.to_i if key =~ /_id$/ # force ids to_i
+        filtered[key] = value
+      end
     end
     filtered
   end
