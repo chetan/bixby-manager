@@ -57,19 +57,20 @@ after_fork do |server, worker|
   # and Redis.  TokyoCabinet file handles are safe to reuse
   # between any number of forked children (assuming your kernel
   # correctly implements pread()/pwrite() system calls)
+
+  # Setup logger - see config/logging.rb for docs
+  require "logging"
+  Logging.format_as :inspect
+  Logging.appenders.rolling_file( 'file',
+    :filename => File.join(Rails.root, "unicorn-#{Rails.env}.log"),
+    :keep => 7,
+    :age => 'daily',
+    :truncate => false,
+    :auto_flushing => true,
+    :layout => Logging.layouts.pattern(:pattern => '%.1l, [%d] %5l -- %c: %m\n')
+  )
+  Logging.appenders["file"].reopen
+  Logging.logger.root.appenders = ["file"]
+  logger(Logging.logger[Unicorn])
 end
 
-# Setup logger - see config/logging.rb for docs
-require "logging"
-Logging.format_as :inspect
-Logging.appenders.rolling_file( 'file',
-  :filename => File.join(Rails.root, "unicorn-#{Rails.env}.log"),
-  :keep => 7,
-  :age => 'daily',
-  :truncate => false,
-  :auto_flushing => true,
-  :layout => Logging.layouts.pattern(:pattern => '%.1l, [%d] %5l -- %c: %m\n')
-)
-Logging.appenders["file"].reopen
-Logging.logger.root.appenders = ["file"]
-logger(Logging.logger[Unicorn])
