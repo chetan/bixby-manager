@@ -72,8 +72,8 @@ gem "resque"
 gem "resque-scheduler", :require => ["resque_scheduler"]
 
 gem "sidekiq", "~> 2.9"
-gem "slim"     # for sidekiq web ui
-gem "sinatra"  # for sidekiq web ui
+gem "slim", "~> 1.3.0"     # for sidekiq web ui
+gem "sinatra"              # for sidekiq web ui
 
 # metrics module
 gem 'continuum', :git => "https://github.com/chetan/continuum.git"
