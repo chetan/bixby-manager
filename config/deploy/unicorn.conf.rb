@@ -59,7 +59,18 @@ after_fork do |server, worker|
   # correctly implements pread()/pwrite() system calls)
 end
 
+# Setup logger - see config/logging.rb for docs
+Logging.format_as :inspect
+pattern = '%.1l, [%d] %5l -- %c: %m\n'
 
-
-
-
+Logging.appenders.rolling_file( 'file',
+  :filename => File.join(Rails.root, "unicorn-#{Rails.env}.log"),
+  :keep => 7,
+  :age => 'daily',
+  :truncate => false,
+  :auto_flushing => true,
+  :layout => layout
+)
+Logging.appenders["file"].reopen
+Logging.logger.root.appenders = ["file"]
+logger(Logging.logger[Unicorn])
