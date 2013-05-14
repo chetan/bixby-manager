@@ -71,6 +71,6 @@ after_fork do |server, worker|
   )
   Logging.appenders["file"].reopen
   Logging.logger.root.appenders = ["file"]
-  logger(Logging.logger[Unicorn])
+  server.logger = Logging.logger[Unicorn]
 end
 
