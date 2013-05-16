@@ -1,5 +1,5 @@
 <div class="input-prepend">
   <span class="add-on">$</span>
   <input class="install" type="text" readonly="readonly"
-    value="\\curl -sL https://get.bixby.io | bash -s <%= current_user.g('tenant') %> <%= manager_uri %>">
+    value="\\curl -sL https://get.bixby.io | bash -s <%= current_user.g('tenant') %> <%= app.manager_uri %>">
 </div>

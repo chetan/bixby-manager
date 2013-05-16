@@ -7,12 +7,28 @@ _vi = Bixby.view.inventory
 Bixby.app.add_state(
   class extends Stark.State
 
+    name: "getting_started"
+    url:  "getting_started"
+    tab:  "inventory"
+
+    views:      [ _bv.PageLayout, _vi.Layout, _vi.GettingStarted ]
+)
+
+Bixby.app.add_state(
+  class extends Stark.State
+
     name: "inventory"
     url:  "inventory"
     tab:  "inventory"
 
     views:      [ _bv.PageLayout, _vi.Layout, _vi.HostTable ]
     models:     { hosts: Bixby.model.HostList }
+
+    validate: ->
+      if !@hosts? or @hosts.isEmpty()
+        @transition "getting_started"
+        return false
+
 )
 
 Bixby.app.add_state(

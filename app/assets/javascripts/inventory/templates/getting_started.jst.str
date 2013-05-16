@@ -1,0 +1,4 @@
+
+<h2>Welcome!</h2>
+<p>Let's get started by adding some hosts. Simply run the following on each server:</p>
+<%= include("inventory/_add_host_info") %>
