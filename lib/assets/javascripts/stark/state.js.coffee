@@ -77,6 +77,13 @@ class Stark.State
 
     return needed
 
+  # This is called by Stark when the state is loaded but just before rendering.
+  #
+  # A good place to, say, transition away to some other state if we are
+  # missing data, etc.
+  validate: ->
+    return true
+
   # This is called by Stark when this state becomes active (transitioning TO),
   # after all data has been loaded and views have been rendered.
   #
@@ -111,7 +118,7 @@ class Stark.State
 
   # Cleanup any resources used by the state. Should remove all views and unbind any events
   dispose: (new_state) ->
-    @log "disposing of current state", @
+    @log "disposing of state", @name, @
     @unbind_app_events()
     _.each @_views, (v) ->
       if ! (_.any(new_state.views, (n)-> v instanceof n) && v.reuse == true)

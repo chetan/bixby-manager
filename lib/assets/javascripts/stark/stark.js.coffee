@@ -173,6 +173,14 @@ class Stark.App
       @current_state.deactivate()
       @current_state.dispose(state)
 
+    ret = state.validate()
+    if ret != true
+      # short-circuit this state
+      @log "new state validation failed, canceling activation", state
+      @trigger("state:deactivate", state)
+      state.deactivate()
+      state.dispose(state)
+      return
 
     # create views
     _.eachR @, state.views, (v) ->
@@ -194,7 +202,11 @@ class Stark.App
     if @current_state? && state.url? && (!state.params? || state.params.changeURL == true)
       # there was a previous state, update browser url
       # does not fire when using back/forward buttons as params.changeURL will be false
-      @router.changeURL state.create_url()
+      url = state.create_url()
+      @log "updating url: ", url
+      @router.changeURL url
+    else
+      @log "no url change"
 
     state.activate()
     @current_state = state
