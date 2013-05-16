@@ -1,11 +1,10 @@
 
-require 'openssl'
-require 'highline'
-
 namespace :bixby do
 
   desc "create a new user"
   task :create_user => :environment do |t|
+
+    require 'highline'
 
     puts "Create user"
     puts
