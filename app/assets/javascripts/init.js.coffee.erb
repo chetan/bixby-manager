@@ -1,5 +1,6 @@
 
 window.Bixby or= {}
 Bixby.app = new Stark.App("<%= Rails.env %>", "/login", "inventory")
+Bixby.app.manager_uri = window.location.protocol + "//" + window.location.host
 if Bixby.app.env == "production"
   Stark.Logger = false
