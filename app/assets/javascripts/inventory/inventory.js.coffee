@@ -28,6 +28,7 @@ Bixby.app.add_state(
       if !@hosts? or @hosts.isEmpty()
         @transition "getting_started"
         return false
+      return true
 
 )
 

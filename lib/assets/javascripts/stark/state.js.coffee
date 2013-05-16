@@ -78,9 +78,12 @@ class Stark.State
     return needed
 
   # This is called by Stark when the state is loaded but just before rendering.
+  # Must always return true when validate succeeds.
   #
   # A good place to, say, transition away to some other state if we are
   # missing data, etc.
+  #
+  # @return [Boolean] something other than true to cancel navigation
   validate: ->
     return true
 
