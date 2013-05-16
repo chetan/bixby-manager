@@ -123,6 +123,7 @@ group :development do
     gem "pry"
     gem "pry-rails"
     gem "sextant" # displays routes at http://localhost:3000/rails/routes in dev mode
+    gem "highline"
 
     # deployment
     gem "capistrano",     :require => false

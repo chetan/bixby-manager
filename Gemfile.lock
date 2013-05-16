@@ -484,6 +484,7 @@ DEPENDENCIES
   git
   haml
   haml_assets
+  highline
   hiredis
   httpclient
   immigrant
