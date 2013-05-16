@@ -199,7 +199,7 @@ class Stark.App
       view.render()
       state._views.push view
 
-    if @current_state? && state.url? && (!state.params? || state.params.changeURL == true)
+    if state.url? && (!state.params? || state.params.changeURL == true)
       # there was a previous state, update browser url
       # does not fire when using back/forward buttons as params.changeURL will be false
       url = state.create_url()
