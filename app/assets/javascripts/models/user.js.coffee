@@ -9,7 +9,7 @@ namespace 'Bixby.model', (exports, top) ->
 
     gravatar: ->
       if Bixby.app.dev
-        return "/images/gravatar_dev.png"
+        return "/images/gravatar_dev.jpg"
       else
         url = "https://www.gravatar.com/avatar/"
         email = $.trim(@get("email"))
