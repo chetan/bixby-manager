@@ -8,6 +8,8 @@ Bixby::Application.routes.draw do
   post 'login'  => 'sessions#create',  :as => :login
   get  'logout' => 'sessions#destroy', :as => :logout
 
+  get 'getting_started' => "ui#default"
+
   resources :hosts
 
   namespace :rest, :module => "rest/models" do
