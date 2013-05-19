@@ -225,8 +225,8 @@ GEM
     jdbc-sqlite3 (3.7.2.1)
     journey (1.0.4)
     jruby-memcached (0.5.3)
-    json (1.7.7)
-    json (1.7.7-java)
+    json (1.8.0)
+    json (1.8.0-java)
     jwt (0.1.8)
       multi_json (>= 1.5)
     kgio (2.8.0)
@@ -445,8 +445,6 @@ GEM
       crack (>= 0.3.2)
     xray (1.1)
     yard (0.8.6.1)
-    zeus (0.13.3)
-      method_source (>= 0.6.7)
 
 PLATFORMS
   java
@@ -550,4 +548,3 @@ DEPENDENCIES
   xray
   yard
   yui-compressor!
-  zeus

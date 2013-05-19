@@ -146,7 +146,7 @@ group :development do
     gem 'mocha', :require => false
     gem "turn"
     gem "bahia"
-    gem "zeus"
+    # gem "zeus" # including the gem here appears to break zeus in ruby 2.0
     gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
     gem 'spork-testunit', :git => "https://github.com/sporkrb/spork-testunit.git", :require => false
     gem "spork-rails", :require => false
