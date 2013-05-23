@@ -3,6 +3,8 @@ require "active_record"
 require "action_controller"
 require "active_model"
 
+
+# Super simple multi-tenant access controls
 module MultiTenant
 
   class AccessException < Exception
@@ -23,7 +25,8 @@ module MultiTenant
       Thread.current[:current_tenant]
     end
 
-    # Sets the current_tenant within the given block
+    # Sets the current_tenant within the given block. Useful for temporarily
+    # changing tenants (for tests, god mode, etc).
     def with_tenant(tenant, &block)
       if block.nil?
         raise ArgumentError, "block required"
@@ -38,6 +41,7 @@ module MultiTenant
     end
   end
 
+  # Included into ActiveRecord::Base, this is where security checks occur
   module ModelExtensions
     extend ActiveSupport::Concern
     module ClassMethods
@@ -72,7 +76,7 @@ module MultiTenant
           other_id = rec_tenant.id
           if curr_id != other_id then
             # PANIC
-            raise AccessException, "illegal access: #{curr_id} != #{other_id}"
+            raise AccessException, "illegal access: tried to access tenant.id=#{other_id}; current_tenant.id=#{curr_id}"
           end
         end
 
@@ -81,6 +85,8 @@ module MultiTenant
     end # ClassMethods
   end # ModelExtensions
 
+  # Included into ActionController::Base to allow easy access to the
+  # current_tenant
   module ControllerExtensions
     def multi_tenant
       self.class_eval do
