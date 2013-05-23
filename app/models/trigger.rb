@@ -105,7 +105,9 @@ class Trigger < ActiveRecord::Base
   # @param [Metric::Status] val     as a Fixnum
   def test_status(val)
     # see if string form of Metric::Status is in list of statuses
-    self.status.include? Metric::Status.lookup(val)
+    val = val.kind_of?(String) ? val : Metric::Status.lookup(val)
+    puts "test status: #{self.status.inspect}.include? #{val}"
+    self.status.include? val
   end
 
   def ok?

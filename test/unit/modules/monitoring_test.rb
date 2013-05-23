@@ -62,6 +62,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     t.severity = Trigger::Severity::CRITICAL
     t.threshold = 280
     t.sign = :gt
+    t.status = %w{TIMEOUT CRITICAL}
     t.save!
 
     a = Action.new
@@ -111,6 +112,11 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert_equal 2, ActionMailer::Base.deliveries.size
     assert_equal 2, TriggerHistory.all.size
 
+    # test alerting on status
+    put_check_result("CRITICAL")
+    assert_equal 3, ActionMailer::Base.deliveries.size
+    assert_equal 3, TriggerHistory.all.size
+
   end
 
   def test_get_options
@@ -158,7 +164,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     return res.to_json
   end
 
-  def put_check_result
+  def put_check_result(status="OK")
     m = {
           "timestamp" => 1329775841,
           "metrics" => [
@@ -167,8 +173,10 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
               "metadata" => { "mount"=>"/", "type"=>"hfs" }
             }
           ],
-        "errors"=>[], "status"=>"OK", "check_id"=>@check.id,
-        "key"=>"hardware.storage.disk"
+          "errors"   => [],
+          "status"   => status,
+          "check_id" => @check.id,
+          "key"      => "hardware.storage.disk"
     }
 
     Continuum::Client.any_instance.expects(:metric).with { |n,v,t|

@@ -197,6 +197,7 @@ class Metrics < API
         # TODO [security] validate check ownership
         check = Check.find(result["check_id"].to_i)
         time = Time.at(result["timestamp"].to_i)
+        status = Metric::Status.lookup(result["status"]).to_i
 
         result["metrics"].each do |metric|
 
@@ -221,8 +222,9 @@ class Metrics < API
           metric["metrics"].each do |k,v|
             key = "#{base}#{k}"
             m = Metric.for(check, key, metadata)
-            m.last_value = v
-            m.updated_at = time
+            m.last_value  = v
+            m.last_status = status
+            m.updated_at  = time
             m.save!
             metrics << m
           end

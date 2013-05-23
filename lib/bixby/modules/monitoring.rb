@@ -155,12 +155,15 @@ class Monitoring < API
       reset = []
 
       triggers.each do |trigger|
-        if trigger.test_value(metric.last_value) or trigger.test_value(metric.status) then
+        logger.debug { "testing #{metric.key}: #{metric.last_value} #{trigger.sign} #{trigger.threshold.to_s}" }
+        if trigger.test_value(metric.last_value) or trigger.test_status(metric.last_status) then
           # trigger is over threshold
+          logger.debug { "#{metric.key}: triggered" }
           triggered << trigger
 
         elsif metric.status != Metric::Status::OK then
           # trigger has returned to normal
+          logger.debug { "#{metric.key}: reset" }
           reset << trigger
         end
       end # triggers.each
