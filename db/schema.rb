@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130502194703) do
+ActiveRecord::Schema.define(:version => 20130523232533) do
 
   create_table "actions", :force => true do |t|
     t.integer "trigger_id",               :null => false
@@ -140,13 +140,14 @@ ActiveRecord::Schema.define(:version => 20130502194703) do
   add_index "metric_infos", ["command_id"], :name => "fk_command_keys_commands1"
 
   create_table "metrics", :force => true do |t|
-    t.integer  "check_id",                                                :null => false
+    t.integer  "check_id",                                                 :null => false
     t.string   "name"
-    t.string   "key",                                                     :null => false
-    t.string   "tag_hash",   :limit => 32,                                :null => false
-    t.integer  "status",     :limit => 2
-    t.decimal  "last_value",               :precision => 20, :scale => 2
-    t.datetime "created_at",                                              :null => false
+    t.string   "key",                                                      :null => false
+    t.string   "tag_hash",    :limit => 32,                                :null => false
+    t.integer  "status",      :limit => 2
+    t.decimal  "last_value",                :precision => 20, :scale => 2
+    t.integer  "last_status", :limit => 2
+    t.datetime "created_at",                                               :null => false
     t.datetime "updated_at"
   end
 
