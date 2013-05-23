@@ -13,4 +13,8 @@ else
   source /home/`whoami`/.rvm/environments/$USE_RUBY_VERSION
 fi
 
+if [ -f /usr/lib/libtcmalloc_minimal.so.0.1.0 ]; then
+  export LD_PRELOAD=/usr/lib/libtcmalloc_minimal.so.0.1.0
+fi
+
 $*
