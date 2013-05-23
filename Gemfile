@@ -97,15 +97,15 @@ group :development do
 
     # debugging
     gem "ruby-debug",   :platforms => :mri_18
-    gem "debugger",     :platforms => :mri_19
-    gem "debugger-pry", :require => "debugger/pry", :platforms => :mri_19
+    gem "debugger",     :platforms => [:mri_19, :mri_20]
+    gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20]
     gem "awesome_print"
     gem "coffee-rails-source-maps"
 
     # rails debugging helpers
     gem "letter_opener"
     gem "better_errors"
-    gem "binding_of_caller", :platforms => [:mri_19, :rbx] # used by better_errors for advanced features
+    gem "binding_of_caller", :platforms => [:mri_19, :mri_20, :rbx] # used by better_errors for advanced features
     gem "xray", :require => "xray/thread_dump_signal_handler"
     gem "quiet_assets"
 
@@ -132,12 +132,12 @@ group :development do
     # coverage
     gem "rcov",                 :platforms => :mri_18
     gem "rcov_rails",           :platforms => :mri_18
-    gem "simplecov",            :platforms => :mri_19, :require => false
-    gem "simplecov-html",       :platforms => :mri_19, :git => "https://github.com/chetan/simplecov-html.git", :require => false
-    gem "simplecov-console",    :platforms => :mri_19, :git => "https://github.com/chetan/simplecov-console.git", :require => false
+    gem "simplecov",            :platforms => [:mri_19, :mri_20], :require => false
+    gem "simplecov-html",       :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-html.git", :require => false
+    gem "simplecov-console",    :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-console.git", :require => false
 
     # quality
-    gem "cane", :platforms => :mri_19, :require => false
+    gem "cane", :platforms => [:mri_19, :mri_20], :require => false
 
     # test tools (frameworks, mock, runners, etc)
     gem 'rake-hooks', :require => false
