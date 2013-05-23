@@ -78,7 +78,6 @@ class ApiController < ApplicationController
       if not (@agent and ApiAuth.authentic?(request, @agent.secret_key)) then
         return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
       end
-      MultiTenant.current_tenant = @agent.tenant
     end
 
 
@@ -89,6 +88,10 @@ class ApiController < ApplicationController
       Bixby.do_async(mod.class, op, req.params)
       return nil
     end
+
+
+    # set tenant now so we can process the request securely
+    MultiTenant.current_tenant = @agent.tenant
 
     if req.params.kind_of? Hash then
       return mod.send(op, HashWithIndifferentAccess.new(req.params))
