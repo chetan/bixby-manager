@@ -15,7 +15,6 @@ set :bundle_flags, "--quiet"
 set :bundle_dir, ""
 
 # use rvm
-set :rvm_ruby_string, 'ruby-1.9.3-p385'
 require "rvm/capistrano"
 
 # multistage
