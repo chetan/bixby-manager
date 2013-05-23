@@ -6,6 +6,11 @@ class UiController < ApplicationController
   before_filter :login_required?
   before_filter :set_current_tenant
 
+  # Handle some common errors by simply redirecting to /inventory (for now)
+  # TODO better handling
+  rescue_from ActiveRecord::RecordNotFound, :with => :bail_from_ex
+  rescue_from MultiTenant::AccessException, :with => :bail_from_ex
+
 
   # Placeholder route for simply returning bootstrap html
   def default
@@ -64,6 +69,15 @@ class UiController < ApplicationController
   # Test if the current session hash if valid
   def is_valid_session?
     session && session.include?("_csrf_token") && (current_user && session.include?("user_credentials"))
+  end
+
+  def bail_from_ex(ex)
+    logger.warn(ex_to_s(ex))
+    redirect_to url_for(:inventory)
+  end
+
+  def ex_to_s(ex)
+    params[:action] + "(#{params.inspect}) failed with #{ex.class}: #{ex.message}"
   end
 
 end
