@@ -44,30 +44,30 @@ class ApiController < ApplicationController
 
     # extract JsonRequest
 
-    req = extract_request()
-    return req if req.kind_of? Bixby::JsonResponse
+    json_req = extract_request()
+    return json_req if json_req.kind_of? Bixby::JsonResponse
 
 
     # validate request of form: operation = "module_name:method_name"
 
     mod = op = nil
-    if req.operation.include? ":" then
-      (mod, op) = req.operation.split(/:/)
+    if json_req.operation.include? ":" then
+      (mod, op) = json_req.operation.split(/:/)
     end
 
     if mod.blank? or op.blank? then
-      return unsupported_operation(req)
+      return unsupported_operation(json_req)
     end
 
     begin
       mod = "Bixby::#{mod.camelize}"
-      mod = mod.constantize.new(request, req)
+      mod = mod.constantize.new(request, json_req)
       op = op.to_sym
       if not (mod and mod.respond_to? op) then
-        return unsupported_operation(req)
+        return unsupported_operation(json_req)
       end
     rescue Exception => ex
-      return unsupported_operation(req)
+      return unsupported_operation(json_req)
     end
 
 
@@ -83,9 +83,8 @@ class ApiController < ApplicationController
 
     # execute request
 
-    # req = JsonRequest instance
     if Bixby.is_async? mod.class, op then
-      Bixby.do_async(mod.class, op, req.params)
+      Bixby.do_async(mod.class, op, json_req.params)
       return nil
     end
 
@@ -93,23 +92,23 @@ class ApiController < ApplicationController
     # set tenant now so we can process the request securely
     MultiTenant.current_tenant = @agent.tenant
 
-    if req.params.kind_of? Hash then
-      return mod.send(op, HashWithIndifferentAccess.new(req.params))
-    elsif req.params.kind_of? Array then
-      return mod.send(op, *req.params)
+    if json_req.params.kind_of? Hash then
+      return mod.send(op, HashWithIndifferentAccess.new(json_req.params))
+    elsif json_req.params.kind_of? Array then
+      return mod.send(op, *json_req.params)
     else
-      return mod.send(op, req.params)
+      return mod.send(op, json_req.params)
     end
 
   end # handle_request()
 
   # Helper for creating JsonResponse
   #
-  # @param [JsonRequest] req
+  # @param [JsonRequest] json_req
   #
   # @return [JsonResponse]
-  def unsupported_operation(req)
-    Bixby::JsonResponse.invalid_request("unsupported operation: '#{req.operation}'")
+  def unsupported_operation(json_req)
+    Bixby::JsonResponse.invalid_request("unsupported operation: '#{json_req.operation}'")
   end
 
   # Extract JsonRequest from the POST body
@@ -123,16 +122,16 @@ class ApiController < ApplicationController
     end
 
     begin
-      req = Bixby::JsonRequest.from_json(body)
+      json_req = Bixby::JsonRequest.from_json(body)
     rescue Exception => ex
       return Bixby::JsonResponse.invalid_request
     end
 
-    if req.operation.blank? then
+    if json_req.operation.blank? then
       return Bixby::JsonResponse.invalid_request
     end
 
-    return req
+    return json_req
   end
 
 end # ApiController
