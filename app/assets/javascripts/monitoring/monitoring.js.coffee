@@ -79,6 +79,13 @@ Bixby.app.add_state(
 
     views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddTrigger ]
     models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
+
+    activate: ->
+      # preload some extra data for next step
+      @users = new _bm.UserList
+      @oncalls = new _bm.OnCallList
+      needed = [@users, @oncalls]
+      Backbone.multi_fetch(needed)
 )
 
 Bixby.app.add_state(
