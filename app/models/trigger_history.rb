@@ -44,9 +44,8 @@ class TriggerHistory < ActiveRecord::Base
 
     if trigger.check.present? then
       h.check = trigger.check
-    else
-      h.metric = metric
     end
+    h.metric = metric
 
     h.trigger = trigger
     h.severity = metric.ok? ? Trigger::Severity::OK : trigger.severity
