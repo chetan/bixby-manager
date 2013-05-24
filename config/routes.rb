@@ -1,16 +1,16 @@
 Bixby::Application.routes.draw do
 
+  # Default route - show login page (redirects to /inventory if logged in)
   root :to => 'sessions#new'
 
+  # API Controller endpoint
   match '/api' => 'api#handle'
 
-  get  'login'  => 'sessions#new',     :as => :login
-  post 'login'  => 'sessions#create',  :as => :login
-  post 'logout' => 'sessions#destroy', :as => :logout
 
-  get 'getting_started' => "ui#default"
-
-  resources :hosts
+  ##############################################################################
+  # RESTFUL ROUTES
+  #
+  # These routes are primarily used for CRUD style actions
 
   namespace :rest, :module => "rest/models" do
     resources :hosts
@@ -21,11 +21,25 @@ Bixby::Application.routes.draw do
     resources :actions
   end
 
+  # Other actions
+  post 'login'  => 'sessions#create',  :as => :login
+  post 'logout' => 'sessions#destroy', :as => :logout
+
+
+  ##############################################################################
+  # VIEW ROUTES
+  #
+  # These routes serve up HTML for bootstrapping the app, i.e., on initial
+  # navigation to the app.
+
+  get 'login' => 'sessions#new', :as => :login
+
+  get 'getting_started' => "ui#default"
+
   get "/inventory" => "inventory::hosts#index"
   namespace :inventory do
     get "/search/:query" => "hosts#index"
-    resources :hosts do
-    end
+    resources :hosts
   end
 
   get "/monitoring" => "monitoring::base#index"
@@ -44,10 +58,18 @@ Bixby::Application.routes.draw do
     end
   end
 
+
+  ##############################################################################
+  # MISC
+
   if Object.const_defined? :BIXBY_CONFIG and BIXBY_CONFIG[:scheduler] == "sidekiq" then
     require "sidekiq/web"
     mount Sidekiq::Web => "/sidekiq"
   end
+
+
+  ##############################################################################
+  # DOCS
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
