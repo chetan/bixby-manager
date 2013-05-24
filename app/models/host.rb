@@ -124,7 +124,7 @@ class Host < ActiveRecord::Base
       hosts.each do |host|
         all_keys_match = true
         meta.keys.each do |key|
-          if host.meta[key] != meta[key] then
+          if host.meta[key].downcase != meta[key].downcase then
             all_keys_match = false
             break
           end
