@@ -8,10 +8,12 @@ namespace 'Bixby.model', (exports, top) ->
       @extract_param(attributes, "metric", true)
       @extract_param(attributes, "host")
 
-    url: ->
+    urlRoot: ->
       host_id = @host_id || @get("host_id")
-      id = @id || @get("id")
-      s = "/monitoring/hosts/#{host_id}/metrics/#{id}?"
+      "/rest/hosts/#{host_id}/metrics"
+
+    url: ->
+      s = super() + "?"
       if @get("start")
         s += "&start=" + @get("start")
       if @get("end")
@@ -36,12 +38,9 @@ namespace 'Bixby.model', (exports, top) ->
         [ new Date(v.x * 1000), v.y ]
 
 
-
-
-
   class exports.MetricList extends Stark.Collection
     model: exports.Metric
-    url: -> "/monitoring/hosts/#{@host_id}/metrics"
+    url: -> "/rest/hosts/#{@host_id}/metrics"
 
     initialize: (data) ->
       @extract_param(data, "host")

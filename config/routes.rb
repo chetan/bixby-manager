@@ -14,9 +14,12 @@ Bixby::Application.routes.draw do
   # These routes are primarily used for CRUD style actions on resources
 
   namespace :rest, :module => "rest/models" do
+
     resources :hosts do
-      resources :checks
       get "update_facts" => "hosts#update_facts"
+
+      resources :checks
+      resources :metrics
     end
 
     resources :on_calls
