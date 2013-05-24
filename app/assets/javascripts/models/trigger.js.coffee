@@ -3,25 +3,28 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.Trigger extends Stark.Model
 
-    url: ->
-      "/monitoring/hosts/#{@host_id || @host.id}/triggers" # id is appended if avail for update
+    urlRoot: ->
+      "/rest/hosts/#{@host_id || @host.id}/triggers"
 
-    get_metric: (view) ->
-      return @metric if @metric?
+    # Hacky - pass the view in so we can bind it for an update
+    # after loading the metric async (if necessary)
+    get_metric_key: (view) ->
+      return @metric_key if @metric_key?
+      return @metric.get("key") if @metric?
 
       if @get("metric")?
         @metric = new Bixby.model.Metric(@get("metric"))
-        return @metric
+        return @metric.get("key")
 
       @metric = new Bixby.model.Metric({ id: @get("metric_id") })
       @metric.bind_view(view)
       @metric.fetch()
-      @metric
+      return ""
 
     severity: ->
       switch @get("severity")
-        when 2 then "Warning"
-        when 3 then "Critical"
+        when 2, "warning" then "Warning"
+        when 3, "critical" then "Critical"
 
     threshold: ->
       t = @signHtml() + " " + @get("threshold")
@@ -36,11 +39,9 @@ namespace 'Bixby.model', (exports, top) ->
         when "gt" then "&gt;"
 
 
-
-
   class exports.TriggerList extends Stark.Collection
     model: exports.Trigger
-    url: -> "/monitoring/hosts/#{@host_id || @host.id}/triggers"
+    url: -> "/rest/hosts/#{@host_id || @host.id}/triggers"
 
     initialize: (data) ->
       @extract_param(data, "host")

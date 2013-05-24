@@ -20,15 +20,17 @@ Bixby::Application.routes.draw do
 
       resources :checks
       resources :metrics
+      resources :triggers
     end
-
-    resources :on_calls
-    resources :users
-    resources :actions
 
     resources :commands do
       get "opts"
     end
+
+    resources :users
+    resources :on_calls
+    resources :triggers
+    resources :actions
   end
 
   # Other actions

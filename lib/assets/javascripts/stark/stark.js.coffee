@@ -203,8 +203,11 @@ class Stark.App
       # there was a previous state, update browser url
       # does not fire when using back/forward buttons as params.changeURL will be false
       url = state.create_url()
-      @log "updating url: ", url
-      @router.changeURL url
+      if url == false
+        @log "no url change due to missing param"
+      else
+        @log "updating url: ", url
+        @router.changeURL url
     else
       @log "no url change"
 

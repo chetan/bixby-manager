@@ -7,7 +7,7 @@
   <tbody>
     <tr>
       <td class="key">Metric</td>
-      <td><%= trigger.get_metric(this).g("key") %></td>
+      <td><%= trigger.get_metric_key(this) %></td>
     </tr>
     <tr>
       <td class="key">Severity</td>
@@ -21,10 +21,14 @@
       <td class="key">Status</td>
       <td><%= trigger.g("status") %></td>
     </tr>
+
+<!-- not sure why i had this here??
     <tr>
       <td class="key">Updated</td>
       <td><%= trigger.g("updated_at") %></td>
     </tr>
+ -->
+
   </tbody>
 </table>
 </div>

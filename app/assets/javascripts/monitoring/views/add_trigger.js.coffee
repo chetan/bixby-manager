@@ -45,9 +45,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           threshold:  $("#threshold").val()
           status:     _.map $("input.trigger_status:checked"), (el) -> $(el).val()
         }
+        trigger.metric_key = $("#metric option").filter(":selected").text()
 
-        view = @
-        Backbone.multi_save trigger, (err, results) ->
-          view.transition "mon_hosts_actions_new", { host: host, trigger: results[0] }
+        @transition "mon_hosts_actions_new", { host: host, trigger: trigger }
 
-    }
+    } # events

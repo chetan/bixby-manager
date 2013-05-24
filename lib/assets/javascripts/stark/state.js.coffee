@@ -48,6 +48,7 @@ class Stark.State
 
   constructor: ->
     # internal attributes
+    @_data  = []
     @_views = []
 
   # Transition to another state
@@ -64,16 +65,30 @@ class Stark.State
   load_data: (data) ->
     @current_user = data.current_user
     needed = []
-    _.eachR @, @models, (model, key) ->
-      if data[key]
-        # copy into current [state] scope
-        @[key] = data[key]
 
-      else if _.isObject(model)
+    # copy data into state scope
+    _.eachR @, data, (obj, key) ->
+      @[key] = @_data[key] = obj
+
+    # check for missing models
+    _.eachR @, @models, (model, key) ->
+      if _.isObject(model) && !@[key]
         # create new model to be fetched
-        @[key] = new model(data)
+        @[key] = @_data[key] = new model(data)
         @log "will ajax load:", @[key]
         needed.push @[key]
+
+    # old implementation: we only copied data which was explicitly requested
+    # _.eachR @, @models, (model, key) ->
+    #   if data[key]
+    #     # copy into current [state] scope
+    #     @[key] = data[key]
+
+    #   else if _.isObject(model)
+    #     # create new model to be fetched
+    #     @[key] = new model(data)
+    #     @log "will ajax load:", @[key]
+    #     needed.push @[key]
 
     return needed
 
@@ -110,12 +125,14 @@ class Stark.State
     for name in @route.paramNames
       if name.match(/_id$/)
         v = name.replace(/_id$/, '')
-        if @[v]
+        if @[v] && @[v].id
           url = url.replace(":#{name}", @[v].id)
+        else
+          @log "WARNING: couldn't find substitution for #{name} in #{@url}"
+          return false
 
       else if @[name] and _.isString(@[name])
         url = url.replace(":#{name}", @[name])
-
 
     return url
 
