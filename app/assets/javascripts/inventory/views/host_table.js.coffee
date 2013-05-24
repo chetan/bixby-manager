@@ -23,8 +23,8 @@ namespace "Bixby.view.inventory", (exports, top) ->
     }
 
     render: ->
-      @new_hosts = @hosts.filter (h) -> h.is_new()
-      @other_hosts = @hosts.filter (h) -> !h.is_new()
+      @new_hosts = (@hosts.filter (h) -> h.is_new()).sort (a,b) -> a.name().localeCompare(b.name())
+      @other_hosts = (@hosts.filter (h) -> !h.is_new()).sort (a,b) -> a.name().localeCompare(b.name())
       @query ?= "" # set default val
 
       super()
