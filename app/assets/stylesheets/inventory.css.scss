@@ -11,6 +11,15 @@ input.install {
 div.host_list {
 }
 
+ul.tags {
+  padding: 0;
+  margin: 0;
+  li {
+    list-style-type: none;
+    display: inline;
+  }
+}
+
 div.host {
   margin-bottom: 10px;
 
@@ -23,6 +32,9 @@ div.host {
       font-size: inherit;
       font-weight: inherit;
       line-height: inherit;
+    }
+    h3 {
+      margin-bottom: 0;
     }
   }
 

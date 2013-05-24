@@ -1,4 +1,4 @@
-<ul>
+<ul class="tags">
   <% _.eachR(this, host.tags(), function(tag) { %>
   <li><%= render_partial(Bixby.view.inventory.HostTagItem, { tag: tag }) %></li>
   <% }); %>

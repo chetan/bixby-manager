@@ -9,9 +9,10 @@
         <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>
       <%//%>
     </div>
+
   </div>
 
-  <div class="tags">
+  <div class="row-fluid tags">
     <%= render_partial(Bixby.view.inventory.HostTags, {host: host}) %>
   </div>
 

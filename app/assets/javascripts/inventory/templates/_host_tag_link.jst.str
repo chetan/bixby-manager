@@ -1,1 +1,1 @@
-<a class="tag">#<%= tag %></a>
+<a class="tag label">#<%= tag %></a>
