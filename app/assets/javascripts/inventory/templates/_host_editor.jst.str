@@ -17,7 +17,7 @@
           </div>
         </label>
 
-        <label class="control-label">Description
+        <label class="control-label desc">Description
           <div class="controls">
             <textarea class="desc span12" placeholder="description"><%= host.g('desc') %></textarea>
           </div>
