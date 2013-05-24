@@ -1,12 +1,13 @@
 
 namespace 'Bixby.model', (exports, top) ->
 
-
-
   class exports.Check extends Stark.Model
 
+    urlRoot: ->
+      s = "/rest/hosts/#{@host_id || @host.id}/checks"
+
     url: ->
-      s = "/monitoring/hosts/#{@host_id || @host.id}/checks" # id is appended if avail for update
+      s = super()
       if @metric_id?
         s += "?metric_id=" + @metric_id
       return s
@@ -19,7 +20,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.CheckList extends Stark.Collection
     model: exports.Check
-    url: -> "/monitoring/hosts/#{@host_id || @host.id}/checks"
+    url: -> "/rest/hosts/#{@host_id || @host.id}/checks"
 
     initialize: (data) ->
       @extract_param(data, "host")

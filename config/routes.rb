@@ -9,12 +9,15 @@ Bixby::Application.routes.draw do
 
   ##############################################################################
   # RESTFUL ROUTES
+  # (API CALLS)
   #
-  # These routes are primarily used for CRUD style actions
+  # These routes are primarily used for CRUD style actions on resources
 
   namespace :rest, :module => "rest/models" do
-    resources :hosts
-    get "hosts/:id/update_facts" => "hosts#update_facts"
+    resources :hosts do
+      resources :checks
+      get "update_facts" => "hosts#update_facts"
+    end
 
     resources :on_calls
     resources :users
