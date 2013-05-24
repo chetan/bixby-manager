@@ -25,6 +25,10 @@ Bixby::Application.routes.draw do
     resources :on_calls
     resources :users
     resources :actions
+
+    resources :commands do
+      get "opts"
+    end
   end
 
   # Other actions
@@ -51,7 +55,6 @@ Bixby::Application.routes.draw do
   get "/monitoring" => "monitoring::base#index"
   namespace :monitoring do
     resources :on_calls
-    resources :commands
     resources :hosts do
 
       resources :checks
@@ -60,7 +63,6 @@ Bixby::Application.routes.draw do
       end
       resources :metrics
 
-      get "/command/:command_id/opts" => "commands#opts"
     end
   end
 

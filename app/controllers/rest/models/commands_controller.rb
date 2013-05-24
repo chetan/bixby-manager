@@ -1,9 +1,14 @@
 
-class Monitoring::CommandsController < Monitoring::BaseController
+class Rest::Models::CommandsController < UiController
 
   def index
-    @commands = Command.where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
-    restful @commands
+    type = params[:type]
+    if type == "monitoring" then
+      commands = Command.where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
+    else
+      commands = Command.all
+    end
+    restful commands
   end
 
   def opts
