@@ -158,6 +158,9 @@ class Monitoring < API
         logger.debug { "testing #{metric.key}: #{metric.last_value} #{trigger.sign} #{trigger.threshold.to_s}" }
         if trigger.test_value(metric.last_value) or trigger.test_status(metric.last_status) then
           # trigger is over threshold
+          if trigger.severity == metric.status then
+            next # already in this state, skip
+          end
           logger.debug { "#{metric.key}: triggered" }
           triggered << trigger
 
@@ -170,11 +173,6 @@ class Monitoring < API
 
       # process triggers over threshold
       filter_triggers(triggered).each do |trigger|
-
-        if trigger.severity == metric.status then
-          next # already in this state, skip
-        end
-
         # store history
         history = TriggerHistory.record(metric, trigger)
         metric.status = trigger.severity
@@ -277,7 +275,7 @@ class Monitoring < API
   def filter_triggers(triggers)
     if triggers.size > 1 then
       # get only CRITICAL triggers
-      filtered = triggers.find_all { |t| t.severity == Triger::Severity::CRITICAL }
+      filtered = triggers.find_all { |t| t.severity == Trigger::Severity::CRITICAL }
     end
     if filtered.blank? then
       filtered = triggers

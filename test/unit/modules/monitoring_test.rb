@@ -54,7 +54,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
   end
 
   def test_alerting_on_metrics
-    setup_trigger()
+    (m, t, a) = setup_trigger()
 
     # try again, this should generate an email
     put_check_result()
@@ -69,7 +69,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     th = th.first
     assert th
-    assert_equal @t.id, th.trigger_id
+    assert_equal t.id, th.trigger_id
     assert_equal 280, th.threshold
 
     # if we alert again, there should be no state change
@@ -80,15 +80,15 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert_equal 1, TriggerHistory.all.size
 
     # now modify the alert so it returns to normal on next put
-    @t.threshold = 300
-    @t.save!
+    t.threshold = 300
+    t.save!
 
     put_check_result()
     assert_equal 2, ActionMailer::Base.deliveries.size
     assert_equal 2, TriggerHistory.all.size
 
     th = TriggerHistory.last
-    assert_equal @t.id, th.trigger_id
+    assert_equal t.id, th.trigger_id
     assert_equal 300, th.threshold
     assert_equal Trigger::Severity::OK, th.severity
 
@@ -103,6 +103,26 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     put_check_result("CRITICAL")
     assert_equal 1, ActionMailer::Base.deliveries.size
     assert_equal 1, TriggerHistory.all.size
+  end
+
+  def test_multiple_triggers
+    (m, t, a)    = setup_trigger()
+    (m2, t2, a2) = setup_trigger(m) # re-use metric for second trigger
+
+    # now both triggers should fire which means 2 emails?
+    put_check_result()
+    assert_equal 2, ActionMailer::Base.deliveries.size
+    assert_equal 2, TriggerHistory.all.size
+
+    # only the CRIT should fire when: metric=OK, WARN&CRIT triggers attached
+    m.status = Metric::Status::OK
+    m.save!
+    t2.severity = Trigger::Severity::WARNING
+    t2.save!
+
+    put_check_result()
+    assert_equal 3, ActionMailer::Base.deliveries.size
+    assert_equal 3, TriggerHistory.all.size
   end
 
   def test_get_options
@@ -171,25 +191,30 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     Bixby::Metrics.new.put_check_result(m)
   end
 
-  def setup_trigger
+  def setup_trigger(m=nil)
+
     # init metric data
-    put_check_result()
-    @m = Metric.where(:key => "hardware.storage.disk.size").first
-    assert @m
+    if m.nil? then
+      put_check_result()
+      m = Metric.where(:key => "hardware.storage.disk.size").first
+      assert m
+    end
 
-    @t = Trigger.new
-    @t.metric = @m
-    @t.severity = Trigger::Severity::CRITICAL
-    @t.threshold = 280
-    @t.sign = :gt
-    @t.status = %w{TIMEOUT CRITICAL}
-    @t.save!
+    t = Trigger.new
+    t.metric = m
+    t.severity = Trigger::Severity::CRITICAL
+    t.threshold = 280
+    t.sign = :gt
+    t.status = %w{TIMEOUT CRITICAL}
+    t.save!
 
-    @a = Action.new
-    @a.trigger_id = @t.id
-    @a.action_type = Action::ALERT
-    @a.target_id = OnCall.first.id
-    @a.save!
+    a = Action.new
+    a.trigger_id = t.id
+    a.action_type = Action::ALERT
+    a.target_id = OnCall.first.id
+    a.save!
+
+    return [m, t, a]
   end
 
 end
