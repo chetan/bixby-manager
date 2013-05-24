@@ -5,7 +5,8 @@ class SessionsController < UiController
   def new
     if current_user and is_valid_session? then
       # looks we already have a properly logged in user
-      return redirect_to inventory_path
+      bootstrap Host.for_user(current_user)
+      return render :index
     end
 
     # nuke current_user before login

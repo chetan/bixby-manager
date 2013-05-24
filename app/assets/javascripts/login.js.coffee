@@ -1,6 +1,4 @@
 
-#= require_tree "./views"
-
 Bixby.app.add_state(
   class extends Stark.State
 
@@ -9,4 +7,11 @@ Bixby.app.add_state(
     tab:  ""
 
     views:      [ Bixby.view.Login ]
+
+    validate: ->
+      # send to home if already logged in
+      if Bixby.app.current_user
+        @transition "inventory"
+        return false
+      return true
 )
