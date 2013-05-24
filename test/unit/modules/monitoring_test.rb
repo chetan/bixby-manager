@@ -54,22 +54,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
   end
 
   def test_alerting_on_metrics
-    put_check_result()
-    m = Metric.where(:key => "hardware.storage.disk.size").first
-
-    t = Trigger.new
-    t.metric = m
-    t.severity = Trigger::Severity::CRITICAL
-    t.threshold = 280
-    t.sign = :gt
-    t.status = %w{TIMEOUT CRITICAL}
-    t.save!
-
-    a = Action.new
-    a.trigger_id = t.id
-    a.action_type = Action::ALERT
-    a.target_id = OnCall.first.id
-    a.save!
+    setup_trigger()
 
     # try again, this should generate an email
     put_check_result()
@@ -78,45 +63,46 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert_equal 1, ActionMailer::Base.deliveries.size
 
     # check that history was recorded
-    ah = TriggerHistory.all
-    refute_empty ah
-    assert_equal 1, ah.size
+    th = TriggerHistory.all
+    refute_empty th
+    assert_equal 1, th.size
 
-    ah = ah.first
-    assert ah
-    assert_equal t.id, ah.trigger_id
-    assert_equal 280, ah.threshold
+    th = th.first
+    assert th
+    assert_equal @t.id, th.trigger_id
+    assert_equal 280, th.threshold
 
     # if we alert again, there should be no state change
     put_check_result()
 
     refute_empty ActionMailer::Base.deliveries
-    assert_equal 1, ActionMailer::Base.deliveries.size # still 1
+    assert_equal 1, ActionMailer::Base.deliveries.size
     assert_equal 1, TriggerHistory.all.size
 
     # now modify the alert so it returns to normal on next put
-    t.threshold = 300
-    t.save!
+    @t.threshold = 300
+    @t.save!
 
     put_check_result()
     assert_equal 2, ActionMailer::Base.deliveries.size
     assert_equal 2, TriggerHistory.all.size
 
-    ah = TriggerHistory.last
-    assert_equal t.id, ah.trigger_id
-    assert_equal 300, ah.threshold
-    assert_equal Trigger::Severity::OK, ah.severity
+    th = TriggerHistory.last
+    assert_equal @t.id, th.trigger_id
+    assert_equal 300, th.threshold
+    assert_equal Trigger::Severity::OK, th.severity
 
     # make sure we don't alert again
     put_check_result()
     assert_equal 2, ActionMailer::Base.deliveries.size
     assert_equal 2, TriggerHistory.all.size
+  end
 
-    # test alerting on status
+  def test_alerting_on_status
+    setup_trigger()
     put_check_result("CRITICAL")
-    assert_equal 3, ActionMailer::Base.deliveries.size
-    assert_equal 3, TriggerHistory.all.size
-
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_equal 1, TriggerHistory.all.size
   end
 
   def test_get_options
@@ -183,6 +169,27 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
       n =~ /^hardware/ && t.to_i == 1329775841 }.times(4)
 
     Bixby::Metrics.new.put_check_result(m)
+  end
+
+  def setup_trigger
+    # init metric data
+    put_check_result()
+    @m = Metric.where(:key => "hardware.storage.disk.size").first
+    assert @m
+
+    @t = Trigger.new
+    @t.metric = @m
+    @t.severity = Trigger::Severity::CRITICAL
+    @t.threshold = 280
+    @t.sign = :gt
+    @t.status = %w{TIMEOUT CRITICAL}
+    @t.save!
+
+    @a = Action.new
+    @a.trigger_id = @t.id
+    @a.action_type = Action::ALERT
+    @a.target_id = OnCall.first.id
+    @a.save!
   end
 
 end

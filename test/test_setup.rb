@@ -10,6 +10,8 @@ module Bixby
       def teardown
         DatabaseCleaner.clean
         MultiTenant.current_tenant = nil
+        ActionMailer::Base.deliveries.clear
+        WebMock.reset!
       end
     end
 
