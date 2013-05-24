@@ -70,8 +70,8 @@ class ApiController < ApplicationController
     end
 
 
-    # authenticate the request but still allow agent registration
-    if crypto_enabled? and !(mod.kind_of? Bixby::Inventory and op == :register_agent) then
+    # authenticate the request but still allow agent registration (which will not be signed)
+    if decrypt?(mod, op) then
       request.body.rewind if request.body.respond_to?(:rewind)
       @agent = Agent.where(:access_key => ApiAuth.access_id(request)).first
       if not (@agent and ApiAuth.authentic?(request, @agent.secret_key)) then
@@ -87,9 +87,10 @@ class ApiController < ApplicationController
       return nil
     end
 
-
-    # set tenant now so we can process the request securely
-    MultiTenant.current_tenant = @agent.tenant
+    if decrypt?(mod, op) then
+      # set tenant now so we can process the request securely
+      MultiTenant.current_tenant = @agent.tenant
+    end
 
     if json_req.params.kind_of? Hash then
       return mod.send(op, HashWithIndifferentAccess.new(json_req.params))
@@ -100,6 +101,16 @@ class ApiController < ApplicationController
     end
 
   end # handle_request()
+
+  # Test whether or not this request should be decrypted
+  #
+  # @param [Bixby::API] mod     module
+  # @param [Symbol] op          method name
+  #
+  # @return [Boolean]
+  def decrypt?(mod, op)
+    crypto_enabled? and !(mod.kind_of? Bixby::Inventory and op == :register_agent)
+  end
 
   # Helper for creating JsonResponse
   #
