@@ -38,7 +38,7 @@
       </ul>
     </div>
     <input type="hidden" name="sign" class="sign" id="sign" value="ge">
-    <input type="text" name="threshold" id="threshold" class="span8">
+    <input type="text" name="threshold" id="threshold" class="span3">
   </div>
 
   <!-- OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT -->
