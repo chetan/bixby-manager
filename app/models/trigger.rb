@@ -106,7 +106,6 @@ class Trigger < ActiveRecord::Base
   def test_status(val)
     # see if string form of Metric::Status is in list of statuses
     val = val.kind_of?(String) ? val : Metric::Status.lookup(val)
-    puts "test status: #{self.status.inspect}.include? #{val}"
     self.status.include? val
   end
 
