@@ -14,8 +14,12 @@ namespace "Bixby.view", (exports, top) ->
       "blur input.username": (e) ->
         $(e.target).mailcheck({
           suggested: (el, suggestion) ->
-            # TODO show alert/notification
-            console.log "Did you mean " + suggestion.full + "?"
+            $(el).popover({
+              content: "Did you mean " + suggestion.full + "?"
+            }).popover("show")
+
+          empty: (el) ->
+            $(el).popover("hide")
         })
 
       "submit form": (e) ->
