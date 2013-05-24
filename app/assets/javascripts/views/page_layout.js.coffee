@@ -16,6 +16,8 @@ namespace "Bixby.view", (exports, top) ->
       "click a#logout": (e) ->
         v = @
         $.ajax("/logout", {
+          type: "POST"
+          data: _.csrf()
           success: ->
             v.app.current_user = null
             v.app.redir_to_login()

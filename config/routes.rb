@@ -6,7 +6,7 @@ Bixby::Application.routes.draw do
 
   get  'login'  => 'sessions#new',     :as => :login
   post 'login'  => 'sessions#create',  :as => :login
-  get  'logout' => 'sessions#destroy', :as => :logout
+  post 'logout' => 'sessions#destroy', :as => :logout
 
   get 'getting_started' => "ui#default"
 

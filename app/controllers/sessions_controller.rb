@@ -26,11 +26,11 @@ class SessionsController < UiController
     restful ret
   end
 
-  # GET to logout
+  # POST to logout
   def destroy
     current_user_session.destroy if current_user_session
     reset_session
-    render :text => "ok"
+    head :no_content
   end
 
 end
