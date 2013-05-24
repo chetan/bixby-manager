@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130523232533) do
+ActiveRecord::Schema.define(:version => 20130524164105) do
 
   create_table "actions", :force => true do |t|
-    t.integer "trigger_id",               :null => false
-    t.integer "action_type", :limit => 2, :null => false
-    t.integer "target_id",                :null => false
-    t.text    "args"
+    t.integer  "trigger_id",               :null => false
+    t.integer  "action_type", :limit => 2, :null => false
+    t.integer  "target_id",                :null => false
+    t.text     "args"
+    t.datetime "deleted_at"
   end
 
   add_index "actions", ["trigger_id"], :name => "actions_trigger_id_fk"
@@ -261,6 +262,7 @@ ActiveRecord::Schema.define(:version => 20130523232533) do
     t.string   "sign",       :limit => 2
     t.datetime "created_at",                                             :null => false
     t.datetime "updated_at",                                             :null => false
+    t.datetime "deleted_at"
   end
 
   add_index "triggers", ["check_id"], :name => "triggers_check_id_fk"

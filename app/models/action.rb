@@ -7,6 +7,7 @@
 #  action_type :integer          not null
 #  target_id   :integer          not null
 #  args        :text
+#  deleted_at  :datetime
 #
 
 
@@ -20,6 +21,8 @@ class Action < ActiveRecord::Base
     Bixby::Util.create_const_map(Type)
     include Type
   end
+
+  acts_as_paranoid
 
   # Treat args as json and return parsed form
   #

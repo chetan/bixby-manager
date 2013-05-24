@@ -11,6 +11,7 @@
 #  sign       :string(2)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  deleted_at :datetime
 #
 
 # status: OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT
@@ -21,6 +22,8 @@ class Trigger < ActiveRecord::Base
   belongs_to :check
   belongs_to :metric
   has_many :actions
+
+  acts_as_paranoid
 
   multi_tenant :via => :check
 
