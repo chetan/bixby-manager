@@ -5,15 +5,14 @@
         <a class="host"><%= host.name() %></a>
         <span class="edit"><button class="btn btn-mini edit">edit</button></span>
       </h3>
+      <div class="tags">
+        <%= render_partial(Bixby.view.inventory.HostTags, {host: host}) %>
+      </div>
       <%? host.get("desc") %>
         <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>
       <%//%>
     </div>
 
-  </div>
-
-  <div class="row-fluid tags">
-    <%= render_partial(Bixby.view.inventory.HostTags, {host: host}) %>
   </div>
 
   <div class="row-fluid">
