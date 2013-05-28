@@ -43,3 +43,6 @@ namespace 'Bixby.model', (exports, top) ->
       if @query
         s += "?q=" + @query.replace(/#/, "%23")
       return s
+
+    comparator: (host) ->
+      host.name()
