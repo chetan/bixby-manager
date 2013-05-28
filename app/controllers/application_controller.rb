@@ -57,9 +57,19 @@ class ApplicationController < ActionController::Base
   # @param [Symbol] key       (default: "id")
   #
   # @return [Fixnum] Requested value as an integer
-  # @throws [Exception] Will raise if parma is not a string (array or hash)
+  # @throws [Exception] Will raise if param is not a string (array or hash) or doesn't exist
   def _id(key = :id)
-    return params[key].to_i
+    if params.include? key then
+      return params[key].to_i
+    end
+
+    # try to figure out key name from controller
+    controller_key = params[:controller].split("/").last.singularize + "_id"
+    if params.include? controller_key
+      return params[controller_key].to_i
+    end
+
+    raise "Couldn't find param :id or :#{controller_key}"
   end
 
   # Restful response
