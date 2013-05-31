@@ -16,6 +16,3 @@ namespace "Bixby.view.inventory", (exports, top) ->
         setTimeoutR 0, ->
           e.target.select()
     }
-
-    # after_render: ->
-    #   @app.router.changeURL @state.create_url()
