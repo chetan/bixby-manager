@@ -38,7 +38,12 @@ Bixby::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = true
+  # slows page reloads drastically because of sequential/blocking JS loading
+  # about 6 sec with this enabled vs 600ms without it
+  config.assets.debug = false
+
+  # don't quiet temporarily
+  # config.quiet_assets = false
 
 
   # Set the logging destination(s)
