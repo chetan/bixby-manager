@@ -62,6 +62,9 @@ gem "delete_paranoid"   # https://github.com/socialcast/delete_paranoid
 gem "twilio-ruby"
 gem "pony"
 
+# metrics
+gem "mongoid"
+
 # scheduler module
 # though hiredis is an extension, it should degrade gracefull for jruby
 gem "hiredis"

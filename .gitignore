@@ -9,6 +9,7 @@ tmp/
 
 # config
 config/database.yml
+config/mongoid.yml
 config/bixby.yml
 
 # build output

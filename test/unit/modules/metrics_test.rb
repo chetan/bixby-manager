@@ -12,6 +12,8 @@ class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
 hardware.storage.disk.free 1336748410 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
 hardware.storage.disk.free 1336748470 86 org_id=1 host_id=3 host=127.0.0.1 mount=/ check_id=1 tenant_id=1 type=hfs
 EOF
+    Bixby::Metrics.driver = Bixby::Metrics::OpenTSDB
+    Bixby::Metrics.driver.configure(BIXBY_CONFIG)
   end
 
   def test_require_class

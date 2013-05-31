@@ -263,7 +263,13 @@ GEM
     mocha (0.13.3)
       metaclass (~> 0.0.1)
     mock_redis (0.7.0)
+    mongoid (3.1.4)
+      activemodel (~> 3.2)
+      moped (~> 1.4)
+      origin (~> 1.0)
+      tzinfo (~> 0.3.22)
     mono_logger (1.0.1)
+    moped (1.5.0)
     multi_json (1.7.4)
     mysql2 (0.3.11)
     net-scp (1.1.0)
@@ -279,6 +285,7 @@ GEM
     newrelic_rpm (3.6.1.88)
     oj (2.0.12)
     open4 (1.3.0)
+    origin (1.1.0)
     parallel (0.6.4)
     pg (0.15.1)
     polyglot (0.3.3)
@@ -498,6 +505,7 @@ DEPENDENCIES
   minitest
   mocha
   mock_redis
+  mongoid
   multi_json
   mysql2
   newrelic-redis

@@ -9,6 +9,9 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     ENV["BIXBY_HOME"] = File.join(Rails.root, "test", "support", "root_dir")
     Bixby.instance_eval{ @client = nil }
 
+    Bixby::Metrics.driver = Bixby::Metrics::OpenTSDB
+    Bixby::Metrics.driver.configure(BIXBY_CONFIG)
+
     @check ||= FactoryGirl.create(:check)
     oncall = FactoryGirl.build(:on_call)
     oncall.org = @check.org
