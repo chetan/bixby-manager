@@ -10,7 +10,6 @@ gem 'bixby-common', :git => "https://github.com/chetan/bixby-common.git"
 # gem 'bixby-common', :path => "../common"
 
 # webserver
-gem "thin",     :platforms => :mri
 gem "unicorn",  :platforms => :mri
 
 # backend
@@ -92,6 +91,10 @@ end
 
 group :development do
 
+    # servers used during dev
+    gem "thin", :platforms => :mri
+    gem "puma", :platforms => :mri
+
     gem "sqlite3", :platforms => :mri
     gem "activerecord-jdbcsqlite3-adapter", :platforms => "jruby"
 
@@ -124,6 +127,7 @@ group :development do
     gem "pry-rails"
     gem "sextant" # displays routes at http://localhost:3000/rails/routes in dev mode
     gem "highline"
+
 
     # deployment
     gem "capistrano",     :require => false
