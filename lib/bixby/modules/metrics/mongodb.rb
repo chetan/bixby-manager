@@ -52,3 +52,5 @@ class Metrics
 
 end # Metrics
 end # Bixby
+
+Bixby::Metrics.driver = Bixby::Metrics::MongoDB
