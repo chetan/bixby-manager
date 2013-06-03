@@ -1,4 +1,6 @@
 
+_bv = Bixby.view
+
 Bixby.app.add_state(
   class extends Stark.State
 
@@ -6,7 +8,7 @@ Bixby.app.add_state(
     url:  "login"
     tab:  ""
 
-    views:      [ Bixby.view.Login ]
+    views:      [ _bv.Login ]
 
     validate: ->
       # send to home if already logged in
@@ -14,4 +16,13 @@ Bixby.app.add_state(
         @transition "inventory"
         return false
       return true
+)
+
+Bixby.app.add_state(
+  class extends Stark.State
+
+    name: "profile"
+    url:  "profile"
+
+    views:      [ _bv.PageLayout, _bv.Profile ]
 )

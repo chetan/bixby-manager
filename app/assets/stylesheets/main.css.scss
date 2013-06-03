@@ -47,12 +47,27 @@ img.gravatar {
     box-shadow: 0 1px 0 #FFFFFF;
 }
 
-ul.user-menu li.dropdown a {
-    padding: 5px 5px;
+img.gravatar-large {
+    height: 128px;
+    width:  128px;
+}
+
+ul.user-menu {
+    margin-left: 5px !important;
+    li.dropdown a {
+        padding: 5px 5px;
+    }
 }
 
 .navbar-search {
     input {
         margin-bottom: 0;
+    }
+}
+
+/* PROFILE PAGE */
+h2 {
+    span {
+        display: inline-block;
     }
 }

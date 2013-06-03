@@ -10,6 +10,9 @@ namespace "Bixby.view", (exports, top) ->
       "a.brand": [ "inventory" ]
       ".tab.inventory a": [ "inventory" ]
       ".tab.monitoring a": [ "monitoring" ]
+
+      # user menu
+      "a#profile": [ "profile" ]
     }
 
     events: {
@@ -27,9 +30,9 @@ namespace "Bixby.view", (exports, top) ->
     app_events: {
       "state:activate": (state) ->
         if state.tab? and state.tab != @current_tab
-          @current_tab = state.tab
           $("div.navbar li.tab").removeClass("active")
-          $("div.navbar li.tab.#{@current_tab}").addClass("active")
+          if @current_tab = state.tab
+            $("div.navbar li.tab.#{@current_tab}").addClass("active")
 
     }
 

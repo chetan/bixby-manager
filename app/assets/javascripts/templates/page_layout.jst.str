@@ -15,12 +15,11 @@
       </ul>
 
       <ul class="user-menu nav secondary-nav pull-right">
-        <li class="dropdown">
+        <li class="tab user dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown"><%= current_user.name() %><img class="gravatar" src="<%= current_user.gravatar() %>" alt="gravatar" height="20"/></a>
           <ul class="dropdown-menu">
-            <li>
-              <a id="logout">Logout</a>
-            </li>
+            <li><a id="profile">Profile</a></li>
+            <li><a id="logout">Logout</a></li>
           </ul>
         </li>
       </ul>
