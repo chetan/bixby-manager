@@ -90,6 +90,7 @@ group :assets do
     gem 'haml_assets'
     gem 'yui-compressor', :git => "https://github.com/loe/ruby-yui-compressor.git" # use this fork for latest 2.4.7 jar
     gem 'uglifier'
+    gem 'sprockets-font_compressor'
 end
 
 group :development do
