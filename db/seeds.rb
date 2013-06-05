@@ -14,6 +14,6 @@ t = Tenant.create(
   )
 
 o = Org.create(:name => "default", :tenant_id => t.id)
-r = Repo.create(:org_id => o.id, :name => "vendor",
+r = Repo.create(:org_id => nil, :name => "vendor",
       :uri => "https://github.com/chetan/bixby-repo.git",
       :branch => "master")
