@@ -91,6 +91,11 @@ group :assets do
     gem 'yui-compressor', :git => "https://github.com/loe/ruby-yui-compressor.git" # use this fork for latest 2.4.7 jar
     gem 'uglifier'
     gem 'sprockets-font_compressor'
+
+    # execjs prefers ruby racer (needed by uglifier and coffee-script)
+    # added due to sudden segfaulting with nodejs driver
+    gem 'execjs'
+    gem 'therubyracer'
 end
 
 group :development do
