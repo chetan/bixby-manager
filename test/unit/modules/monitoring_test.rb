@@ -135,7 +135,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
       rp = r["params"]
       r["operation"] == "shell_exec" and rp["args"] == "--options" and
         rp["command"] == @check.command.command and
-        rp.include? "digest" and rp["digest"] =~ /^2429629015110c29/
+        rp.include? "digest" and rp["digest"] =~ /^e5ece5285a7c759f/
     }.to_return(:status => 200, :body => cmd_res_json(0, "{}"))
 
     ret = Bixby::Monitoring.new.get_command_options(@check.agent, @check.command)
@@ -151,7 +151,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
       rp = r["params"]
       r["operation"] == "shell_exec" and rp["args"] == "--monitor" and
         rp["command"] == @check.command.command and
-        rp.include? "digest" and rp["digest"] =~ /^2429629015110c29/
+        rp.include? "digest" and rp["digest"] =~ /^e5ece5285a7c759f/
     }.to_return(:status => 200, :body => cmd_res_json(0, "{}"))
 
     ret = Bixby::Monitoring.new.run_check(@check)
