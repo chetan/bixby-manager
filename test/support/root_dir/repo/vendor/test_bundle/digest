@@ -1,5 +1,5 @@
 {
-  "digest": "2429629015110c29f8fae8ca97e0e494410a28b981653c0e094cfe4a7567f1b7",
+  "digest": "e5ece5285a7c759f6dd5501635bf6bc7627c075960475be5a3353e28586eb6a2",
   "files": [
     {
       "file": "bin/cat",
@@ -11,7 +11,7 @@
     },
     {
       "file": "manifest.json",
-      "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "digest": "1ee61b396417ac1676b85a080c4def35efa48088db1def160cfd0f9b8559e2be"
     }
   ]
 }
