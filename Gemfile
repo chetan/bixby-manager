@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~>3.2'
 
-gem 'bixby-common', :git => "https://github.com/chetan/bixby-common.git"
+gem 'bixby-common'
 # gem 'bixby-common', :path => "../common"
 
 # webserver
