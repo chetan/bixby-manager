@@ -1,36 +1,3 @@
 
-module Bixby
-  module Test
-
-    class TestCase < ActiveSupport::TestCase
-      def setup
-        DatabaseCleaner.start
-        WebMock.reset!
-      end
-      def teardown
-        DatabaseCleaner.clean
-        MultiTenant.current_tenant = nil
-        ActionMailer::Base.deliveries.clear
-        WebMock.reset!
-      end
-    end
-
-    module Models
-    end
-
-    module Modules
-    end
-
-    module RailsExt
-    end
-
-    module Controllers
-    end
-
-    module Views
-      module Models
-      end
-    end
-  end
-
-end
+require "setup/test_case"
+require "setup/stub_api"

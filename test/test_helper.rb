@@ -27,7 +27,6 @@ def prefork
 
   require "test_guard"
   require "test_prefork"
-  require "test_setup"
 end
 
 def load_simplecov
@@ -64,6 +63,8 @@ def bootstrap_tests
 
   ENV["BOOTSTRAPNOW"] = "1"
   require "#{Rails.root.to_s}/config/initializers/bixby_bootstrap"
+
+  require "test_setup" # base TestCase
 
   # require files in order to force coverage reports
   [ "lib", "app" ].each do |d|
