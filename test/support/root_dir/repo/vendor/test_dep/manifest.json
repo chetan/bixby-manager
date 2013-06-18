@@ -1,0 +1,7 @@
+{
+  "name": "test_dep",
+  "version": "0.0.1",
+  "description": "testing deps",
+  "requires": [
+  ]
+}

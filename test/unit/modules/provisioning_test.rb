@@ -2,6 +2,7 @@
 require 'test_helper'
 
 module Bixby
+
 class Test::Modules::Provisioning < Bixby::Test::TestCase
 
   def setup
@@ -87,6 +88,20 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
 
     assert_requested :post, "http://2.2.2.2:18000/", :times => 2
   end
+
+  # provisioning package A should also provision package B which it depends on
+  def test_provision_dependent_packages
+
+    stub_api.expect{ |agent, op, params|
+      params[:command] == "get_bundle.rb"
+      }.returns(JsonResponse.new("success")).times(2)
+
+    @cmd.bundle = "test_bundle_with_dep"
+    Bixby::Provisioning.new.provision(@agent, @cmd)
+
+    assert_api_requests
+  end
+
 
 end # Test::Modules::Provisioning
 end # Bixby
