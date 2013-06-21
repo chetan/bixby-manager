@@ -34,7 +34,6 @@ class Metrics
 
         if not opts[:tags].blank? then
           tags = {}
-          ap ID_KEYS
           opts[:tags].each do |k,v|
             tags["tags.#{k}"] = ID_KEYS.include?(k) ? v.to_i : v
           end
