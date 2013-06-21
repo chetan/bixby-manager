@@ -6,6 +6,8 @@ class Metrics
 
   class MongoDB < Driver
 
+    ID_KEYS = %w{host_id check_id org_id tenant_id}.inject({}){ |m, k| m[k] = 1; m }.with_indifferent_access
+
     class MetricData
       include ::Mongoid::Document
       field :time, :type => DateTime
@@ -32,8 +34,9 @@ class Metrics
 
         if not opts[:tags].blank? then
           tags = {}
+          ap ID_KEYS
           opts[:tags].each do |k,v|
-            tags["tags.#{k}"] = v
+            tags["tags.#{k}"] = ID_KEYS.include?(k) ? v.to_i : v
           end
           ret = ret.and(tags)
         end

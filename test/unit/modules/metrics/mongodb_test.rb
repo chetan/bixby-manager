@@ -20,13 +20,25 @@ class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
 
     def test_get_by_tag
       t = Time.new
-      Bixby::Metrics.new.put("foobar", 37, t, {:blah => "baz"})
+      Bixby::Metrics.new.put("foobar", 37, t, {:blah => "baz", :host_id => 42})
+
+      # search by 1 tag
       m = Bixby::Metrics.new.get({
         :key => "foobar", :start_time => t, :end_time => t+10,
         :tags => {:blah => "baz"}})
 
-      assert_metric m
+      assert_metric m, 2
 
+      # search by multiple tags
+      # pass host_id as a string to simulate how its retrieved by the metadata class
+      # since it treats all stored values as strings
+      m = Bixby::Metrics.new.get({
+        :key => "foobar", :start_time => t, :end_time => t+10,
+        :tags => {:blah => "baz", :host_id => "42"}})
+
+      assert_metric m, 2
+
+      # no hits by tag
       m = Bixby::Metrics.new.get({
         :key => "foobar", :start_time => t, :end_time => t+10,
         :tags => {:blah => "bar"}})
@@ -36,11 +48,11 @@ class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
 
     private
 
-    def assert_metric(m)
+    def assert_metric(m, num_tags=1)
       assert m
       assert_kind_of Hash, m
       assert_equal "foobar", m[:key]
-      assert_equal 1, m[:tags].size
+      assert_equal num_tags, m[:tags].size
       assert_equal "baz", m[:tags]["blah"]
       assert_equal 1, m[:vals].size
       assert_equal 37, m[:vals].first[:val].to_i
