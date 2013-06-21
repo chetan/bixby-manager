@@ -101,7 +101,6 @@ end
 group :development do
 
     # servers used during dev
-    gem "thin", :platforms => :mri
     gem "puma", :platforms => :mri
 
     gem "sqlite3", :platforms => :mri

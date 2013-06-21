@@ -3,4 +3,9 @@
 
 APP_PATH = File.expand_path('../../config/application',  __FILE__)
 require File.expand_path('../../config/boot',  __FILE__)
+
+# boot puma by default in dev
+require 'rack/handler'
+Rack::Handler::WEBrick = Rack::Handler.get(:puma)
+
 require 'rails/commands'
