@@ -28,9 +28,15 @@ class Metrics
       end
 
       def get(opts={})
+
+        start_time = opts[:start_time]
+        end_time = opts[:end_time]
+        start_time = Time.at(start_time.to_i) if [Fixnum, String].include? start_time.class
+        end_time = Time.at(end_time.to_i) if [Fixnum, String].include? end_time.class
+
         ret = MetricData.where(:key => opts[:key]).
-          and(:time.gte => opts[:start_time]).
-          and(:time.lte => opts[:end_time])
+          and(:time.gte => start_time).
+          and(:time.lte => end_time)
 
         if not opts[:tags].blank? then
           tags = {}

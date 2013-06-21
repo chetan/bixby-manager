@@ -10,10 +10,23 @@ class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
       Bixby::Metrics.driver.configure(BIXBY_CONFIG)
     end
 
+    def teardown
+      super
+      Bixby::Metrics::MongoDB::MetricData.delete_all
+    end
+
     def test_put_and_get
       t = Time.new
       Bixby::Metrics.new.put("foobar", 37, t, {:blah => "baz"})
       m = Bixby::Metrics.new.get({:key => "foobar", :start_time => t, :end_time => t+10})
+
+      assert_metric m
+    end
+
+    def test_get_by_time_int_string
+      t = Time.new
+      Bixby::Metrics.new.put("foobar", 37, t, {:blah => "baz"})
+      m = Bixby::Metrics.new.get({:key => "foobar", :start_time => t.to_i.to_s, :end_time => (t+10).to_i})
 
       assert_metric m
     end
