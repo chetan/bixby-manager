@@ -15,6 +15,28 @@ class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
       Bixby::Metrics.new.put("foobar", 37, t, {:blah => "baz"})
       m = Bixby::Metrics.new.get({:key => "foobar", :start_time => t, :end_time => t+10})
 
+      assert_metric m
+    end
+
+    def test_get_by_tag
+      t = Time.new
+      Bixby::Metrics.new.put("foobar", 37, t, {:blah => "baz"})
+      m = Bixby::Metrics.new.get({
+        :key => "foobar", :start_time => t, :end_time => t+10,
+        :tags => {:blah => "baz"}})
+
+      assert_metric m
+
+      m = Bixby::Metrics.new.get({
+        :key => "foobar", :start_time => t, :end_time => t+10,
+        :tags => {:blah => "bar"}})
+
+      refute m
+    end
+
+    private
+
+    def assert_metric(m)
       assert m
       assert_kind_of Hash, m
       assert_equal "foobar", m[:key]

@@ -28,8 +28,15 @@ class Metrics
       def get(opts={})
         ret = MetricData.where(:key => opts[:key]).
           and(:time.gte => opts[:start_time]).
-          and(:time.lte => opts[:end_time]).
-          and(opts[:tags])
+          and(:time.lte => opts[:end_time])
+
+        if not opts[:tags].blank? then
+          tags = {}
+          opts[:tags].each do |k,v|
+            tags["tags.#{k}"] = v
+          end
+          ret = ret.and(tags)
+        end
 
         # cheap hack to fix value type
         return ret.map{ |r|
