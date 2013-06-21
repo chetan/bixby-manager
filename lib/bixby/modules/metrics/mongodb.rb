@@ -46,7 +46,7 @@ class Metrics
           {
             :time => r[:time],
             :key => r[:key],
-            :val => BigDecimal.new(r[:val]),
+            :val => r[:val].to_f,
             :tags => r[:tags]
           }
         }
