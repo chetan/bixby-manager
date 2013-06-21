@@ -13,7 +13,7 @@ class Rest::Models::MetricsController < UiController
   def show
     metric = Metric.find(_id)
     downsample = params[:downsample] || "5m-avg"
-    metric.load_data!(params[:start], params[:end], {}, "sum", downsample)
+    metric.load_data!(_id(:start), _id(:end), {}, "sum", downsample)
 
     restful metric
   end
