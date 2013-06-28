@@ -4,7 +4,7 @@ namespace "Bixby.view", (exports, top) ->
 
     reuse: true
     el: "#body"
-    template: "page_layout"
+    template: "main/page_layout"
 
     links: {
       "a.brand": [ "inventory" ]
