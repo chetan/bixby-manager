@@ -15,6 +15,12 @@ namespace 'Bixby.model', (exports, top) ->
         email = $.trim(@get("email"))
         return url + md5(email) + "?d=mm"
 
+    is_valid_username: (username, callback) ->
+      $.ajax @urlRoot + "/valid?username=" + username, {
+        dataType: "json"
+        success: callback
+      }
+
   class exports.UserList extends Stark.Collection
     model: exports.User
     url: "/rest/users"

@@ -18,6 +18,7 @@
     <label for="username" class="control-label">Username</label>
     <div class="controls">
       <input type="text" id="username" value="<%= current_user.g("username") %>">
+      <span id="valid_username"></span>
     </div>
   </div>
 

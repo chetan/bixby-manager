@@ -11,6 +11,20 @@ class Rest::Models::UsersController < UiController
     restful user
   end
 
+  def valid
+    u = params[:username]
+    u.strip! if u
+    if u.length <= 3 then
+      restful({ :valid => false, :error => "too short" })
+    elsif u !~ /^[a-zA-Z0-9_\-]+$/
+      restful({ :valid => false, :error => "usernames may only contain alphanumeric characters plus _ and -" })
+    elsif User.where(:username => u).blank? then
+      restful({ :valid => true })
+    else
+      restful({ :valid => false, :error => "already taken" })
+    end
+  end
+
   def update
   end
 

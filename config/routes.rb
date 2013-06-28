@@ -27,7 +27,12 @@ Bixby::Application.routes.draw do
       get "opts"
     end
 
-    resources :users
+    resources :users do
+      collection do
+        get "valid"
+      end
+    end
+
     resources :on_calls
     resources :triggers
     resources :actions
