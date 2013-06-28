@@ -1,16 +1,17 @@
 
 <h2>
-  <a href="http://gravatar.com/emails/"><img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar image"></a>
+  <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
+    <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
   <span><%= current_user.name() %></span>
   <small title="your username"><%= current_user.g("username") %></small>
 </h2>
 
 <div class="row-fluid">
-<span><i class="icon-group"></i> <%= current_user.g("tenant") %></span><br>
-<span><i class="icon-envelope"></i> <%= current_user.g("email") %></span><br>
-<% if (current_user.g("phone")) { %>
-<span><i class="icon-phone"></i> <%= current_user.g("phone") %></span><br>
-<% } %>
+  <span><i class="icon-group"></i> <%= current_user.g("tenant") %></span><br>
+  <span><i class="icon-envelope"></i> <%= current_user.g("email") %></span><br>
+  <% if (current_user.g("phone")) { %>
+    <span><i class="icon-phone"></i> <%= current_user.g("phone") %></span><br>
+  <% } %>
 </div>
 
-<div class="row-fluid"><button class="btn btn-small btn-primary">Edit</button></div>
+<div class="row-fluid"><button class="btn btn-small btn-primary btn-edit">Edit</button></div>

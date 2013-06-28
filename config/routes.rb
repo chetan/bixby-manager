@@ -49,6 +49,7 @@ Bixby::Application.routes.draw do
   get 'getting_started' => "ui#default"
 
   get 'profile' => "ui#default"
+  get 'profile/edit' => "ui#default"
 
   get "/inventory" => "inventory::hosts#index"
   namespace :inventory do

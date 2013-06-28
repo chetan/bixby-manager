@@ -28,3 +28,12 @@ Bixby.app.add_state(
 
     views:      [ _bv.PageLayout, _bv.Profile ]
 )
+
+Bixby.app.add_state(
+  class extends Stark.State
+
+    name: "profile_edit"
+    url:  "profile/edit"
+
+    views:      [ _bv.PageLayout, _bv.ProfileEdit ]
+)

@@ -1,0 +1,60 @@
+
+<h2>
+  <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
+    <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
+  <span><%= current_user.name() %></span>
+</h2>
+
+<div class="row-fluid">
+  <span><i class="icon-group"></i> <%= current_user.g("tenant") %></span><br>
+</div>
+
+
+<br>
+<form class="form-horizontal">
+
+  <!-- username -->
+  <div class="control-group">
+    <label for="username" class="control-label">Username</label>
+    <div class="controls">
+      <input type="text" id="username" value="<%= current_user.g("username") %>">
+    </div>
+  </div>
+
+  <!-- email -->
+  <div class="control-group">
+    <label for="email" class="control-label">Email</label>
+    <div class="controls">
+      <input type="text" id="email" value="<%= current_user.g("email") %>">
+    </div>
+  </div>
+
+  <!-- phone -->
+  <div class="control-group">
+    <label for="phone" class="control-label">Phone</label>
+    <div class="controls">
+      <input type="text" id="phone" value="<%= current_user.g("phone") %>">
+    </div>
+  </div>
+
+  <!-- password -->
+  <div class="control-group">
+    <label for="password" class="control-label">Password</label>
+    <div class="controls">
+      <input type="password" id="password">
+    </div>
+    <br>
+    <label for="password_confirmation" class="control-label">Confirm</label>
+    <div class="controls">
+      <input type="password" id="password_confirmation">
+    </div>
+  </div>
+
+  <!-- submit -->
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+
+</form>
