@@ -1,6 +1,7 @@
 
 #= require "./init"
 
+#= require "./util"
 #= require_tree "./models"
 
 #= require_tree "./main"
