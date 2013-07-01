@@ -1,5 +1,4 @@
 
-//= require "json3"
 //= require "jquery"
 //= require "underscore"
 //= require "underscore_patch"
