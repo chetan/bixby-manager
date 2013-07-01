@@ -13,6 +13,14 @@
 <br>
 <form class="form-horizontal">
 
+  <!-- name -->
+  <div class="control-group">
+    <label for="name" class="control-label">Username</label>
+    <div class="controls">
+      <input type="text" id="name" value="<%= current_user.name %>">
+    </div>
+  </div>
+
   <!-- username -->
   <div class="control-group">
     <label for="username" class="control-label">Username</label>
@@ -54,7 +62,7 @@
   <!-- submit -->
   <div class="control-group">
     <div class="controls">
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn btn-primary submit">Save</button>
     </div>
   </div>
 
