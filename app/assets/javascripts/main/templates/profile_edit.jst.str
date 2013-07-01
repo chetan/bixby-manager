@@ -2,11 +2,11 @@
 <h2>
   <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
     <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
-  <span><%= current_user.name() %></span>
+  <span><%= current_user.get_name() %></span>
 </h2>
 
 <div class="row-fluid">
-  <span><i class="icon-group"></i> <%= current_user.g("tenant") %></span><br>
+  <span><i class="icon-group"></i> <%= current_user.tenant %></span><br>
 </div>
 
 
@@ -17,7 +17,7 @@
   <div class="control-group">
     <label for="username" class="control-label">Username</label>
     <div class="controls">
-      <input type="text" id="username" value="<%= current_user.g("username") %>">
+      <input type="text" id="username" value="<%= current_user.username %>">
       <span id="valid_username"></span>
     </div>
   </div>
@@ -26,7 +26,7 @@
   <div class="control-group">
     <label for="email" class="control-label">Email</label>
     <div class="controls">
-      <input type="text" id="email" value="<%= current_user.g("email") %>">
+      <input type="text" id="email" value="<%= current_user.email %>">
     </div>
   </div>
 
@@ -34,7 +34,7 @@
   <div class="control-group">
     <label for="phone" class="control-label">Phone</label>
     <div class="controls">
-      <input type="text" id="phone" value="<%= current_user.g("phone") %>">
+      <input type="text" id="phone" value="<%= current_user.phone %>">
     </div>
   </div>
 
