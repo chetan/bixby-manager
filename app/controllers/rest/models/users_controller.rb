@@ -26,9 +26,13 @@ class Rest::Models::UsersController < UiController
   end
 
   def update
+    user = User.find(_id)
+    attrs = pick(:name, :username, :email, :phone, :password, :password_confirmation)
+    user.update_attributes(attrs)
+    restful user
   end
 
   def destroy
+    # TODO
   end
-
 end

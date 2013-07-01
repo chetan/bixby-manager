@@ -310,6 +310,24 @@ class Stark.View extends Backbone.View
       for mm in m
         @unbind_model(mm)
 
+  # Fetch the values for the named attributes in this view.
+  # This is a simple helper for retrieving values from forms.
+  #
+  # @param [String] names
+  #
+  # @return [Object] key/value pairs
+  get_attributes: (names) ->
+    ret = {}
+    for name in arguments
+      if name.indexOf(".") >= 0 or name.indexOf("#") >= 0
+        ret[name] = @$(name).val()
+      else
+        ret[name] = @$("##{name}").val() || @$(".#{name}").val()
+
+    return ret
+
+
+
 
 
 class Stark.Partial extends Stark.View

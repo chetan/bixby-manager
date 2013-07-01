@@ -11,7 +11,7 @@ namespace "Bixby.view", (exports, top) ->
 
       "keyup input#username": (e) ->
         u = $(e.target).val()
-        if u && u != @current_user.g("username")
+        if u && u != @current_user.username
           # check if its valid/not taken
           new Bixby.model.User().is_valid_username u, (data, status, xhr) ->
             if data.valid == true
@@ -22,6 +22,11 @@ namespace "Bixby.view", (exports, top) ->
         else
           $("span#valid_username").html('')
 
+      "click button.submit": (e) ->
+        e.preventDefault()
+        attr = @get_attributes("name", "username", "email", "phone", "password", "password_confirmation")
+        v = @
+        @current_user.save attr, { success: (model, res) -> v.transition("profile") } # TODO handle error
 
     }
 
