@@ -71,3 +71,13 @@ h2 {
         display: inline-block;
     }
 }
+
+form span.valid {
+    font-size: larger;
+    &.pass {
+        color: green;
+    }
+    &.fail {
+        color: red;
+    }
+}

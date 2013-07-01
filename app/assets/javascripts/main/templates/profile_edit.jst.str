@@ -15,7 +15,7 @@
 
   <!-- name -->
   <div class="control-group">
-    <label for="name" class="control-label">Username</label>
+    <label for="name" class="control-label">Name</label>
     <div class="controls">
       <input type="text" id="name" value="<%= current_user.name %>">
     </div>
@@ -26,7 +26,7 @@
     <label for="username" class="control-label">Username</label>
     <div class="controls">
       <input type="text" id="username" value="<%= current_user.username %>">
-      <span id="valid_username"></span>
+      <span class="valid username"></span>
     </div>
   </div>
 

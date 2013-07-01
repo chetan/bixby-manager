@@ -9,18 +9,19 @@ namespace "Bixby.view", (exports, top) ->
       "blur input#email": (e) ->
         _.mailcheck(e.target)
 
-      "keyup input#username": (e) ->
+      "keyup input#username": _.debounceR 200, (e) ->
+        span = @$("span.valid.username")
         u = $(e.target).val()
         if u && u != @current_user.username
           # check if its valid/not taken
           new Bixby.model.User().is_valid_username u, (data, status, xhr) ->
             if data.valid == true
-              $("span#valid_username").html('<i class="icon-ok"></i>').css("color", "green").css("font-size", "larger")
+              span.html('<i class="icon-ok"></i>').addClass("pass").removeClass("fail")
             else
-              $("span#valid_username").html('<i class="icon-remove"></i>').css("color", "red").css("font-size", "larger")
-              $("span#valid_username").append("(" + data.error + ")")
+              span.html('<i class="icon-remove"></i>').addClass("fail").removeClass("pass")
+              span.append("(" + data.error + ")")
         else
-          $("span#valid_username").html('')
+          span.html('')
 
       "click button.submit": (e) ->
         e.preventDefault()
