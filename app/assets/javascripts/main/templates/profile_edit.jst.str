@@ -56,6 +56,7 @@
     <label for="password_confirmation" class="control-label">Confirm</label>
     <div class="controls">
       <input type="password" id="password_confirmation">
+      <span class="valid password_confirmation"></span>
     </div>
   </div>
 
