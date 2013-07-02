@@ -140,20 +140,17 @@ class Stark.State
   dispose: (new_state) ->
     @log "disposing of state", @name, @
     @unbind_app_events()
-    _.each @_views, (v) ->
+    _.eachR @, @_views, (v) ->
       if ! (_.any(new_state.views, (n)-> v instanceof n) && v.reuse == true)
         # only dispose of view IF NOT required by new state
         v.dispose()
-    , @
 
   # Subscribe to all @app level events as defined in the @app_events var
   bind_app_events: ->
-    _.each @app_events, (cb, key) ->
+    _.eachR @, @app_events, (cb, key) ->
       @app.subscribe(key, cb, @)
-    , @
 
   # Unsubscribe all @app level events (see #bind_app_events)
   unbind_app_events: ->
-    _.each @app_events, (cb, key) ->
+    _.eachR @, @app_events, (cb, key) ->
       @app.unsubscribe(key, cb, @)
-    , @
