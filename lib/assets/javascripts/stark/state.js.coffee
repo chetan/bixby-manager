@@ -78,19 +78,27 @@ class Stark.State
         @log "will ajax load:", @[key]
         needed.push @[key]
 
-    # old implementation: we only copied data which was explicitly requested
-    # _.eachR @, @models, (model, key) ->
-    #   if data[key]
-    #     # copy into current [state] scope
-    #     @[key] = data[key]
-
-    #   else if _.isObject(model)
-    #     # create new model to be fetched
-    #     @[key] = new model(data)
-    #     @log "will ajax load:", @[key]
-    #     needed.push @[key]
-
     return needed
+
+  # Return the URL that represents this state (substituting any params in @url)
+  #
+  # While @url is used matching URLs to States, create_url() is used for updating
+  # the url in the address bar or creating a link to the state
+  create_url: ->
+    url = @url
+    for name in @route.paramNames
+      if name.match(/_id$/)
+        v = name.replace(/_id$/, '')
+        if @[v] && @[v].id
+          url = url.replace(":#{name}", @[v].id)
+        else
+          @log "WARNING: couldn't find substitution for #{name} in #{@url}"
+          return false
+
+      else if @[name] and _.isString(@[name])
+        url = url.replace(":#{name}", @[name])
+
+    return url
 
   # This is called by Stark when the state is loaded but just before rendering.
   # Must always return true when validate succeeds.
@@ -115,26 +123,6 @@ class Stark.State
   # optional, if extra teardown is needed (beyond normal dispose())
   deactivate: ->
     # NO-OP
-
-  # Return the URL that represents this state (substituting any params in @url)
-  #
-  # While @url is used matching URLs to States, create_url() is used for updating
-  # the url in the address bar or creating a link to the state
-  create_url: ->
-    url = @url
-    for name in @route.paramNames
-      if name.match(/_id$/)
-        v = name.replace(/_id$/, '')
-        if @[v] && @[v].id
-          url = url.replace(":#{name}", @[v].id)
-        else
-          @log "WARNING: couldn't find substitution for #{name} in #{@url}"
-          return false
-
-      else if @[name] and _.isString(@[name])
-        url = url.replace(":#{name}", @[name])
-
-    return url
 
   # Cleanup any resources used by the state. Should remove all views and unbind any events
   dispose: (new_state) ->
