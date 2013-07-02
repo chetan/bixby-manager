@@ -107,7 +107,7 @@ class Stark.View extends Backbone.View
     @$el.html(@render_html())
 
     @bind_app_events()
-    @attach_link_events()
+    @bind_link_events()
     @bind_models()
     @after_render()
     _.each @after_render_hooks, (hook) ->
@@ -121,9 +121,9 @@ class Stark.View extends Backbone.View
     # noop
 
   # Process @links hash and attach events
-  attach_link_events: ->
+  bind_link_events: ->
 
-    @log "attach_link_events", @
+    @log "bind_link_events", @
 
     if not @links?
       @log "binding events: ", @, @events
@@ -361,7 +361,7 @@ class Stark.Partial extends Stark.View
   # the parent view's template
   post_render: ->
     @setElement( @parent.$("span#" + @span_id) )
-    @attach_link_events()
+    @bind_link_events()
     @bind_models()
     @after_render()
     return @
