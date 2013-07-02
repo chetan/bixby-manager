@@ -173,8 +173,7 @@ class Stark.App
       @current_state.deactivate()
       @current_state.dispose(state)
 
-    ret = state.validate()
-    if ret != true
+    if state.validate() != true
       # short-circuit this state
       @log "new state validation failed, canceling activation", state
       @trigger("state:deactivate", state)
