@@ -15,7 +15,7 @@ module Bixby
         return hash
       end
 
-    end
+    end # Trigger
 
   end # ApiView
 end # Bixby

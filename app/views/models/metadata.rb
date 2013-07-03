@@ -14,7 +14,7 @@ module Bixby
         return hash
       end
 
-    end # Host
+    end # Metadata
 
   end # ApiView
 end # Bixby
