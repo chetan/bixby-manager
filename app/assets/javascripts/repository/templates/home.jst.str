@@ -1,0 +1,26 @@
+
+<h3>Repositories</h3>
+
+<p>
+  <a class="btn primary add_repo_link">Add Repository</a>
+</p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>URI</th>
+      <th>Branch</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% repos.each(function(repo) { %>
+      <tr>
+        <td><%= repo.name %></td>
+        <td><%= repo.uri %></td>
+        <td><%= repo.branch %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+

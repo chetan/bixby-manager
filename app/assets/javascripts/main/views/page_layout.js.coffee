@@ -10,6 +10,7 @@ namespace "Bixby.view", (exports, top) ->
       "a.brand": [ "inventory" ]
       ".tab.inventory a": [ "inventory" ]
       ".tab.monitoring a": [ "monitoring" ]
+      ".tab.repository a": [ "repository" ]
 
       # user menu
       "a#profile": [ "profile" ]

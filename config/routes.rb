@@ -23,6 +23,7 @@ Bixby::Application.routes.draw do
       resources :triggers
     end
 
+    resources :repos
     resources :commands do
       get "opts"
     end
@@ -74,6 +75,10 @@ Bixby::Application.routes.draw do
       resources :metrics
 
     end
+  end
+
+  get "/repository" => "repository::base#index"
+  namespace :repository do
   end
 
 
