@@ -62,6 +62,7 @@ class Stark.View extends Backbone.View
   # List of post-render hooks
   after_render_hooks: null
 
+  # Called from Backbone.View constructor
   initialize: (args) ->
     @_data = []
     @views = []
@@ -75,28 +76,19 @@ class Stark.View extends Backbone.View
     _.bindAll @
     return @
 
-  # Lookup @template in the global JST hash
-  jst: (tpl) ->
-    tpl ||= @template
-    @log "render ", @, "file: ", tpl
-    JST[tpl]
+  # Cleanup any resources used by the view. Should remove all views and unbind any events
+  dispose: ->
+    @log "disposing of view ", @
+    @$el.html("")
+    @unbind_app_events()
+    @undelegateEvents()
+    @unbind_models()
+    for v in @views
+      v.dispose()
+    @views = []
 
-  # Create a Template object for the configured @template
-  #
-  # In practice, this can be overidden to use your preferred
-  # template library, as long as it responds to #render(context),
-  # where context is a reference to the view itself.
-  create_template: ->
-    new Template(@jst())
 
-  render_html: ->
-    return "" if not @template?
-    @create_template().render(@)
-
-  # Redraw the view, taking care to first dispose of any events and subviews
-  redraw: ->
-    @dispose()
-    @render()
+  # Rendering methods
 
   # Default implementation of Backbone.View's render() method. Simply renders
   # the @template into the element defined by @selector.
@@ -119,6 +111,47 @@ class Stark.View extends Backbone.View
   # plugins, etc)
   after_render: ->
     # noop
+
+  # Redraw the view, taking care to first dispose of any events and subviews
+  redraw: ->
+    @dispose()
+    @render()
+
+  # Lookup @template in the global JST hash
+  jst: (tpl) ->
+    tpl ||= @template
+    @log "render ", @, "file: ", tpl
+    JST[tpl]
+
+  # Create a Template object for the configured @template
+  #
+  # In practice, this can be overidden to use your preferred
+  # template library, as long as it responds to #render(context),
+  # where context is a reference to the view itself.
+  create_template: ->
+    new Template(@jst())
+
+  # Render the configured @template to HTML
+  render_html: ->
+    return "" if not @template?
+    @create_template().render(@)
+
+  # Get or set the view's html.
+  #
+  # See also: jQuery.html()
+  html: (args...) ->
+    @$el.html(args...)
+
+  # Set the given data/model on the view
+  #
+  # @param [String] key
+  # @param [Object] val
+  set: (key, val) ->
+    @_data.push(val)
+    @[key] = val
+
+
+  # Events
 
   # Process @links hash and attach events
   bind_link_events: ->
@@ -186,6 +219,49 @@ class Stark.View extends Backbone.View
 
     return ret
 
+  # Bind all the models specified in @bindings
+  bind_models: ->
+    @log "binding models for view ", @
+    return if not @bindings?
+    for m in @bindings
+      if @[m]?
+        @unbind_model( @[m] )
+        @bind_model( @[m] )
+
+  # Bind a method to the given model, using this View as the context
+  #
+  # @param [Model] model
+  bind_model: (model) ->
+    model.bind_view(@)
+
+  # Subscribe to all @app level events as defined in the @app_events var
+  bind_app_events: ->
+    _.eachR @, @app_events, (cb, key) ->
+      @app.subscribe(key, cb, @)
+
+  # Unsubscribe all @app level events (see #bind_app_events)
+  unbind_app_events: ->
+    _.eachR @, @app_events, (cb, key) ->
+      @app.unsubscribe(key, cb, @)
+
+  # Unbind all models from this view
+  unbind_models: ->
+    for m in @_data
+      @unbind_model(m)
+
+  # Unbind the given model from this view
+  #
+  # @param [Model] m
+  unbind_model: (m) ->
+    if _.isObject(m) && _.isFunction(m["unbind_view"])
+      m.unbind_view(@)
+    else if _.isArray(m)
+      for mm in m
+        @unbind_model(mm)
+
+
+  # Methods dealing with partials, includes, etc.
+
   # A raw include of the contents of some other template. It will be bound with
   # the the same variables in this view.
   #
@@ -242,71 +318,12 @@ class Stark.View extends Backbone.View
     v.parent = @
     return v
 
-  html: (args...) ->
-    @$el.html(args...)
 
-  set: (key, val) ->
-    @_data.push(val)
-    @[key] = val
-
-  # Bind all the models specified in @bindings
-  bind_models: ->
-    @log "binding models for view ", @
-    return if not @bindings?
-    for m in @bindings
-      if @[m]?
-        @unbind_model( @[m] )
-        @bind_model( @[m] )
-
-  # Bind a method to the given model, using this View as the context
-  #
-  # @param [Model] model
-  bind_model: (model) ->
-    model.bind_view(@)
-
-  # Process a given string containing Markdown syntax
-  #
-  # @param [String] str
-  # @return [String] str converted to html
-  markdown: (str) ->
-    @_converter ||= new Markdown.Converter()
-    @_converter.makeHtml(str)
+  # Utility methods for use within view & view helpers
 
   # Proxy for Stark.state#transition
   transition: (state_name, state_data) ->
     @state.transition(state_name, state_data)
-
-  # Subscribe to all @app level events as defined in the @app_events var
-  bind_app_events: ->
-    _.eachR @, @app_events, (cb, key) ->
-      @app.subscribe(key, cb, @)
-
-  # Unsubscribe all @app level events (see #bind_app_events)
-  unbind_app_events: ->
-    _.eachR @, @app_events, (cb, key) ->
-      @app.unsubscribe(key, cb, @)
-
-  # Cleanup any resources used by the view. Should remove all views and unbind any events
-  dispose: ->
-    @log "disposing of view ", @
-    @$el.html("")
-    @unbind_app_events()
-    @undelegateEvents()
-    @unbind_models()
-    for v in @views
-      v.dispose()
-    @views = []
-
-  unbind_models: ->
-    for m in @_data
-      @unbind_model(m)
-
-  unbind_model: (m) ->
-    if _.isObject(m) && _.isFunction(m["unbind_view"])
-      m.unbind_view(@)
-    else if _.isArray(m)
-      for mm in m
-        @unbind_model(mm)
 
   # Fetch the values for the named attributes in this view.
   # This is a simple helper for retrieving values from forms.
@@ -323,3 +340,12 @@ class Stark.View extends Backbone.View
         ret[name] = @$("##{name}").val() || @$(".#{name}").val()
 
     return ret
+
+  # Process a given string containing Markdown syntax
+  #
+  # @param [String] str
+  #
+  # @return [String] str converted to html
+  markdown: (str) ->
+    @_converter ||= new Markdown.Converter()
+    @_converter.makeHtml(str)
