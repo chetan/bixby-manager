@@ -18,6 +18,10 @@ class Repo < ActiveRecord::Base
   has_many :commands
   multi_tenant :via => :org
 
+  def self.for_org(id)
+    where(:org_id => [nil, id])
+  end
+
   def path
     if org_id.nil? and name == "vendor" then
       File.join(Bixby.repo_path, name)
