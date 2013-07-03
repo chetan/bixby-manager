@@ -110,8 +110,8 @@ class Stark.View extends Backbone.View
     @bind_link_events()
     @bind_models()
     @after_render()
-    _.each @after_render_hooks, (hook) ->
-      hook.call()
+    _.eachR @, @after_render_hooks, (hook) ->
+      hook.call(@)
 
     return @
 
@@ -176,13 +176,12 @@ class Stark.View extends Backbone.View
       return ret
 
     if _.isArray(data)
-      _.each data, (key) ->
+      _.eachR @, data, (key) ->
         ret[key] = @[key]
-      , @
 
     else if _.isFunction(data)
       data = data.call(@, el)
-      _.each data, (val, key) ->
+      _.eachR @, data, (val, key) ->
         ret[key] = val
 
     return ret
@@ -284,9 +283,8 @@ class Stark.View extends Backbone.View
 
   # Unsubscribe all @app level events (see #bind_app_events)
   unbind_app_events: ->
-    _.each @app_events, (cb, key) ->
+    _.eachR @, @app_events, (cb, key) ->
       @app.unsubscribe(key, cb, @)
-    , @
 
   # Cleanup any resources used by the view. Should remove all views and unbind any events
   dispose: ->
