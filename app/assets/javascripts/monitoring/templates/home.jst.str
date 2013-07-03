@@ -19,7 +19,7 @@
       <tr>
         <td><%= oncall.g('name') %></td>
         <td><%= oncall_list(oncall) %></td>
-        <td><%= user_for(oncall).name() %></td>
+        <td><%= user_for(oncall).get_name() %></td>
         <td><%= handoff(oncall) %></td>
       </tr>
     <% }); %>

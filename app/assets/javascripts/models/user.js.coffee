@@ -35,4 +35,4 @@ namespace 'Bixby.model', (exports, top) ->
     url: "/rest/users"
 
     comparator: (user) ->
-      user.name()
+      user.get_name()

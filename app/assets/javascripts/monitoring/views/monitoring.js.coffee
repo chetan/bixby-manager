@@ -37,7 +37,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     oncall_list: (oncall) ->
       users = _.mapR @, oncall.get("users"), (id) -> @users.get(id)
-      users.map((u) -> u.name()).join(", ")
+      users.map((u) -> u.get_name()).join(", ")
 
     user_for: (obj) ->
       if _.isNumber(obj)
