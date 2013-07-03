@@ -1,4 +1,5 @@
 // TemplateJS v3.1.1 MIT/GPL2 @jon_neal
+// https://gist.github.com/jonathantneal/1651891
 (function (global) {
 	function escapeJS (str) {
 		return str.replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
@@ -64,6 +65,7 @@
 			'END_PROP': '%>'
 		}, helpers = instance.helpers = {
 			'=': function (js) {
+				// output js
 				return '__out__+=' + js + ';';
 			},
 			'-': function (js) {
@@ -71,18 +73,23 @@
 				return 'if (' + js + '){__out__+=' + js + '}';
 			},
 			'?': function (js) {
+				// open if block around js
 				return '{if((' + js + ')){';
 			},
 			'!': function (js) {
+				// open if block around !js
 				return '{if(!(' + js + ')){';
 			},
 			'#': function (js) {
+				// open for/with loop on an object 'js'
 				return 'for(var __property__ in ' + js + '){with(' + js + '[__property__]){';
 			},
 			'@': function (js) {
+				// open with block on object 'js'
 				return '{with(' + js + '){';
 			},
 			'/': function (js) {
+				// close open brackets
 				return '}}';
 			}
 		}
