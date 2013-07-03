@@ -27,7 +27,7 @@
         </li>
       </ul>
 
-      <%= render_partial(Bixby.view.NavSearch) %>
+      <%= partial(Bixby.view.NavSearch).get_html() %>
     </div>
 
   </div>

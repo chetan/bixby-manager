@@ -21,8 +21,9 @@ class Stark.Partial extends Stark.View
     else
       @parent.after_render_hooks.unshift(func)
 
-  partial_html: ->
+  get_html: ->
     # since html is being requested, setup a hook in the parent view
+    # to make sure that any events will be correctly bound after loading
     p = @
     @add_render_hook ->
       p.post_render()

@@ -269,7 +269,7 @@ class Stark.View extends Backbone.View
   include: (tpl) ->
     return new Template(@jst(tpl)).render(@)
 
-  # Render a partial (sub) view
+  # Render a partial (sub) view into the given selector
   #
   # @param [Class] clazz      class name of view to render
   # @param [Object] data      context data for partial
@@ -282,17 +282,6 @@ class Stark.View extends Backbone.View
       v.setElement( @$(selector) )
     v.render()
     return v
-
-  # Create a partial view and return the rendered HTML
-  #
-  # @param [Class] clazz      class name of view to render
-  # @param [Object] data      context data for partial
-  # @param [String] selector  optional CSS selector into which the partial view will be rendered
-  #
-  # @return [String] rendered HTML string
-  render_partial: (clazz, data, selector) ->
-    p = @partial(clazz, data, selector)
-    return p.partial_html()
 
   # Instantiate a partial class with the given data
   #

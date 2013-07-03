@@ -9,7 +9,7 @@
       </h3>
 
       <div class="tags">
-        <%= render_partial(Bixby.view.inventory.HostTags, {host: host}) %>
+        <%= partial(Bixby.view.inventory.HostTags, {host: host}).get_html() %>
       </div>
 
       <%? host.get("desc") %>
