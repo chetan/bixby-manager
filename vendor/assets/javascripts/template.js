@@ -66,6 +66,10 @@
 			'=': function (js) {
 				return '__out__+=' + js + ';';
 			},
+			'-': function (js) {
+				// output js if defined
+				return 'if (' + js + '){__out__+=' + js + '}';
+			},
 			'?': function (js) {
 				return '{if((' + js + ')){';
 			},
