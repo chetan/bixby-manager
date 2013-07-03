@@ -3,17 +3,19 @@
   <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
     <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
   <span><%= current_user.get_name() %></span>
-  <% if (current_user.get_name() !== current_user.username) { %>
+  <%? current_user.get_name() !== current_user.username %>
     <small title="your username"><%= current_user.username %></small>
-  <% } %>
+  <%/%>
 </h2>
 
 <div class="row-fluid">
   <span><i class="icon-group"></i> <%= current_user.tenant %></span><br>
-  <span><i class="icon-envelope"></i> <%= current_user.email %></span><br>
-  <% if (current_user.phone) { %>
+  <%? current_user.email %>
+    <span><i class="icon-envelope"></i> <%= current_user.email %></span><br>
+  <%/%>
+  <%? current_user.phone %>
     <span><i class="icon-phone"></i> <%= current_user.phone %></span><br>
-  <% } %>
+  <%/%>
 </div>
 
 <div class="row-fluid"><button class="btn btn-small btn-primary btn-edit">Edit</button></div>
