@@ -2,6 +2,8 @@
 // original from: https://github.com/af/backprop
 // checked out at ccb04d92ca6d5d0f4d5213a315874f69fc8e6a0f
 
+// currently using our fork: https://github.com/chetan/backprop/tree/alt_create
+
 (function(window) {
     "use strict";
 
@@ -81,6 +83,23 @@
             // support for varargs form
             for (var i = 1; i < arguments.length; i+=2) {
                 new PropPlaceholder(arguments[i+1]).createProperty(proto, arguments[i]);
+            }
+        }
+    };
+
+    /**
+     * Easier way to create a list of String properties
+     */
+    Backprop.create_strings = function(proto, names) {
+        if (arguments.length === 2) {
+            // support for array form
+            for (var n in names) {
+                Backprop.create(proto, n, {coerce: String});
+            }
+        } else if (arguments.length > 2) {
+            // support for varargs form
+            for (var i = 1; i < arguments.length; i++) {
+                Backprop.create(proto, arguments[i], {coerce: String});
             }
         }
     };

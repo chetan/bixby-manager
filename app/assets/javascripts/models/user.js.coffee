@@ -3,15 +3,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.User extends Stark.Model
     urlRoot: "/rest/users"
-
-    Backprop.create @, {
-      name:     {coerce: String}
-      username: {coerce: String}
-      email:    {coerce: String}
-      phone:    {coerce: String}
-      org:      {coerce: String}
-      tenant:   {coerce: String}
-    }
+    Backprop.create_strings @, "name", "username", "email", "phone", "org", "tenant"
 
     get_name: ->
       @get("name") || @get("username")
