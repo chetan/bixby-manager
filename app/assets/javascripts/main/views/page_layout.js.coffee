@@ -36,8 +36,3 @@ namespace "Bixby.view", (exports, top) ->
             $("div.navbar li.tab.#{@current_tab}").addClass("active")
 
     }
-
-    render: ->
-      super
-      @breadcrumb = @partial(exports.Breadcrumb)
-      @$("#breadcrumb").append(@breadcrumb.$el)
