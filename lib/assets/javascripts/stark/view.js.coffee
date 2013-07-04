@@ -266,8 +266,10 @@ class Stark.View extends Backbone.View
   # the the same variables in this view.
   #
   # @param [String] tpl     Template to include
-  include: (tpl) ->
-    return new Template(@jst(tpl)).render(@)
+  # @param [Object] data    Optional data to include in context
+  include: (tpl, data) ->
+    data ||= {}
+    return new Template(@jst(tpl)).render( _.extend({}, @, data) )
 
   # Render a partial (sub) view into the given selector
   #

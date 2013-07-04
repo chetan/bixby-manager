@@ -1,0 +1,17 @@
+
+<%
+// set some defaults
+// only name is required
+this.label = this.label || (name.substr(0, 1).toUpperCase() + name.substr(1));
+this.type = this.type || "text";
+this.value = this.value || null;
+this.validation = this.validation || false;
+%>
+
+<div class="control-group">
+  <label for="<%= name %>" class="control-label"><%= label %></label>
+  <div class="controls">
+    <input type="<%= (type || 'text') %>" id="<%= name %>" value="<%- value %>">
+    <%? validation %><span class="valid <%= name %>"></span><%/%>
+  </div>
+</div>
