@@ -161,10 +161,10 @@ class Stark.View extends Backbone.View
   # Process @links hash and attach events
   bind_link_events: ->
 
-    @log "bind_link_events", @
+    # @log "bind_link_events", @
 
     if not @links?
-      @log "binding events: ", @, @events
+      # @log "binding events: ", @, @events
       @delegateEvents(@events)
       return
 
@@ -200,7 +200,7 @@ class Stark.View extends Backbone.View
 
         @$(el).attr("href", url)
 
-    @log "binding events: ", @, link_events
+    # @log "binding events: ", @, link_events
     @delegateEvents(link_events)
 
   # Helper for resolving data to a set of actual values
@@ -226,7 +226,7 @@ class Stark.View extends Backbone.View
 
   # Bind all the models specified in @bindings
   bind_models: ->
-    @log "binding models for view ", @
+    # @log "binding models for view ", @
     return if not @bindings?
     for m in @bindings
       if @[m]?

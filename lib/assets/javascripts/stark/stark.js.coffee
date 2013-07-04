@@ -103,6 +103,7 @@ class Stark.App
   # - else, load data via ajax then render views
   #
   transition: (state_name, state_data) ->
+    @log "---"
     @log "transition", state_name, state_data
     @trigger "before:transition", state_name, state_data
     target_state = @states[state_name]
@@ -150,8 +151,6 @@ class Stark.App
         app.render_views(state)
     else
       @render_views(state)
-
-    @log "---"
 
   # Copy all of the known model data from state into the view
   #
