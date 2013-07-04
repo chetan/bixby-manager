@@ -3,12 +3,13 @@
 #
 # @param [Element] target
 _.mailcheck = (target) ->
-  $(target).mailcheck({
-  suggested: (el, suggestion) ->
-    $(el).popover({
-      content: "Did you mean " + suggestion.full + "?"
-    }).popover("show")
+  Kicksend.mailcheck.run({
+    email: $(target).val()
+    suggested: (suggestion) ->
+      $(target).popover({
+        content: "Did you mean " + suggestion.full + "?"
+      }).popover("show")
 
-  empty: (el) ->
-    $(el).popover("hide")
-  })
+    empty: ->
+      $(target).popover("hide")
+    })

@@ -6,7 +6,7 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/profile_edit"
 
     events: {
-      "blur input#email": (e) ->
+      "focusout input#email": (e) ->
         _.mailcheck(e.target)
 
       "keyup input#username": _.debounceR 200, (e) ->
