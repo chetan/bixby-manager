@@ -128,13 +128,18 @@ class Stark.View extends Backbone.View
   # In practice, this can be overidden to use your preferred
   # template library, as long as it responds to #render(context),
   # where context is a reference to the view itself.
-  create_template: ->
-    new Template(@jst())
+  #
+  # @param [String] src       Contents of the template
+  #
+  # @return [Template]
+  create_template: (src) ->
+    new Template(src)
 
   # Render the configured @template to HTML
   render_html: ->
-    return "" if not @template?
-    @create_template().render(@)
+    tpl = @jst()
+    return "" if not @template? or not tpl
+    @create_template(tpl).render(@)
 
   # Get or set the view's html.
   #
@@ -269,7 +274,7 @@ class Stark.View extends Backbone.View
   # @param [Object] data    Optional data to include in context
   include: (tpl, data) ->
     data ||= {}
-    return new Template(@jst(tpl)).render( _.extend({}, @, data) )
+    return @create_template(@jst(tpl)).render( _.extend({}, @, data) )
 
   # Render a partial (sub) view into the given selector
   #
