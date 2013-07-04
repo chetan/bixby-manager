@@ -17,7 +17,7 @@
     <% repos.each(function(repo) { %>
       <tr>
         <td><%= repo.name %></td>
-        <td><%= repo.uri %></td>
+        <td><a href="<%= repo.uri %>"><%= repo.uri %></a></td>
         <td><%= repo.branch %></td>
       </tr>
     <% }); %>
