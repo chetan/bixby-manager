@@ -7,4 +7,7 @@ class Repository::BaseController < UiController
     bootstrap repos, :type => Repo
   end
 
+  def new
+  end
+
 end

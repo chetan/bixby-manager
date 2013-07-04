@@ -1,0 +1,25 @@
+
+<h2>
+  Add Repository
+</h2>
+
+<br>
+<form class="form-horizontal">
+
+  <!-- name -->
+  <%= include("main/_text_input", {name: "name", label: "Name"}) %>
+
+  <!-- uri -->
+  <%= include("main/_text_input", {name: "uri", label: "URI"}) %>
+
+  <!-- branch -->
+  <%= include("main/_text_input", {name: "branch", label: "Branch"}) %>
+
+  <!-- submit -->
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary submit">Add</button>
+    </div>
+  </div>
+
+</form>

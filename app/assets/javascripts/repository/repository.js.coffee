@@ -2,7 +2,6 @@
 #= require_tree "./views"
 
 _bv = Bixby.view
-_bvr = _bv.repository
 _bm = Bixby.model
 
 Bixby.app.add_state(
@@ -11,6 +10,15 @@ Bixby.app.add_state(
     url:    "repository"
     tab:    "repository"
 
-    views:      [ _bv.PageLayout, _bvr.Repository ]
+    views:      [ _bv.PageLayout, _bv.Repository ]
     models:     { repos: _bm.RepoList }
+)
+
+Bixby.app.add_state(
+  class extends Stark.State
+    name:   "repo_new"
+    url:    "repository/new"
+    tab:    "repository"
+
+    views:      [ _bv.PageLayout, _bv.RepositoryNew ]
 )
