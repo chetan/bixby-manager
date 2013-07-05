@@ -51,6 +51,7 @@ gem "scrypt"
 gem "authlogic"
 gem "api-auth"
 
+# repository module
 gem "git"
 
 # rails plugins
@@ -61,9 +62,6 @@ gem "delete_paranoid"   # https://github.com/socialcast/delete_paranoid
 # notifications module
 gem "twilio-ruby"
 gem "pony"
-
-# metrics
-gem "mongoid"
 
 # scheduler module
 # though hiredis is an extension, it should degrade gracefull for jruby
@@ -79,6 +77,7 @@ gem "sinatra"              # for sidekiq web ui
 
 # metrics module
 gem 'continuum', :git => "https://github.com/chetan/continuum.git"
+gem "mongoid"
 
 group :assets do
     gem 'turbo-sprockets-rails3'
