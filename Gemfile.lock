@@ -254,6 +254,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.23)
     minitest (4.7.4)
+    mixlib-shellout (1.1.0)
     mocha (0.13.3)
       metaclass (~> 0.0.1)
     mock_redis (0.7.0)
@@ -500,6 +501,7 @@ DEPENDENCIES
   lograge
   memcached
   minitest
+  mixlib-shellout
   mocha
   mock_redis
   mongoid

@@ -50,6 +50,7 @@ gem "oj",           :platforms => [:mri, :rbx]
 gem "scrypt"
 gem "authlogic"
 gem "api-auth"
+gem "mixlib-shellout"
 
 # repository module
 gem "git"
