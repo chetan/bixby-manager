@@ -8,6 +8,7 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     @wd = Dir.pwd
     Dir.chdir(@tmp)
     ENV["BIXBY_HOME"] = @tmp
+    FileUtils.mkdir_p(Bixby.repo_path)
   end
 
   def teardown
@@ -16,15 +17,18 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     Dir.chdir(@wd)
   end
 
-  def test_git_repo_clone
+  def test_git_repo_clone_and_update
+
+    # for some reason system() git commands directly screws up with working dir
+    # issues. using git lib works..
 
     path = File.join(@tmp, "repo.git")
     FileUtils.mkdir_p(path)
     Dir.chdir(path)
-    system("git init > /dev/null")
+    g = Git.init(path)
     system("echo hi > readme")
-    system("git add readme > /dev/null")
-    system("git commit -m 'import' > /dev/null")
+    g.add("readme")
+    g.commit("import")
 
     org = FactoryGirl.create(:org)
     repo = Repo.new
@@ -33,13 +37,41 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     repo.uri = path
     repo.save!
 
+    # this should clone the repo
     Bixby::Repository.new.update
 
     assert File.directory? repo.path
     assert File.exists? File.join(repo.path, "readme")
 
-    system("ls -al #{@tmp}/repo/")
+    # try updating the repo now
+    system("echo yo > readme2")
+    g.add("readme2")
+    g.commit("test2")
 
+    refute File.exists? File.join(repo.path, "readme2")
+
+    Bixby::Repository.new.update
+    assert File.exists? File.join(repo.path, "readme2")
+    assert_equal "yo\n", File.read(File.join(repo.path, "readme2"))
+  end
+
+  def test_git_clone_private
+    key_path = File.join(Rails.root, "test", "support", "keys")
+
+    org = FactoryGirl.create(:org)
+    repo = Repo.new
+    repo.org = org
+    repo.name = "test"
+    repo.uri = "git@github.com:chetan/bixby-test-private-repo.git"
+    repo.private_key = File.read(File.join(key_path, "id_rsa"))
+    repo.public_key = File.read(File.join(key_path, "id_rsa.pub"))
+    repo.save!
+
+
+    Bixby::Repository.new.update
+
+    assert File.directory? repo.path
+    assert File.exists? File.join(repo.path, "README.md")
   end
 
 
