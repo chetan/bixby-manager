@@ -1,5 +1,4 @@
 
-
 namespace :db do
   desc "connect to the db console"
   task :console do
@@ -20,8 +19,10 @@ namespace :db do
       cmd << (conf[:username] ? conf[:username] : "root")
       cmd << "-W" if conf[:password]
       cmd << conf[:database]
+    elsif conf[:adapter] == "sqlite3" then
+      cmd = [ "sqlite3", File.join(Rails.root.to_s, conf[:database]) ]
     else
-      raise "only mysql and postgresql are supported for now"
+      raise "only mysql, postgresql and sqlite3 are supported for now"
     end
 
     cmd = cmd.join(" ")
