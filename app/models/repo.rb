@@ -18,6 +18,10 @@ class Repo < ActiveRecord::Base
   has_many :commands
   multi_tenant :via => :org
 
+  def self.for_user(user)
+    for_org(user.org_id)
+  end
+
   def self.for_org(id)
     where(:org_id => [nil, id])
   end
