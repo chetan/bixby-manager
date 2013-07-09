@@ -11,7 +11,7 @@ Bixby.app.add_state(
     tab:    "repository"
 
     views:      [ _bv.PageLayout, _bv.Repository ]
-    models:     { repos: _bm.RepoList }
+    models:     { repos: _bm.RepoList, commands: _bm.CommandList }
 )
 
 Bixby.app.add_state(

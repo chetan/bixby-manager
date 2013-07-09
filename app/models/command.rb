@@ -30,4 +30,7 @@ class Command < ActiveRecord::Base
     return Bixby::CommandSpec.new(attrs)
   end
 
+  def self.for_repos(repos)
+    where(:repo_id => repos.map{|r| r.id})
+  end
 end
