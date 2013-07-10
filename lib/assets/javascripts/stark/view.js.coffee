@@ -94,17 +94,12 @@ class Stark.View extends Backbone.View
   # the @template into the element defined by @selector.
   #
   # Custom rendering should usually call super() before any additional
-  # rendering.
+  # rendering and always return itself.
+  #
+  # @return [Bixby.View] returns the view for chaining
   render: ->
     @$el.html(@render_html())
-
-    @bind_app_events()
-    @bind_link_events()
-    @bind_models()
-    @after_render()
-    _.eachR @, @after_render_hooks, (hook) ->
-      hook.call(@)
-
+    @bind_events()
     return @
 
   # Actions to perform after rendering (e.g., attach custom events, jquery
@@ -120,7 +115,7 @@ class Stark.View extends Backbone.View
   # Lookup @template in the global JST hash
   jst: (tpl) ->
     tpl ||= @template
-    @log "render ", @, "file: ", tpl
+    @log "render #{tpl}" #,"\n\t\t\t", @
     JST[tpl]
 
   # Create a Template object for the configured @template
@@ -158,21 +153,32 @@ class Stark.View extends Backbone.View
 
   # Events
 
+  # Bind all events
+  bind_events: ->
+    @bind_app_events()
+    @bind_link_events()
+    @bind_models()
+    @after_render()
+    _.eachR @, @after_render_hooks, (hook) ->
+      hook.call(@)
+
   # Process @links hash and attach events
   bind_link_events: ->
 
     # @log "bind_link_events", @
 
     if not @links?
-      # @log "binding events: ", @, @events
+      # @log "binding events: ", @events
       @delegateEvents(@events)
       return
 
     link_events = @events || {}
 
-    _.eachR @, @links, (link, sel) ->
+    # @log "looking for link events", _.keys(@links), @$el
 
-      _.eachR @, @$(sel), (el) ->
+    _.eachR @, @links, (link, sel) -> # loop over each link definition
+
+      _.eachR @, @$(sel), (el) -> # loop over each matching link
 
         state = link[0]
         data = null
@@ -200,7 +206,7 @@ class Stark.View extends Backbone.View
 
         @$(el).attr("href", url)
 
-    # @log "binding events: ", @, link_events
+    # @log "binding link events: ", link_events
     @delegateEvents(link_events)
 
   # Helper for resolving data to a set of actual values
@@ -269,20 +275,37 @@ class Stark.View extends Backbone.View
 
   # A raw include of the contents of some other template. It will be bound with
   # the the same variables in this view.
+  # The target template is rendered as plain text with no  events or other bindings.
+  #
+  # NOTE: This should be called from within a template
   #
   # @param [String] tpl     Template to include
   # @param [Object] data    Optional data to include in context
   include: (tpl, data) ->
+    @log "include #{tpl}"
     data ||= {}
     return @create_template(@jst(tpl)).render( _.extend({}, @, data) )
 
+  # Create a partial, setup its events, and return the HTML
+  #
+  # NOTE: This should be called from within a template
+  #
+  # @param [Class] clazz      class name of view to render
+  # @param [Object] data      context data for partial
+  #
+  # @return [String] html
+  include_partial: (clazz, data) ->
+    return @create_partial(clazz, data).render_partial_html()
+
   # Render a partial (sub) view into the given selector
+  #
+  # NOTE: this should be called from within a View class
   #
   # @param [Class] clazz      class name of view to render
   # @param [Object] data      context data for partial
   # @param [String] selector  optional CSS selector into which the partial view will be rendered
   #
-  # @return [Object] view instance
+  # @return [Bixby.Partial] view instance
   partial: (clazz, data, selector) ->
     v = @create_partial(clazz, data)
     if selector?
