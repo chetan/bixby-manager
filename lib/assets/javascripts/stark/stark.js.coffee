@@ -83,8 +83,7 @@ class Stark.App
   # bound to app:route event which is triggered by Route.handler method
   # will get triggered whenever user uses back/forward browser nav
   matchRoute: (route, params) ->
-    @log "matchRoute()", route.state_name
-    @log route, "params: ", params
+    @log "matchRoute()", route.state_name, "params:", params
     @transition route.state_name, { params: params } # transition and pass in params
 
 
