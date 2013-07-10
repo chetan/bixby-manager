@@ -35,3 +35,15 @@ _.isScrolledIntoView = (el) ->
   elBottom = elTop + $(el).height()
 
   return ((elBottom <= docViewBottom) && (elTop >= docViewTop))
+
+_.disable = (el) ->
+  $(el).addClass("disabled")
+
+_.enable = (el) ->
+  $(el).removeClass("disabled")
+
+_.pass = (el) ->
+  $(el).addClass("pass").removeClass("fail")
+
+_.fail = (el) ->
+  $(el).addClass("fail").removeClass("pass")
