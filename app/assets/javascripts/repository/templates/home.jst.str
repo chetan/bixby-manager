@@ -15,11 +15,7 @@
   </thead>
   <tbody>
     <% repos.each(function(repo) { %>
-      <tr>
-        <td><%= repo.name %></td>
-        <td><a href="<%= repo.uri %>"><%= repo.uri %></a></td>
-        <td><%= repo.branch %></td>
-      </tr>
+      <%= include_partial(Bixby.view.RepoRow, {repo: repo}) %>
     <% }); %>
   </tbody>
 </table>

@@ -16,9 +16,19 @@ Bixby.app.add_state(
 
 Bixby.app.add_state(
   class extends Stark.State
+    name:   "repository_view"
+    url:    "repository/:repo_id"
+    tab:    "repository"
+
+    views:      [ _bv.PageLayout, _bv.RepoView ]
+    models:     { repo: _bm.Repo, commands: _bm.CommandList }
+)
+
+Bixby.app.add_state(
+  class extends Stark.State
     name:   "repo_new"
     url:    "repository/new"
     tab:    "repository"
 
-    views:      [ _bv.PageLayout, _bv.RepositoryNew ]
+    views:      [ _bv.PageLayout, _bv.RepoNew ]
 )

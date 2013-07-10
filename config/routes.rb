@@ -77,10 +77,9 @@ Bixby::Application.routes.draw do
     end
   end
 
-  get "/repository" => "repository::base#index"
-  get "/repository/new" => "repository::base#new"
-  namespace :repository do
-  end
+  get "/repository" => "repository#index"
+  get "/repository/new" => "repository#new"
+  get "/repository/:id" => "repository#show"
 
 
   ##############################################################################

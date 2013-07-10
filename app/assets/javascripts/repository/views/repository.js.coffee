@@ -10,3 +10,11 @@ namespace "Bixby.view", (exports, top) ->
 
     }
 
+  class exports.RepoRow extends Stark.Partial
+
+    template: "repository/_repo_row"
+
+    links: {
+      "a.repo": [ "repository_view", (el) -> { repo: @repo } ]
+    }
+

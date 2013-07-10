@@ -1,0 +1,6 @@
+
+<tr>
+  <td><a class="repo"><%= repo.name %></a></td>
+  <td><a href="<%= repo.uri %>"><%= repo.uri %></a></td>
+  <td><%= repo.branch %></td>
+</tr>

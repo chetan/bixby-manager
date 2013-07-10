@@ -1,7 +1,7 @@
 
 namespace "Bixby.view", (exports, top) ->
 
-  class exports.RepositoryNew extends Stark.View
+  class exports.RepoNew extends Stark.View
     el: "#content"
     template: "repository/new"
 
