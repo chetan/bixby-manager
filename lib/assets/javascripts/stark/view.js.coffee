@@ -320,7 +320,9 @@ class Stark.View extends Backbone.View
   #
   # @return [Object] view class instance
   create_partial: (clazz, data) ->
-    data ||= {}
+
+    # copy state data and override with passed in props
+    data = _.extend({}, @state._data, data)
     data.app = @app
     data.state = @state
 
