@@ -13,3 +13,25 @@ _.mailcheck = (target) ->
     empty: ->
       $(target).popover("hide")
     })
+
+# setTimeoutR - allows passing timeout as first param
+window.setTimeoutR = (timeout, func) ->
+  window.setTimeout(func, timeout)
+
+# split which handles empty string correctly
+_.split = (str, regex) ->
+  if ! str
+    return []
+  return str.split(regex)
+
+# Check whether the given element is in the current viewport
+#
+# via: http://stackoverflow.com/questions/487073/check-if-element-is-visible-after-scrolling#488073
+_.isScrolledIntoView = (el) ->
+  docViewTop = $(window).scrollTop()
+  docViewBottom = docViewTop + $(window).height()
+
+  elTop = $(el).offset().top
+  elBottom = elTop + $(el).height()
+
+  return ((elBottom <= docViewBottom) && (elTop >= docViewTop))
