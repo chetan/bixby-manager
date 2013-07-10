@@ -191,10 +191,10 @@ ActiveRecord::Schema.define(:version => 20130705152009) do
     t.string   "name"
     t.string   "uri"
     t.string   "branch"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.text     "private_key"
     t.text     "public_key"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "repos", ["org_id"], :name => "fk_repos_orgs1"
@@ -291,5 +291,58 @@ ActiveRecord::Schema.define(:version => 20130705152009) do
   add_index "users", ["last_request_at"], :name => "index_users_on_last_request_at"
   add_index "users", ["org_id"], :name => "fk_users_orgs1"
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
+
+  add_foreign_key "actions", "triggers", :name => "actions_trigger_id_fk"
+
+  add_foreign_key "agents", "hosts", :name => "fk_agents_hosts1"
+
+  add_foreign_key "annotations", "hosts", :name => "fk_annotations_hosts1"
+
+  add_foreign_key "checks", "agents", :name => "fk_checks_agents1"
+  add_foreign_key "checks", "commands", :name => "fk_checks_commands1"
+  add_foreign_key "checks", "hosts", :name => "checks_host_id_fk"
+
+  add_foreign_key "commands", "repos", :name => "fk_commands_repos1"
+
+  add_foreign_key "escalation_policies", "on_calls", :name => "fk_escalation_policies_on_calls"
+  add_foreign_key "escalation_policies", "orgs", :name => "fk_escalation_policies_orgs"
+
+  add_foreign_key "host_groups", "host_groups", :name => "fk_host_groups_host_groups1", :column => "parent_id"
+  add_foreign_key "host_groups", "orgs", :name => "fk_host_groups_orgs1"
+
+  add_foreign_key "hosts", "orgs", :name => "fk_hosts_orgs1"
+
+  add_foreign_key "hosts_host_groups", "host_groups", :name => "fk_hosts_host_groups_host_groups1"
+  add_foreign_key "hosts_host_groups", "hosts", :name => "fk_hosts_host_groups_hosts1"
+
+  add_foreign_key "hosts_metadata", "hosts", :name => "fk_hosts_metadata_hosts1"
+  add_foreign_key "hosts_metadata", "metadata", :name => "fk_hosts_metadata_metadata1", :column => "metadata_id"
+
+  add_foreign_key "metric_infos", "commands", :name => "fk_command_keys_commands1"
+
+  add_foreign_key "metrics", "checks", :name => "fk_metrics_checks1"
+
+  add_foreign_key "metrics_metadata", "metadata", :name => "fk_metrics_metadata_metadata1", :column => "metadata_id"
+  add_foreign_key "metrics_metadata", "metrics", :name => "fk_metrics_metadata_metrics1"
+
+  add_foreign_key "on_calls", "orgs", :name => "fk_on_calls_orgs"
+  add_foreign_key "on_calls", "users", :name => "fk_on_calls_users", :column => "current_user_id"
+
+  add_foreign_key "orgs", "tenants", :name => "fk_orgs_tenants1"
+
+  add_foreign_key "repos", "orgs", :name => "fk_repos_orgs1"
+
+  add_foreign_key "resources", "hosts", :name => "fk_resources_hosts1"
+
+  add_foreign_key "taggings", "tags", :name => "fk_taggings_tags1"
+
+  add_foreign_key "trigger_histories", "checks", :name => "trigger_histories_check_id_fk"
+  add_foreign_key "trigger_histories", "metrics", :name => "trigger_histories_metric_id_fk"
+  add_foreign_key "trigger_histories", "triggers", :name => "trigger_histories_trigger_id_fk"
+
+  add_foreign_key "triggers", "checks", :name => "triggers_check_id_fk"
+  add_foreign_key "triggers", "metrics", :name => "triggers_metric_id_fk"
+
+  add_foreign_key "users", "orgs", :name => "fk_users_orgs1"
 
 end
