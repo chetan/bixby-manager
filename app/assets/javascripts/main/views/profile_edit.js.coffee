@@ -17,10 +17,10 @@ namespace "Bixby.view", (exports, top) ->
           # check if its valid/not taken
           new Bixby.model.User().is_valid_username u, (data, status, xhr) ->
             if data.valid == true
-              _.pass span.html('<i class="icon-ok"></i>')
+              _.pass span.html(_.icon("ok"))
               v.enable_save()
             else
-              _.fail span.html('<i class="icon-remove"></i>').append("(#{data.error})")
+              _.fail span.html(_.icon("remove")).append("(#{data.error})")
               v.disable_save()
 
         else
@@ -50,10 +50,10 @@ namespace "Bixby.view", (exports, top) ->
       span = @$("span.valid.password_confirmation")
       p = @$("#password").val()
       if p && p == @$("#password_confirmation").val()
-        _.pass span.html('<i class="icon-ok"></i>')
+        _.pass span.html(_.icon("ok"))
         @enable_save()
       else
-        _.fail span.html('<i class="icon-remove"></i>  (passwords must match)')
+        _.fail span.html(_.icon("remove") + ' (passwords must match)')
         @disable_save()
 
     after_render: ->
