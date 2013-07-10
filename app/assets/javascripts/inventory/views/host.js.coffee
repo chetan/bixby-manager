@@ -33,9 +33,11 @@ namespace "Bixby.view.inventory", (exports, top) ->
       if @_md?
         @_md.dispose()
 
-      @_md = @partial exports.HostMetadata,
+      @_md = @partial(
+        exports.HostMetadata,
         { metadata: @host.get("metadata") },
         "div.host div.metadata"
+        )
 
       @_he ||= @partial(exports.HostEditor, { host: @host })
       @_he.setButton( @$("span.edit button.edit") )

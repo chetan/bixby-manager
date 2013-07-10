@@ -6,7 +6,7 @@
         <span class="edit"><button class="btn btn-mini edit">edit</button></span>
       </h3>
       <div class="tags">
-        <%= partial(Bixby.view.inventory.HostTags, {host: host}).get_html() %>
+        <%= include_partial(Bixby.view.inventory.HostTags, {host: host}) %>
       </div>
       <%? host.get("desc") %>
         <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>

@@ -35,8 +35,8 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
       list = $(".new_host_list")
       _.eachR @, @new_hosts, (host) ->
-        list.append( @partial(exports.HostTableNewRow, { host: host }).$el )
+        list.append @partial(exports.HostTableRow, { host: host }).$el
 
       list = $(".host_list")
       _.eachR @, @other_hosts, (host) ->
-        list.append( @partial(exports.HostTableRow, { host: host }).$el )
+        list.append @partial(exports.HostTableRow, { host: host }).$el
