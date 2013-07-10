@@ -9,7 +9,7 @@ class Stark.ModelBinding
     parent = view.parent
     while parent?
       if _.include @bound_views, parent
-        @log "found a parent view already bound, bailing"
+        # @log "found a parent view already bound, bailing"
         return
       parent = parent.parent
 
