@@ -11,6 +11,9 @@ class RepositoryController < Repository::BaseController
   end
 
   def show
+    repo = Repo.find(_id)
+    bootstrap repo
+    bootstrap Command.for_repos([repo]), :type => Command
   end
 
   def new

@@ -20,27 +20,4 @@
   </tbody>
 </table>
 
-
-<h3>Commands</h3>
-
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Bundle</th>
-      <th>Command</th>
-      <th>Repo</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% commands.each(function(command) { %>
-      <tr>
-        <td><%= command.name %></td>
-        <td><%= command.bundle %></td>
-        <td><%= command.command %></td>
-        <td><%= command.repo %></td>
-      </tr>
-    <% }); %>
-  </tbody>
-</table>
-
+<%= include_partial(Bixby.view.CommandTable) %>

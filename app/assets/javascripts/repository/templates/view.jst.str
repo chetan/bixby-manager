@@ -1,1 +1,5 @@
 
+<h3>Repository: <%= repo.name %></h3>
+<a href="<%= repo.uri %>"><%= repo.uri %></a>
+
+<%= include_partial(Bixby.view.CommandTable) %>

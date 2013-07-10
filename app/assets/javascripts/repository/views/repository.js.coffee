@@ -18,3 +18,5 @@ namespace "Bixby.view", (exports, top) ->
       "a.repo": [ "repository_view", (el) -> { repo: @repo } ]
     }
 
+  class exports.CommandTable extends Stark.Partial
+    template: "repository/_command_table"
