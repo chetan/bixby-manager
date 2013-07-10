@@ -46,6 +46,10 @@ class Stark.State
   # List of events to subscribe to at the @app level
   app_events: null
 
+  # internal attributes (initialized in constructor below)
+  _data: null
+  _views: null
+
   constructor: ->
     # internal attributes
     @_data  = []
