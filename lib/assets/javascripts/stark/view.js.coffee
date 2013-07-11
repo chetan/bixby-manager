@@ -73,7 +73,7 @@ class Stark.View extends Backbone.View
         if v instanceof Stark.Model
           @_data.push(v)
 
-    _.bindAll @
+    # _.bindAll @, _.functions(@) # don't think this is even needed
     return @
 
   # Cleanup any resources used by the view. Should remove all views and unbind any events
