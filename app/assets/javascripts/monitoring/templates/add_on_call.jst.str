@@ -39,7 +39,7 @@
       <label for="users">Users</label>
       <select name="users" id="users" multiple="true" class="input-xlarge">
         <% users.each(function(user) { %>
-          <option value="<%= user.g('id') %>"><%= user.name() %></option>
+          <option value="<%= user.id %>"><%= user.get_name() %></option>
         <% }); %>
       </select>
 
