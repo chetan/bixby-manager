@@ -10,4 +10,4 @@ namespace 'Bixby.model', (exports, top) ->
     url: "/rest/repos"
 
     comparator: (repo) ->
-      repo.name
+      repo.id
