@@ -50,3 +50,16 @@ _.pass = (el) ->
 
 _.fail = (el) ->
   $(el).addClass("fail").removeClass("pass")
+
+# Retrieve the value of the given [input] element. Properly handles
+# checkboxes
+_.val = (el) ->
+  if el.length
+    el = $(el[0])
+  else
+    el = $(el)
+
+  if el.prop("type") == "checkbox"
+    return el.prop("checked")
+  else
+    return el.val()

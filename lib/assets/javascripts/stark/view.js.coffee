@@ -356,9 +356,11 @@ class Stark.View extends Backbone.View
     ret = {}
     for name in arguments
       if name.indexOf(".") >= 0 or name.indexOf("#") >= 0
-        ret[name] = @$(name).val()
+        # use name directly if it contains a selector
+        ret[name] = _.val(@$(name))
       else
-        ret[name] = @$("##{name}").val() || @$(".#{name}").val()
+        # try to select by id or classname
+        ret[name] = _.val(@$("##{name}")) || _.val(@$(".#{name}"))
 
     return ret
 
