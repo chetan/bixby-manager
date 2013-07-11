@@ -42,4 +42,8 @@ class Repo < ActiveRecord::Base
     !git?
   end
 
+  def ssh_public_key
+    return SSHKey.new(self.private_key, :comment => "bixby").ssh_public_key
+  end
+
 end

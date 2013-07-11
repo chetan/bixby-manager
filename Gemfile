@@ -54,6 +54,7 @@ gem "mixlib-shellout"
 
 # repository module
 gem "git"
+gem "sshkey"
 
 # rails plugins
 gem "acts-as-taggable-on"

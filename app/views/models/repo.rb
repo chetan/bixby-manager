@@ -1,6 +1,4 @@
 
-require 'net/ssh'
-
 module Bixby
   module ApiView
 
@@ -16,15 +14,10 @@ module Bixby
 
         # add public_key
         if not obj.public_key.blank? then
-          hash[:public_key] = to_ssh_key(obj.private_key)
+          hash[:public_key] = obj.ssh_public_key
         end
 
         return hash
-      end
-
-      def self.to_ssh_key(key)
-        key = OpenSSL::PKey::RSA.new(key)
-        return "ssh-rsa " + [key.public_key.to_blob].pack("m0") + " bixby"
       end
     end # Repo
 

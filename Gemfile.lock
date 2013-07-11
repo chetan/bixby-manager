@@ -417,6 +417,7 @@ GEM
       sprockets (>= 2.0.3)
       tilt (>= 1.3.3)
     sqlite3 (1.3.7)
+    sshkey (1.5.1)
     temple (0.6.4)
     therubyracer (0.11.4)
       libv8 (~> 3.11.8.12)
@@ -548,6 +549,7 @@ DEPENDENCIES
   sprockets-font_compressor
   sprockets-jst-str
   sqlite3
+  sshkey
   test_guard!
   therubyracer
   turbo-sprockets-rails3
