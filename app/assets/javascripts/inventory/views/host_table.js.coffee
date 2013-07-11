@@ -6,21 +6,13 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     bindings: [ "hosts" ]
 
-    events: {
-      "focusin input.install": (e) ->
-        $(e.target).mouseup (e) ->
-          setTimeoutR 0, ->
-            e.target.select()
-          $(this).unbind()
-
-        setTimeoutR 0, ->
-          e.target.select()
+    events:
+      "focusin input.install": _.select_text
 
       "click button.add_host":(e) ->
         e.preventDefault()
-        $("#addHostModal").modal("show")
-
-    }
+        @$("#addHostModal").modal("show")
+        @$("#addHostModal input.install").focus()
 
     render: ->
       @new_hosts = @hosts.filter (h) -> h.is_new()
@@ -28,10 +20,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @query ?= "" # set default val
 
       super()
-
-      @$("#addHostModal").modal({show: false})
-      @$("#addHostModal").on "shown", ->
-        $("#addHostModal input.install").focus()
 
       list = $(".new_host_list")
       _.eachR @, @new_hosts, (host) ->
