@@ -32,6 +32,34 @@ class Repository < API
   end
 
 
+  # Create a new repository
+  #
+  # @param [Hash] opts
+  # @option opts [Fixnum] org_id
+  # @option opts [String] name
+  # @option opts [String] uri
+  # @option opts [String] branch
+  # @option opts [Boolean] requires_key   Whether or not the repository (must be git) requires a public key
+  #
+  # @return [Repo]
+  def create(opts)
+    requires_key = opts.delete(:requires_key)
+    r = Repo.new(opts)
+    if r.branch.blank? then
+      r.branch = r.git? ? "master" : "trunk"
+    end
+
+    if requires_key == true then
+      pair = OpenSSL::PKey::RSA.generate(2048)
+      r.private_key = pair.to_s
+      r.public_key = pair.public_key.to_s
+    end
+
+    r.save!
+    r
+  end
+
+
   private
 
   def init_vendor_repo
