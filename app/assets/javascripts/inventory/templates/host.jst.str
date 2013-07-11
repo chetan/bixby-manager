@@ -27,6 +27,7 @@
 
     <h4>Facts <button type="button" class="btn btn-mini refresh-facts"><i class="icon-refresh"></i></button></h4>
     <div class="metadata span8">
+      <%= include_partial(Bixby.view.inventory.HostMetadata, { metadata: host.get("metadata") }) %>
     </div>
 
   </div>

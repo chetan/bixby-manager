@@ -1,6 +1,6 @@
 namespace "Bixby.view.inventory", (exports, top) ->
 
-  class exports.HostMetadata extends Stark.View
+  class exports.HostMetadata extends Stark.Partial
     template: "inventory/_metadata"
     bindings: [ "host" ]
 
