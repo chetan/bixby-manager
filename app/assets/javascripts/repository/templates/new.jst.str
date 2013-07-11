@@ -10,7 +10,7 @@
   <%= include("main/_text_input", {name: "name", label: "Name"}) %>
 
   <!-- uri -->
-  <%= include("main/_text_input", {name: "uri", label: "URI", validation: true}) %>
+  <%= include("main/_text_input", {name: "uri", label: "URI"}) %>
 
   <!-- branch -->
   <%= include("main/_text_input", {name: "branch", label: "Branch"}) %>

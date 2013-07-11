@@ -17,7 +17,7 @@
   <%= include("main/_text_input", {name: "name", value: current_user.name}) %>
 
   <!-- username -->
-  <%= include("main/_text_input", {name: "username", value: current_user.username, validation: true}) %>
+  <%= include("main/_text_input", {name: "username", value: current_user.username}) %>
 
   <!-- email -->
   <%= include("main/_text_input", {name: "email", value: current_user.email}) %>
@@ -27,7 +27,7 @@
 
   <!-- password -->
   <%= include("main/_text_input", {name: "password", type: "password"}) %>
-  <%= include("main/_text_input", {name: "password_confirmation", label: "Confirm", type: "password", validation: true}) %>
+  <%= include("main/_text_input", {name: "password_confirmation", label: "Confirm", type: "password"}) %>
 
   <!-- submit -->
   <div class="control-group">
