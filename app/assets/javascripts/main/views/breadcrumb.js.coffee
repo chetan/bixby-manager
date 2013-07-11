@@ -20,3 +20,4 @@ namespace "Bixby.view", (exports, top) ->
       $("#breadcrumb").removeClass("hide")
       @$el.empty()
       @$el.append("<li>foobar</li>")
+      @

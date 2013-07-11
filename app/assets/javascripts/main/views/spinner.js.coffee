@@ -33,6 +33,7 @@ namespace "Bixby.view", (exports, top) ->
       @target = $(target)
       @spinner = new window.Spinner(@opts).spin()
       @target.append(@spinner.el)
+      @
 
     stop: ->
       @spinner.stop()

@@ -31,3 +31,5 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           view.log "with new metric: ", new_met
           view.metric = new_met
           view.redraw()
+
+      @

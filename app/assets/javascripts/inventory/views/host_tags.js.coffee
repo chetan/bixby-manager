@@ -4,9 +4,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
     template: "inventory/_host_tags"
     bindings: [ "host" ]
 
-    render: ->
-      super
-
   class exports.HostTagItem extends Stark.Partial
     template: "inventory/_host_tag_link"
     tagName: "li"
