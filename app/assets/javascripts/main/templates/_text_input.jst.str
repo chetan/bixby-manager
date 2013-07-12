@@ -10,7 +10,11 @@ this.value = this.value || null;
 <div class="control-group">
   <label for="<%= name %>" class="control-label"><%= label %></label>
   <div class="controls">
-    <input type="<%= (type || 'text') %>" id="<%= name %>" value="<%- value %>">
+    <input
+      type="<%= (type || 'text') %>"
+      id="<%= name %>"
+      <%? value %>value="<%- value %>"<%/%>
+      >
     <span class="valid <%= name %>"></span>
   </div>
 </div>
