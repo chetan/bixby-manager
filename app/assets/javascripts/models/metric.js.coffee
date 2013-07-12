@@ -3,14 +3,12 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.Metric extends Stark.Model
 
-    initialize: (attributes, options) ->
-      super
-      @extract_param(attributes, "metric", true)
-      @extract_param(attributes, "host")
+    params: [ { name: "metric", set_id: true }, "host" ]
 
     urlRoot: ->
       host_id = @host_id || @get("host_id")
       "/rest/hosts/#{host_id}/metrics"
+
 
     url: ->
       s = super() + "?"
@@ -41,6 +39,4 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.MetricList extends Stark.Collection
     model: exports.Metric
     url: -> "/rest/hosts/#{@host_id}/metrics"
-
-    initialize: (data) ->
-      @extract_param(data, "host")
+    params: [ "host" ]

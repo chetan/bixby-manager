@@ -6,6 +6,8 @@ namespace 'Bixby.model', (exports, top) ->
     urlRoot: ->
       "/rest/hosts/#{@host_id || @host.id}/triggers"
 
+    params: [ "host" ]
+
     # Hacky - pass the view in so we can bind it for an update
     # after loading the metric async (if necessary)
     get_metric_key: (view) ->
@@ -42,6 +44,4 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.TriggerList extends Stark.Collection
     model: exports.Trigger
     url: -> "/rest/hosts/#{@host_id || @host.id}/triggers"
-
-    initialize: (data) ->
-      @extract_param(data, "host")
+    params: [ "host" ]

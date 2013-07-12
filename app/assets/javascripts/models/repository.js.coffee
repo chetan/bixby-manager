@@ -2,12 +2,8 @@
 namespace 'Bixby.model', (exports, top) ->
 
   class exports.Repo extends Stark.Model
-    urlRoot: ->
-      s = "/rest/repos"
-      s += "/#{@repo_id}" if @repo_id
-      s
-
-    params: [ "repo" ]
+    urlRoot: "/rest/repos"
+    params: [ { name: "repo", set_id: true } ]
 
     Backprop.create_strings @, "name", "uri", "branch", "public_key"
 
