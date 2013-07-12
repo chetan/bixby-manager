@@ -21,4 +21,8 @@ class Rest::Models::ReposController < UiController
     restful repo
   end
 
+  def show
+    restful Repo.find(_id)
+  end
+
 end

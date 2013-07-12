@@ -54,13 +54,17 @@ class ApplicationController < ActionController::Base
 
   # Fetch the given key as an integer
   #
-  # @param [Symbol] key       (default: "id")
+  # @param [Symbol] key         (default: "id")
+  # @param [Boolean] optional   Whether or not to raise if param doesn't exist
   #
-  # @return [Fixnum] Requested value as an integer
+  # @return [Fixnum] Requested value as an integer, or nil if optional param not found
   # @throws [Exception] Will raise if param is not a string (array or hash) or doesn't exist
-  def _id(key = :id)
+  def _id(key = :id, optional=false)
     if params.include? key then
       return params[key].to_i
+    elsif key != :id
+      key = "#{key.to_s}_id"
+      return params[key].to_i if params.include? key
     end
 
     # try to figure out key name from controller
@@ -69,7 +73,11 @@ class ApplicationController < ActionController::Base
       return params[controller_key].to_i
     end
 
-    raise "Couldn't find param :id or :#{controller_key}"
+    if not optional then
+      raise "Couldn't find param :id or :#{controller_key}"
+    end
+
+    return nil
   end
 
   # Restful response
