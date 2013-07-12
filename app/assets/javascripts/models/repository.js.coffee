@@ -6,6 +6,7 @@ namespace 'Bixby.model', (exports, top) ->
     params: [ { name: "repo", set_id: true } ]
 
     Backprop.create_strings @, "name", "uri", "branch", "public_key"
+    Backprop.create @, "requires_key", Boolean
 
   class exports.RepoList extends Stark.Collection
     model: exports.Repo
