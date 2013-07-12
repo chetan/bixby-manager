@@ -2,7 +2,7 @@
 <%
 // set some defaults
 // only name is required
-this.label = this.label || _.string.capitalize(name);
+this.label = this.label || _.split_cap(name);
 this.type = this.type || "text";
 this.value = this.value || null;
 %>

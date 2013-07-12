@@ -7,16 +7,16 @@
 <form class="form-horizontal">
 
   <!-- name -->
-  <%= include("main/_text_input", {name: "name", label: "Name"}) %>
+  <%= include("main/_text_input", {name: "name"}) %>
 
   <!-- uri -->
   <%= include("main/_text_input", {name: "uri", label: "URI"}) %>
 
   <!-- branch -->
-  <%= include("main/_text_input", {name: "branch", label: "Branch"}) %>
+  <%= include("main/_text_input", {name: "branch"}) %>
 
   <!-- requires key -->
-  <%= include("main/_text_input", {name: "requires_key", label: "Requires Key", type: "checkbox"}) %>
+  <%= include("main/_text_input", {name: "requires_key", type: "checkbox"}) %>
 
   <!-- submit -->
   <div class="control-group">

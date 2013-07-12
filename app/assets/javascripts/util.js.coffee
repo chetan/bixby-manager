@@ -79,3 +79,14 @@ _.select_text = (e) ->
 
   setTimeoutR 0, ->
     e.target.select()
+
+# Split the given string on a separator and capitalize each word
+# ex: foo_bar -> Foo Bar
+#
+# @param [String] str
+# @param [String] sep       default: _
+#
+# @return [String]
+_.split_cap = (str, sep) ->
+  sep = "_" if ! sep
+  _.map(_.split(str, sep), (s) -> _.string.capitalize(s)).join(" ")
