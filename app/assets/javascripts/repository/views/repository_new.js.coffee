@@ -5,6 +5,12 @@ namespace "Bixby.view", (exports, top) ->
     el: "#content"
     template: "repository/new"
 
+    bindings:
+      "#name": "name"
+      "#uri": "uri"
+      "#branch": "branch"
+      "#requires_key": "requires_key"
+
     links:
       ".add_repo_link": [ "repo_new" ]
 
@@ -12,17 +18,13 @@ namespace "Bixby.view", (exports, top) ->
       "click button.submit": (e) ->
         e.preventDefault()
 
-        attrs = @get_attributes("name", "uri", "branch", "requires_key")
-
-        if attrs["requires_key"] == true
-          # validate a git proto link
-          if !attrs["uri"].match(/^(git@|git:\/\/|ssh:\/\/)/)
-            _.fail @$("span.valid.uri").html(_.icon("remove") + " public keys can only be used with git or ssh protocols")
-            return
-          else
-            _.pass @$("span.valid.uri")
+        @repo.validate()
+        return if ! @repo.isValid()
 
         v = @
-        repo = new Bixby.model.Repo()
-        repo.save attrs, success: -> v.transition("repository")
+        @repo.save null, success: -> v.transition("repository")
 
+    after_render: ->
+      @repo = new Bixby.model.Repo()
+      @stickit(@repo)
+      @

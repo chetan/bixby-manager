@@ -5,8 +5,14 @@ namespace "Bixby.view", (exports, top) ->
 
     template: "repository/_repo_row"
 
+    bindings:
+      "#name": "name"
+      "#uri": "uri"
+      "#branch": "branch"
+      "#public_key": "public_key"
+
     links:
-      "a.repo": [ "repository_view", (el) -> { repo: @repo } ]
+      "a#name": [ "repository_view", (el) -> { repo: @repo } ]
 
     events:
       "click button.pubkey": (el) ->
@@ -15,3 +21,7 @@ namespace "Bixby.view", (exports, top) ->
         @$("div.modal textarea").focus()
 
       "focusin div.modal textarea": _.select_text
+
+    after_render: ->
+      @stickit(@repo)
+      @

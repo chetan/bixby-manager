@@ -1,8 +1,8 @@
 
 <tr>
-  <td><a class="repo"><%= repo.name %></a></td>
+  <td><a id="name"></a></td>
   <td>
-    <a href="<%= repo.uri %>"><%= repo.uri %></a>
+    <a id="uri" href="<%= repo.uri %>"></a>
     <%? repo.public_key %>
       &nbsp;&nbsp;<button class="btn btn-mini pubkey">View Public Key</button>
       <div class="modal hide">
@@ -11,10 +11,10 @@
           <h3>Public Key</h3>
         </div>
         <div class="modal-body">
-          <textarea rows="6" style="width: 97%;"><%= repo.get("public_key") %></textarea>
+          <textarea id="public_key" rows="6" style="width: 97%;"></textarea>
         </div>
       </div>
     <%/%>
   </td>
-  <td><%= repo.branch %></td>
+  <td id="branch"></td>
 </tr>

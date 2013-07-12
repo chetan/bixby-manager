@@ -45,11 +45,14 @@ _.disable = (el) ->
 _.enable = (el) ->
   $(el).removeClass("disabled")
 
-_.pass = (el) ->
-  $(el).addClass("pass").removeClass("fail")
+_.pass = (el, html) ->
+  html = "" if not html?
+  $(el).addClass("pass").removeClass("fail").html(html)
 
-_.fail = (el) ->
-  $(el).addClass("fail").removeClass("pass")
+_.fail = (el, msg) ->
+  if msg && msg.length > 0 && msg.charAt(0) != ' '
+    msg = " " + msg
+  $(el).addClass("fail").removeClass("pass").html(_.icon("remove") + msg)
 
 # Retrieve the value of the given [input] element. Properly handles
 # checkboxes

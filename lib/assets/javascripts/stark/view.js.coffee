@@ -62,6 +62,10 @@ class Stark.View extends Backbone.View
   # List of post-render hooks
   after_render_hooks: null
 
+  # used for stickit binding
+  model: null
+  _stickit: null
+
   # Called from Backbone.View constructor
   initialize: (args) ->
     @_data = []
@@ -80,6 +84,8 @@ class Stark.View extends Backbone.View
   dispose: ->
     @log "disposing of view ", @
     @$el.html("")
+    @stopListening();
+    @unstickit()
     @unbind_app_events()
     @undelegateEvents()
     @unbind_models()
@@ -269,6 +275,31 @@ class Stark.View extends Backbone.View
     else if _.isArray(m)
       for mm in m
         @unbind_model(mm)
+
+  # Bind to view with stickit and enable validation if model has any configured
+  stickit: (model) ->
+    @model = @_stickit = model
+    super
+
+    if ! _.isEmpty(model.validation)
+      # add validation
+      opts = {
+        forceUpdate: true
+
+        valid: (view, attr) ->
+          view.valid(attr)
+
+        invalid: (view, attr, error) ->
+          view.invalid(attr, error)
+      }
+      Backbone.Validation.bind(@, opts)
+
+  valid: (attr) ->
+    _.pass @$("span.valid.#{attr}")
+
+  invalid: (attr, error) ->
+    _.fail @$("span.valid.#{attr}"), error
+
 
 
   # Methods dealing with partials, includes, etc.

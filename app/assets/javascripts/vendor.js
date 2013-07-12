@@ -3,9 +3,14 @@
 //= require "underscore"
 //= require "underscore_patch"
 //= require "underscore.string.min"
+
 //= require "backbone"
 //= require "backbone_patch"
 //= require "backprop"
+//= require "backbone-validation"
+//= require "backbone.stickit"
+//= require "stickit_validation_patch"
+
 //= require "template"
 //= require "twitter/bootstrap.min"
 //= require "async"
