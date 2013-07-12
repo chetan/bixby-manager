@@ -2,7 +2,7 @@
 namespace 'Bixby.model', (exports, top) ->
 
   class exports.Command extends Stark.Model
-    Backprop.create_strings @, "repo", "name", "bundle", "command", "options"
+    Backprop.create_strings @, "repo", "name", "bundle", "command"
     Backprop.create @, "options"
 
     params: [ { name: "command", set_id: true } ]
