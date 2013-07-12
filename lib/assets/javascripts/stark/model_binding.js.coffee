@@ -1,5 +1,8 @@
 
+"use strict"
+
 window.Stark or= {}
+
 class Stark.ModelBinding
 
   # Bind the given view to 'change' or 'destroy' events triggered on this model
