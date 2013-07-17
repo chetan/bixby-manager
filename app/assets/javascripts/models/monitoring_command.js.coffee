@@ -9,11 +9,7 @@ namespace 'Bixby.model', (exports, top) ->
       cmd.replace(/monitoring\//, "")
 
     has_options: ->
-      opts = @get("options")
-      if ! opts? || _.keys(opts).length == 0
-        return false
-      return true
-
+      opts? && ! _.isEmpty(@get("options"))
 
   class exports.MonitoringCommandList extends Stark.Collection
     model: exports.MonitoringCommand
