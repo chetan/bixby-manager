@@ -11,7 +11,7 @@ namespace 'Bixby.model', (exports, top) ->
     has_options: ->
       opts? && ! _.isEmpty(@get("options"))
 
-  class exports.MonitoringCommandList extends Stark.Collection
+  class exports.MonitoringCommandList extends exports.CommandList
     model: exports.MonitoringCommand
     url: "/rest/commands?type=monitoring"
 

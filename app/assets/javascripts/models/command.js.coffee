@@ -18,3 +18,6 @@ namespace 'Bixby.model', (exports, top) ->
       s = "/rest/commands"
       s += "?repo_id=#{@repo_id}" if @repo_id
       s
+
+    comparator: (cmd) ->
+      cmd.bundle + "-" + cmd.command
