@@ -102,13 +102,22 @@ class Stark.App
   # - else, load data via ajax then render views
   #
   transition: (state_name, state_data) ->
+
+    timer_name = "transition_to: " + state_name
+    @start_timer(timer_name)
+
     @log "---"
     @log "transition", state_name, state_data
+    @begin_group()
+
     @trigger "before:transition", state_name, state_data
     target_state = @states[state_name]
 
     if ! target_state?
-      # TODO error handler?!
+      # TODO error handler?
+      @error "tried to transition to non-existent state ", state_name
+      @end_group()
+      @stop_timer(timer_name)
       return
 
     if @current_state instanceof target_state
@@ -148,8 +157,15 @@ class Stark.App
           return
 
         app.render_views(state)
+        app.end_group()
+        app.stop_timer(timer_name)
+
     else
       @render_views(state)
+      @end_group()
+      @stop_timer(timer_name)
+
+    true
 
   # Copy all of the known model data from state into the view
   #
@@ -188,6 +204,7 @@ class Stark.App
         return
 
       @log "creating view #{state.name}::#{v.name}"
+      @begin_group()
       view = new v()
       view.set "current_user", @current_user
       @copy_data_from_state state, view
@@ -195,6 +212,7 @@ class Stark.App
       view.state = state
       view.render()
       state._views.push view
+      @end_group()
 
     if state.url? && (!state.params? || state.params.changeURL == true || window.location.hash)
       # there was a previous state, update browser url
