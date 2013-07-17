@@ -8,8 +8,23 @@ namespace 'Bixby.model', (exports, top) ->
     params: [ { name: "command", set_id: true } ]
     urlRoot: "/rest/commands"
 
+    # Whether or not the command has any options/configuration
     has_options: ->
-      opts? && ! _.isEmpty(@get("options"))
+      opts = @get("options")
+      opts? && ! _.isEmpty(opts)
+
+    # Whether or not this command has any dynamic (enum) options
+    # which the host/agent should be queried for.
+    #
+    # @return [Boolean]
+    has_enum_options: ->
+      return false if ! @has_options()
+      need = false
+      _.eachR @, @get("options"), (val, key) ->
+        if val.type == "enum"
+          need = true
+
+      return need
 
 
   class exports.CommandList extends Stark.Collection

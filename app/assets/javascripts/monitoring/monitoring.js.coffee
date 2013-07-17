@@ -72,7 +72,7 @@ Bixby.app.add_state(
         cmd = all_commands.get(opt.id)
         cmd.checked = true
         @commands.add(cmd)
-        if ! _.isEmpty(cmd.get("options"))
+        if cmd.has_enum_options()
           opts_needed.push opt
         else
           opt.set(cmd.attributes, {silent: true})
