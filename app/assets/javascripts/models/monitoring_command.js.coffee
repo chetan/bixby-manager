@@ -1,15 +1,11 @@
 
 namespace 'Bixby.model', (exports, top) ->
 
-  class exports.MonitoringCommand extends Stark.Model
-    urlRoot: "/rest/commands"
+  class exports.MonitoringCommand extends exports.Command
 
-    command: ->
+    get_command: ->
       cmd = @get("command")
       cmd.replace(/monitoring\//, "")
-
-    has_options: ->
-      opts? && ! _.isEmpty(@get("options"))
 
   class exports.MonitoringCommandList extends exports.CommandList
     model: exports.MonitoringCommand

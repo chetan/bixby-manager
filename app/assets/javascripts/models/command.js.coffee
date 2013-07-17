@@ -6,9 +6,10 @@ namespace 'Bixby.model', (exports, top) ->
     Backprop.create @, "options"
 
     params: [ { name: "command", set_id: true } ]
+    urlRoot: "/rest/commands"
 
-    urlRoot: ->
-      "/rest/commands"
+    has_options: ->
+      opts? && ! _.isEmpty(@get("options"))
 
 
   class exports.CommandList extends Stark.Collection
