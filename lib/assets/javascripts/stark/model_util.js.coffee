@@ -35,10 +35,10 @@ class Stark.ModelUtil
 
       return false
 
-    # search data.params hash
+    # search for id
     if data.params? && data.params[id]?
       @[id] = data.params[id]
-    else if data[name]?
+    else if data[name]? && _.isObject(data[name]) && data[name].id?
       @[id] = data[name].id
     else if data[id]?
       @[id] = data[id]
@@ -46,4 +46,5 @@ class Stark.ModelUtil
       return false
 
     @id = @[id] if set_id
+
     return true
