@@ -19,7 +19,11 @@
       <tbody>
         <% commands.each(function(cmd) { %>
        <tr>
-          <td><input type="checkbox" class="checkbox" id="command_id_<%= cmd.id %>" value="<%= cmd.id %>"></td>
+          <td><input type="checkbox" class="checkbox"
+                     id="command_id_<%= cmd.id %>"
+                     value="<%= cmd.id %>"
+                     <%? cmd.checked %>checked="checked"<%/%>
+                     ></td>
           <td><label for="command_id_<%= cmd.id %>"><%= cmd.get("name") %></label></td>
           <td><label for="command_id_<%= cmd.id %>"><%= cmd.get("bundle") %></label></td>
           <td><label for="command_id_<%= cmd.id %>"><%= cmd.command() %></label></td>
@@ -33,7 +37,7 @@
     <div class="command_opts">
     </div>
 
-    <a id="submit_check" class="btn primary">Add Check(s)</a>
+    <a id="submit_check" class="btn primary">Configure Check(s)</a>
 
   </form>
 </div>

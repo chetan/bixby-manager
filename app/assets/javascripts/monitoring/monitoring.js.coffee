@@ -61,10 +61,16 @@ Bixby.app.add_state(
     load_data: (data) ->
       needed = super(data)
 
+      # filter the list of commands to include only the ones we have selected
+      all_commands = new _bm.MonitoringCommandList( _.union([], @commands.models) )
+      @commands.reset()
+
       # only load opts for checks which have/need them
       opts_needed = []
       _.eachR @, @opts, (opt) ->
-        cmd = @commands.get(opt.id)
+        cmd = all_commands.get(opt.id)
+        cmd.checked = true
+        @commands.add(cmd)
         if ! _.isEmpty(cmd.get("options"))
           opts_needed.push opt
         else
@@ -77,6 +83,7 @@ Bixby.app.add_state(
 
     activate: ->
       @spinner.stop()
+      $("a#submit_check").html("Add Check(s)")
 
 )
 
