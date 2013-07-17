@@ -13,12 +13,11 @@
           <th></th>
           <th>Name</th>
           <th>Bundle</th>
-          <th>Script</th>
         </tr>
       </thead>
       <tbody>
         <% commands.each(function(cmd) { %>
-       <tr>
+       <tr title="<%= cmd.get_command() %>">
           <td><input type="checkbox" class="checkbox"
                      id="command_id_<%= cmd.id %>"
                      value="<%= cmd.id %>"
@@ -26,7 +25,6 @@
                      ></td>
           <td><label for="command_id_<%= cmd.id %>"><%= cmd.get("name") %></label></td>
           <td><label for="command_id_<%= cmd.id %>"><%= cmd.get("bundle") %></label></td>
-          <td><label for="command_id_<%= cmd.id %>"><%= cmd.command() %></label></td>
         </tr>
         <% }); %>
 
