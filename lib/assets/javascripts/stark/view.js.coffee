@@ -312,10 +312,16 @@ class Stark.View extends Backbone.View
   #
   # @param [String] tpl     Template to include
   # @param [Object] data    Optional data to include in context
+  #
+  # @return [String] html
   include: (tpl, data) ->
     @log "include #{tpl}"
     data ||= {}
-    return @create_template(@jst(tpl)).render( _.extend({}, @, data) )
+    tpl_content = @jst(tpl)
+    if ! tpl_content?
+      @error "failed to locate to locate tpl:", tpl
+      return "ERROR: MISSING TPL"
+    return @create_template(tpl_content).render( _.extend({}, @, data) )
 
   # Create a partial, setup its events, and return the HTML
   #
