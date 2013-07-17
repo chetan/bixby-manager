@@ -27,9 +27,14 @@ class Rest::Models::CommandsController < UiController
         opts.each { |k,v| command.options[k][:values] = v }
       end
     rescue Exception => ex
+      if ex.message == "Curl::Err::ConnectionFailedError"
+        msg = "Failed to contact agent (#{ex.message})"
+      else
+        msg = ex.message
+      end
       command.options.keys.each do |opt|
         command.options[opt]["status"] = "failed"
-        command.options[opt]["status_message"] = ex.message
+        command.options[opt]["status_message"] = msg
       end
 
     end
