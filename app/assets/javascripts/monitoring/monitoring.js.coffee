@@ -60,8 +60,18 @@ Bixby.app.add_state(
 
     load_data: (data) ->
       needed = super(data)
-      @log "opts: ", @opts
-      needed = _.union(needed, @opts)
+
+      # only load opts for checks which have/need them
+      opts_needed = []
+      _.eachR @, @opts, (opt) ->
+        cmd = @commands.get(opt.id)
+        if ! _.isEmpty(cmd.get("options"))
+          opts_needed.push opt
+        else
+          opt.set(cmd.attributes, {silent: true})
+
+
+      needed = _.union(needed, opts_needed)
       @spinner = new _bv.Spinner($("div.command_opts").height(30).css({ padding: "20px" }))
       return needed
 
