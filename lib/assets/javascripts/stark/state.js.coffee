@@ -90,6 +90,10 @@ class Stark.State
   # the url in the address bar or creating a link to the state
   create_url: ->
     url = @url
+
+    if url[0] == '#'
+      return window.location.pathname + url
+
     for name in @route.paramNames
       if name.match(/_id$/)
         v = name.replace(/_id$/, '')

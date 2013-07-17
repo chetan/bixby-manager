@@ -196,9 +196,15 @@ class Stark.App
       view.render()
       state._views.push view
 
-    if state.url? && (!state.params? || state.params.changeURL == true)
+    if state.url? && (!state.params? || state.params.changeURL == true || window.location.hash)
       # there was a previous state, update browser url
       # does not fire when using back/forward buttons as params.changeURL will be false
+
+      if window.location.hash
+        # a little hack to clear out the hash no matter what
+        # may need to revisit this later
+        history.replaceState('', document.title, window.location.pathname);
+
       url = state.create_url()
       if url == false
         @log "no url change due to missing param"
