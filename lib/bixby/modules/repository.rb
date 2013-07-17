@@ -81,6 +81,7 @@ class Repository < API
   end
 
   def update_repo(repo)
+    log.info("updating repository #{repo.uri}")
     create_repo_wrapper(repo).update()
   end
 
