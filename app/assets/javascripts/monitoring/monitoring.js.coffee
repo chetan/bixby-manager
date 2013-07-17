@@ -53,12 +53,24 @@ Bixby.app.add_state(
   class extends Stark.State
 
     name: "mon_hosts_resources_new_opts"
+    url:  "monitoring/hosts/:host_id/checks/configure"
     tab:  "monitoring"
 
     views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand, _bvm.AddCommandOpts ]
     models:     { host: _bm.Host, commands: _bm.MonitoringCommandList, opts: _bm.MonitoringCommandOpts }
 
+    validate: ->
+      if @params?
+        @log @params
+        @transition "mon_hosts_resources_new", { host_id: @params.host_id }
+        return false
+      true
+
     load_data: (data) ->
+
+      if data.params
+        return [] # short-circuit
+
       needed = super(data)
 
       # filter the list of commands to include only the ones we have selected

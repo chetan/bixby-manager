@@ -40,6 +40,8 @@ class Stark.ModelUtil
       @[id] = data.params[id]
     else if data[name]?
       @[id] = data[name].id
+    else if data[id]?
+      @[id] = data[id]
     else
       return false
 
