@@ -3,7 +3,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
   class exports.AddCommand extends Stark.View
     el: "div.monitoring_content"
     template: "monitoring/add_command"
-    events: {
+
+    events:
       "click #submit_check": (e) ->
         # show options for selected commands/checks
         opts = []
@@ -15,4 +16,3 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
         if opts.length > 0
           @transition "mon_hosts_resources_new_opts", { host: @host, opts: opts, commands: @commands }
-    }
