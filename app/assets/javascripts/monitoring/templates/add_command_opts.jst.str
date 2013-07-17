@@ -12,24 +12,20 @@
   <%
   } else {
     _.each(command.get("options"), function(opt_hash, opt_key) {
-    if (opt_hash["type"] == "enum") {
+      console.log(opt_key, opt_hash);
+
+      var data = { opt_key: opt_key, opt_hash: opt_hash };
+      if (opt_hash["status"] === "failed") {
   %>
-
-  <div class="control-group">
-    <label for="<%= opt_key %>" class="control-label"><%= opt_key %></label>
-    <div class="controls">
-      <select name="<%= opt_key %>" id="<%= opt_key %>">
-
-        <% _.each(opt_hash["values"], function(v, k) { %>
-        <option value="<%= v %>"><%= v %></option>
-        <% }); %>
-
-      </select>
-    </div>
-  </div>
-
+      <%= include("monitoring/_command_opts_failed", data) %>
   <%
-    } // opt_hash.type == enum
+
+      } else if (opt_hash["type"] === "enum") {
+  %>
+      <%= include("monitoring/_command_opts_enum", data); %>
+  <%
+      }
+
     });
   }
   %>

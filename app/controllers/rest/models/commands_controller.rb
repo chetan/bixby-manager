@@ -28,7 +28,8 @@ class Rest::Models::CommandsController < UiController
       end
     rescue Exception => ex
       command.options.keys.each do |opt|
-        command.options[opt] = [ "failed" ]
+        command.options[opt]["status"] = "failed"
+        command.options[opt]["status_message"] = ex.message
       end
 
     end

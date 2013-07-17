@@ -1,0 +1,5 @@
+
+<div class="control-group">
+  <label for="<%= opt_key %>" class="control-label"><%= opt_key %></label>
+  Failed to retrieve values: <%= opt_hash["status_message"] %>
+</div>
