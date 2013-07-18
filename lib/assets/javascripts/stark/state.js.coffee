@@ -52,7 +52,7 @@ class Stark.State
 
   constructor: ->
     # internal attributes
-    @_data  = []
+    @_data  = {}
     @_views = []
 
   # Transition to another state

@@ -167,14 +167,13 @@ class Stark.App
 
     true
 
-  # Copy all of the known model data from state into the view
+  # Copy all data from state into the view
   #
   # @param [State] state
   # @param [View] view
   copy_data_from_state: (state, view) ->
-    return if not state.models?
-    _.each _.keys(state.models), (key) ->
-      view.set key, state[key]
+    _.each state._data, (obj, key) ->
+      view.set key, obj
 
   # Render the State
   #
