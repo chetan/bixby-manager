@@ -1,5 +1,5 @@
 
-<h3>Configure check(s):</h3>
+<h3 id="configure">Configure check(s):</h3>
 
 <% _.each(opts, function(command) { %>
 

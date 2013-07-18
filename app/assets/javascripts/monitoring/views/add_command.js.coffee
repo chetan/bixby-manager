@@ -6,6 +6,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     events:
       "click #submit_check": (e) ->
+
+        if $("h3#configure").length > 0
+          # cheap hack to short-circuit double-bound event when opts view is displayed as well
+          return
+
         # show options for selected commands/checks
         opts = []
 
