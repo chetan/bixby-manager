@@ -21,3 +21,7 @@ $.eachR = (context, elements, func) ->
 # @see .each
 $.fn.eachR = (context, func) ->
   return $.eachR(context, this, func, context, true)
+
+# Reverse order of args to $.proxy
+$.proxyR = (context, func) ->
+  return $.proxy(func, context)
