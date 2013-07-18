@@ -3,7 +3,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
   class exports.AddCommandOpts extends Stark.View
     el: "div.command_opts"
     template: "monitoring/add_command_opts"
+
     events: ->
+      # we use a normal jquery binding here because the button actually belongs
+      # to another view (AddCommand)
       view = @
       $("#submit_check").on "click", null, (e) ->
         # create the commands
@@ -24,4 +27,4 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         Backbone.multi_save checks, (err, results) ->
           view.transition "mon_view_host", { host: view.host }
 
-      {} # return empty event hash
+      return {} # return empty event hash to backbone delegateEvents
