@@ -1,7 +1,7 @@
 
 <div class="content-inner">
   <h2>Add Resource</h2>
-  <p>Host: <%= host.get("ip") %></p>
+  <p>Host: <%= host.name() %></p>
 
   <h3>Select a resource check from the list below:</h3>
 
