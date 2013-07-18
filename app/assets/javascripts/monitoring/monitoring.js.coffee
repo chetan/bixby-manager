@@ -62,16 +62,11 @@ Bixby.app.add_state(
     load_data: (data) ->
       needed = super(data)
 
-      # filter the list of commands to include only the ones we have selected
-      all_commands = new _bm.MonitoringCommandList( _.union([], @commands.models) )
-      @commands.reset()
-
       # only load opts for checks which have/need them
       opts_needed = []
       _.eachR @, @opts, (opt) ->
-        cmd = all_commands.get(opt.id)
+        cmd = @commands.get(opt.id)
         cmd.checked = true
-        @commands.add(cmd)
         if cmd.has_enum_options()
           opts_needed.push opt
         else

@@ -1,5 +1,7 @@
 
 //= require "jquery"
+//= require "jquery_patch"
+
 //= require "underscore"
 //= require "underscore_patch"
 //= require "underscore.string.min"

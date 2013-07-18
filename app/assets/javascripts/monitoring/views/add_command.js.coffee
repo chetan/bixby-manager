@@ -8,11 +8,15 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "click #submit_check": (e) ->
         # show options for selected commands/checks
         opts = []
-        host = @host
-        $("input.checkbox:checked").each (idx, el) ->
+
+        # filter the list of commands to include only the ones we have selected
+        selected_commands = new Bixby.model.MonitoringCommandList()
+
+        $("input.checkbox:checked").eachR @, (idx, el) ->
           opt = new Bixby.model.MonitoringCommandOpts({ id: el.value })
-          opt.host = host
+          opt.host = @host
           opts.push opt
+          selected_commands.add @commands.get(el.value)
 
         if opts.length > 0
-          @transition "mon_hosts_resources_new_opts", { host: @host, opts: opts, commands: @commands }
+          @transition "mon_hosts_resources_new_opts", { host: @host, opts: opts, commands: selected_commands }
