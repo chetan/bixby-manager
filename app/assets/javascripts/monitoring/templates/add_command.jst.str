@@ -23,8 +23,8 @@
                      value="<%= cmd.id %>"
                      <%? cmd.checked %>checked="checked"<%/%>
                      ></td>
-          <td><label for="command_id_<%= cmd.id %>"><%= cmd.get("name") %></label></td>
-          <td><label for="command_id_<%= cmd.id %>"><%= cmd.get("bundle") %></label></td>
+          <td><label for="command_id_<%= cmd.id %>"><%= cmd.name %></label></td>
+          <td><label for="command_id_<%= cmd.id %>"><%= cmd.bundle %></label></td>
         </tr>
         <% }); %>
 
