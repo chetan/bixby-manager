@@ -2,13 +2,15 @@
 #
 # Table name: repos
 #
-#  id         :integer          not null, primary key
-#  org_id     :integer
-#  name       :string(255)
-#  uri        :string(255)
-#  branch     :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id          :integer          not null, primary key
+#  org_id      :integer
+#  name        :string(255)
+#  uri         :string(255)
+#  branch      :string(255)
+#  private_key :text
+#  public_key  :text
+#  created_at  :datetime
+#  updated_at  :datetime
 #
 
 
