@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130705152009) do
+ActiveRecord::Schema.define(:version => 20130718182216) do
 
   create_table "actions", :force => true do |t|
     t.integer  "trigger_id",               :null => false
@@ -67,6 +67,8 @@ ActiveRecord::Schema.define(:version => 20130705152009) do
   create_table "commands", :force => true do |t|
     t.integer  "repo_id"
     t.string   "name"
+    t.string   "desc"
+    t.string   "location"
     t.string   "bundle"
     t.string   "command"
     t.text     "options"

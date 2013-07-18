@@ -146,8 +146,10 @@ class Repository < API
     config = cmd.path + ".json"
     if File.exists? config then
       conf = MultiJson.load(File.read(config))
-      cmd.name = conf["name"] || script
-      cmd.options = conf["options"]
+      cmd.name     = conf["name"] || script
+      cmd.desc     = conf["desc"]
+      cmd.location = conf["location"]
+      cmd.options  = conf["options"]
     else
       cmd.name = script
     end
