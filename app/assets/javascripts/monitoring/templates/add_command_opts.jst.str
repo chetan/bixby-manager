@@ -15,17 +15,10 @@
       console.log(opt_key, opt_hash);
 
       var data = { opt_key: opt_key, opt_hash: opt_hash };
-      if (opt_hash["status"] === "failed") {
+      var tpl = opt_hash["status"] === "failed" ? "failed" : opt_hash["type"];
   %>
-      <%= include("monitoring/_command_opts_failed", data) %>
+      <%= include("monitoring/_command_opts_" + tpl, data) %>
   <%
-
-      } else if (opt_hash["type"] === "enum") {
-  %>
-      <%= include("monitoring/_command_opts_enum", data); %>
-  <%
-      }
-
     });
   }
   %>

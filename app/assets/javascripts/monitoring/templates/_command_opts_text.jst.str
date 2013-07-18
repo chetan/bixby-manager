@@ -1,0 +1,2 @@
+
+<%= include("main/_text_input", {name: opt_key}) %>
