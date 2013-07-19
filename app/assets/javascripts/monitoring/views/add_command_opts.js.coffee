@@ -19,7 +19,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           args = {}
           # gather values
           _.each cmd.get("options"), (opt_hash, opt) ->
-            args[opt] = $("##{opt}").val()
+            args[opt] = view.$("##{opt}").val()
+
+          # set runhost if exists
+          if view.$("#runhost").length > 0
+            check.set("runhost_id", view.$("#runhost").val())
 
           check.set({ args: args })
           checks.push check

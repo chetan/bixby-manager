@@ -98,16 +98,23 @@ class Monitoring < API
   # Add a check to a host. Updates the associated agent's configs in the
   # background.
   #
-  # @param [Host] host
-  # @param [Command] command
-  # @param [Hash] args  Arguments for the check
+  # @param [Host] host              host to which the check will be attached
+  # @param [Command] command        check command
+  # @param [Hash] args              arguments for the check
+  # @param [Agent] agent            agent which will execute the check (default: same as host)
   #
   # @return [Check]
   # @raise [CommandException]
-  def add_check(host, command, args)
+  def add_check(host, command, args, agent=nil)
 
     host = get_model(host, Host)
     config = create_spec(command).load_config()
+
+    if agent.blank? then
+      agent = host.agent
+    else
+      agent = get_model(agent, Agent)
+    end
 
     # create resource name
     # TODO check if command *has* any options - look at defaults, etc
@@ -121,7 +128,7 @@ class Monitoring < API
     # TODO host & agent can be different
     check = Check.new
     check.host            = host
-    check.agent           = host.agent
+    check.agent           = agent
     check.command         = command
     check.args            = args
     check.normal_interval = 60

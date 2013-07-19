@@ -15,12 +15,19 @@ class Rest::Models::ChecksController < UiController
 
   def create
     # Parameters: {"command_id"=>1, "host_id"=>"3", "args"=>{"mount"=>"/"}}
+    # optional param: "runhost_id" => 4
 
-    host = Host.find(params[:host_id])
-    command = Command.find(params[:command_id])
+    host = Host.find(_id(:host))
+    command = Command.find(_id(:command))
     opts = params[:args]
 
-    check = Bixby::Monitoring.new.add_check(host, command, opts)
+    agent = nil
+    runhost_id = _id(:runhost, true)
+    if runhost_id then
+      agent = Host.find(runhost_id).agent
+    end
+
+    check = Bixby::Monitoring.new.add_check(host, command, opts, agent)
     restful check
   end
 

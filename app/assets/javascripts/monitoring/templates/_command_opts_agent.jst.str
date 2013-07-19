@@ -1,8 +1,8 @@
 
 <div class="control-group">
-  <label for="host" class="control-label">Run check from host</label>
+  <label for="runhost" class="control-label">Run check from host</label>
   <div class="controls">
-    <select name="host" id="host">
+    <select name="runhost" id="runhost">
 
       <% hosts.each(function(h) { %>
       <option value="<%= h.id %>"><%= h.name() %><%? host.id == h.id %> [this host]<%/%></option>

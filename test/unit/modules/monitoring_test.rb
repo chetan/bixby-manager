@@ -35,6 +35,22 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
   end
 
+  def test_add_check_with_diff_agent
+
+    agent = FactoryGirl.create(:agent)
+    agent2 = FactoryGirl.create(:agent)
+
+    Bixby::Scheduler.any_instance.expects(:schedule_in).once.with { |time, job|
+      time == 0 && job.method == :update_check_config && job.args.first == agent.id
+    }
+
+    ret = Bixby::Monitoring.new.add_check(agent.host.id, @check.command, nil, agent2)
+    assert_kind_of Check, ret
+    assert_equal agent.host.id, ret.host_id
+    assert_equal agent2.id, ret.agent_id
+
+  end
+
   def test_update_check_config
 
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
