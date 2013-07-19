@@ -24,4 +24,4 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           selected_commands.add @commands.get(el.value)
 
         if opts.length > 0
-          @transition "mon_hosts_resources_new_opts", { host: @host, opts: opts, commands: selected_commands }
+          @transition "mon_hosts_resources_new_opts", { host: @host, opts: opts, commands: selected_commands, hosts: @state.hosts }

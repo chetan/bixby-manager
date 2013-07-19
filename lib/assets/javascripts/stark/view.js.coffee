@@ -66,6 +66,10 @@ class Stark.View extends Backbone.View
   model: null
   _stickit: null
 
+  # internal attributes (initialized in constructor below)
+  _data: null
+  _views: null
+
   # Called from Backbone.View constructor
   initialize: (args) ->
     @_data = []
@@ -316,12 +320,12 @@ class Stark.View extends Backbone.View
   # @return [String] html
   include: (tpl, data) ->
     @log "include #{tpl}"
-    data ||= {}
+    data = _.extend({}, @, data)
     tpl_content = @jst(tpl)
     if ! tpl_content?
       @error "failed to locate to locate tpl:", tpl
       return "ERROR: MISSING TPL"
-    return @create_template(tpl_content).render( _.extend({}, @, data) )
+    return @create_template(tpl_content).render(data)
 
   # Create a partial, setup its events, and return the HTML
   #

@@ -8,7 +8,7 @@ module Bixby
 
       def self.convert(obj)
 
-        hash = attrs(obj, :id, :name, :bundle, :command, :options)
+        hash = attrs(obj, :id, :name, :desc, :location, :bundle, :command, :options)
         hash[:repo] = obj.repo.name
 
         return hash

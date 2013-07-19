@@ -6,14 +6,16 @@
 <h4><%= command.get("name") %></h4>
 <form class="form-horizontal">
 
+  <% if (command.location === "remote" || command.location === "any") { %>
+    <%= include("monitoring/_command_opts_agent", {command: command}) %>
+  <% } %>
+
   <% if (!command.has_options()) { %>
   <div>no options</div>
 
   <%
   } else {
     _.each(command.get("options"), function(opt_hash, opt_key) {
-      console.log(opt_key, opt_hash);
-
       var data = { opt_key: opt_key, opt_hash: opt_hash };
       var tpl = opt_hash["status"] === "failed" ? "failed" : opt_hash["type"];
   %>

@@ -47,6 +47,12 @@ Bixby.app.add_state(
 
     views:      [ _bv.PageLayout, _bvm.Layout, _bvm.AddCommand ]
     models:     { host: _bm.Host, commands: _bm.MonitoringCommandList }
+
+    activate: ->
+      # preload hosts in the background
+      @hosts = new _bm.HostList
+      Backbone.multi_fetch(@hosts)
+
 )
 
 Bixby.app.add_state(
