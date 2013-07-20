@@ -93,6 +93,9 @@ group :assets do
     gem 'uglifier'
     gem 'sprockets-font_compressor'
 
+    # needed for messing with asset tasks
+    gem 'rake-hooks', :require => false
+
     # execjs prefers ruby racer (needed by uglifier and coffee-script)
     # added due to sudden segfaulting with nodejs driver
     gem 'execjs'
