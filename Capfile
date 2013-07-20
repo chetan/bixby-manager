@@ -33,6 +33,6 @@ set :deploy_via, :remote_cache
 set :rails_env, 'production'
 
 # load custom tasks
-%w(uname sidekiq unicorn deploy).each do |t|
+%w(rake uname sidekiq unicorn deploy).each do |t|
   load File.join(RAILS_ROOT, "lib/capistrano/#{t}.rb")
 end
