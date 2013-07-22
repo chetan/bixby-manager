@@ -54,7 +54,7 @@ class Metric < ActiveRecord::Base
   def self.for(check, key, metadata = {})
 
     hash = hash_metadata(metadata)
-    m = Metric.first(:conditions => {:check_id => check.id, :key => key, :tag_hash => hash})
+    m = Metric.where(:check_id => check.id, :key => key, :tag_hash => hash).first
     if not m.blank? then
       return m
     end

@@ -23,7 +23,7 @@ class EscalationPolicy < ActiveRecord::Base
   # @param [Org] org
   # @return [EscalationPolicy]
   def self.for_org(org)
-    return self.first(:conditions => {:org_id => org.id})
+    return self.where(:org_id => org.id).first
   end
 
 end
