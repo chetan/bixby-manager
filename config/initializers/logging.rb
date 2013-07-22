@@ -4,6 +4,14 @@
 
 require "ext/sidekiq_logging"
 
+if ::Rails.env == "development" then
+  class Logging::Logger
+    def formatter
+      return ActiveSupport::Logger::SimpleFormatter.new
+    end
+  end
+end
+
 # Use a custom logger for the Bixby::* namespace when in TEST env
 if ::Rails.env == "test" then
 

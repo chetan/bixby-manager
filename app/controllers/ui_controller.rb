@@ -41,7 +41,7 @@ class UiController < ApplicationController
     end
 
     # don't redirect when trying to login
-    return false if params["controller"] == "sessions" && (params["action"] == "new" || params["action"] == "create")
+    return false if params["controller"] == "sessions" && (params["action"] == "index" || params["action"] == "create")
 
     if request.xhr? or request.format != "text/html" then
       # return an error response instead
@@ -56,7 +56,7 @@ class UiController < ApplicationController
     qp = params.clone
     qp.delete(:controller)
     qp.delete(:action)
-    path = params[:i].blank? ? login_path : login_path(qp)
+    path = params[:i].blank? ? login_index_path : login_index_path(qp)
 
     redirect_to path
   end

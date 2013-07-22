@@ -31,7 +31,7 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   if Rails.env != "test" and BIXBY_CONFIG[:secret_token].blank? then
     raise "secret_token not set in bixby.yml for the '#{::Rails.env}' environment!"
   end
-  Bixby::Application.config.secret_token = BIXBY_CONFIG[:secret_token]
+  Bixby::Application.config.secret_key_base = BIXBY_CONFIG[:secret_token]
 
   # use an asset host for serving static assets
   if host = BIXBY_CONFIG[:static_asset_host] then

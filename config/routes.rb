@@ -4,7 +4,7 @@ Bixby::Application.routes.draw do
   root :to => 'sessions#new'
 
   # API Controller endpoint
-  match '/api' => 'api#handle'
+  post '/api' => 'api#handle'
 
 
   ##############################################################################
@@ -40,7 +40,7 @@ Bixby::Application.routes.draw do
   end
 
   # Other actions
-  post 'login'  => 'sessions#create',  :as => :login
+  resources 'login', :controller => 'sessions', :as => :login, :only => [:index, :create]
   post 'logout' => 'sessions#destroy', :as => :logout
 
 
@@ -50,20 +50,21 @@ Bixby::Application.routes.draw do
   # These routes serve up HTML for bootstrapping the app, i.e., on initial
   # navigation to the app.
 
-  get 'login' => 'sessions#new', :as => :login
+  # replaced by login resource above
+  # get 'login' => 'sessions#new', :as => :login
 
   get 'getting_started' => "ui#default"
 
   get 'profile' => "ui#default"
   get 'profile/edit' => "ui#default"
 
-  get "/inventory" => "inventory::hosts#index"
+  get "/inventory" => "inventory/hosts#index"
   namespace :inventory do
     get "/search/:query" => "hosts#index"
     resources :hosts
   end
 
-  get "/monitoring" => "monitoring::base#index"
+  get "/monitoring" => "monitoring/base#index"
   namespace :monitoring do
     resources :on_calls
     resources :hosts do

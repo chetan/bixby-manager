@@ -5,6 +5,12 @@ Bixby::Application.configure do
   # Code is not reloaded between requests
   config.cache_classes = true
 
+  # Eager load code on boot. This eager loads most of Rails and
+  # your application in memory, allowing both thread web servers
+  # and those relying on copy on write to perform better.
+  # Rake tasks automatically ignore this option for performance.
+  config.eager_load = true
+
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
@@ -26,11 +32,13 @@ Bixby::Application.configure do
 
   # minification
   config.assets.compress       = true
-  config.assets.css_compressor = :yui
+  config.assets.css_compressor = :sass
   config.assets.js_compressor  = :uglifier
 
-  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  # config.assets.precompile << "bixby.js"
+  # Precompile additional assets (application.js, application.css)
+  config.assets.precompile << Proc.new do |path|
+    path =~ %r{^font/}
+  end
 
   # Version of your assets, change this if you want to expire all your assets
   config.assets.version = '1.0'
@@ -50,9 +58,6 @@ Bixby::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
-  # Enable threaded mode
-  # config.threadsafe!
-
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
@@ -60,14 +65,13 @@ Bixby::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  # Log the query plan for queries taking more than this (works
-  # with SQLite, MySQL, and PostgreSQL)
-  # config.active_record.auto_explain_threshold_in_seconds = 0.5
-
-  config.middleware.insert_before "Rack::SSL", "Rack::Health"
+  config.middleware.insert_before "ActionDispatch::SSL", "Rack::Health"
 
   ###############
   # LOGGING SETUP
+
+  # Disable automatic flushing of the log to improve performance.
+  # config.autoflush_log = false
 
   config.log_level = :info
 

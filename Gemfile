@@ -4,10 +4,8 @@ source 'https://rubygems.org'
 # curb_threadpool
 # scrypt
 
-gem 'rails', '~>3.2'
-
-gem 'bixby-common'
-# gem 'bixby-common', :path => "../common"
+gem 'rails', '4.0.0'
+gem 'activerecord-session_store'
 
 # webserver
 gem "unicorn",  :platforms => :mri
@@ -44,6 +42,9 @@ gem "exception_notification"
 gem 'haml'
 
 # bixby requirements
+gem 'bixby-common'
+# gem 'bixby-common', :path => "../common"
+
 gem "json",         :platforms => [:mri, :rbx, :jruby]
 gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
@@ -74,24 +75,26 @@ gem "resque"
 gem "resque-scheduler", :require => ["resque_scheduler"]
 
 gem "sidekiq", "~> 2.9"
-gem "slim", "~> 1.3.0"     # for sidekiq web ui
-gem "sinatra"              # for sidekiq web ui
+gem "slim", "~> 1.3.0"                  # for sidekiq web ui
+gem "sinatra", :require => nil          # for sidekiq web ui
 
 # metrics module
 gem 'continuum', :git => "https://github.com/chetan/continuum.git"
-gem "mongoid"
+gem 'mongoid'
+gem 'bson_ext'
+
 
 group :assets do
-    gem 'turbo-sprockets-rails3'
+    # asset related gems
+    gem 'sprockets-rails'
     gem 'sass'
     gem 'sass-rails'
     gem 'sprockets-jst-str'
     gem "coffee-script"
     gem "coffee-script-source"
     gem 'haml_assets'
-    gem 'yui-compressor', :git => "https://github.com/loe/ruby-yui-compressor.git" # use this fork for latest 2.4.7 jar
     gem 'uglifier'
-    gem 'sprockets-font_compressor'
+    gem 'sprockets-font_compressor', :require => false
 
     # needed for messing with asset tasks
     gem 'rake-hooks', :require => false
@@ -125,9 +128,12 @@ group :development do
     gem "quiet_assets"
 
     # newrelic
-    gem 'newrelic_rpm',     :require => false
-    gem 'rpm_contrib',      :require => false
-    gem 'newrelic-redis',   :require => false
+    gem 'newrelic_rpm',         :require => false
+    gem 'newrelic-redis',       :require => false
+    gem 'newrelic_moped',       :require => false
+    gem 'newrelic-curb',        :require => false
+    gem 'newrelic-middleware',  :require => false
+
 
     # docs
     gem "yard"
@@ -165,7 +171,7 @@ group :development do
     # gem "zeus" # including the gem here appears to break zeus in ruby 2.0
     gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
     gem 'spork-testunit', :git => "https://github.com/sporkrb/spork-testunit.git", :require => false
-    gem "spork-rails", :require => false
+    gem "spork-rails", :require => false, :git => "https://github.com/sporkrb/spork-rails.git" # use git for early rails4 support
     gem "database_cleaner"
     gem "factory_girl_rails"
     gem "mock_redis"
@@ -175,5 +181,4 @@ group :development do
     gem 'rb-inotify', :require => false
     gem 'rb-fsevent', :require => false
     gem 'rb-fchange', :require => false
-
 end
