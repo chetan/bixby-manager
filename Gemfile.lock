@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/mongoid/mongoid.git
+  revision: 5d8397e24b673724f4b70ca2923a62bfe20e6e79
+  specs:
+    mongoid (4.0.0)
+      activemodel (~> 4.0.0)
+      moped (~> 1.5)
+      origin (~> 1.0)
+      tzinfo (~> 0.3.22)
+
+GIT
   remote: https://github.com/chetan/continuum.git
   revision: df0798cc23f4109009fb7f8452375cb27130385f
   specs:
@@ -136,10 +146,6 @@ GEM
       logging
       multi_json
     brwsr (1.1.1)
-    bson (1.9.1)
-    bson (1.9.1-java)
-    bson_ext (1.9.1)
-      bson (~> 1.9.1)
     builder (3.1.4)
     cane (2.6.0)
       parallel
@@ -178,7 +184,6 @@ GEM
     debugger-ruby_core_source (1.2.3)
     delete_paranoid (1.0.5)
       activerecord
-    durran-validatable (2.0.1)
     erubis (2.7.0)
     exception_notification (4.0.0)
       actionmailer (>= 3.0.4)
@@ -234,7 +239,6 @@ GEM
     kgio (2.8.0)
     launchy (2.3.0)
       addressable (~> 2.3)
-    leshill-will_paginate (2.3.11)
     letter_opener (1.1.2)
       launchy (~> 2.2)
     libv8 (3.11.8.17)
@@ -264,13 +268,6 @@ GEM
     mocha (0.14.0)
       metaclass (~> 0.0.1)
     mock_redis (0.8.1)
-    mongo (1.9.1)
-      bson (~> 1.9.1)
-    mongoid (1.0.6)
-      activesupport (>= 2.2.2)
-      durran-validatable (>= 2.0.1)
-      leshill-will_paginate (>= 2.3.11)
-      mongo (>= 0.18.2)
     mono_logger (1.1.0)
     moped (1.5.0)
     multi_json (1.7.7)
@@ -296,6 +293,7 @@ GEM
     newrelic_rpm (3.6.5.130)
     oj (2.1.4)
     open4 (1.3.0)
+    origin (1.1.0)
     parallel (0.7.1)
     pg (0.15.1)
     polyglot (0.3.3)
@@ -479,7 +477,6 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bixby-common
-  bson_ext
   cane
   capistrano
   coffee-rails-source-maps
@@ -514,7 +511,7 @@ DEPENDENCIES
   mixlib-shellout
   mocha
   mock_redis
-  mongoid
+  mongoid!
   multi_json
   mysql2
   newrelic-curb

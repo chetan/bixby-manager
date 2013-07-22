@@ -10,6 +10,7 @@ class Metrics
 
     class MetricData
       include ::Mongoid::Document
+      include ::Mongoid::Attributes::Dynamic
       field :time, :type => DateTime
       field :key, :type => String
       field :val, :type => BigDecimal

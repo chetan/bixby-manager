@@ -8,7 +8,7 @@ gem 'rails', '4.0.0'
 gem 'activerecord-session_store'
 
 # webserver
-gem "unicorn",  :platforms => :mri
+gem "unicorn", :platforms => :mri, :require => false
 
 # backend
 gem "memcached",                        :platforms => [:mri, :rbx]
@@ -80,8 +80,7 @@ gem "sinatra", :require => nil          # for sidekiq web ui
 
 # metrics module
 gem 'continuum', :git => "https://github.com/chetan/continuum.git"
-gem 'mongoid'
-gem 'bson_ext'
+gem 'mongoid',   :github => "mongoid/mongoid" # use git/master for rails4 support
 
 
 group :assets do
@@ -90,8 +89,8 @@ group :assets do
     gem 'sass'
     gem 'sass-rails'
     gem 'sprockets-jst-str'
-    gem "coffee-script"
-    gem "coffee-script-source"
+    gem 'coffee-script'
+    gem 'coffee-script-source'
     gem 'haml_assets'
     gem 'uglifier'
     gem 'sprockets-font_compressor', :require => false
