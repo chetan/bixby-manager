@@ -121,7 +121,7 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
 
     # this will throw
     assert_throws(MultiTenant::AccessException) do
-      Host.all
+      Host.all.first # .first will force the query to execute
     end
 
   end
