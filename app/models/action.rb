@@ -13,14 +13,12 @@
 
 class Action < ActiveRecord::Base
 
-  if not const_defined? :Type then
-    module Type
-      ALERT = 1
-      EXEC  = 2
-    end
-    Bixby::Util.create_const_map(Type)
-    include Type
+  module Type
+    ALERT = 1
+    EXEC  = 2
   end
+  Bixby::Util.create_const_map(Type)
+  include Type
 
   acts_as_paranoid
 
