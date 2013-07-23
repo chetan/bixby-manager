@@ -36,9 +36,8 @@ Bixby::Application.configure do
   config.assets.js_compressor  = :uglifier
 
   # Precompile additional assets (application.js, application.css)
-  config.assets.precompile << Proc.new do |path|
-    path =~ %r{^font/}
-  end
+  config.assets.precompile << %w(*.png *.jpg *.jpeg *.gif)       # vendor/assets/images
+  config.assets.precompile << %w(*.otf *.eot *.svg *.ttf *.woff) # font assets
 
   # Version of your assets, change this if you want to expire all your assets
   config.assets.version = '1.0'
