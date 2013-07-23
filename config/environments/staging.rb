@@ -32,7 +32,7 @@ Bixby::Application.configure do
 
   # minification
   config.assets.compress       = true
-  config.assets.css_compressor = :yui
+  config.assets.css_compressor = :sass
   config.assets.js_compressor  = :uglifier
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
