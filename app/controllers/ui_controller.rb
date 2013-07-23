@@ -27,6 +27,7 @@ class UiController < ApplicationController
 
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
+  # causes a deprecation warning in rails 4 - need an authlogic update
     @current_user_session = UserSession.find
   end
 
