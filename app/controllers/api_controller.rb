@@ -62,7 +62,7 @@ class ApiController < ApplicationController
       mod = "Bixby::#{mod.camelize}"
       mod = mod.constantize.new(request, json_req)
       op = op.to_sym
-      if not (mod and mod.respond_to? op) then
+      if not(mod and mod.respond_to? op) then
         return unsupported_operation(json_req)
       end
     rescue Exception => ex
@@ -72,9 +72,8 @@ class ApiController < ApplicationController
 
     # authenticate the request but still allow agent registration (which will not be signed)
     if decrypt?(mod, op) then
-      request.body.rewind if request.body.respond_to?(:rewind)
       @agent = Agent.where(:access_key => ApiAuth.access_id(request)).first
-      if not (@agent and ApiAuth.authentic?(request, @agent.secret_key)) then
+      if not(@agent and ApiAuth.authentic?(request, @agent.secret_key)) then
         return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
       end
     end
@@ -126,7 +125,8 @@ class ApiController < ApplicationController
   # @return [JsonRequest]
   def extract_request
 
-    body = request.body.read.strip
+    request.body.rewind if request.body.respond_to?(:rewind)
+    body = request.raw_post.strip
     if body.blank? then
       return Bixby::JsonResponse.invalid_request
     end
