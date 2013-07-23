@@ -93,6 +93,7 @@ group :assets do
     gem 'coffee-script-source'
     gem 'haml_assets'
     gem 'uglifier'
+    gem 'font-awesome-rails'
     gem 'sprockets-font_compressor', :require => false
 
     # needed for messing with asset tasks
