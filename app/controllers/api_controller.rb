@@ -125,6 +125,7 @@ class ApiController < ApplicationController
   # @return [JsonRequest]
   def extract_request
 
+    # not sure why we need to rewind first, but we do. some change introduced in rails4
     request.body.rewind if request.body.respond_to?(:rewind)
     body = request.raw_post.strip
     if body.blank? then
