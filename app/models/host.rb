@@ -26,12 +26,10 @@ class Host < ActiveRecord::Base
   multi_tenant :via => :org
 
   def to_s
-    if self.alias() then
-      self.alias()
-    elsif hostname() then
-      hostname()
+    if not self.hostname.blank? then
+      self.hostname
     else
-      ip()
+      self.ip
     end
   end
 
