@@ -36,6 +36,11 @@ class Metrics
       private
 
       def parse_results(ret)
+
+        if !ret or ret.empty? then
+          return nil
+        end
+
         tags = {}
         ret["tags"].each{ |k,v| tags[k] = v.first }
 

@@ -204,7 +204,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
           "key"      => "hardware.storage.disk"
     }
 
-    Continuum::Client.any_instance.expects(:metric).with { |n,v,t|
+    Continuum::OpenTSDB.any_instance.expects(:metric).with { |n,v,t|
       n =~ /^hardware/ && t.to_i == 1329775841 }.times(4)
 
     Bixby::Metrics.new.put_check_result(m)

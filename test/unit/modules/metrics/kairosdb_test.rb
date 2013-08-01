@@ -23,6 +23,32 @@ class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
       assert_metric m
     end
 
+    def test_get_by_tag
+
+      # first invalid tag
+      stub = stub_request(:post, "http://localhost:8080/api/v1/datapoints/query").
+        with{ |req| req.body =~ /foobar/ }.
+        to_return {
+          { :status => 200, :body => %q/{"errors":["failed"]}/ }
+        }
+
+      ret = Bixby::Metrics.new.get({ :key => "foobar", :start_time => (Time.new.to_i-86400*7)*1000, :end_time => Time.new.to_i*1000, :tags => {:foo => "baz"} })
+      refute ret
+
+      stub_request(:post, "http://localhost:8080/api/v1/datapoints/query").
+        with{ |req| req.body =~ /foobar/ }.
+        to_return(:status => 200, :body => '{"queries":[{"results":[{"name":"foobar","tags":{"blah":["baz"]},"values":[[1375189490000,3.200000047683716],[1375189940000,3.200000047683716]]}]}]}', :headers => {})
+
+      ret = Bixby::Metrics.new.get({ :key => "foobar", :start_time => (Time.new.to_i-86400*7)*1000, :end_time => Time.new.to_i*1000, :tags => {:foo => "bar"} })
+      p ret
+      assert ret
+      assert_kind_of Hash, ret
+      refute_empty ret
+      assert_metric [ret]
+
+    end
+
+
     private
 
     def stub_socket(t)

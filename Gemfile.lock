@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: https://github.com/chetan/continuum.git
-  revision: 65757b85db5f5dc9102398c060286f5a61d4312a
+  revision: 243837d65f69881c461a575bef1f3bb36b5daa26
   specs:
     continuum (0.2)
       curb

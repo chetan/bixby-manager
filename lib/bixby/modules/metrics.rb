@@ -300,7 +300,7 @@ class Metrics < API
   def process_results(results)
 
     if results.blank? then
-      return results
+      return results || []
     end
 
     if not results.first.kind_of? Array then
