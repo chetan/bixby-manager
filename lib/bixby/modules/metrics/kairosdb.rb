@@ -59,11 +59,12 @@ class Metrics
 
         data = []
         ret["values"].each{ |r|
+          # r = [time, val] array
           data << {
             :key => ret["name"],
             :tags => tags,
             :time => r.first/1000,
-            :val => r.last
+            :val => r.last.to_f
           }
         }
 
