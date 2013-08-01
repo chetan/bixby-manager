@@ -50,10 +50,10 @@ class Metrics
         # cheap hack to fix value type
         return ret.map{ |r|
           {
-            :time => r[:time],
             :key => r[:key],
-            :val => r[:val].to_f,
-            :tags => r[:tags]
+            :tags => r[:tags],
+            :time => r[:time],
+            :val => r[:val].to_f
           }
         }
       end
