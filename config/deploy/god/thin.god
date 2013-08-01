@@ -26,9 +26,9 @@ cmd = "#{RVM_WRAPPER} bundle exec thin"
   number = config['socket'] ? i : (config['port'] + i)
 
   God.watch do |w|
-    w.group = "thin-bixby"
-    w.name = "#{w.group}-#{number}"
-    w.log = "#{RAILS_ROOT}/log/god.#{w.name}.log"
+    w.name  = "#{w.group}-#{number}"
+    w.group = "bixby"
+    w.log   = "#{RAILS_ROOT}/log/god.#{w.name}.log"
 
     w.interval = 30.seconds
 

@@ -4,8 +4,8 @@ num_workers = RAILS_ENV == 'production' ? 5 : 2
 (num_workers.times.to_a << "scheduler").each do |num|
   God.watch do |w|
     w.dir      = "#{RAILS_ROOT}"
-    w.group    = 'resque-bixby'
     w.name     = "#{w.group}-#{num}"
+    w.group    = "bixby"
     w.interval = 30.seconds
     w.log      = "#{RAILS_ROOT}/log/god.#{w.name}.log"
 
