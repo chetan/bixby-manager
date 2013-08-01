@@ -67,6 +67,7 @@ class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
       assert_equal "baz", m[:tags]["blah"]
       assert_equal 2, m[:vals].size
       assert_equal 3.200000047683716, m[:vals].first[:val].to_f
+      assert_equal 1375189490, m[:vals].first[:time]
     end
 
   end

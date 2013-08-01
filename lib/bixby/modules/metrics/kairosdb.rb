@@ -62,7 +62,7 @@ class Metrics
           data << {
             :key => ret["name"],
             :tags => tags,
-            :time => r.first,
+            :time => r.first/1000,
             :val => r.last
           }
         }
