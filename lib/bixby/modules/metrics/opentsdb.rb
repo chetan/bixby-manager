@@ -10,7 +10,7 @@ class Metrics
       def configure(config)
         if config.include? :opentsdb then
           c = config[:opentsdb]
-          @client = Continuum::Client.new(c[:host], c[:port])
+          @client = Continuum::OpenTSDB.new(c[:host], c[:port])
         end
       end
 
