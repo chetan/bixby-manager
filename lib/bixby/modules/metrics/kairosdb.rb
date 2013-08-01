@@ -19,10 +19,16 @@ class Metrics
       end
 
       def get(opts={})
+        fix_timestamps(opts)
         parse_results(@client.get(opts))
       end
 
       def multi_get(opts=[])
+        if opts.blank? then
+          return opts
+        end
+
+        opts.each{ |opt| fix_timestamps(opt) }
         ret = @client.multi_get(opts)
         res = []
         ret.each do |r|
@@ -34,6 +40,13 @@ class Metrics
 
 
       private
+
+      # KairosDB requires timestamps to be in milliseconds
+      def fix_timestamps(hash)
+        return if hash.blank?
+        hash[:start_time] = hash[:start_time].to_i * 1000
+        hash[:end_time] = hash[:end_time].to_i * 1000
+      end
 
       def parse_results(ret)
 
