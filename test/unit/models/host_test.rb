@@ -15,7 +15,7 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
     assert_equal "foo.example.com", h.to_s
 
     h.alias = "foo"
-    assert_equal "foo", h.to_s
+    assert_equal "foo.example.com", h.to_s
   end
 
   def test_info
