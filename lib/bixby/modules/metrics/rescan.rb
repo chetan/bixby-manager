@@ -1,6 +1,10 @@
 module Bixby
 class Metrics < API
 
+  # Updates the MetricInfo (metric_infos) model
+  #
+  # Loads all metrics from JSON config into the database
+
   class RescanPlugin
     def self.update_command(cmd)
 
