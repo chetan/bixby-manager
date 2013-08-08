@@ -18,15 +18,7 @@
     <div class="check" check_id="<%= check.id %>">
       <h4><%= check.get("name") %></h4>
 
-      <% if (check.get("args")) { %>
-      <h5>
-        <% var a = 0; _.each(check.get("args"), function(val, key) {
-          a++; %>
-          <% if (a > 1) { %><%= ", " %><% } %>
-          <%= key + " = " + val %>
-        <% }); %>
-      </h5>
-      <% } %>
+      <%= include("monitoring/_check_args", {check: check}) %>
 
       <div class="spacer">&nbsp;</div>
 <%

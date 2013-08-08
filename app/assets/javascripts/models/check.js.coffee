@@ -14,6 +14,13 @@ namespace 'Bixby.model', (exports, top) ->
         s += "?metric_id=" + @metric_id
       return s
 
+    # Return args as a comma-separated string of "key = value" pairs
+    args_str: ->
+      args = @get("args")
+      if ! args
+        return null
+      _.map(args, (val, key) -> key + " = " + val ).join(", ")
+
 
   class exports.CheckList extends Stark.Collection
     model: exports.Check
