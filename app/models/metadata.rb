@@ -4,7 +4,7 @@
 #
 #  id     :integer          not null, primary key
 #  key    :string(255)      not null
-#  value  :text             default(""), not null
+#  value  :text             not null
 #  source :integer          default(1), not null
 #
 
