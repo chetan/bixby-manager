@@ -93,3 +93,18 @@ _.select_text = (e) ->
 _.split_cap = (str, sep) ->
   sep = "_" if ! sep
   _.map(_.split(str, sep), (s) -> _.string.capitalize(s)).join(" ")
+
+# Get all the captured groups in the string for the given regex
+#
+# @param [String] string
+# @param [RegExp] regex     must have /g flag set
+# @param [Integer] index    default = 1
+#
+# @return [Array<String>] captured groups
+_.getMatches = (string, regex, index) ->
+  index || (index = 1) # default to the first capturing group
+  matches = []
+  match = null
+  while (match = regex.exec(string))
+    matches.push(match[index])
+  return matches

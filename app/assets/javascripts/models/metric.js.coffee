@@ -9,7 +9,6 @@ namespace 'Bixby.model', (exports, top) ->
       host_id = @host_id || @get("host_id")
       "/rest/hosts/#{host_id}/metrics"
 
-
     url: ->
       s = super() + "?"
       if @get("start")
@@ -18,6 +17,31 @@ namespace 'Bixby.model', (exports, top) ->
         s += "&end=" + @get("end")
       if @get("downsample")
         s += "&downsample=" + @get("downsample")
+      return s
+
+    # Get the display name
+    # e.g., "Disk Usage (%)"
+    display_name: ->
+      s = null
+
+      if @get("label")
+        tags = @get("tags")
+        l = @get("label")
+        matches = _.getMatches(l, /[\b\s]\$([\w]+)\b/g)
+
+        _.each matches, (m) ->
+          tag = tags[m]
+          if tag
+            l = l.replace("$#{m}", tag)
+
+        s = l
+
+      else
+        s = @get("name") || @get("desc")
+
+      if @get("unit")
+        s = s + " (" + @get("unit") + ")"
+
       return s
 
     # get only the metric attributes (the actual data elements)
