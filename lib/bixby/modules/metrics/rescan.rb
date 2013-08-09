@@ -32,7 +32,7 @@ class Metrics < API
         end
         cm.unit = metric["unit"]
         cm.desc = metric["desc"]
-        cm.label = config["label"]
+        cm.label = metric["label"]
         cm.save!
 
         Rails.logger.info "* updated metric: #{cm.metric}"
