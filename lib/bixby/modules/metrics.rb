@@ -67,6 +67,9 @@ class Metrics < API
   #
   # @see #get
   def multi_get(reqs=[])
+    debug { "fetching metrics: " }
+    debug { reqs }
+
     begin
       return process_results(driver.multi_get(reqs))
     rescue Exception => ex
@@ -263,7 +266,7 @@ class Metrics < API
 
   # Get Metrics for the given checks
   def get_for_checks(checks, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
-    metrics = Metric.includes(:check).where(:check_id => checks).includes(:tags)
+    metrics = Metric.includes(:check).where(:check_id => checks).references(:checks).includes(:tags)
     keys = metrics.map { |m| m.key }
 
     reqs = []
@@ -280,8 +283,6 @@ class Metrics < API
       reqs << { :key => metric.key, :start_time => start_time, :end_time => end_time, :tags => all_tags, :agg => agg, :downsample => downsample }
     end
 
-    debug { "fetching metrics: " }
-    debug { reqs }
     responses = multi_get(reqs)
 
     responses.each_with_index do |data, i|
