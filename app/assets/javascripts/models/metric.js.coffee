@@ -27,12 +27,9 @@ namespace 'Bixby.model', (exports, top) ->
       if @get("label")
         tags = @get("tags")
         l = @get("label")
-        matches = _.getMatches(l, /(^|[\b\s])\$([\w]+)\b/g)
+        matches = _.getMatches(l, /(^|[\b\s])\$([\w]+)\b/g, 2)
 
         _.each matches, (m) ->
-          m = _.string.trim(m)
-          if !m
-            return
           tag = tags[m]
           if tag
             l = l.replace("$#{m}", tag)
