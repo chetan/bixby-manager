@@ -9,6 +9,14 @@ GIT
       tzinfo (~> 0.3.22)
 
 GIT
+  remote: git://github.com/red5studios/newrelic-curb.git
+  revision: 5dd1beffb54d43841c1f6676ffae14212b9fedfa
+  specs:
+    newrelic-curb (0.0.3)
+      curb
+      newrelic_rpm
+
+GIT
   remote: https://github.com/chetan/continuum.git
   revision: 243837d65f69881c461a575bef1f3bb36b5daa26
   specs:
@@ -282,9 +290,6 @@ GEM
     net-ssh (2.6.8)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
-    newrelic-curb (0.0.2)
-      curb
-      newrelic_rpm
     newrelic-middleware (1.1.0)
       newrelic_rpm
     newrelic-redis (1.4.0)
@@ -293,7 +298,7 @@ GEM
     newrelic_moped (0.0.6)
       moped
       newrelic_rpm (~> 3.6.0)
-    newrelic_rpm (3.6.5.130)
+    newrelic_rpm (3.6.6.147)
     oj (2.1.4)
     open4 (1.3.0)
     origin (1.1.0)
@@ -519,7 +524,7 @@ DEPENDENCIES
   mongoid!
   multi_json
   mysql2
-  newrelic-curb
+  newrelic-curb!
   newrelic-middleware
   newrelic-redis
   newrelic_moped

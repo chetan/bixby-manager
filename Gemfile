@@ -128,12 +128,11 @@ group :development do
     gem "quiet_assets"
 
     # newrelic
-    gem 'newrelic_rpm',         :require => false
-    gem 'newrelic-redis',       :require => false
-    gem 'newrelic_moped',       :require => false
-    gem 'newrelic-curb',        :require => false
-    gem 'newrelic-middleware',  :require => false
-
+    gem 'newrelic_rpm'
+    gem 'newrelic-redis'
+    gem 'newrelic_moped'
+    gem 'newrelic-curb', :github => "red5studios/newrelic-curb"
+    gem 'newrelic-middleware'
 
     # docs
     gem "yard"
