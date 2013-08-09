@@ -8,6 +8,7 @@
 #  unit       :string(255)
 #  desc       :string(255)
 #  label      :string(255)
+#  name       :string(255)
 #
 
 

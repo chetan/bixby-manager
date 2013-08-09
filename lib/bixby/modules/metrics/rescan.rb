@@ -30,8 +30,9 @@ class Metrics < API
           cm.command_id = cmd.id
           cm.metric = base + "." + key
         end
-        cm.unit = metric["unit"]
-        cm.desc = metric["desc"]
+        cm.unit  = metric["unit"]
+        cm.name  = metric["name"]
+        cm.desc  = metric["desc"]
         cm.label = metric["label"]
         cm.save!
 
