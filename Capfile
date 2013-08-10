@@ -11,8 +11,9 @@ require File.join(RAILS_ROOT, 'config/deploy/cap/bixby_yml.rb')
 # setup bundler
 require "bundler/capistrano"
 set :bundle_without, [:development, :test]
-set :bundle_flags, "--quiet"
-set :bundle_dir, ""
+
+# should be set in stage config as follows:
+# set :bundle_dir, "/var/www/bixby/shared/gems/#{rvm_ruby_string}"
 
 # use rvm
 require "rvm/capistrano"
