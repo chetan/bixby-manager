@@ -63,5 +63,11 @@ module Bixby
 
     # disable Rack::Cache middleware
     config.action_dispatch.rack_cache = nil
+
+    # avoid errors due to mongoid inclusion in stack
+    config.generators do |g|
+      g.orm :active_record
+    end
+
   end
 end

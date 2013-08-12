@@ -80,7 +80,10 @@ gem "sinatra", :require => nil          # for sidekiq web ui
 
 # metrics module
 gem 'continuum', :git => "https://github.com/chetan/continuum.git"
-gem 'mongoid',   :github => "mongoid/mongoid" # use git/master for rails4 support
+
+# uncomment if using mongo for metrics storage
+# warning: you *really* shouldn't use this in production
+# gem 'mongoid', :github => "mongoid/mongoid" # use git/master for rails4 support
 
 
 group :assets do
@@ -110,8 +113,12 @@ group :development do
     # servers used during dev
     gem "puma", :platforms => :mri
 
+    # gems used for dev/test env
+    # for using sqlite3 as db backend
     gem "sqlite3", :platforms => :mri
     gem "activerecord-jdbcsqlite3-adapter", :platforms => "jruby"
+    # for testing mongo metrics driver
+    gem 'mongoid', :github => "mongoid/mongoid" # use git/master for rails4 support
 
     # debugging
     gem "ruby-debug",   :platforms => :mri_18
