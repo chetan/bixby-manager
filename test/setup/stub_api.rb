@@ -1,4 +1,20 @@
 
+# Stub out Bixby API calls to Agents
+#
+# usage:
+#
+#   def test_get_bundle
+#     stub_api.expect{ |agent, op, params|
+#       # verify that the call was the correct one, must return truthy value
+#       params[:command] == "get_bundle.rb"
+#     }.returns(JsonResponse.new("success")).times(2)
+#     # can return either a JsonResponse or CommandResponse
+#
+#     # ... make call, etc ...
+#
+#     assert_api_requests
+#   end
+
 module Bixby
 
   class API
@@ -7,20 +23,48 @@ module Bixby
 
     class Stub
       attr_accessor :block, :response
+
+      # Block which verifies the request. Must return a truthy value
+      #
+      # @yieldparam [Agent] agent
+      # @yieldparam [String] op
+      # @yieldparam [Hash] params
+      #
+      # @return [self]
       def expect(&block)
         @block = block
         self
       end
+
+      # How to respond to the request
+      #
+      # @param [JsonResponse, CommandResponse] response
+      #
+      # @return[self]
       def returns(response)
         @response = response
         self
       end
+
+      # Number of times this request is expected to be called
+      #
+      # @param [Fixnum] num
+      #
+      # @returns[self]
       def times(num)
+        return if num == 1 # we expect 1 call by default
         num -= 1
         num.times do
           API.stubs << self.dup
         end
+        self
       end
+
+      # Test the expected response [internal method]
+      #
+      # @param [Call] call
+      #
+      # @return [Boolean] truthy value used in assertion
       def test(call)
         block.call(call.agent, call.operation, call.params)
       end
@@ -74,7 +118,11 @@ module Bixby
       stub = API.stubs.shift
       assert stub, "Unexpected API call (no response stub set)\n#{call}"
       assert stub.test(call), "Stub didn't match API call:\n#{call}"
-      return stub.response
+
+      res = stub.response
+      res = res.to_json_response if res.kind_of? CommandResponse
+      logger.debug res
+      return res
     end
     alias_method :real_exec_api, :exec_api # make a backup of the original method
 

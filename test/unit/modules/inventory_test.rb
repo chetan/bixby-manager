@@ -119,6 +119,18 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     assert_requested(stub, :times => 2)
   end
 
+  def test_update_version
+    stub_api.expect{ |agent, op, params|
+      params[:bundle] == "system/inventory" && params[:command] == "get_agent_version.rb"
+      }.returns(CommandResponse.new({:status => 0, :stdout => "1.5.19"}))
+
+    agent = FactoryGirl.create(:agent)
+    Bixby::Inventory.new.update_version(agent)
+    assert_equal "1.5.19", agent.version
+
+    assert_api_requests
+  end
+
 
   private
 
