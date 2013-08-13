@@ -129,8 +129,6 @@ class Inventory < API
   # @param [Host] host      to update
   def update_version(host)
     agent = agent_or_host(host)
-    logger.debug "got agent"
-    logger.debug agent
     command = CommandSpec.new(:repo => "vendor", :bundle => "system/inventory",
                               :command => "get_agent_version.rb")
 
