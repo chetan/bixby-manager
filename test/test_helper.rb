@@ -19,6 +19,8 @@ def prefork
     require "bundler/setup"
   end
 
+  require "mongoid"
+
   if not(spork_running? or zeus_running?) then
     # load now if neither spork (DRB) or zeus are running
     # (usually during manual rake test run)

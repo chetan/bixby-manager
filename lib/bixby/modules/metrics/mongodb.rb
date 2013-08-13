@@ -1,5 +1,6 @@
 
 require 'bixby/modules/metrics/driver'
+require 'mongoid'
 
 module Bixby
 class Metrics
