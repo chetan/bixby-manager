@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: 5d8397e24b673724f4b70ca2923a62bfe20e6e79
+  revision: 346a79a7d01aa194de80e649916239a18d38ce13
   specs:
     mongoid (4.0.0)
       activemodel (~> 4.0.0)
@@ -136,8 +136,8 @@ GEM
     ansi (1.4.3)
     api-auth (1.0.3)
     arel (4.0.0)
-    atomic (1.1.10)
-    atomic (1.1.10-java)
+    atomic (1.1.12)
+    atomic (1.1.12-java)
     authlogic (3.3.0)
       activerecord (>= 3.2)
       activesupport (>= 3.2)
@@ -149,7 +149,7 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bixby-common (0.3.15)
+    bixby-common (0.3.16)
       httpi
       logging
       multi_json
@@ -233,9 +233,10 @@ GEM
     hiredis (0.4.5)
     hiredis (0.4.5-java)
     httpclient (2.3.3)
-    httpi (2.0.2)
+    httpi (2.1.0)
       rack
-    i18n (0.6.4)
+      rubyntlm (~> 0.3.2)
+    i18n (0.6.5)
     immigrant (0.1.4)
       activerecord (>= 3.0)
       foreigner (>= 1.2.1)
@@ -280,8 +281,8 @@ GEM
       metaclass (~> 0.0.1)
     mock_redis (0.8.1)
     mono_logger (1.1.0)
-    moped (1.5.0)
-    multi_json (1.7.7)
+    moped (1.5.1)
+    multi_json (1.7.9)
     mysql2 (0.3.13)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -377,6 +378,7 @@ GEM
       ruby-debug-base (~> 0.10.4.0)
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
+    rubyntlm (0.3.4)
     rufus-scheduler (2.0.22)
       tzinfo (>= 0.3.23)
     rvm-capistrano (1.4.1)
@@ -438,7 +440,9 @@ GEM
       libv8 (~> 3.11.8.12)
       ref
     thor (0.18.1)
-    thread_safe (0.1.0)
+    thread_safe (0.1.2)
+      atomic
+    thread_safe (0.1.2-java)
       atomic
     tilt (1.4.1)
     timers (1.1.0)
