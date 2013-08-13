@@ -38,7 +38,8 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
       :hostname => hostname,
       :tenant => org.tenant.name,
       :password => "test",
-      :tags => "foo,bar"
+      :tags => "foo,bar",
+      :version => "0.5.3"
       })
     assert ret
     assert_kind_of Hash, ret
@@ -55,6 +56,7 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     assert_equal ret[:access_key], a.access_key
     assert_equal ret[:secret_key], a.secret_key
     assert_equal 18000, a.port, "port defaults to 18000"
+    assert_equal "0.5.3", a.version
 
     host = Host.where("hostname = ?", hostname).first
     assert host, "host created"

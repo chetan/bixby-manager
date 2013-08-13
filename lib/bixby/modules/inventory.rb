@@ -14,7 +14,13 @@ class Inventory < API
   # @option opts [String] :tenant         Name of the tenant
   # @option opts [String] :password       Password for registering an Agent with the server
   # @option opts [FixNum] :port           Port agent listens on (optional, default: 18000)
+  # @option opts [String] :version        Agent version number (required by newer agents)
   # @option opts [Array<String>] :tags    List of tags to assign to host (optional)
+  #
+  # @return [Hash] result
+  # @param result [String] :server_key      The server's public key
+  # @param result [String] :access_key      Access key for the new agent
+  # @param result [String] :secret_key      Secret key for the new agent
   def register_agent(opts)
 
     opts = (opts||{}).with_indifferent_access
@@ -63,6 +69,7 @@ class Inventory < API
     a.ip = h.ip
     a.port = opts[:port]
     a.uuid = opts[:uuid]
+    a.version = opts[:version]
     a.public_key = opts[:public_key]
     a.access_key = Bixby::CryptoUtil.generate_access_key
     a.secret_key = Bixby::CryptoUtil.generate_secret_key
