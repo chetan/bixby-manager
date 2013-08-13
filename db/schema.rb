@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130809185120) do
+ActiveRecord::Schema.define(version: 20130812201434) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20130809185120) do
     t.string   "access_key", limit: 32,                  null: false
     t.string   "secret_key", limit: 128,                 null: false
     t.integer  "status",     limit: 2,   default: 0,     null: false
+    t.string   "version"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"

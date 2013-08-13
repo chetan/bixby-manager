@@ -90,12 +90,7 @@ class Inventory < API
   # @param [Host] host      to update
   def update_facts(host)
 
-    if host.kind_of? Agent then
-      agent = host
-    else
-      host = get_model(host, Host)
-      agent = host.agent
-    end
+    agent = agent_or_host(host)
 
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/inventory",
                                :command => "list_facts.rb" )
@@ -127,6 +122,27 @@ class Inventory < API
     end
 
     true
+  end
+
+  # Update the version number of the currently running Bixby agent
+  #
+  # @param [Host] host      to update
+  def update_version(host)
+    agent = agent_or_host(host)
+    logger.debug "got agent"
+    logger.debug agent
+    command = CommandSpec.new(:repo => "vendor", :bundle => "system/inventory",
+                              :command => "get_agent_version.rb")
+
+    ret = exec(agent, command)
+    if ret.error? then
+      return ret # TODO
+    end
+
+    return if ret.stdout.blank?
+
+    agent.version = ret.stdout.strip
+    agent.save!
   end
 
 end

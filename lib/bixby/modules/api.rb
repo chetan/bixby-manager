@@ -42,6 +42,19 @@ class API
     return arr if arr.nil?
     return arr.kind_of?(Array) ? arr : [arr]
   end
+
+  # Helper for coercing input (Host, Agent or Fixnum ID of Host) into an Agent
+  #
+  # @param [Object] obj
+  #
+  # @return [Agent]
+  def agent_or_host(obj)
+    if obj.kind_of? Agent then
+      obj
+    else
+      get_model(obj, Host).agent
+    end
+  end
 end
 
 end # Bixby
