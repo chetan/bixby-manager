@@ -32,3 +32,13 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           view.transition "mon_view_host", { host: view.host }
 
       return {} # return empty event hash to backbone delegateEvents
+
+    # Get option name for display. Shows default value if present.
+    # e.g., Foo Option [default: ``blah``]
+    #
+    # @return [String]
+    opt_name: (key, hash) ->
+      s = (hash["name"] || _.split_cap(key))
+      if hash["default"]?
+        s += " [default: ``#{hash['default']}``]"
+      @markdown(s)

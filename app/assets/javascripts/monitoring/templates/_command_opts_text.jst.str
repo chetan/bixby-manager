@@ -1,2 +1,2 @@
 
-<%= include("main/_text_input", {name: opt_key}) %>
+<%= include("main/_text_input", { name: opt_key, label: opt_name(opt_key, opt_hash), title: opt_hash["desc"] }) %>
