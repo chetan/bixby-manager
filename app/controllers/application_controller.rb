@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
   # @param [Boolean] optional   Whether or not to raise if param doesn't exist
   #
   # @return [Fixnum] Requested value as an integer, or nil if optional param not found
-  # @throws [Exception] Will raise if param is not a string (array or hash) or doesn't exist
+  # @raise [Exception] Will raise if param is not a string (array or hash) or doesn't exist
   def _id(key = :id, optional=false)
     if params.include? key then
       return params[key].to_i

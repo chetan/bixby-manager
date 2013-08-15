@@ -297,7 +297,7 @@ class Metrics < API
 
   # Process raw results
   #
-  # @param [Array<Array>] array of metric responses from the driver
+  # @param [Array<Array>] results     array of metric responses from the driver
   def process_results(results)
 
     if results.blank? then

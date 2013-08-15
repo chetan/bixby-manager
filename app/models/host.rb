@@ -79,7 +79,7 @@ class Host < ActiveRecord::Base
   # @param [String] terms
   # @param [User] user to scope for
   #
-  # @result [Array<Host>]
+  # @return [Array<Host>]
   def self.search(terms, user)
 
     keys = []

@@ -31,7 +31,7 @@ class Scheduler < API
 
     # Set the active driver
     #
-    # @param [Bixby::Scheduler::Driver] driver class
+    # @param [Bixby::Scheduler::Driver] new_driver      driver class
     def driver=(new_driver)
       @driver = new_driver
     end

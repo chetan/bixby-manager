@@ -18,9 +18,10 @@ class Inventory < API
   # @option opts [Array<String>] :tags    List of tags to assign to host (optional)
   #
   # @return [Hash] result
-  # @param result [String] :server_key      The server's public key
-  # @param result [String] :access_key      Access key for the new agent
-  # @param result [String] :secret_key      Secret key for the new agent
+  #
+  #   * :server_key [String]       The server's public key
+  #   * :access_key [String]       Access key for the new agent
+  #   * :secret_key [String]       Secret key for the new agent
   def register_agent(opts)
 
     opts = (opts||{}).with_indifferent_access
