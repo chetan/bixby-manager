@@ -3,6 +3,11 @@ module YARD
   module CodeObjects
 
     class ClassObject
+      # Find all methods of a given scope
+      #
+      # @param [Symbol] scope     :constructor, :class, or :instance
+      #
+      # @return [Array<MethodObject>]
       def methods_by_scope(scope)
         meths.sort.find_all do |meth|
           if meth.constructor?
