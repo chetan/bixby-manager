@@ -171,7 +171,7 @@ class Metrics < API
   # @return [void]
   #
   # Example input:
-  #
+  # ```ruby
   #    {
   #      "status"    => "OK",
   #      "timestamp" => 1329775841,
@@ -185,6 +185,7 @@ class Metrics < API
   #      ],
   #      "errors"=>[]
   #    }
+  # ```
   #
   def put_check_result(results)
 
