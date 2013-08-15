@@ -1,6 +1,7 @@
 
 begin
   require 'yard'
+  require 'ext/yard'
 
   namespace :bixby do
     desc "Generate API documentation"
@@ -14,41 +15,6 @@ begin
 
 rescue LoadError
   warn "yard not available, documentation tasks not provided."
-end
-
-module YARD
-  module CodeObjects
-
-    class ClassObject
-      def methods_by_scope(scope)
-        meths.sort.find_all do |meth|
-          if meth.constructor?
-            if scope == :constructor then
-              true
-            else
-              false
-            end
-          else
-            meth.scope == scope
-          end
-        end
-      end
-    end
-
-    class MethodObject
-      def <=>(b)
-        a = self
-        if a.constructor? and b.constructor? then
-          0
-        elsif a.constructor? or b.constructor? then
-          a.constructor? ? -1 : 1
-        else
-          a.name.to_s <=> b.name.to_s
-        end
-      end # <=>
-    end
-
-  end
 end
 
 module Bixby
