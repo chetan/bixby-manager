@@ -178,7 +178,7 @@ group :development do
     gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
     gem 'spork-testunit', :git => "https://github.com/sporkrb/spork-testunit.git", :require => false
     gem "spork-rails", :require => false, :git => "https://github.com/sporkrb/spork-rails.git" # use git for early rails4 support
-    gem "database_cleaner"
+    gem "database_cleaner", "=1.0.1"
     gem "factory_girl_rails"
     gem "mock_redis"
 

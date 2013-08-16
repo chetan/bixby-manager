@@ -11,7 +11,7 @@ end
 # override to inject MockRedis
 module Sidekiq
   class RedisConnection
-    def self.build_client(url, namespace, driver)
+    def self.build_client(url, namespace, driver, network_timeout)
       MockRedis.new
     end
     private_class_method :build_client
