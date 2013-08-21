@@ -4,7 +4,7 @@ module Bixby
   require "bixby/file_download"
   require "bixby/hooks"
   require "bixby/async"
-  require "bixby/websocket"
+  require "bixby/api"
 
   class << self
     attr_accessor :ref, :ref_date
