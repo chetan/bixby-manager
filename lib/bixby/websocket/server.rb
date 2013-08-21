@@ -1,4 +1,6 @@
 
+require 'faye/websocket'
+
 module Bixby
   module WebSocket
 
@@ -36,7 +38,6 @@ module Bixby
           end
         end
 
-        # Kill the thread when client disconnects and remove the websocket
         ws.on :close do |e|
           begin
             api.close(e)
@@ -50,5 +51,5 @@ module Bixby
 
     end
 
-end
+  end
 end
