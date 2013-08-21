@@ -45,6 +45,13 @@ gem 'haml'
 gem 'bixby-common'
 # gem 'bixby-common', :path => "../common"
 
+gem "em-hiredis"
+
+# gem "em-websocket"
+# gem "websocket-eventmachine-server"
+# gem "websocket-rack"
+gem "faye-websocket"
+
 gem "json",         :platforms => [:mri, :rbx, :jruby]
 gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
