@@ -8,8 +8,8 @@ module Bixby
     include Bixby::Log
     include Bixby::Crypto
 
-    def initialize(http_request)
-      @http_request = http_request
+    def initialize(request)
+      @request = request
     end
 
     def handle(json_req)
@@ -42,7 +42,7 @@ module Bixby
 
       begin
         mod = "Bixby::#{mod.camelize}"
-        mod = mod.constantize.new(@http_request, json_req)
+        mod = mod.constantize.new(@request, json_req)
         op = op.to_sym
         logger.debug op
         if not(mod and mod.respond_to? op) then
@@ -58,8 +58,8 @@ module Bixby
 
       # authenticate the request but still allow agent registration (which will not be signed)
       if decrypt?(mod, op) then
-        @agent = Agent.where(:access_key => ApiAuth.access_id(@http_request)).first
-        if not(@agent and ApiAuth.authentic?(@http_request, @agent.secret_key)) then
+        @agent = Agent.where(:access_key => ApiAuth.access_id(@request)).first
+        if not(@agent and ApiAuth.authentic?(@request, @agent.secret_key)) then
           return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
         end
       end
