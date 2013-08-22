@@ -57,7 +57,7 @@ gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
 gem "scrypt"
 gem "authlogic"
-gem "api-auth"
+gem "api-auth", :github => "chetan/api_auth", :branch => "bixby"
 gem "mixlib-shellout"
 
 # repository module

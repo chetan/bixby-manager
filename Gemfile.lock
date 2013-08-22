@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/chetan/api_auth.git
+  revision: 6d9351de901a51d6a386d547a8d32e23c4314550
+  branch: bixby
+  specs:
+    api-auth (1.0.3)
+
+GIT
   remote: git://github.com/mongoid/mongoid.git
   revision: f4be91d037fd9048872f847a71286f9512aa862a
   specs:
@@ -134,7 +141,6 @@ GEM
     annotate (2.5.0)
       rake
     ansi (1.4.3)
-    api-auth (1.0.3)
     arel (4.0.0)
     atomic (1.1.13)
     atomic (1.1.13-java)
@@ -476,6 +482,7 @@ GEM
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
     websocket-driver (0.2.3)
+    websocket-driver (0.2.3-java)
     xray (1.1)
     yard (0.8.7)
 
@@ -491,7 +498,7 @@ DEPENDENCIES
   acts-as-taggable-on
   acts_as_tree
   annotate (>= 2.5.0)
-  api-auth
+  api-auth!
   authlogic
   awesome_print
   bahia
