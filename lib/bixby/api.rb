@@ -1,3 +1,3 @@
 
-require "bixby/api/handler"
-require "bixby/api/server"
+require "bixby/api/server_handler"
+require "bixby/api/websocket_server"
