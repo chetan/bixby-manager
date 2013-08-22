@@ -17,7 +17,7 @@ module Bixby
       end
 
       ws = Faye::WebSocket.new(env)
-      api = Bixby::WebSocket::API.new(ws)
+      api = Bixby::WebSocket::APIChannel.new(ws, ServerHandler)
       # @conns << ws
 
       ws.on :open do |e|
