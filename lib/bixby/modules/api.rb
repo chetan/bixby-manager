@@ -22,6 +22,10 @@ class API
     @json_request = json_req
   end
 
+  def version
+    Bixby.ref
+  end
+
 
   protected
 
