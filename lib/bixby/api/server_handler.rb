@@ -53,19 +53,8 @@ module Bixby
 
       # authenticate the request but still allow agent registration (which will not be signed)
       if decrypt?(mod, op) then
-
-        if @request.kind_of? Bixby::WebSocket::Request then
-          signed_request = SignedJsonRequest.new(json_req)
-          signed_request.body = @request.body
-          signed_request.headers = @request.headers
-        else
-          signed_request = @request
-        end
-
-        @agent = Agent.where(:access_key => ApiAuth.access_id(signed_request)).first
-        if not(@agent and ApiAuth.authentic?(signed_request, @agent.secret_key)) then
-          return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
-        end
+        valid = validate_request(json_req)
+        return valid if valid.kind_of? JsonResponse
       end
 
 
@@ -103,6 +92,30 @@ module Bixby
       end
 
     end # handle_internal
+
+    # Validate the given request
+    #
+    # @param [JsonRequest] json_req
+    #
+    # @return [Bixby::JsonResponse] if request fails validation
+    # @return [Boolean] true if success
+    def validate_request(json_req)
+
+      if @request.kind_of? Bixby::WebSocket::Request then
+        signed_request = SignedJsonRequest.new(json_req)
+        signed_request.body = @request.body
+        signed_request.headers = @request.headers
+      else
+        signed_request = @request
+      end
+
+      @agent = Agent.where(:access_key => ApiAuth.access_id(signed_request)).first
+      if not(@agent and ApiAuth.authentic?(signed_request, @agent.secret_key)) then
+        return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
+      end
+
+      return true
+    end
 
     # Find a Bixby module with the given name
     #
