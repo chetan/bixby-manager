@@ -36,20 +36,16 @@ module Bixby
       end
 
       if mod.blank? or op.blank? then
-        logger.warn "returning unsupported"
         return unsupported_operation(json_req)
       end
 
       begin
-        mod = "Bixby::#{mod.camelize}"
-        mod = mod.constantize.new(@request, json_req)
-        op = op.to_sym
+        mod = find_module(mod).new(@request, json_req)
+        op  = op.to_sym
         if not(mod and mod.respond_to? op) then
-          logger.warn "returning unsupported 2"
           return unsupported_operation(json_req)
         end
       rescue Exception => ex
-        logger.warn "returning unsupported 3"
         logger.error ex
         return unsupported_operation(json_req)
       end
@@ -57,8 +53,17 @@ module Bixby
 
       # authenticate the request but still allow agent registration (which will not be signed)
       if decrypt?(mod, op) then
-        @agent = Agent.where(:access_key => ApiAuth.access_id(@request)).first
-        if not(@agent and ApiAuth.authentic?(@request, @agent.secret_key)) then
+
+        if @request.kind_of? Bixby::WebSocket::Request then
+          signed_request = SignedJsonRequest.new(json_req)
+          signed_request.body = @request.body
+          signed_request.headers = @request.headers
+        else
+          signed_request = @request
+        end
+
+        @agent = Agent.where(:access_key => ApiAuth.access_id(signed_request)).first
+        if not(@agent and ApiAuth.authentic?(signed_request, @agent.secret_key)) then
           return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
         end
       end
@@ -76,14 +81,42 @@ module Bixby
         MultiTenant.current_tenant = @agent.tenant
       end
 
-      if json_req.params.kind_of? Hash then
+      method = mod.method(op)
+
+      if method.arity == 0 then
+        # handle methods which should not have any params passed in
+        if json_req.params.nil? then
+          return mod.send(op)
+        else
+          return Bixby::JsonResponse.invalid_request("wrong number of arguments (#{json_req.params.size} for 0)")
+        end
+
+      elsif json_req.params.kind_of? Hash then
         return mod.send(op, HashWithIndifferentAccess.new(json_req.params))
+
       elsif json_req.params.kind_of? Array then
         return mod.send(op, *json_req.params)
+
       else
         return mod.send(op, json_req.params)
+
       end
+
     end # handle_internal
+
+    # Find a Bixby module with the given name
+    #
+    # @param [String] str
+    #
+    # @return [Class] class object
+    # @raise  [NameError]
+    def find_module(str)
+      begin
+        return "Bixby::#{str}".constantize
+      rescue NameError
+      end
+      return "Bixby::#{str.camelize}".constantize
+    end
 
     # Test whether or not this request should be decrypted
     #

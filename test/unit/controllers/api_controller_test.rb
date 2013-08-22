@@ -78,7 +78,7 @@ class API < ActionController::TestCase
     assert "hello joe", res.data
   end
 
-  def test_signed_request
+  def test_signed_request_succeeds
     BIXBY_CONFIG[:crypto] = true
 
     @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:hi", "joe").to_json
