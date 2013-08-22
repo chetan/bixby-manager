@@ -44,7 +44,6 @@ module Bixby
         mod = "Bixby::#{mod.camelize}"
         mod = mod.constantize.new(@request, json_req)
         op = op.to_sym
-        logger.debug op
         if not(mod and mod.respond_to? op) then
           logger.warn "returning unsupported 2"
           return unsupported_operation(json_req)
