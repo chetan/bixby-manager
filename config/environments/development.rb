@@ -43,7 +43,7 @@ Bixby::Application.configure do
 
 
   # Set the logging destination(s)
-  config.log_to = %w[stdout]
+  config.log_to = %w[stdout file]
 
   # Show the logging configuration on STDOUT
   config.show_log_configuration = true
