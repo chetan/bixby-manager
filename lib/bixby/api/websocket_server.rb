@@ -6,8 +6,6 @@ module Bixby
 
     extend Bixby::Log
 
-    @conns = {}
-
     def self.call(env)
 
       if not Faye::WebSocket.websocket?(env) then
@@ -18,7 +16,6 @@ module Bixby
 
       ws = Faye::WebSocket.new(env)
       api = Bixby::WebSocket::APIChannel.new(ws, ServerHandler)
-      # @conns << ws
 
       ws.on :open do |e|
         begin

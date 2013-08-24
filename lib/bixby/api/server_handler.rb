@@ -3,6 +3,9 @@ require "bixby/modules/crypto"
 
 module Bixby
 
+  # Process API requests from clients
+  #
+  # Clients could be either Agents or other API clients (command line tools, etc)
   class ServerHandler < Bixby::RpcHandler
 
     include Bixby::Log
@@ -21,6 +24,17 @@ module Bixby
 
       return Bixby::JsonResponse.new(:success, nil, ret)
 
+    end
+
+    def connect(json_req, api)
+      valid = validate_request(json_req)
+      return valid if valid.kind_of? JsonResponse
+
+      Bixby::AgentRegistry.add(@agent, api)
+    end
+
+    def disconnect(api)
+      Bixby::AgentRegistry.remove(api)
     end
 
 

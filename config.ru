@@ -9,3 +9,8 @@ run Rack::URLMap.new(
   "/"      => Bixby::Application,
   "/wsapi" => Bixby::WebSocketServer
 )
+
+# Start agent listener
+Bixby::Application.config.after_initialize do
+  Bixby::AgentRegistry.redis_channel.start!
+end
