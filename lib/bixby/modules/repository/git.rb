@@ -6,7 +6,7 @@ class Repository < API
     def clone
       with_ssh do
         g = Git.clone(repo.uri, File.basename(repo.path), :path => File.dirname(repo.path))
-        g.checkout(repo.branch) if not repo.branch == "master"
+        g.checkout(repo.branch) if !repo.branch.blank? && repo.branch != "master"
       end
     end
 
