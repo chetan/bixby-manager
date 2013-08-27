@@ -68,7 +68,11 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     repo.public_key = File.read(File.join(key_path, "id_rsa.pub"))
     repo.save!
 
-    # stub the actual remote pull
+    # stub the actual remote clone & pull
+    Git::Base.expects(:clone).with() {
+      FileUtils.mkdir_p(File.join(repo.path, ".git")) # fake it for update
+      ENV.include?("GIT_SSH") && ENV.include?("GIT_SSH_BIXBY") && ENV["GIT_SSH"] =~ /gitsshwrap\.sh/
+    }
     Git::Base.any_instance.expects(:pull).with() {
       ENV.include?("GIT_SSH") && ENV.include?("GIT_SSH_BIXBY") && ENV["GIT_SSH"] =~ /gitsshwrap\.sh/
     }
