@@ -1,21 +1,12 @@
 
 require 'test_helper'
+require 'setup/sidekiq_mock_redis'
 
 # helper for testing actual perform() method
 require "sidekiq/testing/inline"
 Sidekiq::Client.singleton_class.class_eval do
   alias_method :raw_push_inline, :raw_push
   alias_method :raw_push, :raw_push_old
-end
-
-# override to inject MockRedis
-module Sidekiq
-  class RedisConnection
-    def self.build_client(url, namespace, driver, network_timeout)
-      MockRedis.new
-    end
-    private_class_method :build_client
-  end
 end
 
 class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
