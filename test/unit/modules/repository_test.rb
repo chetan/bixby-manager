@@ -1,3 +1,4 @@
+
 require 'test_helper'
 
 class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
@@ -67,11 +68,12 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     repo.public_key = File.read(File.join(key_path, "id_rsa.pub"))
     repo.save!
 
+    # stub the actual remote pull
+    Git::Base.any_instance.expects(:pull).with() {
+      ENV.include?("GIT_SSH") && ENV.include?("GIT_SSH_BIXBY") && ENV["GIT_SSH"] =~ /gitsshwrap\.sh/
+    }
 
     Bixby::Repository.new.update
-
-    assert File.directory? repo.path
-    assert File.exists? File.join(repo.path, "README.md")
   end
 
 
