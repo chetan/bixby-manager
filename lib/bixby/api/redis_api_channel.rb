@@ -6,6 +6,10 @@ module Bixby
       @responses = {}
     end
 
+    # Execute the given JsonRequest via some other host using Redis PubSub
+    #
+    # The request is published to the target host on a Redis channel and we
+    # block until the response is returned.
     def execute(json_request, agent_id, host)
       fetch_response( execute_async(json_request, agent_id, host) )
     end
@@ -54,8 +58,11 @@ module Bixby
       EM.next_tick {
 
         begin
-          @client = EM::Hiredis::PubsubClient.new()
+          (host, port) = BIXBY_CONFIG["redis"].split(/:/)
+          port ||= 6379
+          @client = EM::Hiredis::PubsubClient.new(host, port.to_i)
           @client.connect
+
           @client.subscribe(host_key(AgentRegistry.hostname)) do |msg|
             logger.debug { "got message:\n#{msg}" }
             begin
@@ -73,7 +80,8 @@ module Bixby
                   # TODO
                 end
 
-                # gotta execute this async, in another EM call? future?
+                # gotta execute this async
+                # TODO what happens if too many threads running?
                 EM.defer {
                   logger.debug "executing in thread"
                   json_res = api.execute(req.json_request)

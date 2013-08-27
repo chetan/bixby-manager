@@ -13,3 +13,9 @@ module Sidekiq
     private_class_method :build_client
   end
 end
+
+# no-op for RedisAPIChannel
+class MockRedis
+  def publish(key, data)
+  end
+end
