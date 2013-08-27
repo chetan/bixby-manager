@@ -18,8 +18,6 @@ module Bixby
         super
         AgentRegistry.agents.clear
         Sidekiq.redis{ |r| r.flushdb }
-        BIXBY_CONFIG[:crypto] = false
-        MultiTenant.current_tenant = nil
       end
 
       def test_add
