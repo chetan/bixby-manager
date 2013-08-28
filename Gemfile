@@ -41,9 +41,12 @@ gem "exception_notification"
 # view related
 gem 'haml'
 
+
 # bixby requirements
 gem 'bixby-common'
 # gem 'bixby-common', :path => "../common"
+
+gem "semver2"
 
 gem "em-hiredis"
 

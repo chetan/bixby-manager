@@ -67,6 +67,16 @@ class RemoteExec < API
     #
     # @return [JsonResponse]
     def exec_api(agent, operation, params)
+
+      # temporary workaround for supporting both protocols
+      ver = agent.version
+      if ver.blank? or SemVer.parse("v#{ver}") < SemVer.parse("v0.2.0") then
+        # using old API
+        return exec_api_http(agent, operation, params)
+      end
+
+
+      # execute using newer API
       begin
         ret = Bixby::AgentRegistry.execute(agent, JsonRequest.new(operation, params))
         debug { ret.to_s }

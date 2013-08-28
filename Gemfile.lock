@@ -409,6 +409,7 @@ GEM
       rake
     secure_headers (1.0.0)
       brwsr (>= 1.1.1)
+    semver2 (3.3.2)
     sextant (0.2.4)
       rails (>= 3.2)
     sidekiq (2.13.1)
@@ -577,6 +578,7 @@ DEPENDENCIES
   sass-rails
   scrypt
   secure_headers
+  semver2
   sextant
   sidekiq (~> 2.9)
   simplecov
