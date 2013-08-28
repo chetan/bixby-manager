@@ -68,13 +68,20 @@ class Provisioning < API
   #
   # @param [Host] host      to upgrade
   #
-  # @return [JsonResponse]
+  # @return [String]
   def upgrade_agent(host)
     agent = agent_or_host(host)
     command = CommandSpec.new(:repo => "vendor", :bundle => "system/provisioning",
                               :command => "upgrade_agent.sh", :args => "--beta")
 
-    exec(agent, command)
+    res = exec(agent, command)
+    if res.success? && res.stdout.strip =~ /^bixby upgraded to (.*?)$/ then
+      agent.version = $1
+      agent.save
+      return agent.version
+    end
+
+    return "failed"
   end
 
   # List files in bundle specified by CommandSpec

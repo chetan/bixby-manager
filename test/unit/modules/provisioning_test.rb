@@ -103,12 +103,13 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
   end
 
   def test_upgrade_agent
+    res = CommandResponse.new({:status => 0, :stdout => "bixby upgraded to 0.2.0-alpha\n"})
     stub_api.expect{ |agent, op, params|
       params[:command] == "upgrade_agent.sh" && agent == @agent
-    }.returns(JsonResponse.new("success")).times(2)
+    }.returns(res).times(2)
 
-    Bixby::Provisioning.new.upgrade_agent(@agent.host)
-    Bixby::Provisioning.new.upgrade_agent(@agent)
+    assert_equal "0.2.0-alpha", Bixby::Provisioning.new.upgrade_agent(@agent.host)
+    assert_equal "0.2.0-alpha", Bixby::Provisioning.new.upgrade_agent(@agent)
 
     assert_api_requests
   end

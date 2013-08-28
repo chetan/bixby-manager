@@ -1,4 +1,6 @@
 
+require "semver"
+
 module Bixby
 
 class RemoteExec < API
@@ -69,8 +71,8 @@ class RemoteExec < API
     def exec_api(agent, operation, params)
 
       # temporary workaround for supporting both protocols
-      ver = agent.version
-      if ver.blank? or SemVer.parse("v#{ver}") < SemVer.parse("v0.2.0") then
+      ver = agent.semver
+      if !ver || ver < ::SemVer.parse("v0.2.0") then
         # using old API
         return exec_api_http(agent, operation, params)
       end

@@ -16,6 +16,7 @@
 #  deleted_at :datetime
 #
 
+require "semver"
 
 class Agent < ActiveRecord::Base
 
@@ -51,6 +52,11 @@ class Agent < ActiveRecord::Base
 
   def uri
     "http://#{self.ip}:#{self.port}/"
+  end
+
+  def semver
+    return nil if version.blank?
+    return SemVer.parse("v#{version}")
   end
 
 end
