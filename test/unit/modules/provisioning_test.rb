@@ -12,7 +12,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
     Bixby.instance_eval{ @client = nil }
 
     @repo  = Repo.new(:name => "vendor")
-    @agent = Agent.new(:ip => "2.2.2.2", :port => 18000)
+    @agent = FactoryGirl.create(:agent)
     @cmd   = Command.new(:bundle => "test_bundle", :command => "echo", :repo => @repo)
   end
 
@@ -98,6 +98,17 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
 
     @cmd.bundle = "test_bundle_with_dep"
     Bixby::Provisioning.new.provision(@agent, @cmd)
+
+    assert_api_requests
+  end
+
+  def test_upgrade_agent
+    stub_api.expect{ |agent, op, params|
+      params[:command] == "upgrade_agent.sh" && agent == @agent
+    }.returns(JsonResponse.new("success")).times(2)
+
+    Bixby::Provisioning.new.upgrade_agent(@agent.host)
+    Bixby::Provisioning.new.upgrade_agent(@agent)
 
     assert_api_requests
   end
