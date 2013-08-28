@@ -87,24 +87,6 @@ class RemoteExec < API
       end
     end
 
-    # Execute the given API download request (download a file from an Agent)
-    # TODO: not yet implemented!
-    #
-    # @param [String] uri
-    # @param [JsonRequest] json_req     Request to download a file
-    # @param [String] download_path     Location to download requested file to
-    #
-    # @return [JsonResponse]
-    def exec_api_download(uri, json_req, download_path)
-      raise "not yet implemented"
-      begin
-        http_post_download(uri, json_req.to_json, download_path)
-        return JsonResponse.new("success")
-      rescue Curl::Err::CurlError => ex
-        return JsonResponse.new("fail", ex.message, ex.backtrace)
-      end
-    end
-
   end
 
 end # RemoteExec
