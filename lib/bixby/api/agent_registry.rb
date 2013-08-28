@@ -52,6 +52,30 @@ module Bixby
         agents[ agent_id(agent) ]
       end
 
+      # Execute a request on the given Agent, whether it is connected locally or
+      # to some other host.
+      #
+      # @param [Agent] agent
+      # @param [Bixby::JsonRequest] json_request
+      #
+      # @return [Bixby::JsonResponse]
+      def execute(agent, json_request)
+        api = get(agent)
+        if api then
+          # execute via locally connected agent
+          return api.execute(json_request)
+
+        else
+          # execute via agent connected to some other host
+          host = find(agent)
+          if host.nil? then
+            # TODO cleanup ex
+            raise "agent not found"
+          end
+          return exec_remote(agent, host, json_request)
+        end
+      end
+
       # Find which host the given agent is on
       #
       # @param [Agent] agent

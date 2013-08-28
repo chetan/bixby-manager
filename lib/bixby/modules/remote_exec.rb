@@ -55,7 +55,11 @@ class RemoteExec < API
       end
     end
 
-    # Execute the given API request on an Agent
+    # Execute the given API request on an Agent. Will not try to provision;
+    # simply returns any errors.
+    #
+    # NOTE: This 'raw' method should only be called by #exec or
+    #       Bixby::Provisioning#provision
     #
     # @param [Agent] agent
     # @param [String] operation
@@ -63,6 +67,28 @@ class RemoteExec < API
     #
     # @return [JsonResponse]
     def exec_api(agent, operation, params)
+      begin
+        ret = Bixby::AgentRegistry.execute(agent, JsonRequest.new(operation, params))
+        debug { ret.to_s }
+        return ret
+
+      rescue Exception => ex
+        ret = JsonResponse.new("fail", ex.message, ex.backtrace)
+        warn { ex }
+        return ret
+      end
+    end
+
+    # Execute an API call using the deprecated HTTP API
+    #
+    # @param [Agent] agent
+    # @param [String] operation
+    # @param [*Array] params
+    #
+    # @return [JsonResponse]
+    #
+    # @deprecated Only works with Agent <= 0.17. Use {#exec_api instead}
+    def exec_api_http(agent, operation, params)
       begin
         uri = agent.uri
         post = JsonRequest.new(operation, params)
@@ -82,7 +108,7 @@ class RemoteExec < API
 
       rescue Curl::Err::CurlError => ex
         ret = JsonResponse.new("fail", ex.message, ex.backtrace)
-        debug { ret.to_s }
+        warn { ex }
         return ret
       end
     end
