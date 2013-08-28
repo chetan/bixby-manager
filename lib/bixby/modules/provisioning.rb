@@ -64,6 +64,19 @@ class Provisioning < API
     return results.last # return the original package being provisioned
   end
 
+  # Upgrade Bixby Agent on the given agent or host
+  #
+  # @param [Host] host      to upgrade
+  #
+  # @return [JsonResponse]
+  def upgrade_agent(host)
+    agent = agent_or_host(host)
+    command = CommandSpec.new(:repo => "vendor", :bundle => "system/provisioning",
+                              :command => "upgrade_agent.sh", :args => "--beta")
+
+    exec(agent, command)
+  end
+
   # List files in bundle specified by CommandSpec
   #
   # @param [CommandSpec] command  Command/Bundle to list files for
