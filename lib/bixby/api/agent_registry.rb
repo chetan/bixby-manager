@@ -25,7 +25,7 @@ module Bixby
         agents[agent.id] = api
         # TODO don't piggyback sidekiq connection, just convenient for now
         Sidekiq.redis { |c| c.hset("bixby:agents", agent.id, hostname) }
-        logger.debug { "added agent #{agent.id}; now: [ #{agents.keys.join(' ')} ]" }
+        logger.debug { "added agent #{agent.id}; now: #{agents.keys.inspect}" }
       end
 
       # Remove the given channel (and agent) from the registry
@@ -38,7 +38,7 @@ module Bixby
             Sidekiq.redis { |c| c.hdel("bixby:agents", key) }
           end
         end
-        logger.debug { "removed agent; now: [ #{agents.keys.join(' ')} ]" }
+        logger.debug { "removed agent; now: #{agents.keys.inspect}" }
       end
 
       # Get an APIChannel for the given Agent
