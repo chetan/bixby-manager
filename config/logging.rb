@@ -7,7 +7,7 @@ Logging::Rails.configure do |config|
   # The default layout used by the appenders.
   # '%.1l, [%d] %5l -- %c: %m\n'
   # '[%d] %-5l %c : %m\n'
-  pattern = '%.1l, [%d] %5l -- %c: %m\n'
+  pattern = '%.1l, [%d] %5l -- %c:%L: %m\n'
   layout = Logging.layouts.pattern(:pattern => pattern)
 
   if Object.const_defined? :Sidekiq and Sidekiq.server? then
@@ -107,6 +107,9 @@ Logging::Rails.configure do |config|
   #
   Logging.logger.root.level = config.log_level
   Logging.logger.root.appenders = config.log_to unless config.log_to.empty?
+
+  # enable tracing so we can get line numbers in the output
+  Logging.logger.root.trace = true
 
   # To set levels of other loggers use:
   #
