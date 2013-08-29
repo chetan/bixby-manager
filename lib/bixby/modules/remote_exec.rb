@@ -72,7 +72,7 @@ class RemoteExec < API
 
       # temporary workaround for supporting both protocols
       ver = agent.semver
-      if !ver || ver < ::SemVer.parse("v0.2.0") then
+      if !ver || ver <= ::SemVer.parse("v0.1.19") then
         # using old API
         return exec_api_http(agent, operation, params)
       end
