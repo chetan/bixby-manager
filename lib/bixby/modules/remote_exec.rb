@@ -80,9 +80,7 @@ class RemoteExec < API
 
       # execute using newer API
       begin
-        ret = Bixby::AgentRegistry.execute(agent, JsonRequest.new(operation, params))
-        debug { ret.to_s }
-        return ret
+        return Bixby::AgentRegistry.execute(agent, JsonRequest.new(operation, params))
 
       rescue Exception => ex
         ret = JsonResponse.new("fail", ex.message, ex.backtrace)

@@ -20,8 +20,9 @@ module Bixby
         :reply_to => AgentRegistry.hostname
       }
       req = Bixby::WebSocket::Request.new(json_request, nil, "rpc", headers)
-      id = req.id
-      @responses[id] = Bixby::WebSocket::AsyncResponse.new(id)
+      @responses[req.id] = Bixby::WebSocket::AsyncResponse.new(req.id)
+
+      logger.debug { "execute_async:\n#{req.to_s}" }
 
       # try to publish request to host
       num = Sidekiq.redis{ |c| c.publish(host_key(host), req.to_wire) }
@@ -31,7 +32,7 @@ module Bixby
       end
       logger.debug "message published to #{num} hosts"
 
-      id
+      req.id
     end
 
     # Fetch the response for the given request
@@ -64,14 +65,13 @@ module Bixby
           @client.connect
 
           @client.subscribe(host_key(AgentRegistry.hostname)) do |msg|
-            logger.debug { "got message:\n#{msg}" }
+
             begin
               req = Bixby::WebSocket::Message.from_wire(msg)
-              logger.debug { req.ai }
+              logger.debug { "new '#{req.type}' message" }
 
               if req.type == "rpc" then
-
-                logger.debug { "got request for agent " + req.headers["agent_id"].to_s }
+                logger.debug { "got request for agent #{req.headers["agent_id"]}" }
 
                 # Execute the requested method and return the result
                 agent_id = req.headers["agent_id"]
@@ -83,21 +83,27 @@ module Bixby
                 # gotta execute this async
                 # TODO what happens if too many threads running?
                 EM.defer {
-                  logger.debug "executing in thread"
+                  logger.debug "executing json_req in defer thread"
+
+                  # TODO send an async request with a callback on the response
+                  #      so we don't block this defer thread
                   json_res = api.execute(req.json_request)
-                  logger.debug { "got json response:\n#{json_res.ai}" }
+
+                  # wrap and publish to requesting client
                   res = Bixby::WebSocket::Response.new(json_res, req.id).to_wire
                   reply_to = req.headers["reply_to"]
                   num = Sidekiq.redis{ |c| c.publish(host_key(reply_to), res) }
-                  logger.debug "defer complete"
+
+                  logger.debug "defer thread complete"
                 }
 
               elsif req.type == "rpc_result" then
                 # Pass the result back to the caller
                 # need to get the actual instance of this class since we are running in a callback
                 # AgentRegistry.redis_channel.responses[req.id].response = JsonResponse.from_json(req.body)
-                logger.debug(self)
-                publish_response(req.id, JsonResponse.from_json(req.body))
+                res = JsonResponse.from_json(req.body)
+                logger.debug(res.to_s)
+                publish_response(req.id, res)
 
               end
 
@@ -111,7 +117,7 @@ module Bixby
           logger.error ex
         end
 
-        Rails.logger.debug { "started PubSub client" }
+        RedisAPIChannel.logger.debug { "started PubSub client" }
       }
     end # start!
 
