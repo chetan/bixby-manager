@@ -22,25 +22,23 @@ module Bixby
       # @param [Agent] agent
       # @param [Bixby::WebSocket::APIChannel] api
       def add(agent, api)
-        logger.debug { "registering agent #{agent.id}"}
         agents[agent.id] = api
-        # TODO don't use sidekiq, just convenient for now
+        # TODO don't piggyback sidekiq connection, just convenient for now
         Sidekiq.redis { |c| c.hset("bixby:agents", agent.id, hostname) }
-        logger.debug { "registered agents: #{agents.keys.join(' ')}" }
+        logger.debug { "added agent #{agent.id}; now: [ #{agents.keys.join(' ')} ]" }
       end
 
       # Remove the given channel (and agent) from the registry
       #
       # @param [Bixby::WebSocket::APIChannel] api
       def remove(api)
-        logger.debug { "deleting disconnected agent" }
         agents.each do |key, val|
           if val == api then
             agents.delete(key)
             Sidekiq.redis { |c| c.hdel("bixby:agents", key) }
           end
         end
-        logger.debug { "remaining agents: #{agents.keys.join(' ')}"}
+        logger.debug { "removed agent; now: [ #{agents.keys.join(' ')} ]" }
       end
 
       # Get an APIChannel for the given Agent
