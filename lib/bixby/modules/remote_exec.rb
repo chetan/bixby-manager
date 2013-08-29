@@ -99,7 +99,7 @@ class RemoteExec < API
     #
     # @return [JsonResponse]
     #
-    # @deprecated Only works with Agent <= 0.17. Use {#exec_api instead}
+    # @deprecated Only works with Agent <= 0.17. Use {#exec_api} instead
     def exec_api_http(agent, operation, params)
       begin
         uri = agent.uri
