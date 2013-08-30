@@ -16,14 +16,17 @@ module Bixby
     end
 
     def handle(json_req)
+      logger.debug { "handle(json_req)\n#{json_req.to_s}" }
 
       ret = handle_internal(json_req)
       if ret.kind_of? Bixby::JsonResponse or ret.kind_of? Bixby::FileDownload then
+        logger.debug { "response:\n#{ret.to_s}" }
         return ret
       end
 
-      return Bixby::JsonResponse.new(:success, nil, ret)
-
+      jret = Bixby::JsonResponse.new(:success, nil, ret)
+      logger.debug { "response:\n#{jret.to_s}" }
+      return jret
     end
 
     def connect(json_req, api)
