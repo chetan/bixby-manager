@@ -80,21 +80,22 @@ module Bixby
                   # TODO
                 end
 
-                # gotta execute this async
-                # TODO what happens if too many threads running?
+                # Release the thread that received the RPC request by quickly
+                # firing the request off to the Agent in another background
+                # thread. The Agent's response will be returend by EM via
+                # callback.
                 EM.defer {
                   logger.debug "executing json_req in defer thread"
 
-                  # TODO send an async request with a callback on the response
-                  #      so we don't block this defer thread
-                  json_res = api.execute(req.json_request)
+                  api.execute_async(req.json_request) do |json_res|
+                    # wrap and publish to requesting client
+                    res = Bixby::WebSocket::Response.new(json_res, req.id).to_wire
+                    reply_to = req.headers["reply_to"]
+                    num = Sidekiq.redis{ |c| c.publish(host_key(reply_to), res) }
+                    logger.debug { "published response to #{reply_to}" }
+                  end
 
-                  # wrap and publish to requesting client
-                  res = Bixby::WebSocket::Response.new(json_res, req.id).to_wire
-                  reply_to = req.headers["reply_to"]
-                  num = Sidekiq.redis{ |c| c.publish(host_key(reply_to), res) }
-
-                  logger.debug "defer thread complete"
+                  logger.debug "defer thread complete; callback created"
                 }
 
               elsif req.type == "rpc_result" then
