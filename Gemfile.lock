@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/chetan/api_auth.git
-  revision: eea13ad54cca87de133c80be6aff96cb21a21601
+  revision: 86a79ca157402bd1c12d683a6b9948564b493443
   branch: bixby
   specs:
     api-auth (1.0.3)
@@ -155,7 +155,7 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bixby-common (0.4.0)
+    bixby-common (0.4.2)
       api-auth
       faye-websocket
       httpi
