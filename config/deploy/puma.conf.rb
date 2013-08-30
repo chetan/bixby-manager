@@ -6,6 +6,9 @@ rackup "config.ru"
 environment ENV["RAILS_ENV"] || "production"
 daemonize true
 
+# Puma control rack application (used by pumactl to send signals)
+activate_control_app 'unix:///var/www/bixby/current/tmp/pids/pumactl.sock'
+
 pidfile         '/var/www/bixby/current/tmp/pids/puma.pid'
 state_path      '/var/www/bixby/current/tmp/pids/puma.state'
 stdout_redirect '/var/www/bixby/current/log/puma.log', '/var/www/bixby/current/log/puma.log', true
@@ -51,16 +54,3 @@ bind 'tcp://127.0.0.1:8080'
 # on_worker_boot do
 #   puts 'On worker boot...'
 # end
-
-# === Puma control rack application ===
-
-# Start the puma control rack application on “url”. This application can
-# be communicated with to control the main server. Additionally, you can
-# provide an authentication token, so all requests to the control server
-# will need to include that token as a query parameter. This allows for
-# simple authentication.
-#
-# Check out https://github.com/puma/puma/blob/master/lib/puma/app/status.rb
-# to see what the app has available.
-#
-activate_control_app 'unix:///var/run/pumactl.sock'
