@@ -15,7 +15,7 @@ stdout_redirect '/var/www/bixby/current/log/puma.log', '/var/www/bixby/current/l
 # quiet
 
 # Min, Max threads
-threads 1, 32
+threads 8, 32
 
 bind 'tcp://127.0.0.1:8080'
 
