@@ -8,7 +8,7 @@ gem 'rails', '4.0.0'
 gem 'activerecord-session_store'
 
 # webserver
-gem "unicorn", :platforms => :mri, :require => false
+gem "puma", :platforms => :mri, :require => false
 
 # backend
 gem "memcached",                        :platforms => [:mri, :rbx]
@@ -119,9 +119,6 @@ group :assets do
 end
 
 group :development do
-
-    # servers used during dev
-    gem "puma", :platforms => :mri
 
     # gems used for dev/test env
     # for using sqlite3 as db backend
