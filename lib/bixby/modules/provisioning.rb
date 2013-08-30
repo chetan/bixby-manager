@@ -58,7 +58,7 @@ class Provisioning < API
       logger.debug { "system/provisioning updated! continuing with #{command.bundle}" }
 
       # finally, provision the real spec
-      exec_api(agent, "shell_exec", spec)
+      results << exec_api(agent, "shell_exec", spec)
     end
 
     return results.last # return the original package being provisioned

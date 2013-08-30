@@ -40,23 +40,40 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
   def test_provision_self
 
     res = []
+    # first shell exec fails
     res << JsonResponse.new("fail", "bundle not found: digest does not match ('my_old_hash_XXXX' != 'yyyy')", nil, 404).to_json
+    # get bundle for test_bundle fails because get_bundle.rb is outdated
+    res << JsonResponse.new("fail", "bundle not found: digest does not match ('my_old_hash_XXXX' != 'yyyy')", nil, 404).to_json
+    # get_bundle.rb updated
+    res << JsonResponse.new("success").to_json
+    # shell_exec finally succeeds
     res << JsonResponse.new("success").to_json
 
-    # 1. call to provision test_bundle/echo command FAILS because get_bundle itself is out of date
-    # 3. second call to this stub succeeds
+    # we expect 4 requests in all:
+
+    # 1. call exec test_bundle/echo
+    stub1 = stub_request(:post, "http://2.2.2.2:18000/").with{ |req|
+        b = MultiJson.load(req.body)
+        p = b["params"]
+        b["operation"] == "shell_exec" && p["bundle"] == "test_bundle" && p["command"] == "echo"
+      }.to_return{ {:status => 200, :body => res.shift} }
+
+    # this will get called two times:
+    # 2. call to provision test_bundle/echo command FAILS because get_bundle itself is out of date
+    # 4. second call to this stub succeeds
     stub1 = stub_request(:post, "http://2.2.2.2:18000/").with{ |req|
         b = req.body
         b =~ /test_bundle/ && b =~ /echo/ && b =~ /get_bundle.rb/ && b =~ %r{system/provisioning}
       }.to_return{ {:status => 200, :body => res.shift} }
 
-    # 2. call to provision get_bundle which succeeds
+    # this one once:
+    # 3. call to provision get_bundle which succeeds
     stub2 = stub_request(:post, "http://2.2.2.2:18000/").with{ |req|
         b = req.body
         b !~ /test_bundle/ && b =~ /get_bundle.rb/ && b =~ %r{system/provisioning} && b =~ /digest":"my_old_hash_XXXX/
       }.to_return(:status => 200, :body => JsonResponse.new("success").to_json)
 
-    Bixby::Provisioning.new.provision(@agent, @cmd)
+    Bixby::API.new.exec(@agent, @cmd)
 
     assert_requested(stub1, :times => 2)
     assert_requested(stub2)
