@@ -84,7 +84,7 @@ class RemoteExec < API
 
       rescue Exception => ex
         ret = JsonResponse.new("fail", ex.message, ex.backtrace)
-        warn { ex }
+        logger.warn { ex }
         return ret
       end
     end
@@ -102,8 +102,8 @@ class RemoteExec < API
       begin
         uri = agent.uri
         post = JsonRequest.new(operation, params)
-        debug { "uri: " + uri }
-        debug { post.to_s }
+        logger.debug { "uri: " + uri }
+        logger.debug { post.to_s }
 
         if crypto_enabled? then
           ret = http_post(uri, encrypt_for_agent(agent, post.to_json))
@@ -113,12 +113,12 @@ class RemoteExec < API
         end
 
         ret = JsonResponse.from_json(res)
-        debug { ret.to_s }
+        logger.debug { ret.to_s }
         return ret
 
       rescue Curl::Err::CurlError => ex
         ret = JsonResponse.new("fail", ex.message, ex.backtrace)
-        warn { ex }
+        logger.warn { ex }
         return ret
       end
     end

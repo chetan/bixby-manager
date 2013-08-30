@@ -35,11 +35,11 @@ class Provisioning < API
 
       # system/provisioning bundle is out of date. try to update it
       if ret.message !~ /digest does not match \('(.*?)' !=/ then
-        warn { "provision failed with an unknown error: #{ret.message}"}
+        logger.warn { "provision failed with an unknown error: #{ret.message}"}
         return ret
       end
 
-      debug { "provision of #{command.bundle} failed, will try to provision system/provisioning first" }
+      logger.debug { "provision of #{command.bundle} failed, will try to provision system/provisioning first" }
 
       # fake the digest in the provision call
       fake_digest = $1
@@ -51,11 +51,11 @@ class Provisioning < API
       end
 
       if command.bundle == "system/provisioning" then
-        debug { "original bundle was system/provisioning; bailing out" }
+        logger.debug { "original bundle was system/provisioning; bailing out" }
         return ret
       end
 
-      debug { "system/provisioning updated! continuing with #{command.bundle}" }
+      logger.debug { "system/provisioning updated! continuing with #{command.bundle}" }
 
       # finally, provision the real spec
       exec_api(agent, "shell_exec", spec)
