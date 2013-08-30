@@ -22,6 +22,6 @@ ENV["USE_RVM"]          = conf["rvm"]
 USER  = conf["user"]
 GROUP = conf["group"]
 
-%w{unicorn sidekiq}.each do |file|
+%w{puma sidekiq}.each do |file|
   God.load File.join(RAILS_ROOT, "config", "deploy", "god", "#{file}.god")
 end
