@@ -8,6 +8,7 @@ gem 'rails', '4.0.0'
 gem 'activerecord-session_store'
 
 # webserver
+gem "unicorn", :platforms => :mri, :require => false
 gem "puma", :platforms => :mri, :require => false
 
 # backend
