@@ -3,20 +3,21 @@
 # http://unicorn.bogomips.org/SIGNALS.html
 
 God.watch do |w|
-  w.dir = RAILS_ROOT
-  w.name = "puma-bixby"
-  w.group = "bixby"
-  w.log = "#{RAILS_ROOT}/log/god.#{w.name}.log"
+  w.dir      = RAILS_ROOT
+  w.name     = "puma-bixby"
+  w.group    = "bixby"
+  w.log      = "#{RAILS_ROOT}/log/god.#{w.name}.log"
   w.pid_file = "#{RAILS_ROOT}/tmp/pids/puma.pid"
 
   w.interval = 30.seconds # default
 
   pumactl = "#{RVM_WRAPPER} bundle exec pumactl -F #{RAILS_ROOT}/config/deploy/puma.conf.rb"
-  w.start = "#{pumactl} start"
-  w.stop = "#{pumactl} stop"
 
-  # cause the master to re-create itself and spawn a new worker process
-  w.restart = "#{pumactl} restart"
+  w.start = "#{pumactl} start"
+  # w.stop = "#{pumactl} stop"
+  # w.restart = "#{pumactl} restart" # cause the master to re-create itself and spawn a new worker process
+  w.stop = "kill -QUIT `cat #{w.pid_file}`" # QUIT gracefully shuts down workers
+  w.restart = "kill -USR2 `cat #{w.pid_file}`" # USR2 causes the master to re-create itself and spawn a new worker pool
 
   w.start_grace = 10.seconds
   w.restart_grace = 10.seconds

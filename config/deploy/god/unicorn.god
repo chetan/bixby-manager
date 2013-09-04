@@ -3,21 +3,17 @@
 # http://unicorn.bogomips.org/SIGNALS.html
 
 God.watch do |w|
-  w.dir = RAILS_ROOT
-  w.name = "unicorn-bixby"
-  w.group = "bixby"
-  w.log = "#{RAILS_ROOT}/log/god.#{w.name}.log"
+  w.dir      = RAILS_ROOT
+  w.name     = "unicorn-bixby"
+  w.group    = "bixby"
+  w.log      = "#{RAILS_ROOT}/log/god.#{w.name}.log"
   w.pid_file = "#{RAILS_ROOT}/tmp/pids/unicorn.pid"
 
   w.interval = 30.seconds # default
 
   w.start = "#{RVM_WRAPPER} bundle exec unicorn -c #{RAILS_ROOT}/config/deploy/unicorn.conf.rb -E #{RAILS_ENV} -D"
-
-  # QUIT gracefully shuts down workers
-  w.stop = "kill -QUIT `cat #{w.pid_file}`"
-
-  # USR2 causes the master to re-create itself and spawn a new worker pool
-  w.restart = "kill -USR2 `cat #{w.pid_file}`"
+  w.stop = "kill -QUIT `cat #{w.pid_file}`" # QUIT gracefully shuts down workers
+  w.restart = "kill -USR2 `cat #{w.pid_file}`" # USR2 causes the master to re-create itself and spawn a new worker pool
 
   w.start_grace = 10.seconds
   w.restart_grace = 10.seconds
