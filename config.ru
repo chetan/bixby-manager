@@ -2,6 +2,16 @@
 
 require ::File.expand_path('../config/environment',  __FILE__)
 
+# print a thread dump on SIGALRM
+# kill -ALRM `cat /var/www/bixby/tmp/pids/puma.pid`
+trap 'SIGALRM' do
+  Thread.list.each do |thread|
+    STDERR.puts "Thread-#{thread.object_id.to_s(36)}"
+    STDERR.puts thread.backtrace.join("\n    \\_ ")
+    STDERR.puts "-"
+    STDERR.puts
+  end
+end
 
 # run Bixby::Application
 
