@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/chetan/continuum.git
-  revision: 8044a5bae4874eacb505f0005ddf827098aba442
+  revision: 68543676419ae1929beab823aeeb78c82e21c257
   specs:
     continuum (0.2)
       multi_json
