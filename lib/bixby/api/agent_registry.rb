@@ -12,9 +12,7 @@ module Bixby
       end
 
       def hostname
-        # add a random number hostname so we can have a unique listener for
-        # every process.
-        @hostname ||= (`hostname`.strip + "-" + SecureRandom.random_number(100000).to_s)
+        @hostname ||= generate_hostname()
       end
 
       # Add an Agent to the registry
@@ -101,6 +99,16 @@ module Bixby
 
 
       private
+
+      # Get system's hostname
+      def generate_hostname
+        cmd = Mixlib::ShellOut.new("hostname")
+        cmd.run_command
+
+        # add a random number hostname so we can have a unique listener for
+        # every process.
+        return (cmd.stdout.strip + "-" + SecureRandom.random_number(100000).to_s)
+      end
 
       # Convert given param to an Agent ID
       #
