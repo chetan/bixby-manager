@@ -20,7 +20,7 @@ class Metrics
 
       def get(opts={})
         fix_timestamps(opts)
-        parse_results(@client.get(opts))
+        parse_result(@client.get(opts))
       end
 
       def multi_get(opts=[])
@@ -32,7 +32,7 @@ class Metrics
         ret = @client.multi_get(opts)
         res = []
         ret.each do |r|
-          res << parse_results(r)
+          res << parse_result(r)
         end
 
         return res
@@ -48,10 +48,11 @@ class Metrics
         hash[:end_time] = hash[:end_time].to_i * 1000
       end
 
-      def parse_results(ret)
+      # Process a single query result
+      def parse_result(ret)
 
         if !ret or ret.empty? then
-          return nil
+          return []
         end
 
         tags = {}
