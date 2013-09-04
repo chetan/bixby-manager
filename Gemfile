@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 # need jruby alternative for:
-# curb_threadpool
 # scrypt
 
 gem 'rails', '4.0.0'
@@ -15,11 +14,14 @@ gem "puma",     :platforms => [:mri, :rbx, :jruby], :require => false
 gem "foreigner"
 gem "immigrant"
 
-gem "mysql2",                           :platforms => [:mri, :rbx]
-gem "activerecord-jdbcmysql-adapter",   :platforms => :jruby
+gem "activerecord-jdbc-adapter", "~> 1.3.0", :platforms => :jruby
 
-gem "pg",                                   :platforms => [:mri, :rbx]
-gem "activerecord-jdbcpostgresql-adapter",  :platforms => :jruby
+# uncomment if using in production
+# gem "mysql2", :platforms => [:mri, :rbx]
+# gem "activerecord-jdbcmysql-adapter, "~> 1.3.0"", :platforms => :jruby
+
+gem "pg", :platforms => [:mri, :rbx]
+gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.0", :platforms => :jruby
 
 gem "curb",                             :platforms => [:mri, :rbx]
 gem "curb_threadpool",                  :platforms => [:mri, :rbx] # used in continuum gem
@@ -52,9 +54,10 @@ gem "em-hiredis"
 # gem "websocket-rack"
 gem "faye-websocket"
 
-gem "json",         :platforms => [:mri, :rbx, :jruby]
 gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
+gem "json",         :platforms => [:mri, :rbx, :jruby]
+
 gem "scrypt"
 gem "authlogic"
 gem "api-auth", :github => "chetan/api_auth", :branch => "bixby"
@@ -118,10 +121,14 @@ end
 
 group :development do
 
+    gem "mysql2", :platforms => [:mri, :rbx]
+    gem "activerecord-jdbcmysql-adapter", "~> 1.3.0", :platforms => :jruby
+
     # gems used for dev/test env
     # for using sqlite3 as db backend
-    gem "sqlite3", :platforms => :mri
-    gem "activerecord-jdbcsqlite3-adapter", :platforms => "jruby"
+    gem "sqlite3", :platforms => [:mri, :rbx]
+    gem "activerecord-jdbcsqlite3-adapter", "~> 1.3.0", :platforms => "jruby"
+
     # for testing mongo metrics driver
     gem 'mongoid', :github => "mongoid/mongoid" # use git/master for rails4 support
 
@@ -139,12 +146,12 @@ group :development do
     gem "xray", :require => "xray/thread_dump_signal_handler"
     gem "quiet_assets"
 
-    # newrelic
-    gem 'newrelic_rpm'
-    gem 'newrelic-redis'
-    gem 'newrelic_moped'
-    gem 'newrelic-curb', :github => "red5studios/newrelic-curb"
-    gem 'newrelic-middleware'
+    # newrelic - don't require any gems, loaded in initializers/newrelic.rb
+    gem 'newrelic_rpm', :require => false
+    gem 'newrelic-redis', :require => false
+    gem 'newrelic_moped', :require => false
+    gem 'newrelic-curb', :github => "red5studios/newrelic-curb", :require => false
+    gem 'newrelic-middleware', :require => false
 
     # docs
     gem "yard"
