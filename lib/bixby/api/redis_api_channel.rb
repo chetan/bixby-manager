@@ -4,6 +4,7 @@ module Bixby
 
     def initialize
       @responses = {}
+      @started = false
     end
 
     # Execute the given JsonRequest via some other host using Redis PubSub
@@ -51,6 +52,11 @@ module Bixby
     end
 
     def start!
+
+      if @started then
+        logger.debug "PubSub already started!"
+        return
+      end
 
       if EM.reactor_running? then
         EM.next_tick {

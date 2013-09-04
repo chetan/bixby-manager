@@ -2,8 +2,17 @@
 # this is mainly to skip loading bixby-related coded when using 'spork' or 'zeus'
 # instead, we load this after forking to run our tests
 
-if Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
-  not(Module.const_defined?(:Spork) or Module.const_defined?(:Zeus)) then
+
+# Rails.logger.info "$0: #{$0}"
+
+# check for the zeus 'slave' process - this is started during 'zeus start'
+# and our actual processes are forked from there. don't bootstrap for slaves!
+is_zeus_slave = ($0 =~ /zeus slave/)
+
+if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
+  not(Module.const_defined?(:Spork))) then
+
+  Rails.logger.info "Bootstrapping BIXBY"
 
   require 'bixby'
   require 'rails_ext'
@@ -60,5 +69,8 @@ if Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
 
   # rescan plugins
   Bixby::Repository.rescan_plugins << Bixby::Metrics::RescanPlugin
+
+  # Start EventMachine/pubsub server
+  Bixby::AgentRegistry.redis_channel.start!
 
 end
