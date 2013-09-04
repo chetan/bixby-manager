@@ -8,12 +8,8 @@ gem 'rails', '4.0.0'
 gem 'activerecord-session_store'
 
 # webserver
-gem "unicorn", :platforms => :mri, :require => false
-gem "puma", :platforms => :mri, :require => false
-
-# backend
-gem "memcached",                        :platforms => [:mri, :rbx]
-gem "jruby-memcached",                  :platforms => :jruby
+gem "unicorn",  :platforms => [:mri, :rbx], :require => false
+gem "puma",     :platforms => [:mri, :rbx], :require => false
 
 # adds foreign key support to activerecord
 gem "foreigner"
