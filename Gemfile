@@ -9,7 +9,7 @@ gem 'activerecord-session_store'
 
 # webserver
 gem "unicorn",  :platforms => [:mri, :rbx], :require => false
-gem "puma",     :platforms => [:mri, :rbx], :require => false
+gem "puma",     :platforms => [:mri, :rbx, :jruby], :require => false
 
 # adds foreign key support to activerecord
 gem "foreigner"
@@ -112,7 +112,8 @@ group :assets do
     # execjs prefers ruby racer (needed by uglifier and coffee-script)
     # added due to sudden segfaulting with nodejs driver
     gem 'execjs'
-    gem 'therubyracer'
+    gem 'therubyracer', :platforms => [:mri, :rbx]
+    gem 'therubyrhino', :platforms => [:jruby]
 end
 
 group :development do
