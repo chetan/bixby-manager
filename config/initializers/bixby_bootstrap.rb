@@ -73,4 +73,5 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   # Start EventMachine/pubsub server
   Bixby::AgentRegistry.redis_channel.start!
 
+  Rails.logger.info "Successfully bootstrapped BIXBY!"
 end
