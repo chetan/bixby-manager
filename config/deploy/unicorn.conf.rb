@@ -1,6 +1,8 @@
 
 listen 8080, :tcp_nopush => true
-worker_processes 6
+
+# set number of workers equal to number of CPUs
+worker_processes `cat /proc/cpuinfo | egrep '^processor.*: [0-9]+' | wc -l`.strip.to_i
 # timeout 60
 
 working_directory "/var/www/bixby/current"
