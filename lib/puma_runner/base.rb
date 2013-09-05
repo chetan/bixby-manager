@@ -68,6 +68,9 @@ module PumaRunner
     # @return [Hash] FD redirect options for Kernel.exec
     def export_fds
       redirects = {:close_others => true}
+      if not self.binder then
+        return redirects
+      end
       self.binder.listeners.each_with_index do |(bind,io),i|
         ENV["PUMA_INHERIT_#{i}"] = "#{io.to_i}:#{bind}"
         redirects[io.to_i] = io.to_i
