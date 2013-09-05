@@ -62,19 +62,63 @@ module PumaRunner
       server
     end
 
+    # Write out our PID
+    def write_pid
+      ensure_pid_dir()
+      File.open(pid_file(), 'w'){ |f| f.write(Process.pid) }
+    end
+
+    # Setup daemon signals
+    def setup_signals
+
+      Signal.trap("QUIT") do
+        events.log "* Shutting down on QUIT signal"
+        do_stop()
+      end
+
+      Signal.trap("USR2") do
+        events.log "* Graceful restart on USR2 signal"
+        do_restart()
+      end
+
+    end
 
     def run!
       $0 = "puma: server"
+
+      # bootstrap
       self.config = load_config()
-
       self.app    = boot_rails()
-
       self.binder = bind_sockets()
       self.server = create_server(binder)
 
+      # housekeeping
+      write_pid()
+      setup_signals()
+
       # go!
+      Process.daemon(true, true)
       events.log("* Server is up!")
       server.run.join
+    end
+
+
+    private
+
+    def do_stop
+      delete_pid()
+      server.stop(true)
+    end
+
+    def do_restart()
+      # server.begin_restart
+    end
+
+    # Delete the PID file if the PID within it is ours
+    def delete_pid()
+      if read_pid() == Process.pid then
+        File.unlink(pid_file())
+      end
     end
 
   end # Child

@@ -10,8 +10,9 @@ PUMA_CONF   = File.join(RAILS_ROOT, "config", "deploy", "puma.conf.rb")
 $: << File.join(RAILS_ROOT, "lib")
 require 'puma_runner'
 
-if ARGV.shift == "start_child" then
+cmd = ARGV.shift
+if cmd == "start_child" then
   PumaRunner::Child.new.run!
 else
-  PumaRunner::Master.new.run!
+  PumaRunner::Master.new.run!(cmd)
 end

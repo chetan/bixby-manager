@@ -8,7 +8,41 @@ module PumaRunner
       self.events = Puma::Events.stdio # somewhere to send logs, at least
     end
 
+
+    # Helpers
+
+    # PID file path
+    #
+    # @return [String] pid file path
+    def pid_file
+      config.options[:pidfile]
+    end
+
+    # Make sure PID file dir exists
+    def ensure_pid_dir
+      pid_dir  = File.dirname(pid_file())
+      if not File.directory? pid_dir then
+        FileUtils.mkdir_p(pid_dir)
+      end
+    end
+
+    # Read the current PID file
+    #
+    # @return [Fixnum] pid
+    def read_pid
+      if not File.exists? pid_file then
+        return nil
+      end
+      pid = File.read(pid_file)
+      if pid.nil? or pid.empty? then
+        return nil
+      end
+      return pid.strip.to_i
+    end
+
     # Load and validate configuration from PUMA_CONF
+    #
+    # @return [Puma::Configuration] config
     def load_config
       # defaults from Puma::CLI
       options = {
@@ -35,6 +69,8 @@ module PumaRunner
     end
 
     # Attempt to bind to sockets
+    #
+    # @return [Puma::Binder]
     def bind_sockets
       binds = config.options[:binds]
       events.log "* Binding to #{binds.inspect}"
@@ -46,6 +82,8 @@ module PumaRunner
     end
 
     # Boot the Rails environment
+    #
+    # @return [Rack::Middleware]
     def boot_rails
       events.log "* Booting rails app"
       begin
@@ -58,19 +96,24 @@ module PumaRunner
       end
     end
 
-    # Setup daemon signals
-    def setup_signals
-
-      Signal.trap("QUIT") do
-        events.log "* Shutting down on QUIT signal"
-        # server.stop(true)
+    # Export the file descriptors into the ENV for use by child processes
+    #
+    # @return [Hash] FD redirect options for Kernel.exec
+    def export_fds
+      redirects = {:close_others => true}
+      self.binder.listeners.each_with_index do |(bind,io),i|
+        ENV["PUMA_INHERIT_#{i}"] = "#{io.to_i}:#{bind}"
+        redirects[io.to_i] = io.to_i
       end
+      redirects
+    end
 
-      Signal.trap("USR2") do
-        events.log "* Graceful restart on USR2 signal"
-        # server.begin_restart
-      end
-
+    # Spawn the child process in a subshell
+    def respawn_child
+      cmd = PUMA_SCRIPT + " start_child"
+      redirects = export_fds()
+      child_pids << fork { exec(cmd, redirects) }
+      events.log "* started child process #{child_pids.last}"
     end
 
   end # Base
