@@ -7,7 +7,6 @@ module PumaRunner
       $0 = "puma: launcher"
 
       cmd ||= "start"
-      puts cmd
 
       case cmd
         when "start"
