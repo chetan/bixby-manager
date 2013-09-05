@@ -64,17 +64,16 @@ module PumaRunner
     # Restart
     def do_restart
       if not(pid.running? or @daemon_starter.starting?) then
-        return do_start()
-      end
+        # not currently running or in the process of starting
+        # issue a start command (spawn new server)
+        do_start()
 
-      if pid.running? then
+      elsif @daemon_starter.starting? then
+        log "* a server is still trying to start!"
+
+      elsif pid.running? then
         log "* signalling server to restart"
         Process.kill("USR2", pid.read)
-        return
-      end
-
-      if @daemon_starter.starting? then
-        log "* a server is still trying to start!"
       end
     end
 
