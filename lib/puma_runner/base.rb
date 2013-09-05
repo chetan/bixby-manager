@@ -3,13 +3,11 @@ module PumaRunner
   class Base
 
     attr_accessor :config, :binder, :app, :events, :server, :pid
-    attr_accessor :child_pids # probably don't need this
 
     def initialize
       @events     = Puma::Events.new($stdout, $stderr)
       @config     = load_config()
       @pid        = Pid.new(config.options[:pidfile])
-      @child_pids = []
 
       @daemon_starter = DaemonStarter.new(pid.pid_dir, File.basename(pid.pid_file))
     end
@@ -90,8 +88,9 @@ module PumaRunner
     def respawn_child
       cmd = PUMA_SCRIPT + " server"
       redirects = export_fds()
-      child_pids << fork { exec(cmd, redirects) }
-      log "* started child process #{child_pids.last}"
+      child_pid = fork { exec(cmd, redirects) }
+
+      log "* started server process #{child_pid}"
     end
 
   end # Base

@@ -56,12 +56,12 @@ module PumaRunner
         return
       end
 
-      log "* stopping server gracefully..."
+      STDOUT.write "* stopping server gracefully... "
       Process.kill("QUIT", pid.read)
       while pid.exists? do
         sleep 0.1
       end
-      log "* server stopped"
+      STDOUT.puts "done"
     end
 
     # Restart
