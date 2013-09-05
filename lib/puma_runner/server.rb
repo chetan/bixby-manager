@@ -1,6 +1,6 @@
 
 module PumaRunner
-  class Child < Base
+  class Server < Base
 
     # Boot the Rails environment
     #
@@ -97,6 +97,7 @@ module PumaRunner
 
     # Stop
     def do_stop
+      $0 = "puma: server (stopping)"
       # stop puma
       server.stop(true)
 
@@ -118,6 +119,8 @@ module PumaRunner
     # Restart
     def do_restart()
 
+      $0 = "puma: server (spawning replacement)"
+
       # First spawn a replacement node and pass it our FDs
       # then tell this server to quit
 
@@ -127,6 +130,9 @@ module PumaRunner
       while Process.pid == @pid.read || @daemon_starter.starting? do
         sleep 1
       end
+
+      $0 = "puma: server (winding down)"
+      sleep 5
 
       server.begin_restart
       server.thread.join
@@ -155,5 +161,5 @@ module PumaRunner
       end
     end
 
-  end # Child
+  end # Server
 end # PumaRunner

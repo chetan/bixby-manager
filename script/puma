@@ -11,8 +11,8 @@ $: << File.join(RAILS_ROOT, "lib")
 require 'puma_runner'
 
 cmd = ARGV.shift
-if cmd == "start_child" then
-  PumaRunner::Child.new.run!
+if cmd == "server" then
+  PumaRunner::Server.new.run!
 else
-  PumaRunner::Master.new.run!(cmd)
+  PumaRunner::Launcher.new.run!(cmd)
 end

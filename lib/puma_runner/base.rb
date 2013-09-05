@@ -80,7 +80,7 @@ module PumaRunner
 
     # Spawn the child process in a subshell
     def respawn_child
-      cmd = PUMA_SCRIPT + " start_child"
+      cmd = PUMA_SCRIPT + " server"
       redirects = export_fds()
       child_pids << fork { exec(cmd, redirects) }
       log "* started child process #{child_pids.last}"

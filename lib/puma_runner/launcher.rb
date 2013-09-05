@@ -1,6 +1,6 @@
 
 module PumaRunner
-  class Master < Base
+  class Launcher < Base
 
     # Configure and start the server!
     def run!(cmd)
@@ -97,5 +97,5 @@ module PumaRunner
       Process.kill("ALRM", pid.read)
     end
 
-  end # Master
+  end # Launcher
 end # PumaRunner
