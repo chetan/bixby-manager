@@ -51,10 +51,15 @@ module PumaRunner
     end
 
     def run!
-      $0 = "puma: server"
-      trap_thread_dump() # in case we get stuck somewhere
-
       return if not @daemon_starter.can_start?
+
+      if pid.running? then
+        $0 = "puma: replacement server (booting)"
+      else
+        $0 = "puma: server (booting)"
+      end
+
+      trap_thread_dump() # in case we get stuck somewhere
 
       begin
         # bootstrap
@@ -83,6 +88,7 @@ module PumaRunner
       end
 
       log("* Server is up! (pid=#{Process.pid})")
+      $0 = "puma: server (running)"
       server.thread.join
     end
 
