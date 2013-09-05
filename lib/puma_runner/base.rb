@@ -3,11 +3,15 @@ module PumaRunner
   class Base
 
     attr_accessor :config, :binder, :app, :events, :server, :pid
+    attr_accessor :child_pids # probably don't need this
 
     def initialize
-      self.events = Puma::Events.stdio # somewhere to send logs, at least
-      self.config = load_config()
-      self.pid    = Pid.new(config.options[:pidfile])
+      @events     = Puma::Events.stdio # somewhere to send logs, at least
+      @config     = load_config()
+      @pid        = Pid.new(config.options[:pidfile])
+      @child_pids = []
+
+      @daemon_starter = DaemonStarter.new(pid.pid_dir, File.basename(pid.pid_file))
     end
 
     def log(str)
@@ -39,7 +43,7 @@ module PumaRunner
       config.load
 
       if not config.app_configured? then
-        error "! Rails app not configured"
+        error "Rails app not configured!"
         exit 1
       end
 
@@ -57,21 +61,6 @@ module PumaRunner
       binder.parse(binds, events) # not sure why we need events again
 
       binder
-    end
-
-    # Boot the Rails environment
-    #
-    # @return [Rack::Middleware]
-    def boot_rails
-      log "* Booting rails app"
-      begin
-        return config.app
-      rescue Exception => e
-        error "! Unable to load rails app"
-        puts e
-        puts e.backtrace
-        exit 1
-      end
     end
 
     # Export the file descriptors into the ENV for use by child processes

@@ -2,46 +2,19 @@
 module PumaRunner
   class Child < Base
 
-    # # Bind to sockets opened by parent
-    # def bind_sockets
-
-    #   binder = Puma::Binder.new(events)
-
-    #   UNIXSocket.open(ENV["PUMA_PASS_FD"]) do |sock|
-    #     bind = sock.readline
-    #     io = sock.recv_io()
-
-    #     # add to binder
-    #     tcp_io = TCPServer.for_fd(io.to_i)
-    #     init_tcp(tcp_io)
-    #     io.reopen(tcp_io)
-
-    #     binder.ios << tcp_io
-    #     binder.listeners << [bind, tcp_io]
-    #     # tcp_io.listen(1024)
-    #     # tcp_io.listen(1024)
-
-
-    #     # puts "accepting off tcp_io"
-    #     # s = tcp_io.accept
-    #     # puts "got a client@"
-    #     # while true do
-    #     #   puts s.readline
-    #     # end
-
-    #   end
-
-    #   binder
-    # end
-
-    def init_tcp(s)
-      optimize_for_latency=true
-      backlog=1024
-      if optimize_for_latency
-        s.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
+    # Boot the Rails environment
+    #
+    # @return [Rack::Middleware]
+    def boot_rails
+      log "* Booting rails app"
+      begin
+        return config.app
+      rescue Exception => e
+        error "Unable to load rails app!"
+        error e
+        error e.backtrace.join("\n")
+        exit 1
       end
-      s.setsockopt(Socket::SOL_SOCKET,Socket::SO_REUSEADDR, true)
-      s.listen backlog
     end
 
     # Create the server
@@ -80,34 +53,43 @@ module PumaRunner
     def run!
       $0 = "puma: server"
       trap_thread_dump() # in case we get stuck somewhere
-      pid.write # write pid before booting so we can avoid double starts
 
-      # bootstrap
+      return if not @daemon_starter.can_start?
 
-      # don't boot EM during bootstrap - wait until after we daemonize
-      # this seems to work best
-      ENV["BIXBY_SKIP_EM"] = "1"
+      begin
+        # bootstrap
 
-      self.app    = boot_rails()
-      self.binder = bind_sockets()
-      self.server = create_server(binder)
+        # don't boot EM during bootstrap - wait until after we daemonize
+        # this seems to work best
+        ENV["BIXBY_SKIP_EM"] = "1"
 
-      # housekeeping
-      Process.daemon(true, true)
-      pid.write
-      setup_signals()
+        self.app    = boot_rails()
+        self.binder = bind_sockets()
+        self.server = create_server(binder)
 
-      # Start EM properly (i.e. at the proper time, which is now!)
-      Bixby::AgentRegistry.redis_channel.start!
+        # housekeeping
+        Process.daemon(true, true)
+        pid.write
+        setup_signals()
 
-      # go!
-      log("* Server is up!")
-      server.run.join
+        # Start EM properly (i.e. at the proper time, which is now!)
+        Bixby::AgentRegistry.redis_channel.start!
+
+        # go!
+        server.run
+
+      ensure
+        @daemon_starter.cleanup!
+      end
+
+      log("* Server is up! (pid=#{Process.pid})")
+      server.thread.join
     end
 
 
     private
 
+    # Stop
     def do_stop
       # stop puma
       server.stop(true)
@@ -127,8 +109,23 @@ module PumaRunner
       # exit 0 # force exit?
     end
 
+    # Restart
     def do_restart()
-      # server.begin_restart
+
+      # First spawn a replacement node and pass it our FDs
+      # then tell this server to quit
+
+      respawn_child()
+
+      # wait for child to come up fully
+      while Process.pid == @pid.read || @daemon_starter.starting? do
+        sleep 1
+      end
+
+      server.begin_restart
+      server.thread.join
+
+      log "* Server shutdown complete (pid=#{Process.pid})"
     end
 
     # Delete the PID file if the PID within it is ours
@@ -138,10 +135,11 @@ module PumaRunner
       end
     end
 
+    # Setup thread dump signal
     def trap_thread_dump
       # print a thread dump on SIGALRM
       # kill -ALRM `cat /var/www/bixby/tmp/pids/puma.pid`
-      trap 'SIGALRM' do
+      Signal.trap 'SIGALRM' do
         Thread.list.each do |thread|
           STDERR.puts "Thread-#{thread.object_id.to_s(36)}"
           STDERR.puts thread.backtrace.join("\n    \\_ ")

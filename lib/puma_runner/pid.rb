@@ -3,6 +3,8 @@ module PumaRunner
 
   class Pid
 
+    attr_reader :pid_file, :pid_dir
+
     # Check if the given PID is running
     #
     # Borrowed from 'daemons' gem

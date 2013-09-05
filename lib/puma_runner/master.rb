@@ -2,13 +2,6 @@
 module PumaRunner
   class Master < Base
 
-    attr_accessor :child_pids
-
-    def initialize
-      super
-      @child_pids = []
-    end
-
     # PASS FD TO ANOTHER PROCESS VIA UNIX SOCKET
     def start_fd_listener
       @pass_fd = UNIXServer.new("/tmp/puma_fd.sock")
@@ -63,9 +56,10 @@ module PumaRunner
 
     private
 
+    # Start
     def do_start
 
-      if pid.running? then
+      if pid.running? or @daemon_starter.starting? then
         error "server is already running!"
         return
       end
@@ -74,6 +68,7 @@ module PumaRunner
       respawn_child()
     end
 
+    # Stop
     def do_stop
       if not pid.running? then
         log "* server not running!"
@@ -83,7 +78,7 @@ module PumaRunner
         return
       end
 
-      log "* stopping server gracefully"
+      log "* stopping server gracefully..."
       Process.kill("QUIT", pid.read)
       while pid.exists? do
         sleep 0.1
@@ -91,6 +86,33 @@ module PumaRunner
       log "* server stopped"
     end
 
+    # Restart
+    def do_restart
+      if not(pid.running? or @daemon_starter.starting?) then
+        return do_start()
+      end
+
+      if pid.running? then
+        log "* signalling server to restart"
+        Process.kill("USR2", pid.read)
+        return
+      end
+
+      if @daemon_starter.starting? then
+        log "* a server is still trying to start!"
+      end
+    end
+
+    # Status
+    def do_status
+      if pid.running? then
+        STDOUT.puts "server is running"
+      else
+        STDOUT.puts "server is not running"
+      end
+    end
+
+    # Thread dump
     def do_dump
       if not pid.running? then
         log "* server not running!"
