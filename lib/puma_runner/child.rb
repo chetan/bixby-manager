@@ -80,6 +80,7 @@ module PumaRunner
     def run!
       $0 = "puma: server"
       trap_thread_dump() # in case we get stuck somewhere
+      pid.write # write pid before booting so we can avoid double starts
 
       # bootstrap
 
@@ -96,7 +97,7 @@ module PumaRunner
       pid.write
       setup_signals()
 
-      # Start EM properly
+      # Start EM properly (i.e. at the proper time, which is now!)
       Bixby::AgentRegistry.redis_channel.start!
 
       # go!

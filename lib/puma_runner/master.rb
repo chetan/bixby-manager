@@ -64,6 +64,12 @@ module PumaRunner
     private
 
     def do_start
+
+      if pid.running? then
+        error "server is already running!"
+        return
+      end
+
       self.binder = bind_sockets()
       respawn_child()
     end
