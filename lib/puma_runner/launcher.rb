@@ -18,6 +18,9 @@ module PumaRunner
         when "restart"
           do_restart()
 
+        when "zap"
+          do_zap()
+
         when "status"
           do_status()
 
@@ -77,12 +80,26 @@ module PumaRunner
       end
     end
 
+    # Zap - forcefully reset state to stopped
+    def do_zap
+      if @daemon_starter.starting? then
+        @daemon_starter.cleanup!
+      end
+
+      if @pid.exists? then
+        if @pid.running? then
+          Process.kill(9, @pid.read)
+        end
+        @pid.delete()
+      end
+    end
+
     # Status
     def do_status
       if pid.running? then
-        STDOUT.puts "server is running"
+        log "server is running"
       else
-        STDOUT.puts "server is not running"
+        log "server is not running"
       end
     end
 
