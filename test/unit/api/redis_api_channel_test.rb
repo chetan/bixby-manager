@@ -15,7 +15,7 @@ module Bixby
         super
         AgentRegistry.agents.clear
         Sidekiq.redis{ |r| r.flushdb }
-        EM.stop if EM.reactor_running?
+        EM.stop_event_loop if EM.reactor_running?
       end
 
       def test_execute
