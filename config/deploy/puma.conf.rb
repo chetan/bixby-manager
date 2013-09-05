@@ -5,6 +5,7 @@ rackup "config.ru"
 
 environment ENV["RAILS_ENV"] || "production"
 daemonize true
+drain_on_shutdown true
 
 # Puma control rack application (used by pumactl to send signals)
 activate_control_app 'unix:///var/www/bixby/current/tmp/pids/pumactl.sock'
