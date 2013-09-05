@@ -110,6 +110,7 @@ module PumaRunner
         return
       end
 
+      puts "thread dump [should be] written to stderr: #{config.options[:redirect_stderr]}"
       Process.kill("ALRM", pid.read)
     end
 

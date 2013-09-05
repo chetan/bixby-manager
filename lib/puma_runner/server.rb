@@ -176,12 +176,15 @@ module PumaRunner
       # print a thread dump on SIGALRM
       # kill -ALRM `cat /var/www/bixby/tmp/pids/puma.pid`
       Signal.trap 'SIGALRM' do
+        STDERR.puts "=== puma thread dump: #{Time.now} ==="
+        STDERR.puts
         Thread.list.each do |thread|
-          STDERR.puts "Thread-#{thread.object_id.to_s(36)}"
+          STDERR.puts "Thread-#{thread.object_id}"
           STDERR.puts thread.backtrace.join("\n    \\_ ")
           STDERR.puts "-"
           STDERR.puts
         end
+        STDERR.puts "=== end puma thread dump ==="
       end
     end
 
