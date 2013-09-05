@@ -69,7 +69,13 @@ module Bixby
           EM.run {
             start_pubsub()
           }
+          logger.debug "EventMachine run-loop exited"
         }
+        # wait until reactor is up
+        # adapted from faye-websocket
+        while not EventMachine.reactor_running? do
+          Thread.pass
+        end
       end
 
     end # start!
