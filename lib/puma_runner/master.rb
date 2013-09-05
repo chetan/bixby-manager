@@ -36,7 +36,6 @@ module PumaRunner
     # Configure and start the server!
     def run!(cmd)
       $0 = "puma: launcher"
-      self.config = load_config()
 
       cmd ||= "start"
       puts cmd
@@ -54,6 +53,9 @@ module PumaRunner
         when "status"
           do_status()
 
+        when "dump"
+          do_dump()
+
        end
 
     end
@@ -64,6 +66,32 @@ module PumaRunner
     def do_start
       self.binder = bind_sockets()
       respawn_child()
+    end
+
+    def do_stop
+      if not pid.running? then
+        log "* server not running!"
+        if pid.exists? then
+          pid.delete()
+        end
+        return
+      end
+
+      log "* stopping server gracefully"
+      Process.kill("QUIT", pid.read)
+      while pid.exists? do
+        sleep 0.1
+      end
+      log "* server stopped"
+    end
+
+    def do_dump
+      if not pid.running? then
+        log "* server not running!"
+        return
+      end
+
+      Process.kill("ALRM", pid.read)
     end
 
   end # Master

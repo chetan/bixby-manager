@@ -62,22 +62,16 @@ module PumaRunner
       server
     end
 
-    # Write out our PID
-    def write_pid
-      ensure_pid_dir()
-      File.open(pid_file(), 'w'){ |f| f.write(Process.pid) }
-    end
-
     # Setup daemon signals
     def setup_signals
 
       Signal.trap("QUIT") do
-        events.log "* Shutting down on QUIT signal"
+        log "* Shutting down on QUIT signal"
         do_stop()
       end
 
       Signal.trap("USR2") do
-        events.log "* Graceful restart on USR2 signal"
+        log "* Graceful restart on USR2 signal"
         do_restart()
       end
 
@@ -85,20 +79,28 @@ module PumaRunner
 
     def run!
       $0 = "puma: server"
+      trap_thread_dump() # in case we get stuck somewhere
 
       # bootstrap
-      self.config = load_config()
+
+      # don't boot EM during bootstrap - wait until after we daemonize
+      # this seems to work best
+      ENV["BIXBY_SKIP_EM"] = "1"
+
       self.app    = boot_rails()
       self.binder = bind_sockets()
       self.server = create_server(binder)
 
       # housekeeping
-      write_pid()
+      Process.daemon(true, true)
+      pid.write
       setup_signals()
 
+      # Start EM properly
+      Bixby::AgentRegistry.redis_channel.start!
+
       # go!
-      Process.daemon(true, true)
-      events.log("* Server is up!")
+      log("* Server is up!")
       server.run.join
     end
 
@@ -106,8 +108,22 @@ module PumaRunner
     private
 
     def do_stop
-      delete_pid()
+      # stop puma
       server.stop(true)
+
+      # stop EM
+      if EM.reactor_running? then
+        EM.stop_event_loop
+        while EM.reactor_running? do
+          # wait for it to shut down
+          Thread.pass
+        end
+      end
+
+      # finally, cleanup
+      delete_pid()
+
+      # exit 0 # force exit?
     end
 
     def do_restart()
@@ -116,8 +132,21 @@ module PumaRunner
 
     # Delete the PID file if the PID within it is ours
     def delete_pid()
-      if read_pid() == Process.pid then
-        File.unlink(pid_file())
+      if @pid.ours? then
+        @pid.delete()
+      end
+    end
+
+    def trap_thread_dump
+      # print a thread dump on SIGALRM
+      # kill -ALRM `cat /var/www/bixby/tmp/pids/puma.pid`
+      trap 'SIGALRM' do
+        Thread.list.each do |thread|
+          STDERR.puts "Thread-#{thread.object_id.to_s(36)}"
+          STDERR.puts thread.backtrace.join("\n    \\_ ")
+          STDERR.puts "-"
+          STDERR.puts
+        end
       end
     end
 

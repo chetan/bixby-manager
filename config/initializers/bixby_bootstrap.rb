@@ -71,7 +71,9 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   Bixby::Repository.rescan_plugins << Bixby::Metrics::RescanPlugin
 
   # Start EventMachine/pubsub server
-  Bixby::AgentRegistry.redis_channel.start!
+  if ENV["BIXBY_SKIP_EM"] != "1" then
+    Bixby::AgentRegistry.redis_channel.start!
+  end
 
   Rails.logger.info "Successfully bootstrapped BIXBY!"
 end
