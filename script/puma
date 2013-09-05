@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require 'puma'
+require 'puma/cli'
+
+PUMA_SCRIPT = File.expand_path(__FILE__)
+RAILS_ROOT  = File.expand_path("../..", __FILE__)
+PUMA_CONF   = File.join(RAILS_ROOT, "config", "deploy", "puma.conf.rb")
+
+$: << File.join(RAILS_ROOT, "lib")
+require 'puma_runner'
+
+if ARGV.shift == "start_child" then
+  PumaRunner::Child.new.run!
+else
+  PumaRunner::Master.new.run!
+end
