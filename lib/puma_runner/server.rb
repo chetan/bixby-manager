@@ -2,6 +2,33 @@
 module PumaRunner
   class Server < Base
 
+    def initialize
+      super
+      @events = Puma::PidEvents.new($stdout, $stderr)
+    end
+
+    # Redirect STDOUT/STDERR to files
+    def redirect_io
+      stdout = config.options[:redirect_stdout]
+      stderr = config.options[:redirect_stderr] || stdout
+      append = config.options[:redirect_append]
+
+      if stdout
+        STDOUT.reopen stdout, (append ? "a" : "w")
+        STDOUT.sync = true
+        STDOUT.puts "=== puma startup: #{Time.now} ==="
+      end
+
+      if stderr
+        STDERR.reopen stderr, (append ? "a" : "w")
+        STDERR.sync = true
+        if stdout != stderr then
+          # no need to dupe
+          STDERR.puts "=== puma startup: #{Time.now} ==="
+        end
+      end
+    end
+
     # Boot the Rails environment
     #
     # @return [Rack::Middleware]
@@ -39,12 +66,12 @@ module PumaRunner
     def setup_signals
 
       Signal.trap("QUIT") do
-        log "* Shutting down on QUIT signal"
+        log "* Shutting down on QUIT signal (#{Time.new})"
         do_stop()
       end
 
       Signal.trap("USR2") do
-        log "* Graceful restart on USR2 signal"
+        log "* Graceful restart on USR2 signal (#{Time.new})"
         do_restart()
       end
 
@@ -56,6 +83,7 @@ module PumaRunner
       $0 = "puma: server (booting)"
 
       trap_thread_dump() # in case we get stuck somewhere
+      redirect_io()
 
       begin
         # bootstrap

@@ -6,7 +6,7 @@ module PumaRunner
     attr_accessor :child_pids # probably don't need this
 
     def initialize
-      @events     = Puma::Events.stdio # somewhere to send logs, at least
+      @events     = Puma::Events.new($stdout, $stderr)
       @config     = load_config()
       @pid        = Pid.new(config.options[:pidfile])
       @child_pids = []
@@ -22,6 +22,10 @@ module PumaRunner
       events.error(str)
     end
 
+    def debug(str)
+      events.debug(str)
+    end
+
     # Load and validate configuration from PUMA_CONF
     #
     # @return [Puma::Configuration] config
@@ -35,9 +39,12 @@ module PumaRunner
         :binds       => [],
         :workers     => 0,
         :daemon      => false,
-        :worker_boot => []
+        :worker_boot => [],
+
+        # custom defaults (differ from Puma)
+        :redirect_append => true,
+        :config_file     => PUMA_CONF
       }
-      options[:config_file] = PUMA_CONF
 
       config = Puma::Configuration.new(options)
       config.load
@@ -55,7 +62,8 @@ module PumaRunner
     # @return [Puma::Binder]
     def bind_sockets
       binds = config.options[:binds]
-      log "* Binding to #{binds.inspect}"
+      debug "* Binding to #{binds.inspect}"
+
       binder = Puma::Binder.new(events)
       binder.import_from_env # always try to import, if they are there
       binder.parse(binds, events) # not sure why we need events again
