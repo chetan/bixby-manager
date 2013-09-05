@@ -10,6 +10,10 @@ module PumaRunner
       @pid        = Pid.new(config.options[:pidfile])
 
       @daemon_starter = DaemonStarter.new(pid.pid_dir, File.basename(pid.pid_file))
+
+      # always change to configured app dir
+      # don't expand path because we don't want to resolve any symlinks
+      Dir.chdir(@config.options[:directory])
     end
 
     def log(str)
