@@ -11,13 +11,11 @@ God.watch do |w|
 
   w.interval = 30.seconds # default
 
-  pumactl = "#{RVM_WRAPPER} bundle exec pumactl -F #{RAILS_ROOT}/config/deploy/puma.conf.rb"
+  pumactl = "#{RVM_WRAPPER} bundle exec script/puma"
 
   w.start = "#{pumactl} start"
-  # w.stop = "#{pumactl} stop"
-  # w.restart = "#{pumactl} restart" # cause the master to re-create itself and spawn a new worker process
-  w.stop = "kill -QUIT `cat #{w.pid_file}`" # QUIT gracefully shuts down workers
-  w.restart = "kill -USR2 `cat #{w.pid_file}`" # USR2 causes the master to re-create itself and spawn a new worker pool
+  w.stop = "#{pumactl} stop" # QUIT gracefully shuts down workers
+  w.restart = "#{pumactl} restart" # cause the server to re-create itself & gracefully exit
 
   w.start_grace = 10.seconds
   w.restart_grace = 10.seconds
