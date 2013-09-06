@@ -1,9 +1,9 @@
 
-# this is mainly to skip loading bixby-related coded when using 'spork' or 'zeus'
-# instead, we load this after forking to run our tests
-
 
 # Rails.logger.info "$0: #{$0}"
+
+# this (IF statement) is mainly to skip loading bixby-related coded when using
+# 'spork' or 'zeus'. instead, we load this after forking
 
 # check for the zeus 'slave' process - this is started during 'zeus start'
 # and our actual processes are forked from there. don't bootstrap for slaves!

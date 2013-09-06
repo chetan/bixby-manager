@@ -16,12 +16,35 @@ class CustomPlan < Zeus::Rails
     super # runs the tests
   end
 
-   def server
+  def server
     require 'rails/commands/server'
     server = ::Rails::Server.new
     Dir.chdir(::Rails.application.root)
-    require "#{RAILS_ROOT}/config/initializers/bixby_bootstrap"
+    bixby_bootstrap()
     server.start
+  end
+
+  def console
+    require 'rails/commands/console'
+    bixby_bootstrap()
+    if defined?(Pry) && IRB == Pry
+      require "pry"
+      Pry.start
+    else
+      ::Rails::Console.start(::Rails.application)
+    end
+  end
+
+  def rake
+    bixby_bootstrap()
+    Rake.application.run
+  end
+
+
+  private
+
+  def bixby_bootstrap
+    require "#{RAILS_ROOT}/config/initializers/bixby_bootstrap"
   end
 
 end
