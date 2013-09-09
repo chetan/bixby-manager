@@ -125,7 +125,6 @@ class Monitoring < API
       name += args.values.first
     end
 
-    # TODO host & agent can be different
     check = Check.new
     check.host            = host
     check.agent           = agent
