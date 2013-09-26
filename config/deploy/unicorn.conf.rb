@@ -1,5 +1,5 @@
 
-listen 8080, :tcp_nopush => true
+listen 9292, :tcp_nopush => true
 
 # set number of workers equal to number of CPUs
 worker_processes `cat /proc/cpuinfo | egrep '^processor.*: [0-9]+' | wc -l`.strip.to_i

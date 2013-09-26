@@ -21,7 +21,7 @@ stdout_redirect '/var/www/bixby/current/log/puma.log', '/var/www/bixby/current/l
 # Min, Max threads
 threads 8, 32
 
-bind 'tcp://127.0.0.1:8080'
+bind 'tcp://127.0.0.1:9292'
 
 # Code to run before doing a restart. This code should
 # close log files, database connections, etc.
