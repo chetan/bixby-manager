@@ -5,3 +5,10 @@ require 'rails_ext/csv_column'
 require 'rails_ext/json_column'
 require 'rails_ext/symbol_column'
 require 'rails_ext/api_view/api_view'
+
+if Rails.env == "development" || Rails.env == "staging" then
+  begin
+    require 'rails_ext/console_table'
+  rescue LoadError
+  end
+end
