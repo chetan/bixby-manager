@@ -185,10 +185,8 @@ group :development do
     gem 'webmock', :require => false
     gem "minitest", "~>4.7", :require => false
     gem 'mocha', :require => false
-    gem "turn"
     gem "bahia"
     gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
-    gem 'spork-testunit', :git => "https://github.com/sporkrb/spork-testunit.git", :require => false
     gem "spork-rails", :require => false, :git => "https://github.com/sporkrb/spork-rails.git" # use git for early rails4 support
     gem "database_cleaner", "=1.0.1"
     gem "factory_girl_rails"
@@ -196,6 +194,7 @@ group :development do
 
     # test utils
     gem "micron", :github => "chetan/micron"
+    gem "spork-micron", :github => "chetan/spork-micron", :require => false
     gem "test_guard", :git => "https://github.com/chetan/test_guard.git"
     gem 'rb-inotify', :require => false
     gem 'rb-fsevent', :require => false
