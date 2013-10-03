@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'helper'
 
 module Bixby
 class Test::Modules::Crypto < Bixby::Test::TestCase

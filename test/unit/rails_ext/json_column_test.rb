@@ -1,5 +1,5 @@
 
-require 'test_helper'
+require 'helper'
 
 class Bixby::Test::RailsExt::JSONColumn < ActiveSupport::TestCase
 

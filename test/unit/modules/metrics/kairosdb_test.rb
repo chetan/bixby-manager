@@ -1,5 +1,5 @@
 
-require 'test_helper'
+require 'helper'
 
 class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
   class KairosDriver < Bixby::Test::TestCase

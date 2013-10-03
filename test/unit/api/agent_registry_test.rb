@@ -1,5 +1,5 @@
 
-require 'test_helper'
+require 'helper'
 require 'setup/mock_api_channel'
 require 'setup/sidekiq_mock_redis'
 

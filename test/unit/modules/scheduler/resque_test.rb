@@ -1,5 +1,5 @@
 
-require 'test_helper'
+require 'helper'
 
 class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
   class ResqueDriver < Bixby::Test::TestCase

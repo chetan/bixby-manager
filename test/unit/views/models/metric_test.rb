@@ -1,5 +1,5 @@
 
-require "test_helper"
+require "helper"
 
 class Bixby::Test::Views::Models::Metric < Bixby::Test::TestCase
 

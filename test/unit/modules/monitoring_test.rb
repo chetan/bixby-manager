@@ -1,5 +1,5 @@
 
-require 'test_helper'
+require 'helper'
 
 module Bixby
 class Test::Modules::Monitoring < Bixby::Test::TestCase
