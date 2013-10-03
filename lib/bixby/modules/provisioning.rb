@@ -21,7 +21,7 @@ class Provisioning < API
       raise "error: tried to provision invalid bundle or command" + (command ? "\n" + command.to_s : "")
     end
 
-    commands = [ command ] + get_dependent_bundles(command)
+    commands = [ command ] + get_dependent_bundles(command).flatten
     commands.uniq{ |c| c.repo + "-" + c.bundle }.reverse!
 
     results = []
