@@ -66,9 +66,9 @@ def bootstrap_tests
   require "setup/stub_api"
 
   # require files in order to force coverage reports
-  [ "lib", "app" ].each do |d|
-    Dir.glob(File.join(Rails.root, d, "**/*.rb")).each{ |f| next if f =~ %r{lib/capistrano}; require f }
-  end
+  # [ "lib", "app" ].each do |d|
+  #   Dir.glob(File.join(Rails.root, d, "**/*.rb")).each{ |f| next if f =~ %r{lib/capistrano}; require f }
+  # end
 end
 
 if Object.const_defined? :Spork then
