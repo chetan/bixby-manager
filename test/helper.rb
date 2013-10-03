@@ -46,24 +46,6 @@ def load_simplecov
   EasyCov.filters << EasyCov::IGNORE_GEMS << EasyCov::IGNORE_STDLIB
   EasyCov.start
 
-  # return if ENV["SIMPLECOV_STARTED"]
-  # begin
-  #   require 'simplecov'
-  #   SimpleCov.start do
-  #     merge_timeout 7200
-
-  #     add_filter '/test/'
-  #     add_filter '/config/'
-
-  #     add_group 'Controllers', 'app/controllers'
-  #     add_group 'Models', 'app/models'
-  #     add_group 'Helpers', 'app/helpers'
-  #     add_group 'Libraries', 'lib'
-  #   end
-  #   ENV["SIMPLECOV_STARTED"] = "1"
-  # rescue Exception => ex
-  #   warn "simplecov not available"
-  # end
 end
 
 def bootstrap_tests
