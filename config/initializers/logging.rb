@@ -2,8 +2,6 @@
 # lower to info (always)
 ::Rails.cache.logger.level = :info
 
-require "ext/sidekiq_logging"
-
 # make sure all previously created loggers have tracing enabled
 Logging::Repository.instance.children(:root).each{ |l| l.trace = true }
 

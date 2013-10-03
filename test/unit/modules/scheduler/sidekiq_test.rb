@@ -1,5 +1,7 @@
 
 require 'helper'
+
+require 'bixby/modules/scheduler/sidekiq'
 require 'setup/sidekiq_mock_redis'
 
 # helper for testing actual perform() method

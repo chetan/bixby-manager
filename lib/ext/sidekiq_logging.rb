@@ -1,6 +1,7 @@
 
 # replace Sidekiq logger with our own
-if Module.const_defined? :Sidekiq and Sidekiq.server? then
+if Module.const_defined? :Sidekiq then
+
   Sidekiq::Logging.logger = Logging.logger[Sidekiq]
 
   module Sidekiq

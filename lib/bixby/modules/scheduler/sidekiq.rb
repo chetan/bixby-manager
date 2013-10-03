@@ -2,6 +2,9 @@
 require 'bixby/modules/scheduler/driver'
 require 'bixby/modules/scheduler/job'
 
+require 'sidekiq'
+require 'ext/sidekiq_logging'
+
 module Bixby
 class Scheduler
 
@@ -17,22 +20,23 @@ class Scheduler
     class << self
 
       def configure(config)
-        if config.include? :redis then
+        if !config.include?(:redis) then
+          raise "redis config not found in bixby.yml (env=#{Rails.env})"
+        end
 
-          server = config[:redis]
-          if server !~ %r{^redis://} then
-            server = "redis://#{server}"
-          end
+        server = config[:redis]
+        if server !~ %r{^redis://} then
+          server = "redis://#{server}"
+        end
 
-          ::Sidekiq.configure_server do |config|
-            config.redis = { :url => server }
-            config.poll_interval = 5
-          end
+        ::Sidekiq.configure_server do |config|
+          config.redis = { :url => server }
+          config.poll_interval = 5
+        end
 
-          # When in Unicorn, this block needs to go in unicorn's `after_fork` callback:
-          ::Sidekiq.configure_client do |config|
-            config.redis = { :url => server }
-          end
+        # When in Unicorn, this block needs to go in unicorn's `after_fork` callback:
+        ::Sidekiq.configure_client do |config|
+          config.redis = { :url => server }
         end
       end
 
