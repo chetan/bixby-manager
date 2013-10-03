@@ -1,18 +1,8 @@
 
 ENV["RAILS_ENV"] = "test"
 
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../../../config/environment', __FILE__)
 require 'rails/test_help'
-
-if $0 == __FILE__ then
-  # require all test cases if not running via rake
-  $: << File.expand_path(File.dirname(__FILE__))
-  Dir.glob(File.expand_path(File.dirname(__FILE__)) + "/**/*.rb").each do |f|
-    next if f =~ /test\/performance/ or f == File.expand_path(__FILE__)
-    require f
-  end
-end
-
 
 # load curb first so webmock can stub it out as necessary
 require 'curb'
@@ -38,5 +28,3 @@ end
 # setup database_cleaner
 require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
-
-MiniTest::Unit.autorun
