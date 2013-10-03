@@ -29,6 +29,9 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
       assert cs.command_exists?
       assert cs.digest
 
+      assert_equal "cat", cs.user
+      assert_equal "feline", cs.group
+
       cmd.save!
       cs = Bixby::RemoteExec.new.create_spec(cmd.id)
       assert_equal "cat", cs.command

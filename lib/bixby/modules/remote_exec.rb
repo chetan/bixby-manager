@@ -42,7 +42,7 @@ class RemoteExec < API
     # @param [Object] command Can be a Hash/Command/String/CommandSpec
     # @return [CommandSpec]
     def create_spec(command)
-      if command.kind_of? CommandSpec then
+      spec = if command.kind_of? CommandSpec then
         command
       elsif command.kind_of? Command then
         command.to_command_spec
@@ -55,6 +55,17 @@ class RemoteExec < API
       else
         command
       end
+
+      if !spec.command.blank? then
+        # load user/group config
+        manifest = spec.manifest
+        if !manifest.blank? then
+          spec.user = manifest["user"]
+          spec.group = manifest["group"]
+        end
+      end
+
+      spec
     end
 
     # Execute the given API request on an Agent. Will not try to provision;
