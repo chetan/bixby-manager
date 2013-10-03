@@ -133,7 +133,6 @@ group :development do
     gem 'mongoid', :github => "mongoid/mongoid" # use git/master for rails4 support
 
     # debugging
-    gem "ruby-debug",   :platforms => :mri_18
     gem "debugger",     :platforms => [:mri_19, :mri_20]
     gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20]
     gem "awesome_print"
