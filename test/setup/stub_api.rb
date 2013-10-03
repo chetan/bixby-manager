@@ -19,7 +19,7 @@ module Bixby
 
   class API
 
-    include Minitest::Assertions
+    include MiniTest::Assertions
 
     class Stub
       attr_accessor :block, :response
@@ -92,7 +92,7 @@ module Bixby
     end
 
     class << self
-      include Minitest::Assertions
+      include MiniTest::Assertions
       def stubs
         @stubs ||= []
       end
