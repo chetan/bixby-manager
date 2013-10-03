@@ -1,6 +1,8 @@
 
 require 'helper'
 
+require 'bixby/modules/metrics/mongodb'
+
 class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
   class MongoDriver < Bixby::Test::TestCase
 
