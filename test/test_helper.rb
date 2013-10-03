@@ -34,31 +34,35 @@ def prefork
   end
 
   require "test_guard"
-  require "test_guard/minitest"
-  require "test_guard/turn"
+  require "micron/minitest"
 
-  require "test_prefork"
+  require "setup/prefork"
 end
 
 def load_simplecov
-  return if ENV["SIMPLECOV_STARTED"]
-  begin
-    require 'simplecov'
-    SimpleCov.start do
-      merge_timeout 7200
 
-      add_filter '/test/'
-      add_filter '/config/'
+  EasyCov.path = "coverage"
+  EasyCov.filters << EasyCov::IGNORE_GEMS << EasyCov::IGNORE_STDLIB
+  EasyCov.start
 
-      add_group 'Controllers', 'app/controllers'
-      add_group 'Models', 'app/models'
-      add_group 'Helpers', 'app/helpers'
-      add_group 'Libraries', 'lib'
-    end
-    ENV["SIMPLECOV_STARTED"] = "1"
-  rescue Exception => ex
-    warn "simplecov not available"
-  end
+  # return if ENV["SIMPLECOV_STARTED"]
+  # begin
+  #   require 'simplecov'
+  #   SimpleCov.start do
+  #     merge_timeout 7200
+
+  #     add_filter '/test/'
+  #     add_filter '/config/'
+
+  #     add_group 'Controllers', 'app/controllers'
+  #     add_group 'Models', 'app/models'
+  #     add_group 'Helpers', 'app/helpers'
+  #     add_group 'Libraries', 'lib'
+  #   end
+  #   ENV["SIMPLECOV_STARTED"] = "1"
+  # rescue Exception => ex
+  #   warn "simplecov not available"
+  # end
 end
 
 def bootstrap_tests
@@ -75,7 +79,8 @@ def bootstrap_tests
   ENV["BOOTSTRAPNOW"] = "1"
   require "#{Rails.root.to_s}/config/initializers/bixby_bootstrap"
 
-  require "test_setup" # base TestCase
+  require "setup/base"
+  require "setup/stub_api"
 
   # require files in order to force coverage reports
   [ "lib", "app" ].each do |d|
