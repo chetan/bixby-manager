@@ -28,7 +28,7 @@ FactoryGirl.define do
 
     before(:create) do |agent|
       agent.instance_eval do
-        pair = OpenSSL::PKey::RSA.generate(2048)
+        pair = OpenSSL::PKey::RSA.new(File.read(File.join(Rails.root, "test", "support", "keys", "agent_rsa")))
         @private_key = pair.to_s
         self.public_key = pair.public_key.to_s
       end
@@ -99,7 +99,7 @@ FactoryGirl.define do
 
   factory :tenant do
     password SCrypt::Password.create("test").to_s
-    private_key OpenSSL::PKey::RSA.generate(2048).to_s
+    private_key OpenSSL::PKey::RSA.new(File.read(File.join(Rails.root, "test", "support", "keys", "tenant_rsa"))).to_s
     name "Foo.org"
   end
 
