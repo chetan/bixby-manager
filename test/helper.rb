@@ -34,6 +34,7 @@ def prefork
   end
 
   require "test_guard"
+  require "minitest/unit" # require this first so we can stub properly
   require "micron/minitest"
 
   require "setup/prefork"
