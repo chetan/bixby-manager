@@ -7,6 +7,12 @@ def zeus_running?
   File.exists? '.zeus.sock' and Module.const_defined?(:Zeus)
 end
 
+module Mongoid
+  def self.running_with_passenger?
+    false
+  end
+end
+
 def prefork
   root = File.expand_path(File.dirname(__FILE__))
   if not $:.include? root then
@@ -28,6 +34,9 @@ def prefork
   end
 
   require "test_guard"
+  require "test_guard/minitest"
+  require "test_guard/turn"
+
   require "test_prefork"
 end
 
