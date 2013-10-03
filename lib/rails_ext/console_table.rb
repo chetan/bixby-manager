@@ -21,7 +21,7 @@ module Bixby
       module Base
         module ClassMethods
           # Dump the table description
-          def desc
+          def describe
             table = Terminal::Table.new do |t|
 
               t.title = self.name
@@ -58,8 +58,8 @@ module Bixby
             puts table
           end
 
-          def desc
-            self.class.desc
+          def describe
+            self.class.describe
           end
         end
       end #  Base
