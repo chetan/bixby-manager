@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/micron.git
-  revision: e19ec0269d406d033c28fe73b4b357b5c4bffaad
+  revision: 14442584d89b503d6691ac15e0dba38b207b100a
   specs:
     micron (0.1.0)
       colorize
@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/spork-micron.git
-  revision: d056d547de95139b8d4c0cace3c08820575e3c40
+  revision: 07860874a05c2b30a1482a523e3397ced574a790
   specs:
     spork-micron (0.1.0)
       micron
