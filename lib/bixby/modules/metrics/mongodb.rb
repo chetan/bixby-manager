@@ -22,6 +22,8 @@ class Metrics
       def configure(config)
         Mongoid.logger = Logging.logger[:Mongoid]
         Moped.logger   = Logging.logger[:Moped]
+
+        Mongoid.load!(File.join(Rails.root, "config/mongoid.yml"))
       end
 
       def put(key, value, timestamp, metadata = {})
