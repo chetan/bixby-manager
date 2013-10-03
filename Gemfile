@@ -183,7 +183,7 @@ group :development do
     # test tools (frameworks, mock, runners, etc)
     gem 'rake-hooks', :require => false
     gem 'webmock', :require => false
-    gem "minitest"
+    gem "minitest", "~>4.7", :require => false
     gem 'mocha', :require => false
     gem "turn"
     gem "bahia"
@@ -195,6 +195,7 @@ group :development do
     gem "mock_redis"
 
     # test utils
+    gem "micron", :github => "chetan/micron"
     gem "test_guard", :git => "https://github.com/chetan/test_guard.git"
     gem 'rb-inotify', :require => false
     gem 'rb-fsevent', :require => false

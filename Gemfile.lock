@@ -6,6 +6,15 @@ GIT
     api-auth (1.0.3)
 
 GIT
+  remote: git://github.com/chetan/micron.git
+  revision: 5951b976fbbb79c01bedd9652440efc48bc51bee
+  specs:
+    micron (0.1.0)
+      colorize
+      easycov
+      hitimes
+
+GIT
   remote: git://github.com/mongoid/mongoid.git
   revision: f4be91d037fd9048872f847a71286f9512aa862a
   specs:
@@ -152,12 +161,13 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bixby-common (0.4.3)
+    bixby-common (0.4.5)
       api-auth
       faye-websocket
       httpi
       logging
       multi_json
+      semver2
     brwsr (1.1.1)
     builder (3.1.4)
     cane (2.6.0)
@@ -198,6 +208,9 @@ GEM
     debugger-ruby_core_source (1.2.3)
     delete_paranoid (1.0.5)
       activerecord
+    easycov (0.1.1)
+      multi_json
+      simplecov
     em-hiredis (0.2.1)
       hiredis (~> 0.4.0)
     erubis (2.7.0)
@@ -237,6 +250,8 @@ GEM
     hirb (0.7.1)
     hiredis (0.4.5)
     hiredis (0.4.5-java)
+    hitimes (1.2.1)
+    hitimes (1.2.1-java)
     httpclient (2.3.4.1)
     httpi (2.1.0)
       rack
@@ -532,7 +547,8 @@ DEPENDENCIES
   logging
   logging-rails!
   lograge
-  minitest
+  micron!
+  minitest (~> 4.7)
   mixlib-shellout
   mocha
   mock_redis
