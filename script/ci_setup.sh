@@ -30,5 +30,22 @@ test:
 EOF
 echo "$yaml" > config/bixby.yml
 
+# mongoid.yml
+read -d '' yaml <<-EOF
+test:
+  sessions:
+    default:
+      database: bixby_metrics_test
+      hosts:
+        - localhost:27017
+      options:
+        consistency: :strong
+        # In the test environment we lower the retries and retry interval to
+        # low amounts for fast failures.
+        max_retries: 1
+        retry_interval: 0
+EOF
+echo "$yaml" > config/mongoid.yml
+
 mkdir -p tmp/db/ tmp/cache tmp/pids log/
 RAILS_ENV=test rake db:setup
