@@ -7,5 +7,5 @@ test:
 EOF
 
 echo "$yaml" > config/database.yml
-ls -al config/
+mkdir -p tmp/db/
 RAILS_ENV=test rake db:setup
