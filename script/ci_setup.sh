@@ -49,3 +49,7 @@ echo "$yaml" > config/mongoid.yml
 
 mkdir -p tmp/db/ tmp/cache tmp/pids log/
 RAILS_ENV=test rake db:setup
+
+# setup git config
+git config --global user.email "jdoe@example.com"
+git config --global user.name "John Doe"
