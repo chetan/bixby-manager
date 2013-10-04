@@ -41,8 +41,4 @@ if ::Rails.env == "test" then
     )
   )
 
-  bixby = Logging.logger[Bixby]
-  bixby.clear_appenders
-  bixby.add_appenders("stdout_test")
-
 end
