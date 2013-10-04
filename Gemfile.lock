@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/micron.git
-  revision: 14442584d89b503d6691ac15e0dba38b207b100a
+  revision: 466a8b5a4fffc1603f6ec355c516d6e16235e5e9
   specs:
     micron (0.1.0)
       colorize
@@ -206,7 +206,7 @@ GEM
     debugger-ruby_core_source (1.2.3)
     delete_paranoid (1.0.5)
       activerecord
-    easycov (0.1.1)
+    easycov (0.2.0)
       multi_json
       simplecov
     em-hiredis (0.2.1)
