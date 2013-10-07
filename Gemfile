@@ -170,6 +170,7 @@ group :development do
     gem "rvm-capistrano", :require => false
 
     # coverage
+    gem "coveralls",            :require => false
     gem "simplecov",            :platforms => [:mri_19, :mri_20], :require => false
     gem "simplecov-html",       :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-html.git", :require => false
     gem "simplecov-console",    :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-console.git", :require => false

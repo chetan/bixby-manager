@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/micron.git
-  revision: 466a8b5a4fffc1603f6ec355c516d6e16235e5e9
+  revision: 95399129ce8908484ed92a0de3a7e0ce83d99d2b
   specs:
     micron (0.1.0)
       colorize
@@ -57,9 +57,9 @@ GIT
 
 GIT
   remote: https://github.com/chetan/simplecov-console.git
-  revision: c34fc45134e98d5df1f677b5dd71f3ff0e3b186f
+  revision: a72e58b312eb53e1dc9d322ff16f5043621660ca
   specs:
-    simplecov-console (0.1.1)
+    simplecov-console (0.1.3)
       colorize
       hirb
       simplecov
@@ -72,7 +72,7 @@ GIT
 
 GIT
   remote: https://github.com/chetan/test_guard.git
-  revision: 9c2fdd4ba874d8593ad4d70c0f2dd6b141061fed
+  revision: 6e184096f7713cefe6eab3d250b18d214e09a1ca
   specs:
     test_guard (0.2.1)
       awesome_print
@@ -188,6 +188,12 @@ GEM
     colorize (0.6.0)
     columnize (0.3.6)
     connection_pool (1.1.0)
+    coveralls (0.7.0)
+      multi_json (~> 1.3)
+      rest-client
+      simplecov (>= 0.7)
+      term-ansicolor
+      thor
     crack (0.4.1)
       safe_yaml (~> 0.9.0)
     curb (0.8.4)
@@ -206,9 +212,11 @@ GEM
     debugger-ruby_core_source (1.2.3)
     delete_paranoid (1.0.5)
       activerecord
-    easycov (0.2.0)
+    easycov (0.3.1)
       multi_json
       simplecov
+      simplecov-console
+      simplecov-html
     em-hiredis (0.2.1)
       hiredis (~> 0.4.0)
     erubis (2.7.0)
@@ -295,7 +303,7 @@ GEM
     mock_redis (0.9.0)
     mono_logger (1.1.0)
     moped (1.5.1)
-    multi_json (1.8.0)
+    multi_json (1.8.1)
     mysql2 (0.3.13)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -384,6 +392,8 @@ GEM
       redis (>= 2.0.1)
       resque (>= 1.20.0)
       rufus-scheduler
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rubyntlm (0.3.4)
     rufus-scheduler (2.0.23)
       tzinfo (>= 0.3.23)
@@ -440,6 +450,8 @@ GEM
     sqlite3 (1.3.7)
     sshkey (1.5.1)
     temple (0.6.6)
+    term-ansicolor (1.2.2)
+      tins (~> 0.8)
     terminal-table (1.4.5)
     therubyracer (0.11.4)
       libv8 (~> 3.11.8.12)
@@ -454,6 +466,7 @@ GEM
       atomic
     tilt (1.4.1)
     timers (1.1.0)
+    tins (0.11.0)
     treetop (1.4.14)
       polyglot
       polyglot (>= 0.3.1)
@@ -505,6 +518,7 @@ DEPENDENCIES
   coffee-script
   coffee-script-source
   continuum!
+  coveralls
   curb
   curb_threadpool
   database_cleaner (= 1.0.1)
