@@ -162,6 +162,7 @@ group :development do
     gem "pry-rails"
     gem "sextant" # displays routes at http://localhost:3000/rails/routes in dev mode
     gem "highline"
+    gem "ruby-termios"
     gem "terminal-table"
 
 

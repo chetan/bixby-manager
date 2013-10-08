@@ -394,6 +394,7 @@ GEM
       rufus-scheduler
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    ruby-termios (0.9.6)
     rubyntlm (0.3.4)
     rufus-scheduler (2.0.23)
       tzinfo (>= 0.3.23)
@@ -574,6 +575,7 @@ DEPENDENCIES
   redis (~> 3.0)
   resque
   resque-scheduler
+  ruby-termios
   rvm-capistrano
   sass
   sass-rails
