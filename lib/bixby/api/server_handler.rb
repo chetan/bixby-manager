@@ -30,10 +30,14 @@ module Bixby
     end
 
     def connect(json_req, api)
-      valid = validate_request(json_req)
-      return valid if valid.kind_of? JsonResponse
+      invalid = validate_request(json_req)
+      if invalid.kind_of? JsonResponse then
+        logger.warn { "Rejected agent: #{invalid.message}" }
+        return invalid
+      end
 
       Bixby::AgentRegistry.add(@agent, api)
+      true
     end
 
     def disconnect(api)

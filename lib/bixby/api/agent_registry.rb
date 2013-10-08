@@ -30,12 +30,15 @@ module Bixby
       #
       # @param [Bixby::WebSocket::APIChannel] api
       def remove(api)
+        removed = 0
         agents.each do |key, val|
           if val == api then
+            removed += 1
             agents.delete(key)
             Sidekiq.redis { |c| c.hdel("bixby:agents", key) }
           end
         end
+        return if removed == 0
         logger.debug { "removed agent; now: #{agents.keys.inspect}" }
       end
 
