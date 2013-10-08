@@ -4,4 +4,6 @@
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
+require "ext/rake_disable_logging"
+
 Bixby::Application.load_tasks

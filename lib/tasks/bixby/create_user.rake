@@ -4,6 +4,8 @@ namespace :bixby do
   desc "create a new user"
   task :create_user => :environment do |t|
 
+    disable_logging!
+
     require 'highline'
 
     puts "Create user"
