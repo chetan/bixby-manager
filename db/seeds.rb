@@ -17,3 +17,5 @@ o = Org.create(:name => "default", :tenant_id => t.id)
 r = Repo.create(:org_id => nil, :name => "vendor",
       :uri => "https://github.com/chetan/bixby-repo.git",
       :branch => "master")
+
+Bixby::User.new.create_user(t, t.name, t.name, config["default_tenant_pw"], "test@example.com")
