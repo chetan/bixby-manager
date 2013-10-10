@@ -14,7 +14,7 @@ namespace :bixby do
     puts "* Create a user"
     puts
 
-    Rake::Task["bixby:setup_vendor_repo"].invoke
+    Rake::Task["bixby:update_repos"].invoke
     puts "Created vendor repo"
     puts
 
