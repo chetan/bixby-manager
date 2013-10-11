@@ -18,4 +18,11 @@ r = Repo.create(:org_id => nil, :name => "vendor",
       :uri => "https://github.com/chetan/bixby-repo.git",
       :branch => "master")
 
-Bixby::User.new.create_user(t, t.name, t.name, config["default_tenant_pw"], "test@example.com")
+u = User.create(
+  :org_id                => o.id,
+  :name                  => t.name,
+  :username              => t.name,
+  :email                 => "text@example.com",
+  :password              => config["default_tenant_pw"],
+  :password_confirmation => config["default_tenant_pw"]
+)
