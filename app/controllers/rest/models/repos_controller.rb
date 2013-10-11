@@ -1,5 +1,5 @@
 
-class Rest::Models::ReposController < UiController
+class Rest::Models::ReposController < ::Rest::ApiController
 
   def index
     restful Repo.for_org(current_user.org_id)

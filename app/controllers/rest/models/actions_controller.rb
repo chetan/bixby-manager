@@ -1,5 +1,5 @@
 
-class Rest::Models::ActionsController < UiController
+class Rest::Models::ActionsController < ::Rest::ApiController
 
   def create
 

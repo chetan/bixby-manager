@@ -1,5 +1,5 @@
 
-class Rest::Models::TriggersController < UiController
+class Rest::Models::TriggersController < ::Rest::ApiController
 
   # POST /rest/hosts/:host_id/triggers
   def create

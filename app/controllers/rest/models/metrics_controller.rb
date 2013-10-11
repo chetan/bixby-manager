@@ -1,5 +1,5 @@
 
-class Rest::Models::MetricsController < UiController
+class Rest::Models::MetricsController < ::Rest::ApiController
 
   # GET "/rest/hosts/3/metrics"
   def index
