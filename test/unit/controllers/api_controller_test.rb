@@ -20,26 +20,14 @@ class Bixby::Hello < Bixby::API
 end
 
 module Bixby
-module Test
-module Controllers
+module Test::Controllers
 
-class API < ActionController::TestCase
+class API < TestCase
 
   def setup
     super
     @controller = ApiController.new
     @agent = FactoryGirl.create(:agent)
-
-    # common req options
-    @request.request_method = "POST"
-    @request.env["Content-Type"] = "application/json"
-    @request.path = "/api"
-  end
-
-  def teardown
-    super
-    BIXBY_CONFIG[:crypto] = false
-    MultiTenant.current_tenant = nil
   end
 
   def test_post_invalid
@@ -233,6 +221,5 @@ class API < ActionController::TestCase
 
 end # API
 
-end
 end
 end

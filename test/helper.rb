@@ -63,6 +63,7 @@ def bootstrap_tests
   require "#{Rails.root.to_s}/config/initializers/bixby_bootstrap"
 
   require "setup/base"
+  require "setup/base_controller"
   require "setup/stub_api"
 
   # require files in order to force coverage reports
