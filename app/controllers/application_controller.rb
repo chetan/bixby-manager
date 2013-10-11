@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
     end
 
     if not optional then
-      raise "Couldn't find param :id or :#{controller_key}"
+      raise MissingParam, "Couldn't find param :id or :#{controller_key}"
     end
 
     return nil

@@ -1,0 +1,3 @@
+
+class MissingParam < Exception
+end

@@ -1,4 +1,6 @@
 
+require "missing_param"
+
 module Bixby
   require "bixby/util"
   require "bixby/file_download"
