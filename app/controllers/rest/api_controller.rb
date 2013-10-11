@@ -15,6 +15,7 @@ class Rest::ApiController < UiController
       if not(agent and ApiAuth.authentic?(request, agent.secret_key)) then
         return render :text => Bixby::JsonResponse.new("fail", "authentication failed", nil, 401).to_json, :status => 401
       end
+      @current_user = agent # hrm.. hack much?
       return false
     end
 
