@@ -44,6 +44,10 @@ module Bixby
     end
 
     module Controllers
+      module Rest
+        module Models
+        end
+      end
     end
 
     module Views

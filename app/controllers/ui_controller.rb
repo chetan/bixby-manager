@@ -35,7 +35,12 @@ class UiController < ApplicationController
     MultiTenant.current_tenant = current_user.tenant if current_user
   end
 
+  # Check for a valid user session
+  #
+  # @return [Boolean] true if the request is not authenticated (user must login)
   def login_required?
+
+    # check for user session
     if current_user and is_valid_session? then
       bootstrap current_user, :name => :current_user
       return false
@@ -44,6 +49,7 @@ class UiController < ApplicationController
     # don't redirect when trying to login
     return false if params["controller"] == "sessions" && (params["action"] == "index" || params["action"] == "create")
 
+    # render a response directly
     if request.xhr? or request.format != "text/html" then
       # return an error response instead
       return render :text => "not logged in", :status => 401
