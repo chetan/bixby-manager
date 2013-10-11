@@ -15,6 +15,8 @@ Bixby::Application.routes.draw do
 
   namespace :rest, :module => "rest/models" do
 
+    resources :agents
+
     resources :hosts do
       get "update_facts" => "hosts#update_facts"
 
