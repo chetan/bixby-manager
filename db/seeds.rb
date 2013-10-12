@@ -22,7 +22,10 @@ u = User.create(
   :org_id                => o.id,
   :name                  => t.name,
   :username              => t.name,
-  :email                 => "text@example.com",
-  :password              => config["default_tenant_pw"],
-  :password_confirmation => config["default_tenant_pw"]
+  :email                 => "test@example.com"
 )
+
+# password is a virtual field used by authlogic, so set this after
+u.password              = config["default_tenant_pw"]
+u.password_confirmation = config["default_tenant_pw"]
+u.save!
