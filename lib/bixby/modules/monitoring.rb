@@ -108,7 +108,7 @@ class Monitoring < API
   def add_check(host, command, args, agent=nil)
 
     host = get_model(host, Host)
-    config = create_spec(command).load_config()
+    command = get_model(command, Command)
 
     if agent.blank? then
       agent = host.agent
@@ -118,6 +118,7 @@ class Monitoring < API
 
     # create resource name
     # TODO check if command *has* any options - look at defaults, etc
+    config = create_spec(command).load_config()
     name = config["key"] || ""
     args = nil if args and args.empty?
     if args then

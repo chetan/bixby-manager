@@ -26,6 +26,19 @@ class Command < ActiveRecord::Base
     File.join(repo.path, bundle, "bin", command)
   end
 
+  # Convert CommandSpec to Command
+  #
+  # @param [CommandSpec] spec
+  #
+  # @return [Command]
+  def self.from_command_spec(spec)
+    repo = Repo.where(:name => spec.repo).first
+    where(:repo_id => repo.id, :bundle => spec.bundle, :command => spec.command).first
+  end
+
+  # Convert this command to a CommandSpec
+  #
+  # @return [CommandSpec]
   def to_command_spec
     attrs = self.attributes
     attrs["repo"] = repo.name
