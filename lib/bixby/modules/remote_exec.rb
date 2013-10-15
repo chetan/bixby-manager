@@ -18,6 +18,7 @@ class RemoteExec < API
     # @return [CommandResponse]
     def exec(agent, command)
 
+      agent = get_model(agent, Agent)
       command = create_spec(command)
 
       ret = exec_api(agent, "shell_exec", command.to_hash)
