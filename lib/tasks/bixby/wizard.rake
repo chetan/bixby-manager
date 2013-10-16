@@ -19,6 +19,8 @@ namespace :bixby do
     puts
 
     Rake::Task["bixby:create_tenant"].invoke
+    puts
+    puts
     Rake::Task["bixby:create_user"].invoke
 
     puts "Done! You can now start the server and login"
