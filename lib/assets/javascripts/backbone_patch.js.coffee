@@ -31,3 +31,9 @@ Backbone.sync = (method, model, options) ->
   # proxy the call to the old sync method
   return Backbone._sync(method, model, options);
 
+# Move context to first param
+Backbone.Model.prototype.onR = (context, event_name, callback) ->
+  @on(event_name, callback, context)
+
+Backbone.Collection.prototype.onR = (context, event_name, callback) ->
+  @on(event_name, callback, context)

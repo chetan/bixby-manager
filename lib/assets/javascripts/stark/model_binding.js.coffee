@@ -7,8 +7,19 @@ class Stark.ModelBinding
 
   # Bind the given view to 'change' or 'destroy' events triggered on this model
   bind_view: (view) ->
+    # @log "binding view", view.constructor.name, "to model", @.constructor.name
 
-    # check to see if any of our parents have already bound here
+
+    # TODO as with the below parent/child view checks, we should do the same
+    #      with collections and models. we will often have a case where a parent
+    #      view binds to the collection and it's child view binds to a model
+    #      contained in that collection.
+
+
+    # check to see if any of our parents (views) have already been bound here
+    #
+    # if they have, we don't want to bind again because when the parent
+    # redraws, we will get redrawn anyway.
     parent = view.parent
     while parent?
       if _.include @bound_views, parent
@@ -17,21 +28,27 @@ class Stark.ModelBinding
       parent = parent.parent
 
     # check if any of our children are bound here and remove them
+    #
+    # as above, if any child view previous bound to this model, we remove it
+    # to avoid double rendering.
     @remove_children(@bound_views, view.views)
 
     @bound_views.push(view)
     model = @
-    @bind "change", ->
+    @onR view, "sync", ->
+      @log "redraw handler fired (sync) due to model binding on: ", model
+      @log "redrawing view: ", @
+      @redraw()
+
+    @onR view, "change", ->
       @log "redraw handler fired (change) due to model binding on: ", model
       @log "redrawing view: ", @
       @redraw()
-    , view
 
-    @bind "destroy", ->
+    @onR view, "destroy", ->
       @log "redraw handler fired (destroy) due to model binding on: ", model
       @log "redrawing view: ", @
       @redraw()
-    , view
 
   unbind_view: (view) ->
     @bound_views = _.reject(@bound_views, (v) -> v == view)
