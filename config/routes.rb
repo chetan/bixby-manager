@@ -20,7 +20,9 @@ Bixby::Application.routes.draw do
     resources :hosts do
       get "update_facts" => "hosts#update_facts"
 
-      resources :checks
+      resources :checks do
+        get "metrics" => "metrics#index_for_check"
+      end
       resources :metrics
       resources :triggers
     end
