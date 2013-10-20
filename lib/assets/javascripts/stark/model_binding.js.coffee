@@ -40,10 +40,10 @@ class Stark.ModelBinding
       @log "redrawing view: ", @
       @redraw()
 
-    @onR view, "change", ->
-      @log "redraw handler fired (change) due to model binding on: ", model
-      @log "redrawing view: ", @
-      @redraw()
+    # @onR view, "change", ->
+    #   @log "redraw handler fired (change) due to model binding on: ", model
+    #   @log "redrawing view: ", @
+    #   @redraw()
 
     @onR view, "destroy", ->
       @log "redraw handler fired (destroy) due to model binding on: ", model
