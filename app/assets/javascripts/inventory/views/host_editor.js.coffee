@@ -10,15 +10,13 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     setButton: (button) ->
       @button = button
-      cb = _.bindR @, (ev) ->
+      @button.on "click", _.bindR @, (ev) ->
         e = $(ev.target)
         if e.html() == "edit"
           @$el.modal("show")
           e.html("cancel")
         else
           @hide_editor()
-
-      @button.on "click", cb
 
     events: {
       # save
@@ -49,10 +47,11 @@ namespace "Bixby.view.inventory", (exports, top) ->
       @$el.modal("hide")
 
     save_edits: ->
-      @host.set "alias", @$("input.alias").val(), {silent: true}
-      @host.set "desc", @$("textarea.desc").val(), {silent: true}
-
-      @host.set_tags @$("input.tags").val()
+      @host.set {
+        alias: @$("input.alias").val()
+        desc: @$("textarea.desc").val()
+        tags: @$("input.tags").val()
+      }
 
       if @host.hasChanged()
         @host.save()

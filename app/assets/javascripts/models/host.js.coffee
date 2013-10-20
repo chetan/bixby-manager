@@ -32,7 +32,7 @@ namespace 'Bixby.model', (exports, top) ->
       if ! _.isString(tags)
         tags = tags.join(",")
 
-      @set("tags", tags, {silent: true})
+      @set("tags", tags)
 
   class exports.HostList extends Stark.Collection
     model: exports.Host
