@@ -9,14 +9,12 @@ class Stark.ModelBinding
   bind_view: (view) ->
     # @log "binding view", view.constructor.name, "to model", @.constructor.name
 
+    # check if parent collection is already bound on this view
+    if @collection? && _.include @collection.bound_views, view
+      # @log "found our view already bound by our parent collection, bailing"
+      return
 
-    # TODO as with the below parent/child view checks, we should do the same
-    #      with collections and models. we will often have a case where a parent
-    #      view binds to the collection and it's child view binds to a model
-    #      contained in that collection.
-
-
-    # check to see if any of our parents (views) have already been bound here
+    # check to see if any of our parent views have already been bound here
     #
     # if they have, we don't want to bind again because when the parent
     # redraws, we will get redrawn anyway.
@@ -24,6 +22,9 @@ class Stark.ModelBinding
     while parent?
       if _.include @bound_views, parent
         # @log "found a parent view already bound, bailing"
+        return
+      if @collection? && _.include @collection.bound_views, parent
+        # @log "found a parent view already bound by our parent collection, bailing"
         return
       parent = parent.parent
 
