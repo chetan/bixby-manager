@@ -1,0 +1,69 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          bixby-server
+# Required-Start:    $local_fs $remote_fs $syslog $named $network $time
+# Required-Stop:     $local_fs $remote_fs $syslog $named $network
+# Should-Start:
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/Stop the bixby-server god daemon
+### END INIT INFO
+
+# processname: god
+# pidfile: /var/www/bixby/current/tmp/pids/bixby-server-god.pid
+
+NAME=bixby-server
+DESC=bixby-server
+
+BIXBY_SERVER_HOME=/var/www/bixby/current
+GOD_PORT=18166 # actually used in unix socket name
+GOD_CONF="-c $BIXBY_SERVER_HOME/config/deploy/bixby.god"
+GOD_PID=$BIXBY_SERVER_HOME/tmp/pids/bixby-server-god.pid
+GOD_BIN="/usr/local/bin/god -P $GOD_PID -p $GOD_PORT --log-level debug"
+
+start() {
+  $GOD_BIN $GOD_CONF
+  echo "* Started bixby-server"
+}
+stop() {
+  $GOD_BIN terminate >/dev/null
+  echo "* Stopped bixby-server"
+}
+quit() {
+  $GOD_BIN quit >/dev/null
+}
+
+case $1 in
+start)
+        start
+        ;;
+stop)
+        stop
+        ;;
+restart)
+        stop
+        start
+        ;;
+reload)
+        quit
+        start
+        ;;
+status)
+        $GOD_BIN status
+        if [[ $? -eq 1 ]]; then
+          echo "Not running"
+          exit 1
+        fi
+        ;;
+god)
+        $GOD_BIN ${@:2}
+        ;;
+*)
+        echo "Usage: $NAME {start|stop|restart|status|god}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
