@@ -17,11 +17,12 @@
 NAME=bixby-server
 DESC=bixby-server
 
+RAILS_ENV=production
 BIXBY_SERVER_HOME=/var/www/bixby/current
 GOD_PORT=18166 # actually used in unix socket name
 GOD_CONF="-c $BIXBY_SERVER_HOME/config/deploy/bixby.god"
 GOD_PID=$BIXBY_SERVER_HOME/tmp/pids/bixby-server-god.pid
-GOD_BIN="/usr/local/bin/god -P $GOD_PID -p $GOD_PORT --log-level debug"
+GOD_BIN="env RAILS_ENV=$RAILS_ENV /usr/local/bin/god -P $GOD_PID -p $GOD_PORT --log-level debug"
 
 start() {
   $GOD_BIN $GOD_CONF
