@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # need jruby alternative for:
 # scrypt
 
-gem 'rails', '4.0.0'
+gem 'rails', '4.0.1'
 gem 'activerecord-session_store'
 
 # webserver
