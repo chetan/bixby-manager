@@ -1,4 +1,5 @@
 language: ruby
+bundler_args: --without development --path=~/.bundle
 before_install:
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
   - "gem install bundler bundle_cache"
