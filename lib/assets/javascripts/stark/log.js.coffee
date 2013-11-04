@@ -21,11 +21,11 @@ class Stark.Logger
 
   # wrapper around groups
   begin_group: ->
-    if console.group?
+    if console.group? && Stark.Logger.enabled
       console.group()
 
   end_group: ->
-    if console.group?
+    if console.group? && Stark.Logger.enabled
       console.groupEnd()
 
   # wrapper around timers
