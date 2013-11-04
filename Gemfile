@@ -124,14 +124,6 @@ group :development do
     gem "mysql2", :platforms => [:mri, :rbx]
     gem "activerecord-jdbcmysql-adapter", "~> 1.3.0", :platforms => :jruby
 
-    # gems used for dev/test env
-    # for using sqlite3 as db backend
-    gem "sqlite3", :platforms => [:mri, :rbx]
-    gem "activerecord-jdbcsqlite3-adapter", "~> 1.3.0", :platforms => "jruby"
-
-    # for testing mongo metrics driver
-    gem 'mongoid', :github => "mongoid/mongoid" # use git/master for rails4 support
-
     # debugging
     gem "debugger",     :platforms => [:mri_19, :mri_20]
     gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20]
@@ -165,37 +157,48 @@ group :development do
     gem "ruby-termios"
     gem "terminal-table"
 
-
     # deployment
-    gem "capistrano",     :require => false
-    gem "rvm-capistrano", :require => false
-
-    # coverage
-    gem "coveralls",            :require => false
-    gem "simplecov",            :platforms => [:mri_19, :mri_20], :require => false
-    gem "simplecov-html",       :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-html.git", :require => false
-    gem "simplecov-console",    :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-console.git", :require => false
+    gem "capistrano",      "~>2.0", :require => false
+    gem "rvm-capistrano",           :require => false
 
     # quality
     gem "cane", :platforms => [:mri_19, :mri_20], :require => false
+end
 
-    # test tools (frameworks, mock, runners, etc)
-    gem 'rake-hooks', :require => false
-    gem 'webmock', :require => false
-    gem "minitest", "~>4.7", :require => false
-    gem 'mocha', :require => false
-    gem "bahia"
-    gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
-    gem "spork-rails", :require => false, :git => "https://github.com/sporkrb/spork-rails.git" # use git for early rails4 support
-    gem "database_cleaner", "=1.0.1"
-    gem "factory_girl_rails"
-    gem "mock_redis"
+group :test do
 
-    # test utils
-    gem "micron", :github => "chetan/micron"
-    gem "spork-micron", :github => "chetan/spork-micron", :require => false
-    gem "test_guard", :git => "https://github.com/chetan/test_guard.git"
-    gem 'rb-inotify', :require => false
-    gem 'rb-fsevent', :require => false
-    gem 'rb-fchange', :require => false
+  # test tools (frameworks, mock, runners, etc)
+  gem 'rake-hooks', :require => false
+  gem 'webmock', :require => false
+  gem "minitest", "~>4.7", :require => false
+  gem 'mocha', :require => false
+  gem "bahia"
+  gem 'spork', :git => "https://github.com/sporkrb/spork.git", :require => false
+  gem "spork-rails", :require => false, :git => "https://github.com/sporkrb/spork-rails.git" # use git for early rails4 support
+  gem "database_cleaner", "=1.0.1"
+  gem "factory_girl_rails"
+  gem "mock_redis"
+
+  # test utils
+  gem "micron", :github => "chetan/micron"
+  gem "spork-micron", :github => "chetan/spork-micron", :require => false
+  gem "test_guard", :git => "https://github.com/chetan/test_guard.git"
+  gem 'rb-inotify', :require => false
+  gem 'rb-fsevent', :require => false
+  gem 'rb-fchange', :require => false
+
+  # coverage
+  gem "coveralls",            :require => false
+  gem "simplecov",            :platforms => [:mri_19, :mri_20], :require => false
+  gem "simplecov-html",       :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-html.git", :require => false
+  gem "simplecov-console",    :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-console.git", :require => false
+
+  # gems used for dev/test env
+  # for using sqlite3 as db backend
+  gem "sqlite3", :platforms => [:mri, :rbx]
+  gem "activerecord-jdbcsqlite3-adapter", "~> 1.3.0", :platforms => "jruby"
+
+  # for testing mongo metrics driver
+  gem 'mongoid', :github => "mongoid/mongoid" # use git/master for rails4 support
+
 end

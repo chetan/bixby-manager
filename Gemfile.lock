@@ -513,7 +513,7 @@ DEPENDENCIES
   binding_of_caller
   bixby-common
   cane
-  capistrano
+  capistrano (~> 2.0)
   coffee-rails-source-maps
   coffee-script
   coffee-script-source
