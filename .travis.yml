@@ -1,9 +1,14 @@
 language: ruby
-before_script: "./script/ci_setup.sh"
+before_script:
+  - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
+  - "gem install bundler bundle_cache"
+  - "bundle_cache_install"
+  - "./script/ci_setup.sh"
 script: "bundle exec micron test/"
 after_script:
   - "rake coverage"
   - "rake coveralls"
+  - "bundle_cache"
 
 rvm:
   - 2.0.0
@@ -15,3 +20,11 @@ branches:
 
 services:
   - mongodb
+
+env:
+  global:
+    - RAILS_ENV=test
+    - BUNDLE_ARCHIVE="bixby-manager-cache.txt"
+    - AWS_S3_REGION="us-east-1"
+    - AWS_S3_BUCKET="io.bixby.gemcache"
+    - secure: gagmoN4VlHnPJspvxfeZ9QZlPhmWg9NPUwIamPISTubtRFT9n3hKY5a4PbemWA5YV2uNBynDjU1eAWy/pfaIF59U3EpwkdpFSxeap5cErAsrBbLHtno8tLEjuCU2Gsj/tsKX+cRgqix9k5jYHQwq7vvB01VMdBwMWM5QB8FVxfc=
