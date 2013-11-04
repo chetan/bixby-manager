@@ -1,8 +1,9 @@
 language: ruby
-before_script:
+before_install:
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
   - "gem install bundler bundle_cache"
   - "bundle_cache_install"
+before_script:
   - "./script/ci_setup.sh"
 script: "bundle exec micron test/"
 after_script:
