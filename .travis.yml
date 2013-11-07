@@ -1,6 +1,5 @@
 language: ruby
 before_install:
-  - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
   - "curl -sL https://s3.bixby.io/wad > ~/wad"
   - "chmod +x ~/wad"
 install:
