@@ -36,7 +36,8 @@ Bixby::Application.configure do
   config.assets.js_compressor  = :uglifier
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  # config.assets.precompile << "bixby.js"
+  config.assets.precompile << %w(*.png *.jpg *.jpeg *.gif)       # vendor/assets/images
+  config.assets.precompile << %w(*.otf *.eot *.svg *.ttf *.woff) # font assets
 
   # Version of your assets, change this if you want to expire all your assets
   config.assets.version = '1.0'
@@ -56,9 +57,6 @@ Bixby::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
-  # Enable threaded mode
-  # config.threadsafe!
-
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
@@ -70,6 +68,9 @@ Bixby::Application.configure do
 
   ###############
   # LOGGING SETUP
+
+  # Disable automatic flushing of the log to improve performance.
+  # config.autoflush_log = false
 
   config.log_level = :debug
 

@@ -35,7 +35,7 @@ Bixby::Application.configure do
   config.assets.css_compressor = :sass
   config.assets.js_compressor  = :uglifier
 
-  # Precompile additional assets (application.js, application.css)
+  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile << %w(*.png *.jpg *.jpeg *.gif)       # vendor/assets/images
   config.assets.precompile << %w(*.otf *.eot *.svg *.ttf *.woff) # font assets
 
