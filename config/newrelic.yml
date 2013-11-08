@@ -225,3 +225,8 @@ staging:
   <<: *default_settings
   monitor_mode: false
   app_name: Bixby (Staging)
+
+integration:
+  <<: *default_settings
+  monitor_mode: false
+  app_name: Bixby (Integration)
