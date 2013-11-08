@@ -9,7 +9,10 @@ namespace 'Bixby.model', (exports, top) ->
       @get("name") || @get("username")
 
     gravatar: ->
-      if Bixby.app.dev
+      if Bixby.app.dev || Bixby.app.env == "integration"
+        # avoid hitting gravatar.com in dev or integration environments
+        # gravatar seems to give phantomjs a lot of grief due to slow loads
+        # and timeouts
         return "/images/gravatar_dev.jpg"
       else
         url = "https://www.gravatar.com/avatar/"
