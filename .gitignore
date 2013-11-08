@@ -3,6 +3,7 @@
 .*tags
 
 # logs/temp
+log
 log/
 script/log/
 script/temp/
