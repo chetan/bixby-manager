@@ -31,17 +31,21 @@ class Metrics
         MetricData.create!(data)
       end
 
+      # Fetch a single metric
       def get(opts={})
 
+        # convert time inputs
         start_time = opts[:start_time]
         end_time = opts[:end_time]
         start_time = Time.at(start_time.to_i) if [Fixnum, String].include? start_time.class
         end_time = Time.at(end_time.to_i) if [Fixnum, String].include? end_time.class
 
+        # query by key and start/end time
         ret = MetricData.where(:key => opts[:key]).
           and(:time.gte => start_time).
           and(:time.lte => end_time)
 
+        # add in the given tags
         if not opts[:tags].blank? then
           tags = {}
           opts[:tags].each do |k,v|
@@ -53,10 +57,10 @@ class Metrics
         # cheap hack to fix value type
         return ret.map{ |r|
           {
-            :key => r[:key],
+            :key  => r[:key],
             :tags => r[:tags],
             :time => r[:time],
-            :val => r[:val].to_f
+            :val  => r[:val].to_f
           }
         }
       end
