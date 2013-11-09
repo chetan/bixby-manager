@@ -67,8 +67,8 @@ class Metrics < API
   #
   # @see #get
   def multi_get(reqs=[])
-    debug { "fetching metrics: " }
-    debug { reqs }
+    log.debug { "fetching metrics: " }
+    log.debug { reqs }
 
     begin
       return process_results(driver.multi_get(reqs))
@@ -209,12 +209,21 @@ class Metrics < API
 
           # find/save incoming metrics using passed in metadata
 
-          # note: we dup incoming metadata to avoid modifying the original
-          #       args as doing so can break job retries in sidekiq
-          metadata = metric["metadata"] ? metric["metadata"].dup : {}
+          # note: we dup incoming metadata because modifying the original
+          #       will break job retries in sidekiq
+          #
+          #       we also stringify all keys/vals because mongo, for instance,
+          #       will store the given type while at the same time we *always*
+          #       store only string values in the db.
+          metadata = {}
+          if metric["metadata"] then
+            metric["metadata"].dup.each do |k,v|
+              metadata[k.to_s] = v.to_s
+            end
+          end
 
           # attach extra metadata before storing
-          if not (metadata[:host] or metadata["host"]) then
+          if not metadata["host"] then
             metadata[:host] = check.host.hostname || check.host.ip
           end
           metadata[:host_id]     = check.host.id
