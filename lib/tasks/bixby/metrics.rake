@@ -32,18 +32,15 @@ class MetricsCli
       cmd = c.first.strip
       args = c[1, c.length]
 
-      case cmd
-        when "list"
-          list(args)
-        when "user"
-          user(args)
-        when "check"
-          check(args)
-        when "metrics"
-          metrics(args)
+      # lookup cmd by method name
+      if self.respond_to?(cmd.to_sym) then
+        self.send(cmd.to_sym, args)
+        next
+      end
 
+      # handle some aliases
+      case cmd
         when "q"
-        when "quit"
         when "exit"
           quit
       end
@@ -51,8 +48,32 @@ class MetricsCli
     end
   end
 
-  def users(args)
+  def help(args=nil)
+    puts <<-EOF
+available commands:
 
+  users                   list users
+  user <username>         switch to the given user
+  list                    list all checks
+  check <id>              list metrics for the given check
+  metrics <id>            show recent data for the given metric
+
+  quit                    quit
+  help                    show help
+
+EOF
+  end
+
+  def users(args)
+    table = Terminal::Table.new do |t|
+      t.headings = %w{ Username Name E-Mail Org }
+      User.all.each do |u|
+        t << [ u.username, u.name, u.email, u.org.name ]
+      end
+    end
+
+    puts table
+    puts
   end
 
   def user(args)
@@ -63,6 +84,7 @@ class MetricsCli
     end
   end
 
+  # list all checks
   def list(args=nil)
 
     table = Terminal::Table.new do |t|
@@ -76,6 +98,7 @@ class MetricsCli
     end
 
     puts table
+    puts
   end
 
   # list the metrics for the given check
@@ -145,9 +168,11 @@ EOF
 
     puts table
     puts "showing top #{i} rows" if i > 0
+    puts
   end
 
-  def quit
+  def quit(args=nil)
+    puts
     puts "\nbye!"
     exit
   end
