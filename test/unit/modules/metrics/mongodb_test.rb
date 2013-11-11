@@ -25,6 +25,14 @@ class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
       assert_metric m
     end
 
+    def test_multi_get
+      t = Time.new
+      Bixby::Metrics.new.put("foobar", 37, t, {:blah => "baz"})
+      m = Bixby::Metrics.new.multi_get([{:key => "foobar", :start_time => t, :end_time => t+10}])
+
+      assert_metric m.first
+    end
+
     def test_get_by_time_int_string
       t = Time.new
       Bixby::Metrics.new.put("foobar", 37, t, {:blah => "baz"})

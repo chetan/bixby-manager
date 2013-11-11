@@ -1,6 +1,7 @@
 
 require 'bixby/modules/metrics/driver'
 require 'mongoid'
+require 'celluloid'
 
 module Bixby
 class Metrics
@@ -15,6 +16,13 @@ class Metrics
       field :time, :type => DateTime
       field :key, :type => String
       field :val, :type => BigDecimal
+    end
+
+    class MetricFetcher
+      include ::Celluloid
+      def get(opt)
+        MongoDB.get(opt)
+      end
     end
 
     class << self
@@ -65,9 +73,14 @@ class Metrics
         }
       end
 
+      # Fetch a list of metrics
       def multi_get(opts=[])
-        # cheap hack for now
-        ret = opts.map{ |opt| get(opt) }
+        # use a pool of Celluloid workers to process fetches in parallel
+        pool = MetricFetcher.pool
+        futures = opts.map{ |opt| pool.future.get(opt) }
+        ret = futures.map{ |future| future.value }
+        pool.terminate
+        return ret
       end
 
     end # self
