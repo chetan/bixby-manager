@@ -38,6 +38,7 @@ Bixby::Application.routes.draw do
       end
     end
 
+    resources :checks, :only => [:show, :destroy, :update]
     resources :on_calls
     resources :triggers
     resources :actions

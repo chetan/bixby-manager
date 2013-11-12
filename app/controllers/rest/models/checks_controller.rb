@@ -31,4 +31,14 @@ class Rest::Models::ChecksController < ::Rest::ApiController
     restful check
   end
 
+  def show
+    restful Check.find(_id)
+  end
+
+  def destroy
+    check = Check.find(_id)
+    check.destroy
+    return check.destroyed?
+  end
+
 end
