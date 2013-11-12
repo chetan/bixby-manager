@@ -26,6 +26,7 @@ class Check < ActiveRecord::Base
 
   has_many :metrics
 
+  acts_as_paranoid
   multi_tenant :via => :host
 
   serialize :args, JSONColumn.new
