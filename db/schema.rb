@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130812201434) do
+ActiveRecord::Schema.define(version: 20131112211400) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -50,15 +50,18 @@ ActiveRecord::Schema.define(version: 20130812201434) do
   add_index "annotations", ["host_id"], name: "fk_annotations_hosts1_idx", using: :btree
 
   create_table "checks", force: true do |t|
-    t.integer "host_id",                                   null: false
-    t.integer "agent_id",                                  null: false
-    t.integer "command_id",                                null: false
-    t.text    "args"
-    t.integer "normal_interval", limit: 2
-    t.integer "retry_interval",  limit: 2
-    t.integer "timeout",         limit: 2
-    t.boolean "plot"
-    t.boolean "enabled",                   default: false
+    t.integer  "host_id",                                   null: false
+    t.integer  "agent_id",                                  null: false
+    t.integer  "command_id",                                null: false
+    t.text     "args"
+    t.integer  "normal_interval", limit: 2
+    t.integer  "retry_interval",  limit: 2
+    t.integer  "timeout",         limit: 2
+    t.boolean  "plot"
+    t.boolean  "enabled",                   default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
   add_index "checks", ["agent_id"], name: "fk_checks_agents1", using: :btree
