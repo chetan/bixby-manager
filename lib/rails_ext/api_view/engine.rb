@@ -2,6 +2,12 @@
 module ApiView
   class Engine
 
+    # Classes which
+    BASIC_TYPES = [ String, Integer, Fixnum, Bignum, Float,
+                    TrueClass, FalseClass,
+                    Time, Date, DateTime ]
+    BASIC_TYPES_LOOKUP = BASIC_TYPES.inject({}){ |h, k| h[k] = 1; h }
+
     class << self
 
       # Render the given object as JSON or XML
@@ -32,7 +38,7 @@ module ApiView
       # @return [Object]
       def convert(obj)
 
-        if [String, Fixnum, Float].include? obj.class then
+        if BASIC_TYPES_LOOKUP.include? obj.class then
           return obj # already converted
         end
 
