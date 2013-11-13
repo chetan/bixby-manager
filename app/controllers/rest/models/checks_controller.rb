@@ -38,7 +38,7 @@ class Rest::Models::ChecksController < ::Rest::ApiController
   def destroy
     check = Check.find(_id)
     check.destroy
-    return check.destroyed?
+    restful check.destroyed?
   end
 
 end
