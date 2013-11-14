@@ -43,7 +43,8 @@ class Host < ActiveRecord::Base
   # @return [Hash] key/value pairs
   def info
     info = {}
-    BASIC_INFO.each{ |k| info[k] = meta[k] if meta.include?(k) }
+    lookup = meta
+    BASIC_INFO.each{ |k| info[k] = lookup[k] if lookup.include?(k) }
     return info
   end
 
@@ -51,14 +52,22 @@ class Host < ActiveRecord::Base
   #
   # @return [Hash] metadata key/value pairs
   def meta
-    return @meta if not @meta.nil?
-
-    @meta = {}
+    meta = {}
     metadata.each do |m|
-      @meta[m.key] = m.value
+      meta[m.key] = m.value
     end
+    return meta
+  end
 
-    return @meta
+  # Add new metadata to this host
+  #
+  # @param [String] key
+  # @param [String] value
+  # @param [Fixnum] source           (optional, default: FACTER)
+  def add_metadata(key, value, source=Metadata::Source::FACTER)
+    metadata << Metadata.new(:key => key, :value => value, :source => source,
+                             :object_type => Metadata::Type::HOST, :object_fk_id => id)
+    nil
   end
 
   # Find all hosts which the given user has access to
@@ -125,9 +134,10 @@ class Host < ActiveRecord::Base
     if not meta.empty? then
       found = []
       hosts.each do |host|
+        host_meta = host.meta
         all_keys_match = true
         meta.keys.each do |key|
-          if not(host.meta[key] and host.meta[key].downcase == meta[key].downcase) then
+          if not(host_meta[key] and host_meta[key].downcase == meta[key].downcase) then
             all_keys_match = false
             break
           end
