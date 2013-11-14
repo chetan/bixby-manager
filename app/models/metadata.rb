@@ -11,6 +11,12 @@
 
 class Metadata < ActiveRecord::Base
 
+  module Type
+    HOST       = 1
+    METRIC     = 2
+  end
+  Bixby::Util.create_const_map(Type)
+
   if not Metadata.const_defined? :SOURCES then
     SOURCES = {
       1 => "custom",

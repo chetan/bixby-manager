@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131112211400) do
+ActiveRecord::Schema.define(version: 20131114185325) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -122,18 +122,12 @@ ActiveRecord::Schema.define(version: 20131112211400) do
   add_index "hosts_host_groups", ["host_group_id"], name: "fk_hosts_host_groups_host_groups1", using: :btree
   add_index "hosts_host_groups", ["host_id"], name: "fk_hosts_host_groups_hosts1", using: :btree
 
-  create_table "hosts_metadata", id: false, force: true do |t|
-    t.integer "host_id",     null: false
-    t.integer "metadata_id", null: false
-  end
-
-  add_index "hosts_metadata", ["host_id"], name: "fk_hosts_metadata_hosts1", using: :btree
-  add_index "hosts_metadata", ["metadata_id"], name: "fk_hosts_metadata_metadata1", using: :btree
-
   create_table "metadata", force: true do |t|
-    t.string  "key",                          null: false
-    t.text    "value",                        null: false
-    t.integer "source", limit: 2, default: 1, null: false
+    t.integer "object_type",  limit: 2
+    t.integer "object_fk_id"
+    t.string  "key",                                null: false
+    t.text    "value",                              null: false
+    t.integer "source",       limit: 2, default: 1, null: false
   end
 
   create_table "metric_infos", force: true do |t|
@@ -161,14 +155,6 @@ ActiveRecord::Schema.define(version: 20131112211400) do
 
   add_index "metrics", ["check_id", "key", "tag_hash"], name: "index_metrics_on_check_id_and_key_and_tag_hash", unique: true, using: :btree
   add_index "metrics", ["check_id"], name: "fk_metrics_checks1", using: :btree
-
-  create_table "metrics_metadata", id: false, force: true do |t|
-    t.integer "metric_id",   null: false
-    t.integer "metadata_id", null: false
-  end
-
-  add_index "metrics_metadata", ["metadata_id"], name: "fk_metrics_metadata_metadata1", using: :btree
-  add_index "metrics_metadata", ["metric_id"], name: "fk_metrics_metadata_metrics1", using: :btree
 
   create_table "on_calls", force: true do |t|
     t.integer  "org_id",                    null: false
@@ -322,15 +308,9 @@ ActiveRecord::Schema.define(version: 20131112211400) do
   add_foreign_key "hosts_host_groups", "host_groups", :name => "fk_hosts_host_groups_host_groups1"
   add_foreign_key "hosts_host_groups", "hosts", :name => "fk_hosts_host_groups_hosts1"
 
-  add_foreign_key "hosts_metadata", "hosts", :name => "fk_hosts_metadata_hosts1"
-  add_foreign_key "hosts_metadata", "metadata", :name => "fk_hosts_metadata_metadata1", :column => "metadata_id"
-
   add_foreign_key "metric_infos", "commands", :name => "fk_command_keys_commands1"
 
   add_foreign_key "metrics", "checks", :name => "fk_metrics_checks1"
-
-  add_foreign_key "metrics_metadata", "metadata", :name => "fk_metrics_metadata_metadata1", :column => "metadata_id"
-  add_foreign_key "metrics_metadata", "metrics", :name => "fk_metrics_metadata_metrics1"
 
   add_foreign_key "on_calls", "orgs", :name => "fk_on_calls_orgs"
   add_foreign_key "on_calls", "users", :name => "fk_on_calls_users", :column => "current_user_id"

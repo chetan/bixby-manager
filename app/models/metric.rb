@@ -32,7 +32,7 @@ class Metric < ActiveRecord::Base
   end
 
   belongs_to :check
-  has_and_belongs_to_many :tags, :class_name => :Metadata, :join_table => "metrics_metadata"
+  has_many :tags, -> { where("object_type = #{Metadata::Type::METRIC}") }, :class_name => :Metadata, :foreign_key => :object_fk_id
 
   multi_tenant :via => :check
 
