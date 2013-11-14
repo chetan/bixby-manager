@@ -24,25 +24,31 @@ module Bixby
 
   # Create a map of the constants in the given Module
   #
-  # Example for Metric::Status -
+  # Adds a new constant called CONST_MAP as well as a helper method called lookup
   #
-  # {
-  #   :UNKNOWN   => 0,
-  #   "UNKNOWN"  => 0,
-  #   :OK        => 1,
-  #   "OK"       => 1,
-  #   :WARNING   => 2,
-  #   "WARNING"  => 2,
-  #   :CRITICAL  => 3,
-  #   "CRITICAL" => 3,
-  #   :TIMEOUT   => 4,
-  #   "TIMEOUT"  => 4,
-  #   0          => "UNKNOWN",
-  #   1          => "OK",
-  #   2          => "WARNING",
-  #   3          => "CRITICAL",
-  #   4          => "TIMEOUT"
-  # }
+  # @example for Metric::Status -
+  #
+  #   Metric::Status::CONST_MAP = {
+  #     :UNKNOWN   => 0,
+  #     "UNKNOWN"  => 0,
+  #     :OK        => 1,
+  #     "OK"       => 1,
+  #     :WARNING   => 2,
+  #     "WARNING"  => 2,
+  #     :CRITICAL  => 3,
+  #     "CRITICAL" => 3,
+  #     :TIMEOUT   => 4,
+  #     "TIMEOUT"  => 4,
+  #     0          => "UNKNOWN",
+  #     1          => "OK",
+  #     2          => "WARNING",
+  #     3          => "CRITICAL",
+  #     4          => "TIMEOUT"
+  #   }
+  #
+  #   Metric::Status.lookup(3)      => "CRITICAL"
+  #   Metric::Status.lookup("OK")   => 1
+  #   Metric::Status.lookup(:OK)    => 1
   #
   # @param [Module] mod
   def self.create_const_map(mod)
