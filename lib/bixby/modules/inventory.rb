@@ -110,23 +110,19 @@ class Inventory < API
 
     ActiveRecord::Base.transaction do
       facts = ret.decode
-      metadata = {}
 
-      agent.host.metadata ||= []
-      agent.host.metadata.each { |m| metadata["#{m.key}_#{m.source}"] = m }
-
+      host = agent.host
       facts.each do |k,v|
-        mk = "#{k}_#{METADATA_FACTER}"
-        if metadata.include?(mk) then
-          metadata[mk].value = v
-          metadata[mk].save!
+        if host.meta.include? k then
+          md = host.metadata.find{ |m| m.key == k }
+          md.value = v
+          md.save!
         else
-          m = Metadata.for(k, v, METADATA_FACTER)
-          agent.host.metadata << m
+          host.add_metadata(k, v)
         end
       end
 
-      agent.host.save!
+      host.save!
     end
 
     true

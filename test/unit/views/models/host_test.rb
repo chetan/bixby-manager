@@ -6,7 +6,8 @@ class Bixby::Test::Views::Models::Host < Bixby::Test::TestCase
   def test_convert
     host = FactoryGirl.create(:host)
     host.update_attributes({:tag_list => "db,prod", :alias => "testing", :desc => "blarney stone"})
-    host.metadata += FactoryGirl.create_list(:metadata, 2)
+    host.add_metadata("uptime", "34 days")
+    host.add_metadata("kernel", "darwin")
 
     json = ApiView::Engine.render(host, nil)
 

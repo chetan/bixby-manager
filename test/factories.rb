@@ -68,12 +68,6 @@ FactoryGirl.define do
     next_handoff Time.new.next_week.change(:hour => t.hour, :min => t.min)
   end
 
-  factory :metadata do
-    key "uptime"
-    value "34 days"
-    source 3
-  end
-
   factory :command do
     association :repo
     name "cat"

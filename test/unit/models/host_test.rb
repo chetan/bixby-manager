@@ -21,11 +21,17 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
   def test_info
     host = FactoryGirl.create(:host)
     host.metadata ||= []
-    host.metadata += FactoryGirl.create_list(:metadata, 2)
-    host.metadata << Metadata.for("foo", "bar")
+    host.add_metadata("uptime", "34 days")
+    host.add_metadata("frob", "nicate")
+    host.add_metadata("foo", "bar")
+    host.save
 
     assert_equal 3, host.metadata.size
     assert_equal 1, host.info.size
+
+    h = Host.find(host.id)
+    assert_equal 3, h.metadata.size
+    assert_equal 1, h.info.size
   end
 
   def test_search_by_tag_and_kw
@@ -81,8 +87,9 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
     user.save
 
     host.metadata ||= []
-    host.metadata += FactoryGirl.create_list(:metadata, 2)
-    host.metadata << Metadata.for("foo", "bar")
+    host.add_metadata("uptime", "34 days")
+    host.add_metadata("kernel", "darwin")
+    host.add_metadata("foo", "bar")
 
     h = Host.search("foo=bar", user).first
     assert h
