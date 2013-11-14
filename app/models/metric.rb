@@ -17,19 +17,14 @@
 
 class Metric < ActiveRecord::Base
 
-  if not const_defined? :METADATA_SOURCE then
-    METADATA_SOURCE = 2
-
-    module Status
-      UNKNOWN  = 0
-      OK       = 1
-      WARNING  = 2
-      CRITICAL = 3
-      TIMEOUT  = 4
-    end
-
-    Bixby::Util.create_const_map(Status)
+  module Status
+    UNKNOWN  = 0
+    OK       = 1
+    WARNING  = 2
+    CRITICAL = 3
+    TIMEOUT  = 4
   end
+  Bixby::Util.create_const_map(Status)
 
   belongs_to :check
   has_many :tags, -> { where("object_type = #{Metadata::Type::METRIC}") }, :class_name => :Metadata, :foreign_key => :object_fk_id
@@ -45,11 +40,22 @@ class Metric < ActiveRecord::Base
     self.check.org
   end
 
+  # Add new tag to this metric
+  #
+  # @param [String] key
+  # @param [String] value
+  # @param [Fixnum] source           (optional, default: METRIC)
+  def add_tag(key, value, source=Metadata::Source::METRIC)
+    tags << Metadata.new(:key => key, :value => value, :source => source,
+                             :object_type => Metadata::Type::METRIC, :object_fk_id => id)
+    nil
+  end
+
   # Find an existing Metric or return a new instance
   #
   # @param [Check] check
   # @param [String] key
-  # @param [Hash] metadata
+  # @param [Hash] metadata          key/value pairs
   # @return [Metric]
   def self.for(check, key, metadata = {})
 
@@ -64,7 +70,7 @@ class Metric < ActiveRecord::Base
     m.key = key
     m.tag_hash = hash
     m.tags = []
-    m.tags += metadata.map { |k,v| Metadata.for(k, v, METADATA_SOURCE) } if metadata
+    metadata.each{ |k,v| m.add_tag(k, v) } if metadata
 
     return m
   end
