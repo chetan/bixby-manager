@@ -25,6 +25,11 @@ class Host < ActiveRecord::Base
 
   multi_tenant :via => :org
 
+  # basic info metadata keys
+  BASIC_INFO = %w(architecture fqdn ipaddress ec2_public_ipv4 hostname kernel
+                  kernelrelease memsize timezone uptime operatingsystem
+                  lsbdistdescription)
+
   def to_s
     if not self.hostname.blank? then
       self.hostname
@@ -33,18 +38,18 @@ class Host < ActiveRecord::Base
     end
   end
 
+  # Get basic metadata for the host
+  #
+  # @return [Hash] key/value pairs
   def info
     info = {}
-    wanted = %w(architecture fqdn ipaddress ec2_public_ipv4 hostname kernel kernelrelease memsize timezone uptime operatingsystem lsbdistdescription)
-    self.metadata.each do |m|
-      if wanted.include? m.key then
-        info[m.key] = m.value
-      end
-    end
-
+    BASIC_INFO.each{ |k| info[k] = meta[k] if meta.include?(k) }
     return info
   end
 
+  # Get a lookup table of metadata key/value pairs
+  #
+  # @return [Hash] metadata key/value pairs
   def meta
     return @meta if not @meta.nil?
 
