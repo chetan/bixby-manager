@@ -17,32 +17,15 @@ class Metadata < ActiveRecord::Base
   end
   Bixby::Util.create_const_map(Type)
 
-  if not Metadata.const_defined? :SOURCES then
-    SOURCES = {
-      1 => "custom",
-      2 => "metric",
-      3 => "facter"
-    }
+  module Source
+    CUSTOM = 1
+    METRIC = 2
+    FACTER = 3
   end
-
-  def self.for(key, val, source=1)
-    val = val.nil? ? val : val.to_s
-    md = Metadata.where(:key => key, :value => val, :source => source).first
-    return md if not md.nil?
-
-    source ||= 1
-
-    md = Metadata.new
-    md.key = key
-    md.value = val
-    md.source = source
-    md.save!
-
-    return md
-  end
+  Bixby::Util.create_const_map(Source)
 
   def source_name
-    SOURCES[source]
+    Source.lookup(@source).to_s
   end
 
 end
