@@ -1,11 +1,14 @@
 
 require 'helper'
+require 'setup/sidekiq_mock_redis'
 
 module Bixby
 class Test::Modules::Monitoring < Bixby::Test::TestCase
 
   def setup
     super
+    Resque.redis = MockRedis.new
+
     ENV["BIXBY_HOME"] = File.join(Rails.root, "test", "support", "root_dir")
     Bixby.instance_eval{ @client = nil }
 
@@ -33,6 +36,24 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     ret = Bixby::Monitoring.new.add_check(agent.host.id, @check.command, nil)
     assert_kind_of Check, ret
 
+  end
+
+  def test_add_check_with_empty_args
+
+    agent = FactoryGirl.create(:agent)
+    ret = Bixby::Monitoring.new.add_check(agent.host, @check.command, {:foo => "bar", :baz => "", :test => nil})
+
+    assert ret
+    assert_kind_of Check, ret
+
+    ap ret.args
+    assert ret.args
+
+    assert_includes ret.args, "foo"
+    assert_equal "bar", ret.args["foo"]
+
+    refute_includes ret.args, "baz"
+    refute_includes ret.args, "test"
   end
 
   def test_add_check_with_diff_agent

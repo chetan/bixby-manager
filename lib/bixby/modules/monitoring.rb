@@ -124,6 +124,9 @@ class Monitoring < API
     if args then
       name += "." if not name.empty?
       name += args.values.first
+
+      # remove empty args
+      args.delete_if{ |k,v| v.nil? or v.empty? }
     end
 
     check = Check.new
