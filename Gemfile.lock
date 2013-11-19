@@ -22,6 +22,12 @@ GIT
       micron
 
 GIT
+  remote: git://github.com/michaeldv/awesome_print.git
+  revision: f36e788584801aa528a284693b54faeee4467a6d
+  specs:
+    awesome_print (1.2.0)
+
+GIT
   remote: git://github.com/mongoid/mongoid.git
   revision: 248b60ebc3174e0e031c1aa49ab7977d8e78e53a
   specs:
@@ -152,7 +158,6 @@ GEM
     authlogic (3.3.0)
       activerecord (>= 3.2)
       activesupport (>= 3.2)
-    awesome_print (1.2.0)
     bahia (0.7.2)
       open4 (~> 1.3.0)
     better_errors (1.0.1)
@@ -504,7 +509,7 @@ DEPENDENCIES
   annotate (>= 2.5.0)
   api-auth!
   authlogic
-  awesome_print
+  awesome_print!
   bahia
   better_errors
   binding_of_caller

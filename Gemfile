@@ -126,7 +126,7 @@ group :development do
     # debugging
     gem "debugger",     :platforms => [:mri_19, :mri_20]
     gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20]
-    gem "awesome_print"
+    gem "awesome_print", :github => "michaeldv/awesome_print" # to fix error with mongoid/bson
     gem "coffee-rails-source-maps"
 
     # rails debugging helpers
