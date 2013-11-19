@@ -52,7 +52,7 @@ EOF
 
     tags = Metadata.find(:all)
     assert tags
-    assert_equal 7, tags.size
+    assert_equal 28, tags.size # 7 tags for each metric = 28
 
     assert tags.find{ |t| t.key == "mount" && t.value == "/" }
     assert tags.find{ |t| t.key == "type" && t.value == "hfs" }
@@ -115,11 +115,8 @@ EOF
 
   def test_get_for_host_includes_tags
     m = FactoryGirl.create(:metric)
-    t = Metadata.new
-    t.key = "cow"
-    t.value = "says moooo"
-    t.save!
-    m.tags = [] << t
+    m.add_tag("cow", "says moooo")
+    m.save!
     host = m.check.host
     stub = stub_request(:get, /:4242/).with { |req|
       uri = req.uri.to_s
