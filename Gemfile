@@ -7,7 +7,6 @@ gem 'rails', '4.0.1'
 gem 'activerecord-session_store'
 
 # webserver
-gem "unicorn",  :platforms => [:mri, :rbx], :require => false
 gem "puma",     :platforms => [:mri, :rbx, :jruby], :require => false
 
 # adds foreign key support to activerecord
