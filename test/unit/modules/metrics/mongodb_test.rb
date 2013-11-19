@@ -3,7 +3,7 @@ require 'helper'
 
 require 'bixby/modules/metrics/mongodb'
 
-class Bixby::Test::Modules::Metrics < Bixby::Test::TestCase
+module Bixby::Test::Modules::MetricDrivers
   class MongoDriver < Bixby::Test::TestCase
 
     def setup

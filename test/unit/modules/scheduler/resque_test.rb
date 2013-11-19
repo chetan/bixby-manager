@@ -1,7 +1,7 @@
 
 require 'helper'
 
-class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
+module Bixby::Test::Modules::SchedulerDrivers
   class ResqueDriver < Bixby::Test::TestCase
 
     def setup

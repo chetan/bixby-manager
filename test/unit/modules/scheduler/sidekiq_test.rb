@@ -7,7 +7,7 @@ require 'setup/sidekiq_mock_redis'
 # helper for testing actual perform() method
 require "sidekiq/testing/inline"
 
-class Bixby::Test::Modules::Scheduler < Bixby::Test::TestCase
+module Bixby::Test::Modules::SchedulerDrivers
   class SidekiqDriver < Bixby::Test::TestCase
 
     class Foobar
