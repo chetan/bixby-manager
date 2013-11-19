@@ -41,11 +41,10 @@ def prefork
 end
 
 def load_simplecov
-
+  require "easycov"
   EasyCov.path = "coverage"
   EasyCov.filters << EasyCov::IGNORE_GEMS << EasyCov::IGNORE_STDLIB
   EasyCov.start
-
 end
 
 def bootstrap_tests
