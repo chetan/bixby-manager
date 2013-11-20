@@ -7,7 +7,7 @@
       <form class="form-vertical">
         <div class="control-group">
 
-          <label class="control-label"><small><strong>USERNAME</strong></small>
+          <label class="control-label"><small><strong>USERNAME OR EMAIL</strong></small>
             <div class="controls">
               <input type="text" name="username" class="username" value="">
             </div>
