@@ -29,3 +29,11 @@ u = User.create(
 u.password              = config["default_tenant_pw"]
 u.password_confirmation = config["default_tenant_pw"]
 u.save!
+
+# Create a job to update repos every hour
+job = Bixby::Scheduler::RecurringJob.create(1.hour, Bixby::Repository, :update)
+Bixby::Scheduler.new.schedule_in(1.hour, job)
+
+# and run it immediately too
+job = Bixby::Scheduler::Job.create(Bixby::Repository, :update)
+Bixby::Scheduler.new.schedule_in(0, job)

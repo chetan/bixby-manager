@@ -23,6 +23,10 @@ namespace :bixby do
     puts
     Rake::Task["bixby:create_user"].invoke
 
+    # insert repo update job
+    job = Bixby::Scheduler::RecurringJob.create(1.hour, Bixby::Repository, :update)
+    Bixby::Scheduler.new.schedule_in(1.hour, job)
+
     puts "Done! You can now start the server and login"
   end
 end
