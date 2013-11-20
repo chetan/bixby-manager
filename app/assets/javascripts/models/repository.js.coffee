@@ -7,6 +7,8 @@ namespace 'Bixby.model', (exports, top) ->
 
     Backprop.create_strings @, "name", "uri", "branch", "public_key"
     Backprop.create @, "requires_key", Boolean
+    Backprop.create @, "created_at", Backprop.Date
+    Backprop.create @, "updated_at", Backprop.Date
 
     validation:
       name:

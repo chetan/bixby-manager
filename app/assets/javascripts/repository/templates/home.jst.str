@@ -11,6 +11,7 @@
       <th>Name</th>
       <th>URI</th>
       <th>Branch</th>
+      <th>Last Updated</th>
     </tr>
   </thead>
   <tbody>

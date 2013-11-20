@@ -17,4 +17,5 @@
     <%/%>
   </td>
   <td id="branch"></td>
+  <td id="updated_at"></td>
 </tr>

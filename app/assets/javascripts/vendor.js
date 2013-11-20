@@ -18,6 +18,7 @@
 //= require "async"
 //= require "spin.min"
 //= require "sprintf"
+//= require "strftime"
 //= require "Markdown.Converter"
 //= require "jquery.putcursoratend"
 //= require "mailcheck.min"

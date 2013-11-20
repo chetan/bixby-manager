@@ -9,7 +9,33 @@
 
     var Backprop = {};
 
-    // Small class whose instances are used placeholders for the ES5 properties
+    // Transform a given input value, using a property spec object.
+    // propSpec: an object that defines a Backprop property. Supported keys
+    //           (see the README for explanations) include:
+    //           'coerce', 'choices', 'trim', 'max', 'min'
+    // inputVal: the value that the caller has assigned to the property
+    // fallbackValue (optional): a default value to use if the input is invalid
+    function transformValue(propSpec, inputVal, fallbackValue) {
+        var value = inputVal;
+        if (typeof propSpec.coerce === 'function') value = propSpec.coerce(value);
+
+        // If an array of choices was passed in, validate that the input is one of
+        // the valid choices:
+        var choices = propSpec.choices;
+        if (choices && choices.constructor && choices.constructor.name === 'Array') {
+            if (choices.indexOf(value) === -1) {
+                if (fallbackValue !== undefined) value = fallbackValue;
+                else return undefined;
+            }
+        }
+
+        if (propSpec.trim && (typeof value.trim === 'function')) value = value.trim();
+        if (propSpec.max && (value > propSpec.max)) value = propSpec.max;
+        if (propSpec.min && (value < propSpec.min)) value = propSpec.min;
+        return value;
+    }
+
+    // Small class whose instances are used as placeholders for the ES5 properties
     // that appear on models.
     function PropPlaceholder(spec) {
         this.spec = spec;
@@ -28,33 +54,77 @@
             throw new Error('The name ' + name + ' is already used by this model');
         }
 
-        if (propSpec.default) {
+        if (typeof propSpec.default !== 'undefined') {
             objProto.defaults = objProto.defaults || {};
             objProto.defaults[name] = propSpec.default;
         }
         Object.defineProperty(objProto, name, {
             get: function() { return this.get(name); },
             set: function(value) {
-                if (typeof propSpec.coerce === 'function') value = propSpec.coerce(value);
-
-                var choices = propSpec.choices;
-                if (choices && choices.constructor && choices.constructor.name === 'Array') {
-                    if (choices.indexOf(value) === -1) {
-                        var currentVal = this.get(name);
-                        value = currentVal || objProto.defaults[name] || undefined;
-                    }
-                }
-
-                if (propSpec.trim && (typeof value.trim === 'function')) value = value.trim();
-                if (propSpec.max && (value > propSpec.max)) value = propSpec.max;
-                if (propSpec.min && (value < propSpec.min)) value = propSpec.min;
-
+                //propSpec.default = objProto.defaults[name];   // breaks things ...?
+                var fallbackValue = this.get(name); // || objProto.defaults[name];
+                value = transformValue(propSpec, value, fallbackValue);
                 this.set(name, value);
             },
             configurable: true,
             enumerable: true
         });
     };
+
+
+    // Backprop configuration method. Pass in the base model class that you want
+    // to extend. Before your model definitions, you will want to invoke it as
+    // follows:
+    //
+    // Backprop.extendModel(Backbone.Model);
+    Backprop.extendModel = function(BaseModel) {
+
+        // Add a setProperties() method on Backprop.Model's prototype.
+        // This sets a hash of values to the model, just like Backbone.Model.set().
+        // The difference is that this will apply transforms for all of the
+        // properties before setting.
+        Backprop.Model = BaseModel.extend({
+            setProperties: function(attrs, options) {
+                var schema = this.constructor._schema || {};
+                for (var name in attrs) {
+                    var propSpec = schema[name] || {};
+                    attrs[name] = transformValue(propSpec, attrs[name], this.get(name));
+                }
+                this.set(attrs, options);
+            }
+        });
+
+        // Use a modified version of Backbone.Model's extend(), so
+        // it can parse Backprop properties in model definitions
+        Backprop.Model.extend = function(protoAttrs, staticAttrs) {
+            protoAttrs = protoAttrs || {};
+
+            // Apply Backbone.Model's original extend() function:
+            var objConstructor = BaseModel.extend.apply(this, [].slice.call(arguments));
+
+            // Go through the prototype attributes and create ES5 properties for every
+            // attribute that used Backbone.property():
+            objConstructor._schema = {};
+            for (var name in protoAttrs) {
+                var val = protoAttrs[name];
+                if (val instanceof PropPlaceholder) {
+                    val.createProperty(objConstructor.prototype, name);
+                    objConstructor._schema[name] = val.spec;
+                }
+            }
+            return objConstructor;
+        };
+
+        return Backprop.Model;
+    };
+
+
+
+
+
+    /***********************************************************************************************
+     * Backprop extensions by chetan
+     */
 
     /**
      * Attach properties to the given Object prototype
@@ -93,39 +163,53 @@
     Backprop.create_strings = function(proto, names) {
         if (arguments.length === 2) {
             // support for array form
+            // Backprop.create_strings @, ["attr1", "attr2"]
             for (var n in names) {
                 Backprop.create(proto, n, {coerce: String});
             }
         } else if (arguments.length > 2) {
             // support for varargs form
+            // Backprop.create_strings @, "attr1", "attr2"
             for (var i = 1; i < arguments.length; i++) {
                 Backprop.create(proto, arguments[i], {coerce: String});
             }
         }
     };
 
-    // Monkeypatch Backbone to do two things:
-    //  * Add a new Backbone.property function, used to set up properties on models
-    //  * Replace Backbone.Model.extend with a version that parses property definitions
-    Backprop.monkeypatch = function(Backbone) {
-        Backbone.property = function(specObj) {
+    /**********************************************************************************************/
+
+
+
+    // Allow use of shorthand properties like "myprop: Backprop.Boolean()". This avoids
+    // having to pass in an explicit coerce function when you are just casting to a JS type.
+    // If you do pass in a coerce function, it will still work, but the type cast will
+    // be applied first.
+    var makeShorthandProp = function(typeCoerce) {
+        return function(specObj) {
+            specObj = specObj || {};
+            var innerCoerce = specObj.coerce;
+
+            if (typeof innerCoerce === 'function') {
+                specObj.coerce = function(x) { return innerCoerce(typeCoerce(x)); };
+            } else {
+                specObj.coerce = typeCoerce;
+            }
             return new PropPlaceholder(specObj);
         };
-
-        // Override Backbone.Model.extend with our custom version:
-        var originalExtend = Backbone.Model.extend;
-        Backbone.Model.extend = function(protoAttrs, classAttrs) {
-            var objConstructor = originalExtend.apply(this, [].slice.call(arguments));
-
-            // Go through the prototype attributes and create ES5 properties for every
-            // attribute that used Backbone.property():
-            for (var name in protoAttrs) {
-                var val = protoAttrs[name];
-                if (val instanceof PropPlaceholder) val.createProperty(objConstructor.prototype, name);
-            }
-            return objConstructor;
-        };
     };
+
+    // The built-in shorthand properties (aka fields) follow:
+    Backprop.fields = {
+        Generic: makeShorthandProp(function(x) { return x; }),
+        Boolean: makeShorthandProp(Boolean),
+        String: makeShorthandProp(String),
+        Number: makeShorthandProp(Number),
+        Integer: makeShorthandProp(function(x) { return parseInt(x, 10); }),
+        Date: makeShorthandProp(function(x) { return new Date(x); }),
+    };
+
+    // Alias all fields directly on Backprop's top level object for convenience:
+    for (var k in Backprop.fields) Backprop[k] = Backprop.fields[k];
 
     // Export for Node/Browserify, or fallback to a window assignment:
     if (typeof module !== 'undefined' && module.exports) module.exports = Backprop;

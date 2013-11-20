@@ -8,7 +8,7 @@ module Bixby
 
       def self.convert(obj)
 
-        hash = attrs(obj, :id, :name, :uri, :branch)
+        hash = attrs(obj, :id, :name, :uri, :branch, :created_at, :updated_at)
         hash[:org] = obj.org.blank? ? nil : obj.org.name
         hash[:tenant] = obj.org.blank? ? nil : obj.org.tenant.name
 
