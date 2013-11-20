@@ -6,7 +6,7 @@
 </h2>
 
 <div class="row-fluid">
-  <span><i class="icon-group"></i> <%= current_user.tenant %></span><br>
+  <span><%= _.icon("group") %> <%= current_user.tenant %></span><br>
 </div>
 
 

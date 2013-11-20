@@ -9,12 +9,12 @@
 </h2>
 
 <div class="row-fluid">
-  <span><i class="icon-group"></i> <%= current_user.tenant %></span><br>
+  <span><%= _.icon("group") %> <%= current_user.tenant %></span><br>
   <%? current_user.email %>
-    <span><i class="icon-envelope"></i> <%= current_user.email %></span><br>
+    <span><%= _.icon("envelope") %> <%= current_user.email %></span><br>
   <%/%>
   <%? current_user.phone %>
-    <span><i class="icon-phone"></i> <%= current_user.phone %></span><br>
+    <span><%= _.icon("phone") %> <%= current_user.phone %></span><br>
   <%/%>
 </div>
 
