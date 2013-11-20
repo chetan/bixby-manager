@@ -75,6 +75,17 @@ class Metric < ActiveRecord::Base
     return m
   end
 
+  # Retrieve metrics for the given check
+  def self.metrics_for_check(check_id, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
+    time_start = Time.new - 86400 if time_start.nil?
+    time_end = Time.new if time_end.nil?
+    tags ||= {}
+    agg ||= "sum"
+
+    Bixby::Metrics.new.get_for_check(check_id, time_start, time_end, tags, agg, downsample)
+  end
+
+  # Retrieve metrics for the given host
   def self.metrics_for_host(host, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
 
     # set defaults
@@ -93,7 +104,7 @@ class Metric < ActiveRecord::Base
         # run metrics query again w/o downsampling values this time
         check_id = res["check_id"]
         check = Check.find(check_id.to_i)
-        res.data = metrics(check, time_start, time_end, tags, agg).data
+        res.data = metrics_for_check(check, time_start, time_end, tags, agg).data
         res.query[:downsample] = nil
       end
     end
@@ -101,6 +112,7 @@ class Metric < ActiveRecord::Base
     return metrics
   end
 
+  # Load the metric data associated with this Metric instance (using @key)
   def metrics(time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
 
     time_start = Time.new - 86400 if time_start.nil?
@@ -114,20 +126,14 @@ class Metric < ActiveRecord::Base
     Bixby::Metrics.new.get_for_keys(self.key, time_start, time_end, tags, agg, downsample)
   end
 
+  # Load data for this metric
   def load_data!(time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
     metrics = self.metrics(time_start, time_end, tags, agg, downsample).first
-    self.data = metrics[:vals]
-    self.metadata = metrics[:tags]
+    if metrics then
+      self.data     = metrics[:vals]
+      self.metadata = metrics[:tags]
+    end
     self.query = { :start => time_start, :end => time_end, :tags => tags, :downsample => downsample }
-  end
-
-  def self.metrics(check_id, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
-    time_start = Time.new - 86400 if time_start.nil?
-    time_end = Time.new if time_end.nil?
-    tags ||= {}
-    agg ||= "sum"
-
-    Bixby::Metrics.new.get_for_check(check_id, time_start, time_end, tags, agg, downsample)
   end
 
   def ok?
