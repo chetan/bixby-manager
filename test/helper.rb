@@ -65,6 +65,10 @@ def bootstrap_tests
   require "setup/base_controller"
   require "setup/stub_api"
 
+  # Configure celluloid logger for tests
+  require "celluloid"
+  ::Celluloid.logger = ::Logging.logger["Celluloid"]
+
   # require files in order to force coverage reports
   # [ "lib", "app" ].each do |d|
   #   Dir.glob(File.join(Rails.root, d, "**/*.rb")).each{ |f| next if f =~ %r{lib/capistrano}; require f }
