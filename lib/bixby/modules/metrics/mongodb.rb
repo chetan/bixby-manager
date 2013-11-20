@@ -79,7 +79,6 @@ class Metrics
         pool = MetricFetcher.pool
         futures = opts.map{ |opt| pool.future.get(opt) }
         ret = futures.map{ |future| future.value }
-        pool.terminate
         return ret
       end
 
