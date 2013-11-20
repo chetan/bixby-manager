@@ -7,6 +7,7 @@ _.mailcheck = (target) ->
     email: $(target).val()
     suggested: (suggestion) ->
       $(target).popover({
+        trigger: "manual"
         content: "Did you mean " + suggestion.full + "?"
       }).popover("show")
 
