@@ -11,9 +11,15 @@ class CustomPlan < Zeus::Rails
   def after_fork
   end
 
+  def test_helper
+    require "helper"
+  end
+
   def test
     bootstrap_tests()
-    super # runs the tests
+    require "micron"
+    require "micron/app"
+    ::Micron::App.new.run()
   end
 
   def server
