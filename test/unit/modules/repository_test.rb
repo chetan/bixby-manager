@@ -31,6 +31,15 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     g.add("readme")
     g.commit("import")
 
+    # add a bin script
+    binpath = File.join(path, "foo/bar/bin")
+    FileUtils.mkdir_p(binpath)
+    Dir.chdir(binpath)
+    system("echo echo hi > echo.sh")
+    system("chmod 755 echo.sh")
+    g.add("foo/bar/bin/echo.sh")
+    g.commit("added echo.sh")
+
     org = FactoryGirl.create(:org)
     repo = Repo.new
     repo.org = org
@@ -43,14 +52,19 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
 
     assert File.directory? repo.path
     assert File.exists? File.join(repo.path, "readme")
+    c = Command.first
+    assert c
+    assert_equal "echo.sh", c.command
+    assert_equal "foo/bar", c.bundle
 
-    # try updating the repo now
+    # add a new file
+    Dir.chdir(path)
     system("echo yo > readme2")
     g.add("readme2")
     g.commit("test2")
-
     refute File.exists? File.join(repo.path, "readme2")
 
+    # try updating the repo now, file should exist
     Bixby::Repository.new.update
     assert File.exists? File.join(repo.path, "readme2")
     assert_equal "yo\n", File.read(File.join(repo.path, "readme2"))

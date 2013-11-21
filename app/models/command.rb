@@ -41,7 +41,7 @@ class Command < ActiveRecord::Base
   # @return [CommandSpec]
   def to_command_spec
     attrs = self.attributes
-    attrs["repo"] = repo.name
+    attrs["repo"] = File.basename(repo.path) # 'vendor' or '0001_test' etc
     return Bixby::CommandSpec.new(attrs)
   end
 
