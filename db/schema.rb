@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131114185325) do
+ActiveRecord::Schema.define(version: 20131121181035) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20131114185325) do
     t.string   "command"
     t.text     "options"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
   add_index "commands", ["repo_id"], name: "fk_commands_repos1", using: :btree
@@ -285,51 +286,51 @@ ActiveRecord::Schema.define(version: 20131114185325) do
   add_index "users", ["org_id"], name: "fk_users_orgs1", using: :btree
   add_index "users", ["persistence_token"], name: "index_users_on_persistence_token", using: :btree
 
-  add_foreign_key "actions", "triggers", :name => "actions_trigger_id_fk"
+  add_foreign_key "actions", "triggers", name: "actions_trigger_id_fk"
 
-  add_foreign_key "agents", "hosts", :name => "fk_agents_hosts1"
+  add_foreign_key "agents", "hosts", name: "fk_agents_hosts1"
 
-  add_foreign_key "annotations", "hosts", :name => "fk_annotations_hosts1"
+  add_foreign_key "annotations", "hosts", name: "fk_annotations_hosts1"
 
-  add_foreign_key "checks", "agents", :name => "fk_checks_agents1"
-  add_foreign_key "checks", "commands", :name => "fk_checks_commands1"
-  add_foreign_key "checks", "hosts", :name => "checks_host_id_fk"
+  add_foreign_key "checks", "agents", name: "fk_checks_agents1"
+  add_foreign_key "checks", "commands", name: "fk_checks_commands1"
+  add_foreign_key "checks", "hosts", name: "checks_host_id_fk"
 
-  add_foreign_key "commands", "repos", :name => "fk_commands_repos1"
+  add_foreign_key "commands", "repos", name: "fk_commands_repos1"
 
-  add_foreign_key "escalation_policies", "on_calls", :name => "fk_escalation_policies_on_calls"
-  add_foreign_key "escalation_policies", "orgs", :name => "fk_escalation_policies_orgs"
+  add_foreign_key "escalation_policies", "on_calls", name: "fk_escalation_policies_on_calls"
+  add_foreign_key "escalation_policies", "orgs", name: "fk_escalation_policies_orgs"
 
-  add_foreign_key "host_groups", "host_groups", :name => "fk_host_groups_host_groups1", :column => "parent_id"
-  add_foreign_key "host_groups", "orgs", :name => "fk_host_groups_orgs1"
+  add_foreign_key "host_groups", "host_groups", name: "fk_host_groups_host_groups1", column: "parent_id"
+  add_foreign_key "host_groups", "orgs", name: "fk_host_groups_orgs1"
 
-  add_foreign_key "hosts", "orgs", :name => "fk_hosts_orgs1"
+  add_foreign_key "hosts", "orgs", name: "fk_hosts_orgs1"
 
-  add_foreign_key "hosts_host_groups", "host_groups", :name => "fk_hosts_host_groups_host_groups1"
-  add_foreign_key "hosts_host_groups", "hosts", :name => "fk_hosts_host_groups_hosts1"
+  add_foreign_key "hosts_host_groups", "host_groups", name: "fk_hosts_host_groups_host_groups1"
+  add_foreign_key "hosts_host_groups", "hosts", name: "fk_hosts_host_groups_hosts1"
 
-  add_foreign_key "metric_infos", "commands", :name => "fk_command_keys_commands1"
+  add_foreign_key "metric_infos", "commands", name: "fk_command_keys_commands1"
 
-  add_foreign_key "metrics", "checks", :name => "fk_metrics_checks1"
+  add_foreign_key "metrics", "checks", name: "fk_metrics_checks1"
 
-  add_foreign_key "on_calls", "orgs", :name => "fk_on_calls_orgs"
-  add_foreign_key "on_calls", "users", :name => "fk_on_calls_users", :column => "current_user_id"
+  add_foreign_key "on_calls", "orgs", name: "fk_on_calls_orgs"
+  add_foreign_key "on_calls", "users", name: "fk_on_calls_users", column: "current_user_id"
 
-  add_foreign_key "orgs", "tenants", :name => "fk_orgs_tenants1"
+  add_foreign_key "orgs", "tenants", name: "fk_orgs_tenants1"
 
-  add_foreign_key "repos", "orgs", :name => "fk_repos_orgs1"
+  add_foreign_key "repos", "orgs", name: "fk_repos_orgs1"
 
-  add_foreign_key "resources", "hosts", :name => "fk_resources_hosts1"
+  add_foreign_key "resources", "hosts", name: "fk_resources_hosts1"
 
-  add_foreign_key "taggings", "tags", :name => "fk_taggings_tags1"
+  add_foreign_key "taggings", "tags", name: "fk_taggings_tags1"
 
-  add_foreign_key "trigger_histories", "checks", :name => "trigger_histories_check_id_fk"
-  add_foreign_key "trigger_histories", "metrics", :name => "trigger_histories_metric_id_fk"
-  add_foreign_key "trigger_histories", "triggers", :name => "trigger_histories_trigger_id_fk"
+  add_foreign_key "trigger_histories", "checks", name: "trigger_histories_check_id_fk"
+  add_foreign_key "trigger_histories", "metrics", name: "trigger_histories_metric_id_fk"
+  add_foreign_key "trigger_histories", "triggers", name: "trigger_histories_trigger_id_fk"
 
-  add_foreign_key "triggers", "checks", :name => "triggers_check_id_fk"
-  add_foreign_key "triggers", "metrics", :name => "triggers_metric_id_fk"
+  add_foreign_key "triggers", "checks", name: "triggers_check_id_fk"
+  add_foreign_key "triggers", "metrics", name: "triggers_metric_id_fk"
 
-  add_foreign_key "users", "orgs", :name => "fk_users_orgs1"
+  add_foreign_key "users", "orgs", name: "fk_users_orgs1"
 
 end
