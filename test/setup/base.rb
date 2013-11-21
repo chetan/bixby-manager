@@ -20,7 +20,7 @@ module Bixby
     class TestCase < ActiveSupport::TestCase
 
       include Micron::TestCase::RedirLogging
-      @@redir_logger = Logging.logger[Bixby]
+      self.redir_logger = Logging.logger[Bixby]
 
       def setup
         DatabaseCleaner.start

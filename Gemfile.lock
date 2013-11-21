@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/micron.git
-  revision: 9bc1ad8ff5eed579c8f13a7615e8fbc78dbfebd4
+  revision: 9290253b06d11b1b8d92c3f5152533809ae3a58f
   specs:
     micron (0.5.0)
       ansi
