@@ -87,7 +87,6 @@ FactoryGirl.define do
   end
 
   factory :repo do
-    association :org
     name "vendor"
   end
 
