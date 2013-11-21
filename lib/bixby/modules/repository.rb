@@ -98,27 +98,25 @@ class Repository < API
   # @param [Repo] repo
   def rescan_repo(repo)
     log.info("* rescanning commands in #{repo.name} repository (#{repo.path})")
-    Find.find(repo.path+"/") do |path|
+    Find.find(repo.path) do |path|
 
       # skip everything except for /bin/ scripts in bundle dirs
       if File.basename(path) == ".git" then
         Find.prune
         next
-      end
-      if File.directory? path or path !~ /bin/ then
+
+      elsif File.directory? path or path !~ %r{/bin/} or path =~ /\.(json|test.*)$/ then
         next
       end
 
       # bin check
-      rel_path = extract_rel_path(repo, path)
-      paths = rel_path.split(%r{/})
-      bundle = paths[0..1].join("/")
-      paths = paths[2..paths.length]
-      next if paths.shift != "bin"
-      next if paths.last =~ /\.(json|test.*)$/
+      rel_path = path.gsub(/^#{repo.path}/, '').gsub(/^\/?/, '')
+      rel_path =~ %r{^(.*?)/bin/(.*)$}
+      bundle = $1
+      script = $2
 
       # add it
-      add_command(repo, bundle, paths.join("/"))
+      add_command(repo, bundle, script)
     end
   end
 
@@ -126,9 +124,8 @@ class Repository < API
   def add_command(repo, bundle, script)
     log.info("* found #{bundle} :: #{script}")
 
-    cmds = Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script)
-    if not cmds.blank? then
-      cmd = cmds.first
+    cmd = Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script).first
+    if not cmd.blank? then
       spec = cmd.to_command_spec
       if cmd.updated_at >= File.mtime(spec.command_file) and (!File.exists?(spec.config_file) or cmd.updated_at >= File.mtime(spec.config_file)) then
         log.info "* skipping (not updated)"
@@ -159,10 +156,6 @@ class Repository < API
     Repository.rescan_plugins.each do |plugin|
       plugin.update_command(cmd)
     end
-  end
-
-  def extract_rel_path(repo, str)
-    str.gsub(/#{repo.path}/, '').gsub(/^\/?/, '')
   end
 
 end # class Repository
