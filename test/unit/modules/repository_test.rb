@@ -48,8 +48,14 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     repo.uri = path
     repo.save!
 
+    t = Repo.first.updated_at
+
     # this should clone the repo
     Bixby::Repository.new.update
+
+    # make sure ts changed
+    refute_equal t, Repo.first.updated_at
+    t = Repo.first.updated_at
 
     assert_equal "0001_test", File.basename(repo.path)
     assert File.directory? repo.path
@@ -74,6 +80,10 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     Bixby::Repository.new.update
     assert File.exists? File.join(repo.path, "readme2")
     assert_equal "yo\n", File.read(File.join(repo.path, "readme2"))
+
+    # make sure ts changed
+    refute_equal t, Repo.first.updated_at
+    t = Repo.first.updated_at
 
     # remove our command, it should get deleted
     g.remove(script)

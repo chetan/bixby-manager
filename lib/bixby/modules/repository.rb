@@ -29,6 +29,7 @@ class Repository < API
       update_repo(repo)
       verify_commands(repo)
       rescan_repo(repo)
+      repo.touch # update timestamp
     end
 
   end
