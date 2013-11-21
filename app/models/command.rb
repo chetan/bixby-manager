@@ -17,8 +17,9 @@
 class Command < ActiveRecord::Base
 
   belongs_to :repo
-
   multi_tenant :via => :repo
+
+  acts_as_paranoid
 
   serialize :options, JSONColumn.new
 

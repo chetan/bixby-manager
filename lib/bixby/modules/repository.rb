@@ -15,7 +15,8 @@ class Repository < API
 
   end # self
 
-  # Update all configured repos (svn up or git pull) and rescan commands
+  # Update all known repos (svn up or git pull), remove deleted commands and scan for new or
+  # updated commands
   def update
     repos = Repo.all
     if repos.empty? then
@@ -26,6 +27,7 @@ class Repository < API
     repos.each do |repo|
       clone_repo(repo)
       update_repo(repo)
+      verify_commands(repo)
       rescan_repo(repo)
     end
 
@@ -155,6 +157,17 @@ class Repository < API
 
     Repository.rescan_plugins.each do |plugin|
       plugin.update_command(cmd)
+    end
+  end
+
+  # Verify that all known commands still exist. If not, soft-delete.
+  #
+  # @param [Repo] repo
+  def verify_commands(repo)
+    repo.commands.each do |cmd|
+      if not File.exist? cmd.path then
+        cmd.destroy!
+      end
     end
   end
 

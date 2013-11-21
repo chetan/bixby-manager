@@ -40,6 +40,7 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     g.add("foo/bar/bin/echo.sh")
     g.commit("added echo.sh")
 
+    # create repo
     org = FactoryGirl.create(:org)
     repo = Repo.new
     repo.org = org
@@ -50,8 +51,13 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     # this should clone the repo
     Bixby::Repository.new.update
 
+    assert_equal "0001_test", File.basename(repo.path)
     assert File.directory? repo.path
     assert File.exists? File.join(repo.path, "readme")
+
+    # check our new command
+    script = File.join(binpath, "echo.sh")
+    assert File.exists? script
     c = Command.first
     assert c
     assert_equal "echo.sh", c.command
@@ -68,6 +74,14 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     Bixby::Repository.new.update
     assert File.exists? File.join(repo.path, "readme2")
     assert_equal "yo\n", File.read(File.join(repo.path, "readme2"))
+
+    # remove our command, it should get deleted
+    g.remove(script)
+    g.commit("removed script")
+
+    Bixby::Repository.new.update
+    refute File.exists? script
+    refute Command.first
   end
 
   def test_git_clone_private
