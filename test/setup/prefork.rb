@@ -1,4 +1,9 @@
 
+require "mongoid"
+require "test_guard"
+require "minitest/unit" # require this first so we can stub properly
+require "micron/minitest"
+
 ENV["RAILS_ENV"] = "test"
 
 require File.expand_path('../../../config/environment', __FILE__)

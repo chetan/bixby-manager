@@ -15,13 +15,6 @@ GIT
       hitimes
 
 GIT
-  remote: git://github.com/chetan/spork-micron.git
-  revision: 07860874a05c2b30a1482a523e3397ced574a790
-  specs:
-    spork-micron (0.1.0)
-      micron
-
-GIT
   remote: git://github.com/michaeldv/awesome_print.git
   revision: f36e788584801aa528a284693b54faeee4467a6d
   specs:
@@ -87,20 +80,6 @@ GIT
       listen
       simplecov
       simplecov-console
-
-GIT
-  remote: https://github.com/sporkrb/spork-rails.git
-  revision: 0dd45e59d3237b4c8f9efc215b46d9c07072a95e
-  specs:
-    spork-rails (4.0.0)
-      rails (>= 3.0.0, < 5)
-      spork (>= 1.0rc0)
-
-GIT
-  remote: https://github.com/sporkrb/spork.git
-  revision: a94412c9493a07b7a000e35777b0f76b94de9061
-  specs:
-    spork (1.0.0rc4)
 
 GEM
   remote: https://rubygems.org/
@@ -590,9 +569,6 @@ DEPENDENCIES
   simplecov-html!
   sinatra
   slim (~> 1.3.0)
-  spork!
-  spork-micron!
-  spork-rails!
   sprockets-font_compressor
   sprockets-jst-str
   sprockets-rails

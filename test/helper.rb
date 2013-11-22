@@ -1,8 +1,4 @@
 
-def spork_running?
-  ENV.include? "DRB"
-end
-
 def zeus_running?
   File.exists? '.zeus.sock' and Module.const_defined?(:Zeus)
 end
@@ -25,17 +21,11 @@ def prefork
     require "bundler/setup"
   end
 
-  require "mongoid"
-
-  if not(spork_running? or zeus_running?) then
-    # load now if neither spork (DRB) or zeus are running
+  if not(zeus_running?) then
+    # load now if zeus is not running
     # (usually during manual rake test run)
     load_simplecov()
   end
-
-  require "test_guard"
-  require "minitest/unit" # require this first so we can stub properly
-  require "micron/minitest"
 
   require "setup/prefork"
 end
@@ -49,7 +39,7 @@ end
 
 def bootstrap_tests
 
-  if spork_running? or zeus_running? then
+  if zeus_running? then
     load_simplecov()
   end
 
@@ -68,30 +58,9 @@ def bootstrap_tests
   # Configure celluloid logger for tests
   require "celluloid"
   ::Celluloid.logger = ::Logging.logger["Celluloid"]
-
-  # require files in order to force coverage reports
-  # [ "lib", "app" ].each do |d|
-  #   Dir.glob(File.join(Rails.root, d, "**/*.rb")).each{ |f| next if f =~ %r{lib/capistrano}; require f }
-  # end
 end
 
-if Object.const_defined? :Spork then
-
-  #uncomment the following line to use spork with the debugger
-  #require 'spork/ext/ruby-debug'
-
-  Spork.prefork do
-    prefork()
-  end
-
-  Spork.each_run do
-    bootstrap_tests()
-  end
-
-  # Spork.after_each_run do
-  # end
-
-elsif zeus_running? then
+if zeus_running? then
   prefork()
 
 else
