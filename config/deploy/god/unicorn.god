@@ -4,7 +4,7 @@
 
 God.watch do |w|
   w.dir      = RAILS_ROOT
-  w.name     = "unicorn-bixby"
+  w.name     = "unicorn"
   w.group    = "bixby"
   w.log      = "#{RAILS_ROOT}/log/god.#{w.name}.log"
   w.pid_file = "#{RAILS_ROOT}/tmp/pids/unicorn.pid"
