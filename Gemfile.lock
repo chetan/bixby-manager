@@ -195,7 +195,7 @@ GEM
     debugger-pry (0.1.1)
       debugger (~> 1)
       pry (>= 0.9.9)
-    debugger-ruby_core_source (1.2.3)
+    debugger-ruby_core_source (1.2.4)
     delete_paranoid (1.0.5)
       activerecord
     easycov (0.4.0)
