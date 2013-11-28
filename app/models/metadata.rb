@@ -2,10 +2,12 @@
 #
 # Table name: metadata
 #
-#  id     :integer          not null, primary key
-#  key    :string(255)      not null
-#  value  :text             not null
-#  source :integer          default(1), not null
+#  id           :integer          not null, primary key
+#  object_type  :integer
+#  object_fk_id :integer
+#  key          :string(255)      not null
+#  value        :text             not null
+#  source       :integer          default(1), not null
 #
 
 

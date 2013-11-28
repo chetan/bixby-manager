@@ -11,6 +11,7 @@
 #  command    :string(255)
 #  options    :text
 #  updated_at :datetime
+#  deleted_at :datetime
 #
 
 
