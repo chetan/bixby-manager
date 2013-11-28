@@ -115,6 +115,13 @@ class Inventory < API
       old_facts = host.meta
 
       new_facts.each do |k,v|
+
+        # update the hostname if it changed
+        if k == "hostname" and v != host.hostname then
+          host.hostname = v
+        end
+
+        # add or update fact
         if old_facts.include? k then
           md = old_facts[k]
           md.value = v

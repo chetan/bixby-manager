@@ -103,8 +103,10 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     assert_equal "kernel", m.last.key
     assert_equal "Darwin", m.last.value
 
+    old_hostname = agent.host.hostname
+
     # second update, 1 new fact
-    jr = JsonResponse.new("success", "", { :status => 0, :stdout => {:domain => "local", :uptime => "4 days", :kernel => "Darwin"}.to_json, :stderr => nil })
+    jr = JsonResponse.new("success", "", { :status => 0, :stdout => {:domain => "local", :uptime => "4 days", :kernel => "Darwin", :hostname => "foo.host.com"}.to_json, :stderr => nil })
     stub = stub_request(:post, agent.uri).with { |req|
       req.body =~ /list_facts.rb/
     }.to_return(:status => 200, :body => jr.to_json)
@@ -113,10 +115,13 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
 
     m = Metadata.all
     assert m
-    assert_equal 3, m.size
-    assert_equal "domain", m.last.key
-    assert_equal "local", m.last.value
+    assert_equal 4, m.size
+    assert_equal "domain", m[2].key
+    assert_equal "local", m[2].value
     assert_equal "4 days", m.first.value
+
+    refute_equal old_hostname, agent.host.hostname
+    assert_equal "foo.host.com", agent.host.hostname
 
     assert_requested(stub, :times => 2)
   end
