@@ -109,12 +109,14 @@ class Inventory < API
     end
 
     ActiveRecord::Base.transaction do
-      facts = ret.decode
+      new_facts = ret.decode
 
       host = agent.host
-      facts.each do |k,v|
-        if host.meta.include? k then
-          md = host.metadata.find{ |m| m.key == k }
+      old_facts = host.meta
+
+      new_facts.each do |k,v|
+        if old_facts.include? k then
+          md = old_facts[k]
           md.value = v
           md.save!
         else

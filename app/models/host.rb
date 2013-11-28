@@ -44,7 +44,7 @@ class Host < ActiveRecord::Base
   def info
     info = {}
     lookup = meta
-    BASIC_INFO.each{ |k| info[k] = lookup[k] if lookup.include?(k) }
+    BASIC_INFO.each{ |k| info[k] = lookup[k].value if lookup.include?(k) }
     return info
   end
 
@@ -54,7 +54,7 @@ class Host < ActiveRecord::Base
   def meta
     meta = {}
     metadata.each do |m|
-      meta[m.key] = m.value
+      meta[m.key] = m
     end
     return meta
   end
@@ -137,7 +137,7 @@ class Host < ActiveRecord::Base
         host_meta = host.meta
         all_keys_match = true
         meta.keys.each do |key|
-          if not(host_meta[key] and host_meta[key].downcase == meta[key].downcase) then
+          if not(host_meta[key] and host_meta[key].value.downcase == meta[key].downcase) then
             all_keys_match = false
             break
           end
