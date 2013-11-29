@@ -62,8 +62,8 @@ Bixby.monitoring.render_metric = (s, metric) ->
   g._bixby_mode = "zoom"
 
   # set callbacks
-  xOptView = g.optionsViewForAxis_('x');
-  xvf = xOptView('valueFormatter');
+  xOptView = g.optionsViewForAxis_('x')
+  xvf = xOptView('valueFormatter')
   opts = {
     highlightCallback: (e, x, pts, row) ->
       date = xvf(x, xOptView, "", g) + ", " + sprintf("val = %0.2f%s", pts[0].yval, unit)
@@ -99,7 +99,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
           g.updateOptions({ file: new_met.tuples() })
 
   }
-  g.updateOptions(opts);
+  g.updateOptions(opts)
   return g
 
 
@@ -138,7 +138,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
 #         graph: graph
 #       });
 #       graph.render();
-#       $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
+#       $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y))
 
 
 
