@@ -74,20 +74,20 @@ Bixby.monitoring.render_metric = (s, metric) ->
 
     # allow zooming in for more granular data (don't downsample)
     zoomCallback: (minX, maxX, yRanges) ->
-      return if g._mode == "history"
+      return if g._bixby_mode == "pan"
 
-      if g.is_granular
+      if g._bixby_is_granular
         if minX == g.rawData_[0][0] && maxX == g.rawData_[g.rawData_.length-1][0]
-          g.updateOptions({ file: g.less_granular })
-          g.less_granular = null
-          g.is_granular = null
+          g.updateOptions({ file: g._bixby_less_granular })
+          g._bixby_less_granular = null
+          g._bixby_is_granular = null
         return
 
       r = (maxX - minX) / 1000
       if r < 43200
         # load more granular data
-        g.less_granular = g.file_
-        g.is_granular = true
+        g._bixby_less_granular = g.file_
+        g._bixby_is_granular = true
         new_met = new Bixby.model.Metric({
           id: metric.id
           host_id: metric.get("metadata").host_id
