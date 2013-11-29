@@ -43,10 +43,11 @@ Bixby.monitoring.render_metric = (s, metric) ->
     # set range if known
     opts.valueRange = [ 0, 100 ]
 
-  # custom drag interaction - allow toggling pan mode
   opts.interactionModel = _.clone(Dygraph.Interaction.defaultModel)
+
+  # override mousedown to allow toggling pan mode
   opts.interactionModel.mousedown = (event, g, context) ->
-    # // Right-click should not initiate a zoom.
+    # Right-click should not initiate a zoom.
     if event.button && event.button == 2
       return
 
@@ -57,29 +58,44 @@ Bixby.monitoring.render_metric = (s, metric) ->
     else
       Dygraph.startZoom(event, g, context)
 
+  # override mouseup to load more data as we pan in either direction
   opts.interactionModel.mouseup = (event, g, context) ->
     if context.isZooming
       Dygraph.endZoom(event, g, context)
+
     else if context.isPanning
       Dygraph.endPan(event, g, context)
 
       # check if we need more data
       [minX, maxX] = g.xAxisRange()
-      start_diff = g.xAxisExtremes()[0] - minX
-      end_diff = maxX - g.xAxisExtremes()[1]
+      [dMinX, dMaxX] = g.xAxisExtremes()
+      start_diff = dMinX - minX
+      end_diff = maxX - dMaxX
 
-      if start_diff > 100000 || end_diff > 100000
-        # sufficiently panned, fetch more data
-        new_met = new Bixby.model.Metric({
-          id: metric.id
-          host_id: metric.get("metadata").host_id
-          start: parseInt(minX / 1000)
-          end: parseInt(maxX / 1000)
-          downsample: "1m-avg"
-        })
-        Backbone.multi_fetch [ new_met ], (err, results) ->
-          # don't replace data... add on to existing data
-          g.updateOptions({ file: new_met.tuples() })
+      startX = null
+      if start_diff > 100000
+        startX = minX
+        endX = dMinX
+
+      else if end_diff > 100000
+        startX = dMaxX
+        endX = maxX
+
+      return if startX == null
+
+      query = metric.get("query")
+      new_met = new Bixby.model.Metric({
+        id: metric.id
+        host_id: metric.get("metadata").host_id
+        start: parseInt(startX / 1000)
+        end: parseInt(endX / 1000)
+        downsample: query.downsample || "5m-avg"
+      })
+      Backbone.multi_fetch [ new_met ], (err, results) ->
+        # don't replace data... add on to existing data
+        all_data = g.file_.concat(new_met.tuples()).sort (a,b) ->
+          return a[0] - b[0]
+        g.updateOptions({ file: all_data })
 
 
   # draw
@@ -122,6 +138,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
           downsample: "1m-avg"
         })
         Backbone.multi_fetch [ new_met ], (err, results) ->
+          metric.set({query: new_met.get("query")})
           g.updateOptions({ file: new_met.tuples() })
 
   }
