@@ -57,6 +57,31 @@ Bixby.monitoring.render_metric = (s, metric) ->
     else
       Dygraph.startZoom(event, g, context)
 
+  opts.interactionModel.mouseup = (event, g, context) ->
+    if context.isZooming
+      Dygraph.endZoom(event, g, context)
+    else if context.isPanning
+      Dygraph.endPan(event, g, context)
+
+      # check if we need more data
+      [minX, maxX] = g.xAxisRange()
+      start_diff = g.xAxisExtremes()[0] - minX
+      end_diff = maxX - g.xAxisExtremes()[1]
+
+      if start_diff > 100000 || end_diff > 100000
+        # sufficiently panned, fetch more data
+        new_met = new Bixby.model.Metric({
+          id: metric.id
+          host_id: metric.get("metadata").host_id
+          start: parseInt(minX / 1000)
+          end: parseInt(maxX / 1000)
+          downsample: "1m-avg"
+        })
+        Backbone.multi_fetch [ new_met ], (err, results) ->
+          # don't replace data... add on to existing data
+          g.updateOptions({ file: new_met.tuples() })
+
+
   # draw
   g = new Dygraph(el, vals, opts)
   g._bixby_mode = "zoom"
@@ -77,6 +102,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
       return if g._bixby_mode == "pan"
 
       if g._bixby_is_granular
+        # already showing granular data, see if zoom was reset and show less granular data
         if minX == g.rawData_[0][0] && maxX == g.rawData_[g.rawData_.length-1][0]
           g.updateOptions({ file: g._bixby_less_granular })
           g._bixby_less_granular = null
@@ -85,7 +111,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
 
       r = (maxX - minX) / 1000
       if r < 43200
-        # load more granular data
+        # load more granular data, since we are looking at less than 12 hours of data
         g._bixby_less_granular = g.file_
         g._bixby_is_granular = true
         new_met = new Bixby.model.Metric({
