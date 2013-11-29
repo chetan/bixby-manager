@@ -46,12 +46,12 @@ gem 'bixby-common'
 
 gem "semver2"
 
+# api server for agents
 gem "em-hiredis"
-
+gem "faye-websocket"
 # gem "em-websocket"
 # gem "websocket-eventmachine-server"
 # gem "websocket-rack"
-gem "faye-websocket"
 
 gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
@@ -76,9 +76,9 @@ gem "twilio-ruby"
 gem "pony"
 
 # scheduler module
-# though hiredis is an extension, it should degrade gracefull for jruby
-gem "hiredis"
 gem "redis", "~> 3.0", :require => ["redis/connection/hiredis", "redis"]
+# though hiredis is an extension, it should degrade gracefully for jruby
+gem "hiredis"
 
 gem "resque"
 gem "resque-scheduler", :require => ["resque_scheduler"]
