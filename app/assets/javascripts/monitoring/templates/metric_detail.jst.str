@@ -6,6 +6,12 @@
 
   <%= include("monitoring/_check_args") %>
 
+  <div class="btn-group" data-toggle="buttons-radio">
+    <button id="zoom" type="button" class="btn btn-primary" title="Zoom mode"><%= _.icon("search") %></button>
+    <button id="history" type="button" class="btn btn-primary" title="History mode"><%= _.icon("clock-o") %></button>
+  </div>
+
+
   <div class="metric detail" metric_id="<%= metric.id %>">
     <h5 class="title">
       <a class="metric"

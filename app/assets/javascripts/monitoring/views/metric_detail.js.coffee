@@ -4,16 +4,29 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/metric_detail"
 
+    events: {
+      "click button#zoom": (e) ->
+        @graph._bixby_mode = "zoom"
+
+      "click button#history": (e) ->
+        @graph._bixby_mode = "pan"
+    }
+
+
     dispose: ->
       super()
-      $(window).unbind("resize");
+      $(window).unbind("resize")
 
     render: ->
       super()
+      @$("button#zoom").addClass("active")
       s = ".metric[metric_id='" + @metric.id + "']"
-      Bixby.monitoring.render_metric(s, @metric)
+      @graph = Bixby.monitoring.render_metric(s, @metric)
+      @graph.updateOptions({ interactionModel: {} })
+
       view = @
       $(window).resize _.debounceR 200, ->
+        view.log "redrawing graph view on resize"
         view.redraw()
 
       query = @metric.get("query")

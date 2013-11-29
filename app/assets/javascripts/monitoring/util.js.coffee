@@ -1,6 +1,8 @@
 
 Bixby.monitoring = {}
 
+# Render the given metric into the given selector
+#
 # s: CSS selector root for locating graph, ex:
 #
 #   s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
@@ -41,8 +43,23 @@ Bixby.monitoring.render_metric = (s, metric) ->
     # set range if known
     opts.valueRange = [ 0, 100 ]
 
+  # custom drag interaction - allow toggling pan mode
+  opts.interactionModel = _.clone(Dygraph.Interaction.defaultModel)
+  opts.interactionModel.mousedown = (event, g, context) ->
+    # // Right-click should not initiate a zoom.
+    if event.button && event.button == 2
+      return
+
+    context.initializeMouseDown(event, g, context)
+
+    if event.altKey || event.shiftKey || g._bixby_mode == "pan"
+      Dygraph.startPan(event, g, context)
+    else
+      Dygraph.startZoom(event, g, context)
+
   # draw
   g = new Dygraph(el, vals, opts)
+  g._bixby_mode = "zoom"
 
   # set callbacks
   xOptView = g.optionsViewForAxis_('x');
@@ -57,6 +74,8 @@ Bixby.monitoring.render_metric = (s, metric) ->
 
     # allow zooming in for more granular data (don't downsample)
     zoomCallback: (minX, maxX, yRanges) ->
+      return if g._mode == "history"
+
       if g.is_granular
         if minX == g.rawData_[0][0] && maxX == g.rawData_[g.rawData_.length-1][0]
           g.updateOptions({ file: g.less_granular })
@@ -81,44 +100,45 @@ Bixby.monitoring.render_metric = (s, metric) ->
 
   }
   g.updateOptions(opts);
+  return g
 
 
 # just for reference, rendering using rickshaw
-Bixby.monitoring.render_with_rickshaw = (s, metric) ->
+# Bixby.monitoring.render_with_rickshaw = (s, metric) ->
 
-  # display graphs
-  @resources.each (res) ->
-    metrics = res.get("metrics");
-    _.each metrics, (val, key) ->
-      s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
-      el = $(s + " .graph")[0]
+#   # display graphs
+#   @resources.each (res) ->
+#     metrics = res.get("metrics");
+#     _.each metrics, (val, key) ->
+#       s = ".resource[resource_id=" + res.id + "] .metric[metric='" + key + "']"
+#       el = $(s + " .graph")[0]
 
-      graph = new Rickshaw.Graph( {
-        element: el,
-        width: 300,
-        height: 100,
-        renderer: 'line',
-        series: [{
-          # name: "foo",
-          color: 'steelblue',
-          data: val.vals
-        }]
-      } );
-      x_axis = new Rickshaw.Graph.Axis.Time({
-        graph: graph,
-        # element: $(s + ' .x_axis')[0]
-      });
-      y_axis = new Rickshaw.Graph.Axis.Y({
-        graph: graph,
-        orientation: 'left',
-        # tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-        element: $(s + ' .y_axis')[0],
-      });
-      hoverDetail = new Rickshaw.Graph.HoverDetail({
-        graph: graph
-      });
-      graph.render();
-      $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
+#       graph = new Rickshaw.Graph( {
+#         element: el,
+#         width: 300,
+#         height: 100,
+#         renderer: 'line',
+#         series: [{
+#           # name: "foo",
+#           color: 'steelblue',
+#           data: val.vals
+#         }]
+#       } );
+#       x_axis = new Rickshaw.Graph.Axis.Time({
+#         graph: graph,
+#         # element: $(s + ' .x_axis')[0]
+#       });
+#       y_axis = new Rickshaw.Graph.Axis.Y({
+#         graph: graph,
+#         orientation: 'left',
+#         # tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+#         element: $(s + ' .y_axis')[0],
+#       });
+#       hoverDetail = new Rickshaw.Graph.HoverDetail({
+#         graph: graph
+#       });
+#       graph.render();
+#       $(s + " .footer").text(sprintf("Last Value: %0.2f", val.vals[val.vals.length-1].y));
 
 
 
