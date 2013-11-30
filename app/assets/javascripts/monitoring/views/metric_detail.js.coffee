@@ -31,7 +31,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       query = @metric.get("query")
       if query.downsample == "1h-avg"
-        view.log "loading more granular data"
         new_met = new Bixby.model.Metric({
           id: view.metric.id
           host_id: view.metric.get("metadata")?.host_id
@@ -40,8 +39,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           downsample: "5m-avg"
         })
         Backbone.multi_fetch [ new_met ], (err, results) ->
-          view.log "replacing old metric: ", view.metric
-          view.log "with new metric: ", new_met
           view.metric = new_met
           view.redraw()
 
