@@ -34,12 +34,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       blockRedraw = false # used to block our drawCallback when synchronizing
 
       metrics.each (metric) ->
-        s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
-        metric.graph = Bixby.monitoring.render_metric(s, metric)
-        metric.graph._bixby_mode = "pan" # on panning in list view, no zoom
-
         # sync panning all graphs on page
-        metric.graph.updateOptions({
+        opts = {
           drawCallback: (g, isInitial) ->
             return if isInitial || blockRedraw
             blockRedraw = true
@@ -51,7 +47,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
                   dateWindow: range,
                 })
             blockRedraw = false
-          })
+          }
+
+        s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
+        metric.graph = Bixby.monitoring.render_metric(s, metric, opts)
+        metric.graph._bixby_mode = "pan" # on panning in list view, no zoom
 
         # fired when panning is completed on the given graph
         # update all other graphs with more data

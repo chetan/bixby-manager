@@ -8,7 +8,8 @@ Bixby.monitoring = {}
 #   s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
 #
 # metric: Metric model instance
-Bixby.monitoring.render_metric = (s, metric) ->
+# opts: extra opts for graph [optional]
+Bixby.monitoring.render_metric = (s, metric, opts) ->
 
   el = $(s + " .graph")[0]
 
@@ -29,12 +30,13 @@ Bixby.monitoring.render_metric = (s, metric) ->
   footer.text(footer_text)
 
   # draw graph
-  opts = {
+  opts ||= {}
+  opts = _.extend({
     labels: [ "Date/Time", "v" ]
     strokeWidth: 2
     showLabelsOnHighlight: false
     legend: "never"
-  }
+  }, opts)
 
   gc = $(s + " .graph_container")
   opts.width = gc.width()
@@ -79,7 +81,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
   g = new Dygraph(el, vals, opts)
   g._bixby_mode = "zoom"
 
-  # set callbacks
+  # set callbacks - have to do this after initial graph created
   xOptView = g.optionsViewForAxis_('x')
   xvf = xOptView('valueFormatter')
   opts = {
@@ -119,7 +121,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
           g.updateOptions({ file: new_met.tuples() })
 
   }
-  g.updateOptions(opts)
+  g.updateOptions(opts, true) # don't redraw here
 
   return g
 
