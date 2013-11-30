@@ -6,6 +6,14 @@ require 'celluloid'
 module Bixby
 class Metrics
 
+  # MongoDB Metrics Driver
+  #
+  # This driver is mainly to be used for local testing and development purposes. It is NOT meant
+  # for production use.
+  #
+  # MISSING FEATURES:
+  # * downsample support
+  #
   class MongoDB < Driver
 
     ID_KEYS = %w{host_id check_id org_id tenant_id}.inject({}){ |m, k| m[k] = 1; m }.with_indifferent_access

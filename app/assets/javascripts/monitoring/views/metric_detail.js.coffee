@@ -15,7 +15,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         @update_zoom($(e.target).val())
     }
 
-    # Change the zoom level of the visible graph
+    # Change the zoom level of the graph
     # Load data based on the time period selected, at the same sampling rate
     #
     # @param [String] level
@@ -23,11 +23,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       period = 86400
 
       switch (@level = level)
-        when "12hours"  then period /= 2
-        when "day"      then period *= 1
-        when "week"     then period *= 7
-        when "month"    then period *= 30
-        when "year"     then period *= 365
+        when "12hours"  then period /= 2; ds = "1m-avg"
+        when "day"      then period *= 1; ds = "5m-avg"
+        when "week"     then period *= 7; ds = "1h-avg"
+        when "month"    then period *= 30; ds = "6h-avg"
+        when "year"     then period *= 365; ds = "1d-avg"
         when "custom"   then return
 
       query = @metric.get("query")
@@ -40,7 +40,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         host_id: view.metric.get("metadata")?.host_id
         start: range_start
         end: range_end
-        downsample: query.downsample
+        downsample: ds
       })
       Backbone.multi_fetch [ new_met ], (err, results) ->
         view.metric = new_met
@@ -83,7 +83,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       # on first load, fetch more data
       # specifically when moving from list view which has less granular (1h-avg) data
-      if query.downsample == "1h-avg"
+      if !@level && query.downsample == "1h-avg"
         new_met = new Bixby.model.Metric({
           id: view.metric.id
           host_id: view.metric.get("metadata")?.host_id
