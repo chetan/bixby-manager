@@ -1,6 +1,8 @@
 
 //= require "jquery"
 //= require "jquery_patch"
+//= require "jquery.putcursoratend"
+//= require "jquery.appear"
 
 //= require "underscore"
 //= require "underscore_patch"
@@ -13,17 +15,19 @@
 //= require "backbone.stickit"
 //= require "stickit_validation_patch"
 
+// ui stuff
 //= require "template"
 //= require "twitter/bootstrap.min"
-//= require "async"
 //= require "spin.min"
-//= require "sprintf"
-//= require "strftime"
 //= require "Markdown.Converter"
-//= require "jquery.putcursoratend"
 //= require "mailcheck.min"
 //= require "moment.min"
+
+// utils
+//= require "async"
 //= require "md5.min"
+//= require "sprintf"
+//= require "strftime"
 
 // tagging
 //= require "select2"

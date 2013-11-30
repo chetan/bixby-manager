@@ -58,10 +58,23 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         #
         # @param [Dygraph] g        the graph which was just panned
         metric.graph._bixby_pan_complete = (g) ->
-          # TODO should probably only load data for visible graphs
-          #      then bring others in when they become visible (page is scrolled)
           metrics.each (m) ->
             if m.graph && m.graph != g
+              if _.isScrolledIntoView(m.graph._bixby_el)
+                Bixby.monitoring.load_more_data(m.graph, m)
+              else
+                # defer loading of graphs that aren't visible
+                m.graph._bixby_needs_more_data = true
+
+      # attach pan scroll helper
+      $("div.graph").appear()
+      $(document.body).on "appear", "div.graph", _.debounceR 100, (e, appeared) ->
+        # loop through appeared elements, match up with metric graph elements, and load data if necessary
+        _.each appeared, (el) ->
+          metrics.each (m) ->
+            if m.graph._bixby_el == el && m.graph._bixby_needs_more_data == true
+              m.graph._bixby_needs_more_data = false
               Bixby.monitoring.load_more_data(m.graph, m)
+
 
       @
