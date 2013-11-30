@@ -1,5 +1,11 @@
 require 'zeus/rails'
 
+module Mongoid
+  def self.running_with_passenger?
+    false
+  end
+end
+
 class CustomPlan < Zeus::Rails
 
   RAILS_ROOT = File.expand_path(File.dirname(__FILE__))
