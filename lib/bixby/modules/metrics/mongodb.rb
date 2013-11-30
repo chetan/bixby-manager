@@ -79,6 +79,11 @@ class Metrics
         pool = MetricFetcher.pool
         futures = opts.map{ |opt| pool.future.get(opt) }
         ret = futures.map{ |future| future.value }
+        pool.terminate
+        # terminating the pool causes this annoying warning to be printed
+        # WARN -- : Terminating task: type=:finalizer, meta={:method_name=>:__shutdown__}, status=:callwait
+        # in theory we don't have to manuallly terminate the pool, but we do anyway because
+        # we ran into some issues with mongoid otherwise (used up all conns?)
         return ret
       end
 
