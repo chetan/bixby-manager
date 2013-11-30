@@ -28,6 +28,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
   footer_text = sprintf("Last Value: %0.2f%s", last_val, unit)
   footer.text(footer_text)
 
+  # draw graph
   opts = {
     labels: [ "Date/Time", "v" ]
     strokeWidth: 2
@@ -43,6 +44,8 @@ Bixby.monitoring.render_metric = (s, metric) ->
     # set range if known
     opts.valueRange = [ 0, 100 ]
 
+  ####
+  # custom zoom/pan handling
   opts.interactionModel = _.clone(Dygraph.Interaction.defaultModel)
 
   # override mousedown to allow toggling pan mode
@@ -105,6 +108,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
         g.updateOptions({ file: all_data })
 
 
+  ####
   # draw
   g = new Dygraph(el, vals, opts)
   g._bixby_mode = "zoom"
@@ -150,6 +154,7 @@ Bixby.monitoring.render_metric = (s, metric) ->
 
   }
   g.updateOptions(opts)
+
   return g
 
 
