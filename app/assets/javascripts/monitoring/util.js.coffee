@@ -79,6 +79,7 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
   ####
   # draw
   g = new Dygraph(el, vals, opts)
+  g._bixby_el = el
   g._bixby_mode = "zoom"
 
   # set callbacks - have to do this after initial graph created
