@@ -58,6 +58,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         #
         # @param [Dygraph] g        the graph which was just panned
         metric.graph._bixby_pan_complete = (g) ->
+          # TODO should probably only load data for visible graphs
+          #      then bring others in when they become visible (page is scrolled)
           metrics.each (m) ->
             if m.graph && m.graph != g
               Bixby.monitoring.load_more_data(m.graph, m)
