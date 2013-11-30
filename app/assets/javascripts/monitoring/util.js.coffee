@@ -81,6 +81,13 @@ Bixby.monitoring.render_metric = (s, metric) ->
         startX = dMaxX
         endX = maxX
 
+        # don't send timestamps into the future
+        now = new Date().getTime()
+        if endX > now
+          endX = now
+        if endX - startX < 100000
+          startX = null
+
       return if startX == null
 
       query = metric.get("query")
