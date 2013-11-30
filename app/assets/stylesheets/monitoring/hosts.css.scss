@@ -12,11 +12,6 @@ div.check {
   }
 }
 
-
-div.metric.detail {
-  border: 0;
-}
-
 div.metric {
   float: left;
   width: 330px;
@@ -62,6 +57,7 @@ div.metric {
 }
 
 div.metric.detail {
+  border: 0;
   width: 95%;
   .graph_container {
     width: auto;
@@ -75,4 +71,14 @@ div.metric.detail {
 div.spacer {
   clear: both;
   height: 0px;
+}
+
+// graph controls
+div.graph_controls {
+  div.zoom_level {
+    padding-top: 10px;
+    select {
+      padding-left: 5px;
+    }
+  }
 }

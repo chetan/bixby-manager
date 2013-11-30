@@ -6,9 +6,25 @@
 
   <%= include("monitoring/_check_args") %>
 
-  <div class="btn-group" data-toggle="buttons-radio">
-    <button id="zoom" type="button" class="btn btn-primary" title="Zoom mode"><%= _.icon("search") %></button>
-    <button id="history" type="button" class="btn btn-primary" title="History mode"><%= _.icon("clock-o") %></button>
+  <div class="graph_controls">
+
+    <div class="btn-group" data-toggle="buttons-radio">
+      <button id="zoom" type="button" class="btn btn-primary" title="Zoom mode"><%= _.icon("search") %></button>
+      <button id="pan" type="button" class="btn btn-primary" title="Pan mode"><%= _.icon("clock-o") %></button>
+    </div>
+
+    <div class="zoom_level">
+      <label for="zoom_level">Zoom Level
+      <select name="zoom_level" id="zoom_level">
+        <option value="12hours">12 Hours</option>
+        <option value="day">1 Day</option>
+        <option value="week">1 Week</option>
+        <option value="month">1 Month</option>
+        <option value="custom">Custom</option>
+      </select>
+      </label>
+    </div>
+
   </div>
 
 
