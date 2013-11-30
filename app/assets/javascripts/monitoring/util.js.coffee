@@ -68,44 +68,10 @@ Bixby.monitoring.render_metric = (s, metric) ->
 
     else if context.isPanning
       Dygraph.endPan(event, g, context)
-
-      # check if we need more data
-      [minX, maxX] = g.xAxisRange()
-      [dMinX, dMaxX] = g.xAxisExtremes()
-      start_diff = dMinX - minX
-      end_diff = maxX - dMaxX
-
-      startX = null
-      if start_diff > 100000
-        startX = minX
-        endX = dMinX
-
-      else if end_diff > 100000
-        startX = dMaxX
-        endX = maxX
-
-        # don't send timestamps into the future
-        now = new Date().getTime()
-        if endX > now
-          endX = now
-        if endX - startX < 100000
-          startX = null
-
-      return if startX == null
-
-      query = metric.get("query")
-      new_met = new Bixby.model.Metric({
-        id: metric.id
-        host_id: metric.get("metadata").host_id
-        start: parseInt(startX / 1000)
-        end: parseInt(endX / 1000)
-        downsample: query.downsample || "5m-avg"
-      })
-      Backbone.multi_fetch [ new_met ], (err, results) ->
-        # don't replace data... add on to existing data
-        all_data = g.file_.concat(new_met.tuples()).sort (a,b) ->
-          return a[0] - b[0]
-        g.updateOptions({ file: all_data })
+      Bixby.monitoring.load_more_data(g, metric)
+      if g._bixby_pan_complete?
+        # fire custom callback
+        g._bixby_pan_complete(g)
 
 
   ####
@@ -156,3 +122,42 @@ Bixby.monitoring.render_metric = (s, metric) ->
   g.updateOptions(opts)
 
   return g
+
+Bixby.monitoring.load_more_data = (g, metric) ->
+  # check if we need more data
+  [minX, maxX] = g.xAxisRange()
+  [dMinX, dMaxX] = g.xAxisExtremes()
+  start_diff = dMinX - minX
+  end_diff = maxX - dMaxX
+
+  startX = null
+  if start_diff > 100000
+    startX = minX
+    endX = dMinX
+
+  else if end_diff > 100000
+    startX = dMaxX
+    endX = maxX
+
+    # don't send timestamps into the future
+    now = new Date().getTime()
+    if endX > now
+      endX = now
+    if endX - startX < 100000
+      startX = null
+
+  return if startX == null
+
+  query = metric.get("query")
+  new_met = new Bixby.model.Metric({
+    id: metric.id
+    host_id: metric.get("metadata").host_id
+    start: parseInt(startX / 1000)
+    end: parseInt(endX / 1000)
+    downsample: query.downsample || "5m-avg"
+  })
+  Backbone.multi_fetch [ new_met ], (err, results) ->
+    # don't replace data... add on to existing data
+    all_data = g.file_.concat(new_met.tuples()).sort (a,b) ->
+      return a[0] - b[0]
+    g.updateOptions({ file: all_data })

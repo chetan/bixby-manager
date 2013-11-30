@@ -26,7 +26,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         ]
     }
 
-    render: ->
+    after_render: ->
       super()
 
       # render graphs into placeholder divs
@@ -45,11 +45,21 @@ namespace "Bixby.view.monitoring", (exports, top) ->
             blockRedraw = true
             range = g.xAxisRange();
             metrics.each (m) ->
+              # redraw all graphs except the one which was panned
               if m.graph && m.graph != g
                 m.graph.updateOptions({
                   dateWindow: range,
                 })
             blockRedraw = false
           })
+
+        # fired when panning is completed on the given graph
+        # update all other graphs with more data
+        #
+        # @param [Dygraph] g        the graph which was just panned
+        metric.graph._bixby_pan_complete = (g) ->
+          metrics.each (m) ->
+            if m.graph && m.graph != g
+              Bixby.monitoring.load_more_data(m.graph, m)
 
       @
