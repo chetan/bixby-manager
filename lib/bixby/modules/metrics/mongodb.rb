@@ -84,7 +84,7 @@ class Metrics
       # Fetch a list of metrics
       def multi_get(opts=[])
         # use a pool of Celluloid workers to process fetches in parallel
-        pool = MetricFetcher.pool
+        pool = MetricFetcher.pool(:size => 4)
         futures = opts.map{ |opt| pool.future.get(opt) }
         ret = futures.map{ |future| future.value }
         pool.terminate
