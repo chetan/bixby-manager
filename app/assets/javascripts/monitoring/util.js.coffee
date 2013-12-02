@@ -19,14 +19,15 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
 
   # draw footer
   footer = $(s + " .footer")
-  unit = ""
-  if metric.unit?
-    if metric.unit != "%"
-      unit = " " + metric.unit
+  unit = metric.get("unit")
+  unit_label = ""
+  if unit?
+    if unit == "%"
+      unit_label = "%"
     else
-      unit = "%"
+      unit_label = " " + unit
   last_val = vals[vals.length-1][1]
-  footer_text = sprintf("Last Value: %0.2f%s", last_val, unit)
+  footer_text = sprintf("Last Value: %0.2f%s", last_val, unit_label)
   footer.text(footer_text)
 
   # draw graph
@@ -44,7 +45,7 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
 
   opts.includeZero = true # always incldue zero on y-axis
 
-  if metric.get("unit") == "%" || metric.get("range") == "1..100"
+  if unit == "%" || metric.get("range") == "1..100"
     # set range if known
     opts.valueRange = [ 0, 100 ]
     opts.yRangePad = 1
