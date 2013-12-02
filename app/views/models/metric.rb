@@ -44,6 +44,8 @@ module Bixby
           hash[:desc]  = mi.desc
           hash[:label] = mi.label
           hash[:unit]  = mi.unit
+          hash[:range] = mi.range
+          hash[:platforms] = mi.platforms
         end
 
         return hash

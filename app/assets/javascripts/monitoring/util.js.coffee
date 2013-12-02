@@ -42,9 +42,16 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
   opts.width = gc.width()
   opts.height = gc.height()
 
-  if metric.unit == "%"
+  opts.includeZero = true # always incldue zero on y-axis
+
+  if metric.get("unit") == "%" || metric.get("range") == "1..100"
     # set range if known
     opts.valueRange = [ 0, 100 ]
+    opts.yRangePad = 1
+
+  else if matches = metric.get("range").match(/\.\./)
+    # use y-axis range as given in metric info
+    opts.valueRange = [ matches[1], matches[2] ]
 
   ####
   # custom zoom/pan handling
