@@ -9,6 +9,8 @@
 #  desc       :string(255)
 #  label      :string(255)
 #  name       :string(255)
+#  range      :string(255)
+#  platforms  :string(255)
 #
 
 

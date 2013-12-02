@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131121181035) do
+ActiveRecord::Schema.define(version: 20131202185704) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -138,6 +138,8 @@ ActiveRecord::Schema.define(version: 20131121181035) do
     t.string  "desc"
     t.string  "label"
     t.string  "name"
+    t.string  "range"
+    t.string  "platforms"
   end
 
   add_index "metric_infos", ["command_id"], name: "fk_command_keys_commands1", using: :btree

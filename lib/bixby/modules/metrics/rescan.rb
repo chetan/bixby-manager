@@ -34,6 +34,10 @@ class Metrics < API
         cm.name  = metric["name"]
         cm.desc  = metric["desc"]
         cm.label = metric["label"]
+        cm.range = metric["range"]
+
+        platforms = metric["platforms"] || []
+        cm.platforms = platforms.join(",")
         cm.save!
 
         Rails.logger.info "* updated metric: #{cm.metric}"
