@@ -290,6 +290,7 @@ class Metrics < API
         downsample = nil
       end
       metric.query = { :start => start_time, :end => end_time, :tags => tags, :downsample => downsample }
+      downsample = (Time.new - metric.created_at < 43200) ? "5m-avg" : downsample # show 5m-avg if less than 12 hours old
       reqs << { :key => metric.key, :start_time => start_time, :end_time => end_time, :tags => all_tags, :agg => agg, :downsample => downsample }
     end
 
