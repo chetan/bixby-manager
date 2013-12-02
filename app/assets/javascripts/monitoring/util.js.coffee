@@ -17,7 +17,7 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
   if !vals || vals.length == 0
     return
 
-  # draw footer
+  # draw footer: "Last Value: 20.32%" or "Last Value: 3541 GB"
   footer = $(s + " .footer")
   unit = metric.get("unit")
   unit_label = ""
@@ -43,10 +43,11 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
   opts.width = gc.width()
   opts.height = gc.height()
 
+  # Fix the y-axis value range
   opts.includeZero = true # always incldue zero on y-axis
-
-  if unit == "%" || metric.get("range") == "1..100"
-    # set range if known
+  range = metric.get("range")
+  if unit == "%" && (!range? || range == "0..100")
+    # use percentage range, unless overriden in range var
     opts.valueRange = [ 0, 100 ]
     opts.yRangePad = 1
 
