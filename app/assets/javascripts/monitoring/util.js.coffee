@@ -49,7 +49,7 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
     opts.valueRange = [ 0, 100 ]
     opts.yRangePad = 1
 
-  else if matches = metric.get("range").match(/\.\./)
+  else if metric.get("range") && (matches = metric.get("range").match(/\.\./))
     # use y-axis range as given in metric info
     opts.valueRange = [ matches[1], matches[2] ]
 
