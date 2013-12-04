@@ -56,22 +56,24 @@ class Monitoring < API
 
     agent = get_model(agent, Agent)
 
-    provisioned = {}
-
+    # create a list of commands which need to be provisioned
+    # and also gather check config
     config = []
+    commands = {}
+
     checks = Check.where("agent_id = ?", agent.id)
     checks.each do |check|
       command = command_for_check(check)
-
       bundle = File.join(command.repo, command.bundle)
-      if not provisioned.include? bundle then
-        Provisioning.new.provision(agent, command)
-        provisioned[bundle] = 1
+      if not commands.include? bundle then
+        commands[bundle] = command
       end
 
       config << { :interval => check.normal_interval, :retry => check.retry_interval,
                   :timeout => check.timeout, :command => command }
     end
+
+    Provisioning.new.provision(agent, commands.values) # provision all at once
 
     command = CommandSpec.new( :repo => "vendor", :bundle => "system/monitoring",
                                :command => "update_check_config.rb", :stdin => config.to_json )

@@ -83,7 +83,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     check = FactoryGirl.create(:check)
 
     Provisioning.any_instance.expects(:provision).once.with { |agent, cmd|
-      agent == check.agent and cmd.bundle == check.command.bundle
+      agent == check.agent and cmd.kind_of?(Array) and cmd.size == 1 and cmd.first.bundle == check.command.bundle
     }
 
     ret = Bixby::Monitoring.new.update_check_config(check.agent)
