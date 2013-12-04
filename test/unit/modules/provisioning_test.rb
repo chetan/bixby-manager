@@ -119,6 +119,48 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
     assert_api_requests
   end
 
+  def test_provision_multiple_bundles
+    stub_api.expect{ |agent, op, params|
+      files = params[:stdin]
+      params[:command] == "get_bundles.rb" && !files.blank? && files.include?("test_dep") &&
+        files.include?("test_bundle_with_dep") && files["test_dep"].first["file"] == "lib/test_lib.rb"
+    }.returns(JsonResponse.new("success")).times(1)
+
+    @cmd.bundle = "test_bundle_with_dep"
+    Bixby::Provisioning.new.provision(@agent, [@cmd])
+
+    assert_api_requests
+  end
+
+  def test_provision_multiple_bundles_with_self
+
+    # 1. request to provision multiple
+    stub_api.expect{ |agent, op, params|
+      files = params[:stdin]
+      params[:command] == "get_bundles.rb" && !files.blank? && files.include?("test_dep") &&
+        files.include?("test_bundle_with_dep") && files["test_dep"].first["file"] == "lib/test_lib.rb"
+    }.returns(JsonResponse.new("fail", "bundle not found: digest does not match ('my_old_hash_XXXX' != 'yyyy')", nil, 404))
+
+    # 2. provision self
+    stub_api.expect{ |agent, op, params|
+      spec = params[:stdin]
+      params[:command] == "get_bundle.rb" && spec["bundle"] == "system/provisioning"
+    }.returns(JsonResponse.new("success"))
+
+    # 3. repeat of first
+    stub_api.expect{ |agent, op, params|
+      files = params[:stdin]
+      params[:command] == "get_bundles.rb" && !files.blank? && files.include?("test_dep") &&
+        files.include?("test_bundle_with_dep") && files["test_dep"].first["file"] == "lib/test_lib.rb"
+    }.returns(JsonResponse.new("success"))
+
+    @cmd.bundle = "test_bundle_with_dep"
+    ret = Bixby::Provisioning.new.provision(@agent, [@cmd])
+    assert ret.success?
+
+    assert_api_requests
+  end
+
   def test_upgrade_agent
     res = CommandResponse.new({:status => 0, :stdout => "bixby upgraded to 0.2.0-alpha\n"})
     stub_api.expect{ |agent, op, params|

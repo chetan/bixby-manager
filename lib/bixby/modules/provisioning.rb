@@ -15,6 +15,10 @@ class Provisioning < API
   # @return [JsonResponse] response for the provision request
   def provision(agent, command)
 
+    if command.kind_of? Array then
+      return provision_multiple(agent, command)
+    end
+
     command = create_spec(command)
     if command.blank? or not(command.bundle_exists? and command.command_exists?) then
       # TODO better error handling
@@ -150,6 +154,62 @@ class Provisioning < API
     end
 
     return ret
+  end
+
+  def provision_multiple(agent, commands)
+
+    # gather all command specs and their deps
+    specs = []
+    commands.each do |command|
+      spec = create_spec(command)
+      if spec.blank? or not(spec.bundle_exists? and spec.command_exists?) then
+        # TODO better error handling
+        raise "error: tried to provision invalid bundle or command" + (spec ? "\n" + spec.to_s : "")
+      end
+      specs << [ spec ] + get_dependent_bundles(spec)
+    end
+    specs = specs.flatten.uniq{ |c| c.repo + "-" + c.bundle }.reverse
+
+    all_files = {}
+    specs.each { |spec| all_files[spec.bundle] = spec.load_digest["files"] }
+
+    cmd = CommandSpec.new({
+      :repo    => "vendor",
+      :bundle  => "system/provisioning",
+      :command => "get_bundles.rb",
+      :stdin   => all_files.to_json
+    }).to_hash
+
+    ret = exec_api(agent, "shell_exec", cmd)
+    if ret.success? or ret.code != 404 then
+      # succeeded or a failure besides 404 (which we can't handle)
+      return ret
+    end
+
+
+    # system/provisioning bundle is out of date. try to update it
+    if ret.message !~ /digest does not match \('(.*?)' !=/ then
+      logger.warn { "provision failed with an unknown error: #{ret.message}"}
+      return ret
+    end
+    ret = provision_self(agent, $1)
+    logger.debug { "system/provisioning updated! continuing..." }
+
+
+    # try again
+    return exec_api(agent, "shell_exec", cmd)
+  end
+
+  def provision_self(agent, fake_digest)
+    logger.debug { "provision failed, will try to provision system/provisioning first" }
+
+    # fake the digest in the provision call
+    spec_self = create_provision_command(create_provision_command({}))
+    spec_self[:digest] = fake_digest
+    ret = exec_api(agent, "shell_exec", spec_self)
+    if not ret.success? then
+      return ret # bail out. can't even provision ourselves!
+    end
   end
 
 end
