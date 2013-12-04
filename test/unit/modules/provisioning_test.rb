@@ -120,11 +120,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
   end
 
   def test_provision_multiple_bundles
-    stub_api.expect{ |agent, op, params|
-      files = params[:stdin]
-      params[:command] == "get_bundles.rb" && !files.blank? && files.include?("test_dep") &&
-        files.include?("test_bundle_with_dep") && files["test_dep"].first["file"] == "lib/test_lib.rb"
-    }.returns(JsonResponse.new("success")).times(1)
+    stub_multiple()
 
     @cmd.bundle = "test_bundle_with_dep"
     Bixby::Provisioning.new.provision(@agent, [@cmd])
@@ -132,14 +128,25 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
     assert_api_requests
   end
 
+  # Stub a request to get_bundles.rb with the given response
+  def stub_multiple(res=nil)
+    res ||= JsonResponse.new("success")
+
+    stub_api.expect{ |agent, op, params|
+      bundles = params[:stdin]
+      params[:command] == "get_bundles.rb" &&
+        !bundles.blank? &&
+        bundles.include?("test_dep") &&
+        bundles.include?("test_bundle_with_dep") &&
+        bundles["test_dep"]["repo"] == "vendor" &&
+        bundles["test_dep"]["files"].first["file"] == "lib/test_lib.rb"
+    }.returns(res).times(1)
+  end
+
   def test_provision_multiple_bundles_with_self
 
     # 1. request to provision multiple
-    stub_api.expect{ |agent, op, params|
-      files = params[:stdin]
-      params[:command] == "get_bundles.rb" && !files.blank? && files.include?("test_dep") &&
-        files.include?("test_bundle_with_dep") && files["test_dep"].first["file"] == "lib/test_lib.rb"
-    }.returns(JsonResponse.new("fail", "bundle not found: digest does not match ('my_old_hash_XXXX' != 'yyyy')", nil, 404))
+    stub_multiple(JsonResponse.new("fail", "bundle not found: digest does not match ('my_old_hash_XXXX' != 'yyyy')", nil, 404))
 
     # 2. provision self
     stub_api.expect{ |agent, op, params|
@@ -148,11 +155,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
     }.returns(JsonResponse.new("success"))
 
     # 3. repeat of first
-    stub_api.expect{ |agent, op, params|
-      files = params[:stdin]
-      params[:command] == "get_bundles.rb" && !files.blank? && files.include?("test_dep") &&
-        files.include?("test_bundle_with_dep") && files["test_dep"].first["file"] == "lib/test_lib.rb"
-    }.returns(JsonResponse.new("success"))
+    stub_multiple()
 
     @cmd.bundle = "test_bundle_with_dep"
     ret = Bixby::Provisioning.new.provision(@agent, [@cmd])

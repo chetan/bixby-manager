@@ -171,7 +171,7 @@ class Provisioning < API
     specs = specs.flatten.uniq{ |c| c.repo + "-" + c.bundle }.reverse
 
     all_files = {}
-    specs.each { |spec| all_files[spec.bundle] = spec.load_digest["files"] }
+    specs.each { |spec| all_files[spec.bundle] = {:repo => spec.repo, :files => spec.load_digest["files"]} }
 
     cmd = CommandSpec.new({
       :repo    => "vendor",
