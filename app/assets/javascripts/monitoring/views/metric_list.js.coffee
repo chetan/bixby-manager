@@ -39,7 +39,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           drawCallback: (g, isInitial) ->
             return if isInitial || blockRedraw
             blockRedraw = true
-            range = g.xAxisRange();
+            range = g.xAxisRange()
             metrics.each (m) ->
               # redraw all graphs except the one which was panned
               if m.graph && m.graph != g
@@ -51,7 +51,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
         s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
         metric.graph = Bixby.monitoring.render_metric(s, metric, opts)
-        metric.graph._bixby_mode = "pan" # on panning in list view, no zoom
+        metric.graph._bixby_mode = "pan" if metric.graph? # on panning in list view, no zoom
 
         # fired when panning is completed on the given graph
         # update all other graphs with more data
