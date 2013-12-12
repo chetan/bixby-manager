@@ -25,9 +25,14 @@ _.split = (str, regex) ->
     return []
   return str.split(regex)
 
-# Check whether the given element is in the current viewport
+# Check whether the given element is visible in the current viewport
 #
 # via: http://stackoverflow.com/questions/487073/check-if-element-is-visible-after-scrolling#488073
+#
+# @param [Element] el
+# @param [Boolean] partial          Whether or not to test for partial visibility (default: false)
+#
+# @return [Boolean] true if element is visible
 _.isScrolledIntoView = (el, partial) ->
   docViewTop = $(window).scrollTop()
   docViewBottom = docViewTop + $(window).height()
@@ -42,6 +47,7 @@ _.isScrolledIntoView = (el, partial) ->
   else
     # check if the entire element is visible
     return ((elBottom <= docViewBottom) && (elTop >= docViewTop))
+
 
 _.icon = (icon) ->
   "<i class='fa fa-#{icon}'></i>"
