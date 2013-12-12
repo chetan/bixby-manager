@@ -319,6 +319,15 @@ class Stark.View extends Backbone.View
   # include            Raw include of the contents of some other template (used in templates)
   # include_partial    Create partial class and return HTML (used in templates)
   # partial            Render a partial (sub) view into the given selector (used in views)
+  #
+  #
+  # includes can be called like
+  #
+  # <%= include(...) %>
+  #  or
+  # __out__ += include(...)
+  #
+  # from within anywhere in a template
 
 
   # A raw include of the contents of some other template. It will be bound with

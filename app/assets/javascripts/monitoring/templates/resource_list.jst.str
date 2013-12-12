@@ -7,48 +7,15 @@
   <a class="btn primary add_trigger_link" host_id="<%= host.get('id') %>">Add Trigger</a>
 </p>
 
-<% if (checks.length == 0) { %>
+<% if (checks.length = 0) { %>
 
   <p>No checks have been configured</p>
 
 <%
 } else {
   checks.each(function(check) {
-%>
-    <div class="check" check_id="<%= check.id %>">
-      <h4><%= check.get("name") %></h4>
-
-      <%= include("monitoring/_check_args", {check: check}) %>
-
-      <div class="spacer">&nbsp;</div>
-<%
-    var c_metrics = metrics.filter(function(m) { return m.get("check_id") == check.id });
-    _.each(c_metrics, function(metric) {
-%>
-
-<div class="metric" metric_id="<%= metric.id %>">
-  <h5 class="title">
-    <a class="metric"
-       check_id="<%= check.id %>"
-       metric_id="<%= metric.id %>"
-       host_id="<%= check.get('host_id') %>"
-       ><%= metric.display_name() %></a>
-  </h5>
-  <div class="graph_container">
-    <div class="graph"></div>
-  </div>
-  <h6 class="footer">
-    Last Value: n/a
-  </h6>
-</div>
-
-<%
-    }); // each metric
-%>
-    <div class="spacer">&nbsp;</div>
-  </div>
-<%
-  }); // each check
+    __out__ += include_partial(Bixby.view.monitoring.Check, {check: check})
+  });
 }
 %>
 

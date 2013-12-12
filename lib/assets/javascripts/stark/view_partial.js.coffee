@@ -42,7 +42,7 @@ class Stark.Partial extends Stark.View
 
     # unless first element is a tr, wrap in a span
     first = @$el.children().first()
-    if @wrap && first[0].tagName != "TR"
+    if @wrap && first && first[0].tagName != "TR"
       @$el.html( "<span id='#{@id}'>" + @$el.html() + "</span>" )
     else
       first.attr("id", @id)

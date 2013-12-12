@@ -1,0 +1,20 @@
+
+<div class="metric" metric_id="<%= metric.id %>">
+
+  <h5 class="title">
+    <a class="metric"
+       check_id="<%= check.id %>"
+       metric_id="<%= metric.id %>"
+       host_id="<%= check.get('host_id') %>"
+       ><%= metric.display_name() %></a>
+  </h5>
+
+  <div class="graph_container">
+    <div class="graph"></div>
+  </div>
+
+  <h6 class="footer">
+    Last Value: n/a
+  </h6>
+
+</div>
