@@ -5,6 +5,15 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     className: "metric"
     template: "monitoring/_metric"
 
+    events: {
+      "mousedown canvas": (e) ->
+        # find matching canvas/graph
+        metrics = @metrics
+        metrics.each (m) ->
+          if m.graph && m.graph.canvas_ == e.target
+            metrics._last_click = m.graph # store it so we can use it to filter redraws
+    }
+
     after_render: ->
 
       metrics = @metric.collection
@@ -12,10 +21,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       # sync panning all graphs on page
       opts = {
         drawCallback: (g, isInitial) ->
-          console.log "drawCallback"
-          return if isInitial || metrics._blockRedraw
-          console.log "looking for redraw targets"
+          # only process this callback after the initial draw and
+          # only for the graph which was clicked
+          return if isInitial || metrics._blockRedraw || metrics._last_click != g
           metrics._blockRedraw = true
+
           range = g.xAxisRange()
           metrics.each (m) ->
             # redraw all graphs except the one which was panned (g)
