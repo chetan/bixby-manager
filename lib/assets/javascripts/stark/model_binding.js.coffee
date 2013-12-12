@@ -46,10 +46,10 @@ class Stark.ModelBinding
     #   @log "redrawing view: ", @
     #   @redraw()
 
-    @onR view, "destroy", ->
-      @log "redraw handler fired (destroy) due to model binding on: ", model
-      @log "redrawing view: ", @
-      @redraw()
+    # @onR view, "destroy", ->
+    #   @log "redraw handler fired (destroy) due to model binding on: ", model
+    #   @log "redrawing view: ", @
+    #   @redraw()
 
   unbind_view: (view) ->
     @bound_views = _.reject(@bound_views, (v) -> v == view)
