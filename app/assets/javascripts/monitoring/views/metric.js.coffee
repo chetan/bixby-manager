@@ -41,16 +41,18 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       @metric.graph._bixby_mode = "pan" # only panning in list view, no zoom
 
       @metric.graph._bixby_pan_start = ->
-        console.log "setting last click", metrics._last_click
         metrics._last_click = @ # store it so we can use it to filter redraws
+        metrics._last_click_range = @xAxisRange()
 
       # fired when panning is completed on the given graph
       # update all other graphs with more data
       #
       # @param [Dygraph] g        the graph which was just panned
       @metric.graph._bixby_pan_complete = ->
-        console.log "PAN COMPLETE!"
-        metrics._last_click = null
+        # bail if X range did not change
+        return if @xAxisRange()[0] == metrics._last_click_range[0]
+        metrics._last_click = metrics._last_click_range = null
+
         metrics.each (m) ->
           if m.graph && m.graph != @
             if _.isScrolledIntoView(m.graph._bixby_el, true)
