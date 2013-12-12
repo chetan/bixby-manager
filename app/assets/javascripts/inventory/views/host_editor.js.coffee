@@ -37,6 +37,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
             if confirmed
               v.host.destroy()
               v.hide_editor()
+              v.transition "inventory"
             else
               v.$el.modal("show")
           })

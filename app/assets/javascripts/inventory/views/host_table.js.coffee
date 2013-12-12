@@ -15,6 +15,9 @@ namespace "Bixby.view.inventory", (exports, top) ->
         @$("#addHostModal input.install").focus()
 
     render: ->
+      if @hosts.length == 0
+        return @transition "getting_started"
+
       @new_hosts = @hosts.filter (h) -> h.is_new()
       @other_hosts = @hosts.filter (h) -> !h.is_new()
       @query ?= "" # set default val
