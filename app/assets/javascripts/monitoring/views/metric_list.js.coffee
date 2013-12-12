@@ -51,7 +51,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
         s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
         metric.graph = Bixby.monitoring.render_metric(s, metric, opts)
-        metric.graph._bixby_mode = "pan" if metric.graph? # on panning in list view, no zoom
+
+        return if !metric.graph?
+
+        metric.graph._bixby_mode = "pan" # on panning in list view, no zoom
 
         # fired when panning is completed on the given graph
         # update all other graphs with more data
