@@ -96,7 +96,7 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
   xvf = xOptView('valueFormatter')
   opts = {
     highlightCallback: (e, x, pts, row) ->
-      date = xvf(x, xOptView, "", g) + ", " + sprintf("val = %0.2f%s", pts[0].yval, unit)
+      date = xvf(x, xOptView, "", g) + ", " + sprintf("val = %0.2f%s", pts[0].yval, unit_label)
       footer.text(date)
 
     unhighlightCallback: (e) ->
