@@ -88,7 +88,7 @@ class Stark.View extends Backbone.View
   dispose: ->
     @log "disposing of view ", @
     @$el.html("")
-    @stopListening();
+    @stopListening()
     @unstickit()
     @unbind_app_events()
     @undelegateEvents()
@@ -98,7 +98,9 @@ class Stark.View extends Backbone.View
     @views = []
 
 
+
   # Rendering methods
+  # ================================================================================================
 
   # Default implementation of Backbone.View's render() method. Simply renders
   # the @template into the element defined by @selector.
@@ -161,7 +163,9 @@ class Stark.View extends Backbone.View
     @[key] = val
 
 
-  # Events
+
+  # DOM Events & model binding
+  # ================================================================================================
 
   # Bind all events
   bind_events: ->
@@ -306,11 +310,20 @@ class Stark.View extends Backbone.View
 
 
 
+
   # Methods dealing with partials, includes, etc.
+  # ================================================================================================
+
+  # Summary:
+  #
+  # include            Raw include of the contents of some other template (used in templates)
+  # include_partial    Create partial class and return HTML (used in templates)
+  # partial            Render a partial (sub) view into the given selector (used in views)
+
 
   # A raw include of the contents of some other template. It will be bound with
   # the the same variables in this view.
-  # The target template is rendered as plain text with no  events or other bindings.
+  # The target template is rendered as plain text with no events or other bindings.
   #
   # NOTE: This should be called from within a template
   #
@@ -381,7 +394,9 @@ class Stark.View extends Backbone.View
     return v
 
 
+
   # Utility methods for use within view & view helpers
+  # ================================================================================================
 
   # Proxy for Stark.state#transition
   transition: (state_name, state_data) ->
