@@ -1,10 +1,12 @@
 
 namespace "Bixby.view", (exports, top) ->
 
-  class exports.Confirm extends Stark.Partial
+  # opts keys:
+  # title, message, shown_cb, hidden_cb
+  class exports.Confirm extends Stark.View
 
     tagName: "div"
-    className: "modal"
+    className: "modal confirm"
     template: "inventory/_confirm"
 
     events: {
@@ -18,18 +20,18 @@ namespace "Bixby.view", (exports, top) ->
 
     }
 
-    initialize: (title, message, shown_cb, hidden_cb) ->
-      [@title, @message] = [title, message]
-      super
-      @render()
+    after_render: ->
       v = @
-      @$el.on "shown", ->
-        if shown_cb
-          shown_cb.call(v, v.confirmed)
-      @$el.on "hidden", ->
-        if hidden_cb
-          hidden_cb.call(v, v.confirmed)
-      @$el.modal({ show: true })
+
+      if v.options.shown_cb
+        @$el.on "shown", ->
+          v.options.shown_cb.call(v, v.confirmed)
+
+      if v.options.hidden_cb
+        @$el.on "hidden", ->
+          v.options.hidden_cb.call(v, v.confirmed)
+
+      @$el.modal("show")
 
     hide: ->
       @$el.modal("hide")

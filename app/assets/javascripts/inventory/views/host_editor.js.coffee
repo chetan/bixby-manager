@@ -28,7 +28,19 @@ namespace "Bixby.view.inventory", (exports, top) ->
       "click button.delete": (e) ->
         e.preventDefault()
         @hide_editor()
-        c = new Bixby.view.Confirm("Delete?", "Are you sure you want to delete this host?", null, @confirm_delete)
+        v = @
+        c = new Bixby.view.Confirm({
+          title: "Delete?",
+          message: "Are you sure you want to delete this host?",
+          show_cb: null,
+          hidden_cb: (confirmed) ->
+            if confirmed
+              v.host.destroy()
+              v.hide_editor()
+            else
+              v.$el.modal("show")
+          })
+        c.render()
 
       # save (on enter)
       "keyup input.alias": (e) ->
@@ -36,12 +48,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
           e.preventDefault()
           @save_edits()
     }
-
-    confirm_delete: (confirmed) ->
-      if confirmed
-        @delete_host()
-      else
-        @$el.modal("show")
 
     hide_editor: ->
       @$el.modal("hide")
@@ -56,10 +62,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
       if @host.hasChanged()
         @host.save()
 
-      @hide_editor()
-
-    delete_host: ->
-      @host.destroy()
       @hide_editor()
 
     after_render: ->
