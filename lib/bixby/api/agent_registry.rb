@@ -23,6 +23,7 @@ module Bixby
         agents[agent.id] = api
         # TODO don't piggyback sidekiq connection, just convenient for now
         Sidekiq.redis { |c| c.hset("bixby:agents", agent.id, hostname) }
+        touch_agent(agent, true)
         logger.debug { "added agent #{agent.id}; now: #{agents.keys.inspect}" }
       end
 
@@ -36,6 +37,7 @@ module Bixby
             removed += 1
             agents.delete(key)
             Sidekiq.redis { |c| c.hdel("bixby:agents", key) }
+            touch_agent(key, false)
           end
         end
         return if removed == 0
@@ -102,6 +104,17 @@ module Bixby
 
 
       private
+
+      # Update the seen/connected status
+      #
+      # @param [Agent] agent
+      # @param [Boolean] connected        whether or not the agent is connected
+      def touch_agent(agent, connected)
+        agent = Agent.find(agent) if not agent.kind_of? Agent
+        agent.last_seen_at = Time.new
+        agent.is_connected = connected
+        agent.save
+      end
 
       # Get system's hostname
       def generate_hostname

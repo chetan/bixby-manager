@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131202185704) do
+ActiveRecord::Schema.define(version: 20131212172944) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -24,18 +24,20 @@ ActiveRecord::Schema.define(version: 20131202185704) do
   add_index "actions", ["trigger_id"], name: "actions_trigger_id_fk", using: :btree
 
   create_table "agents", force: true do |t|
-    t.integer  "host_id",                                null: false
+    t.integer  "host_id",                                  null: false
     t.string   "uuid"
-    t.string   "ip",         limit: 16
-    t.integer  "port",       limit: 2,   default: 18000
+    t.string   "ip",           limit: 16
+    t.integer  "port",         limit: 2,   default: 18000
     t.text     "public_key"
-    t.string   "access_key", limit: 32,                  null: false
-    t.string   "secret_key", limit: 128,                 null: false
-    t.integer  "status",     limit: 2,   default: 0,     null: false
+    t.string   "access_key",   limit: 32,                  null: false
+    t.string   "secret_key",   limit: 128,                 null: false
+    t.integer  "status",       limit: 2,   default: 0,     null: false
     t.string   "version"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.datetime "last_seen_at"
+    t.boolean  "is_connected",             default: false
   end
 
   add_index "agents", ["host_id"], name: "fk_agents_hosts1", using: :btree
