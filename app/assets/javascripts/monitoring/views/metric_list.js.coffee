@@ -29,9 +29,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     after_render: ->
       super()
 
-      # render graphs into placeholder divs
       metrics = @metrics
-      blockRedraw = false # used to block our drawCallback when synchronizing
+
+      $(document).on "mouseup", (e) ->
+        return if !metrics._last_click? || e.target.tagName.toUpperCase() == "CANVAS"
+        g = metrics._last_click
+        g._bixby_pan_complete()
 
       # attach pan scroll helper
       $("div.graph").appear()

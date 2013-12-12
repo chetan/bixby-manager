@@ -68,6 +68,8 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
     context.initializeMouseDown(event, g, context)
 
     if event.altKey || event.shiftKey || g._bixby_mode == "pan"
+      if g._bixby_pan_start?
+        g._bixby_pan_start()
       Dygraph.startPan(event, g, context)
     else
       Dygraph.startZoom(event, g, context)
@@ -79,10 +81,10 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
 
     else if context.isPanning
       Dygraph.endPan(event, g, context)
-      Bixby.monitoring.load_more_data(g, metric)
+      # Bixby.monitoring.load_more_data(g, metric)
       if g._bixby_pan_complete?
         # fire custom callback
-        g._bixby_pan_complete(g)
+        g._bixby_pan_complete()
 
 
   ####

@@ -5,15 +5,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     className: "metric"
     template: "monitoring/_metric"
 
-    events: {
-      "mousedown canvas": (e) ->
-        # find matching canvas/graph
-        metrics = @metrics
-        metrics.each (m) ->
-          if m.graph && m.graph.canvas_ == e.target
-            metrics._last_click = m.graph # store it so we can use it to filter redraws
-    }
-
     after_render: ->
 
       metrics = @metric.collection
@@ -49,13 +40,19 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       @metric.graph._bixby_mode = "pan" # only panning in list view, no zoom
 
+      @metric.graph._bixby_pan_start = ->
+        console.log "setting last click", metrics._last_click
+        metrics._last_click = @ # store it so we can use it to filter redraws
+
       # fired when panning is completed on the given graph
       # update all other graphs with more data
       #
       # @param [Dygraph] g        the graph which was just panned
-      @metric.graph._bixby_pan_complete = (g) ->
+      @metric.graph._bixby_pan_complete = ->
+        console.log "PAN COMPLETE!"
+        metrics._last_click = null
         metrics.each (m) ->
-          if m.graph && m.graph != g
+          if m.graph && m.graph != @
             if _.isScrolledIntoView(m.graph._bixby_el, true)
               Bixby.monitoring.load_more_data(m.graph, m)
             else
