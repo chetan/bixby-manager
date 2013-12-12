@@ -75,6 +75,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         # loop through appeared elements, match up with metric graph elements, and load data if necessary
         _.each appeared, (el) ->
           metrics.each (m) ->
+            return if !m.graph
             if m.graph._bixby_el == el && m.graph._bixby_needs_more_data == true
               m.graph._bixby_needs_more_data = false
               Bixby.monitoring.load_more_data(m.graph, m)
