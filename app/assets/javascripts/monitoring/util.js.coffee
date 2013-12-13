@@ -146,10 +146,12 @@ Bixby.monitoring.load_more_data = (g, metric) ->
 
   startX = null
   if start_diff > 100000
+    # panned passed the start of the graph (left)
     startX = minX
     endX = dMinX
 
   else if end_diff > 100000
+    # panned passed the end of the graph (right)
     startX = dMaxX
     endX = maxX
 
@@ -162,6 +164,10 @@ Bixby.monitoring.load_more_data = (g, metric) ->
 
   return if startX == null
 
+  # TODO if we pan multiple times into the same area which we don't have data for
+  #      maybe avoid panning again.. though it is possible to have gaps in the data
+  #      (periods where the machine is off?)
+
   query = metric.get("query")
   new_met = new Bixby.model.Metric({
     id: metric.id
@@ -171,7 +177,7 @@ Bixby.monitoring.load_more_data = (g, metric) ->
     downsample: query.downsample || "5m-avg"
   })
   Backbone.multi_fetch [ new_met ], (err, results) ->
-    # don't replace data... add on to existing data
+    # don't replace data... add on to existing data and sort by timestamp
     all_data = g.file_.concat(new_met.tuples()).sort (a,b) ->
       return a[0] - b[0]
     g.updateOptions({ file: all_data })
