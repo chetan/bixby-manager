@@ -120,7 +120,7 @@ EOF
     host = m.check.host
     stub = stub_request(:get, /:4242/).with { |req|
       uri = req.uri.to_s
-      uri =~ /m=sum:hardware.storage.disk.free/ and uri =~ /foo=bar/ and uri =~ /cow=says%20moooo/
+      uri =~ /m=sum:5m-avg:hardware.storage.disk.free/ and uri =~ /foo=bar/ and uri =~ /cow=says%20moooo/
     }.to_return(:status => 200, :body => @body)
     ret = Bixby::Metrics.new.get_for_host(host, Time.new-86400, Time.new, {:foo=>"bar"})
     common_metric_tests(stub, ret)
@@ -137,6 +137,7 @@ EOF
   end
 
   def test_get_for_check_no_results
+    @downsample = ":5m-avg" # get_for_host/get_for_checks default to 5m-avg for newly created metrics
     m = FactoryGirl.create(:metric)
 
     stub, req = create_req("")
@@ -203,6 +204,7 @@ EOF
   end
 
   def test_get_host(host)
+    @downsample = ":5m-avg" # get_for_host/get_for_checks default to 5m-avg for newly created metrics
     stub, req = create_req()
     ret = Bixby::Metrics.new.get_for_host(host, Time.new-86400, Time.new, {:foo=>"bar"})
     common_metric_tests(stub, ret)
@@ -210,6 +212,7 @@ EOF
   end
 
   def test_get_check(check)
+    @downsample = ":5m-avg" # get_for_host/get_for_checks default to 5m-avg for newly created metrics
     stub, req = create_req()
     ret = Bixby::Metrics.new.get_for_check(check, Time.new-86400, Time.new, {:foo=>"bar"})
     common_check_tests(stub, ret)
@@ -244,7 +247,7 @@ EOF
     puts "going to return body:\n#{body}"
     stub = stub_request(:get, /:4242/).with { |req|
       uri = req.uri.to_s
-      uri =~ /m=sum:hardware.storage.disk.free/ and uri =~ /foo=bar/
+      uri =~ /m=sum#{@downsample}:hardware.storage.disk.free/ and uri =~ /foo=bar/
     }.to_return(:status => 200, :body => body)
 
     s = Time.new - 86400
