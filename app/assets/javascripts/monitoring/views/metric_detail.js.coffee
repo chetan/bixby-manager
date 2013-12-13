@@ -65,7 +65,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         @$("select#zoom_level").val("day")
 
       @graph = Bixby.monitoring.render_metric(@$("div.metric"), @metric)
-      @graph.updateOptions({ interactionModel: {} })
+      @sync_helper = new Bixby.monitoring.PanSyncHelper(@graph)
 
       if @level
         # make sure we show the entire date range
