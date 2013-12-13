@@ -29,23 +29,5 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     after_render: ->
       super()
 
-      metrics = @metrics
-
-      $(document).on "mouseup", (e) ->
-        return if !metrics._last_click? || e.target.tagName.toUpperCase() == "CANVAS"
-        g = metrics._last_click
-        g._bixby_pan_complete()
-
-      # attach pan scroll helper
-      $("div.graph").appear()
-      $(document.body).on "appear", "div.graph", _.debounceR 100, (e, appeared) ->
-        # loop through appeared elements, match up with metric graph elements, and load data if necessary
-        _.each appeared, (el) ->
-          metrics.each (m) ->
-            return if !m.graph
-            if m.graph._bixby_el == el && m.graph._bixby_needs_more_data == true
-              m.graph._bixby_needs_more_data = false
-              Bixby.monitoring.load_more_data(m.graph, m)
-
-
-      @
+      graphs = @metrics.map (m) -> m.graph
+      @sync_helper = new Bixby.monitoring.PanSyncHelper(graphs)
