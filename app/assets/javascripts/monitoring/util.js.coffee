@@ -3,22 +3,17 @@ Bixby.monitoring = {}
 
 # Render the given metric into the given selector
 #
-# s: CSS selector root for locating graph, ex:
-#
-#   s = ".check[check_id=" + metric.get("check_id") + "] .metric[metric_id='" + metric.id + "']"
-#
+# div: parent div container for the metric, e.g., <div class="metric">
 # metric: Metric model instance
 # opts: extra opts for graph [optional]
-Bixby.monitoring.render_metric = (s, metric, opts) ->
-
-  el = $(s + " .graph")[0]
+Bixby.monitoring.render_metric = (div, metric, opts) ->
 
   vals = metric.tuples()
   if !vals || vals.length == 0
     return
 
   # draw footer: "Last Value: 20.32%" or "Last Value: 3541 GB"
-  footer = $(s + " .footer")
+  footer = $(div).find(".footer")
   unit = metric.get("unit")
   unit_label = ""
   if unit?
@@ -39,7 +34,7 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
     legend: "never"
   }, opts)
 
-  gc = $(s + " .graph_container")
+  gc = $(div).find(".graph_container")
   opts.width = gc.width()
   opts.height = gc.height()
 
@@ -89,6 +84,7 @@ Bixby.monitoring.render_metric = (s, metric, opts) ->
 
   ####
   # draw
+  el = $(div).find(".graph")[0]
   g = new Dygraph(el, vals, opts)
   g._bixby_el = el
   g._bixby_mode = "zoom"

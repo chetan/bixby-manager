@@ -33,8 +33,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         }
 
       # selector for drawing the graph into
-      s = ".check[check_id=" + @metric.get("check_id") + "] .metric[metric_id='" + @metric.id + "']"
-      @metric.graph = Bixby.monitoring.render_metric(s, @metric, opts)
+      @metric.graph = Bixby.monitoring.render_metric(@$el, @metric, opts)
 
       return if !@metric.graph?
 

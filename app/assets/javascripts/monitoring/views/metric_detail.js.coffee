@@ -64,8 +64,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       else if query.start == 0 && query.end == 0
         @$("select#zoom_level").val("day")
 
-      s = ".metric[metric_id='" + @metric.id + "']"
-      @graph = Bixby.monitoring.render_metric(s, @metric)
+      @graph = Bixby.monitoring.render_metric(@$("div.metric"), @metric)
       @graph.updateOptions({ interactionModel: {} })
 
       if @level
