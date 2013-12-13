@@ -7,7 +7,7 @@
   <a class="btn primary add_trigger_link" host_id="<%= host.get('id') %>">Add Trigger</a>
 </p>
 
-<% if (checks.length = 0) { %>
+<% if (checks.length == 0) { %>
 
   <p>No checks have been configured</p>
 
