@@ -172,9 +172,9 @@ class Stark.View extends Backbone.View
     @bind_app_events()
     @bind_link_events()
     @bind_models()
-    @after_render()
     _.eachR @, @after_render_hooks, (hook) ->
       hook.call(@)
+    @after_render()
 
   # Process @links hash and attach events
   bind_link_events: ->
