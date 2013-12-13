@@ -59,7 +59,7 @@ EOF
     m.created_at = m.created_at - 86400 # force it to be "old"
     m.save
 
-    stub2, req2 = create_req(@body2, false)
+    stub2, req2 = create_req(@body2, "")
     stub1, req1 = create_req(@body1)
     metrics = Metric.metrics_for_host(@host, nil, nil, req1[:tags])
     assert_requested(stub1)
@@ -68,7 +68,7 @@ EOF
   end
 
   def test_metrics_for_host_no_downsample_new_metric
-    stub, req = create_req(@body2, false)
+    stub, req = create_req(@body2, ":5m-avg")
     metrics = Metric.metrics_for_host(@host, nil, nil, req[:tags])
     assert_requested(stub)
     common_tests(metrics)
@@ -92,10 +92,10 @@ EOF
     %w{x y}.each { |k| assert m["data"].first.include? k }
   end
 
-  def create_req(body, downsample=true)
+  def create_req(body, downsample=":1h-avg")
     stub = stub_request(:get, /:4242/).with { |req|
       uri = req.uri.to_s
-      m = "m=sum" + (downsample ? ":1h-avg" : "") + ":hardware.storage.disk.free"
+      m = "m=sum#{downsample}:hardware.storage.disk.free"
       uri =~ /#{m}/ and uri =~ /foo=bar/
     }.to_return(:status => 200, :body => body)
 
