@@ -7,4 +7,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     after_render: ->
       @metric.graph = Bixby.monitoring.render_metric(@$el, @metric, {})
-      @metric.graph._bixby_mode = "pan" if @metric.graph # only panning in list view, no zoom
+      return if !@metric.graph
+
+      @metric.graph._bixby_mode = "pan" # only panning in list view, no zoom
+      # @metric.graph._bixby_show_spinner = true # use a spinner in list view
