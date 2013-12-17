@@ -12,6 +12,15 @@ is_zeus_slave = ($0 =~ /zeus slave/)
 if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   not(Module.const_defined?(:Spork))) then
 
+  # Disable logging to STDOUT when running rake commands
+  if $0 =~ /rake/ then # && ARGV.find{ |a| a =~ /(bixby|\-T)/ } then
+    logger = Logging.logger.root
+    old_log_appenders = logger.appenders
+    logger.clear_appenders
+    logger.add_appenders(old_log_appenders.reject{ |a| a.kind_of? Logging::Appenders::Stdout })
+    Rails.logger.warn("Removed STDOUT appender since we are running in rake")
+  end
+
   Rails.logger.info "Bootstrapping BIXBY"
 
   require 'bixby'
