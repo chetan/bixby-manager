@@ -14,7 +14,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
         # modify button to display spinner
         $("button.refresh-facts").addClass("disabled")
         $("button.refresh-facts i").css({visibility: "hidden"})
-        @spinner = new Bixby.view.Spinner($("button.refresh-facts"), { length: 3, width: 2, radius: 2, top: 'auto', left: '-10px' })
+        @spinner = new Bixby.view.Spinner($("button.refresh-facts"), { length: 3, width: 2, radius: 2, top: '-10px', left: '0' })
 
         view = @
         $.getJSON "/rest/hosts/" + @host.id + "/update_facts",

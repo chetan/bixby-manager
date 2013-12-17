@@ -258,6 +258,8 @@ Bixby.monitoring.load_more_data = (g) ->
   #      maybe avoid panning again.. though it is possible to have gaps in the data
   #      (periods where the machine is off?)
 
+  spinner = Bixby.monitoring.show_spinner(g)
+
   metric = g._bixby_metric
   query = metric.get("query")
   new_met = new Bixby.model.Metric({
@@ -272,3 +274,23 @@ Bixby.monitoring.load_more_data = (g) ->
     all_data = g.file_.concat(new_met.tuples()).sort (a,b) ->
       return a[0] - b[0]
     g.updateOptions({ file: all_data })
+    Bixby.monitoring.hide_spinner(g, spinner)
+
+# Dim the graph and show a spinner
+Bixby.monitoring.show_spinner = (g) ->
+  el = g._bixby_el
+  _.dim(el)
+
+  spin_opts = {
+    lines:     13,
+    length:    20,
+    width:     10,
+    top:       0-$(el).height()/2 + "px",
+    left:      $(el).width()/2-30 + "px"
+  }
+  return new Bixby.view.Spinner($(el).parent(), spin_opts)
+
+# Undim and hide the spinner
+Bixby.monitoring.hide_spinner = (g, spinner) ->
+  spinner.stop()
+  _.undim(g._bixby_el)

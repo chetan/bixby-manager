@@ -1,40 +1,47 @@
 namespace "Bixby.view", (exports, top) ->
 
   class exports.Spinner extends Stark.View
-    opts:
-      lines: 12
-      length: 7
-      width: 4
-      radius: 10
-      color: '#000'
-      speed: 1
-      trail: 60
-      shadow: false
-      hwaccel: false
-      className: 'spinner'
-      zIndex: 2e9
-      top: '0'
-      left: '0'
+
+    default_opts:
+      lines:     12,        # The number of lines to draw
+      length:    7,         # The length of each line
+      width:     4,         # The line thickness
+      radius:    30,        # The radius of the inner circle
+      corners:   1,         # Corner roundness (0..1)
+      rotate:    0,         # The rotation offset
+      direction: 1,         # 1: clockwise, -1: counterclockwise
+      color:     '#000',    # #rgb or #rrggbb or array of colors
+      speed:     1,         # Rounds per second
+      trail:     60,        # Afterglow percentage
+      shadow:    false,     # Whether to render a shadow
+      hwaccel:   false,     # Whether to use hardware acceleration
+      className: 'spinner', # The CSS class to assign to the spinner
+      zIndex:    2e9,       # The z-index (defaults to 2000000000)
+      top:       '0',       # Top position relative to parent in px
+      left:      '0'        # Left position relative to parent in px
 
     initialize: (target, opts) ->
-      super
+      super(null) # don't pass args
 
       if _.isArray(target)
         target = target[0]
-
-      if opts?
-        _.eachR @, _.keys(opts), (key) ->
-          @opts[key] = opts[key]
-
       @target = $(target)
-      @render(@target)
+
+      @opts = _.extend({}, @default_opts, opts)
+      @render()
 
     render: (target) ->
-      @target = $(target)
-      @spinner = new window.Spinner(@opts).spin()
-      @target.append(@spinner.el)
+      if target?
+        @target = $(target)
+      @spinner = new window.Spinner(@opts)
+      @start()
       @
+
+    start: ->
+      @spinner.spin()
+      $(@spinner.el).css({top: @opts.top, left: @opts.left})
+      @target.append(@spinner.el)
 
     stop: ->
       @spinner.stop()
-      @target.height("auto")
+      # @target.height("auto")

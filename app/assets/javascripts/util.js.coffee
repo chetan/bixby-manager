@@ -121,3 +121,16 @@ _.getMatches = (string, regex, index) ->
   while (match = regex.exec(string))
     matches.push(match[index])
   return matches
+
+# Dim the given element
+_.dim = (el) ->
+  if !el.length?
+    el = $(el)
+  el[0]._bg_color = el.css("background-color")
+  el.css({"background-color": "black", "opacity": 0.3})
+
+# Undim the given element
+_.undim = (el) ->
+  if !el.length?
+    el = $(el)
+  el.css({"background-color": el[0]._bg_color, "opacity": 1})
