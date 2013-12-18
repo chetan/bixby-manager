@@ -19,6 +19,13 @@ namespace 'Bixby.model', (exports, top) ->
         s += "&downsample=" + @get("downsample")
       return s
 
+    display_tags: ->
+      label = @get("label")
+      return if label? && label.match(/\$/) # skip labels with vars
+      tags = _.omit(@get("tags"), ["tenant_id", "org_id", "host_id", "host", "check_id"])
+      _.map(tags, (v, k) -> "#{k}=#{v}").join(", ")
+
+
     # Get the display name
     # e.g., "Disk Usage (%)"
     display_name: ->

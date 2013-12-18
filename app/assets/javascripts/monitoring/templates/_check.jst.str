@@ -8,7 +8,21 @@
 
   <%
       var c_metrics = metrics.filter(function(m) { return m.get("check_id") == check.id });
+      var info;
       _.each(c_metrics, function(metric) {
+        var tags = metric.display_tags();
+        var show_tags = false;
+        if (info != tags) {
+          info = tags;
+          show_tags = true;
+        }
+
+        if (show_tags && tags) { %>
+          <div class="spacer">&nbsp;</div>
+          <h5 class=""><%= tags %></h5>
+  <%
+        }
+
         __out__ += include_partial(Bixby.view.monitoring.Metric, {check: check, metric: metric})
       });
   %>
