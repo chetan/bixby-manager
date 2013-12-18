@@ -1,5 +1,5 @@
 
 <!-- display check arguments -->
-<% if (check.get("args")) { %>
-  <h5 class="args"><%= check.args_str() %></h5>
+<% if (check.has_args()) { %>
+  <h5 class="args">ARGS: <%= check.args_str() %></h5>
 <% } %>

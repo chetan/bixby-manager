@@ -14,6 +14,9 @@ namespace 'Bixby.model', (exports, top) ->
         s += "?metric_id=" + @metric_id
       return s
 
+    has_args: ->
+      @get("args")? && !_.isEmpty(@get("args"))
+
     # Return args as a comma-separated string of "key = value" pairs
     args_str: ->
       args = @get("args")
