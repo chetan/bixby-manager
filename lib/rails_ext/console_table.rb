@@ -5,11 +5,18 @@ module Bixby
   module RailsExt
     module ConsoleTable
 
-      def self.to_table(rows, columns)
+      def self.to_table(rows, columns, truncate=false)
         table = Terminal::Table.new do |t|
           t.headings = columns.map{ |c| c.name }
           rows.each do |row|
-            t << columns.map { |c| row.send(c.name.to_sym) }
+            t << columns.map { |c|
+              col = c.name
+              val = row.send(col.to_sym)
+              if truncate && (col =~ /_(key|token)$/ || col =~ /_?password$/) then
+                val = val.blank?() ? val : val[0,3] + "...[snip]"
+              end
+              val
+            }
           end
         end
         puts table
@@ -17,8 +24,8 @@ module Bixby
 
       module Relation
         # Dump all objects in this relation as a table
-        def to_table
-          ConsoleTable.to_table(self.to_a, self.columns)
+        def to_table(truncate=true)
+          ConsoleTable.to_table(self.to_a, self.columns, truncate)
         end
       end # Relation
 
@@ -54,8 +61,8 @@ module Bixby
 
         module InstanceMethods
           # Dump this single object as a table
-          def to_table
-            ConsoleTable.to_table([self], self.class.columns)
+          def to_table(truncate=true)
+            ConsoleTable.to_table([self], self.class.columns, truncate)
           end
 
           def describe
