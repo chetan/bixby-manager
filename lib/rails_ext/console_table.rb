@@ -5,16 +5,20 @@ module Bixby
   module RailsExt
     module ConsoleTable
 
+      def self.to_table(rows, columns)
+        table = Terminal::Table.new do |t|
+          t.headings = columns.map{ |c| c.name }
+          rows.each do |row|
+            t << columns.map { |c| row.send(c.name.to_sym) }
+          end
+        end
+        puts table
+      end
+
       module Relation
         # Dump all objects in this relation as a table
         def to_table
-          table = Terminal::Table.new do |t|
-            t.headings = self.columns.map{ |c| c.name }
-            self.each do |row|
-              t << self.columns.map { |c| row.send(c.name.to_sym) }
-            end
-          end
-          puts table
+          ConsoleTable.to_table(self.to_a, self.columns)
         end
       end # Relation
 
@@ -51,11 +55,7 @@ module Bixby
         module InstanceMethods
           # Dump this single object as a table
           def to_table
-            table = Terminal::Table.new do |t|
-              t.headings = self.class.columns.map{ |c| c.name }
-              t << self.class.columns.map { |c| self.send(c.name.to_sym) }
-            end
-            puts table
+            ConsoleTable.to_table([self], self.class.columns)
           end
 
           def describe
