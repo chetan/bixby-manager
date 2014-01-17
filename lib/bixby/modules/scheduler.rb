@@ -93,3 +93,5 @@ require 'bixby/modules/scheduler/driver'
 require 'bixby/modules/scheduler/job'
 require 'bixby/modules/scheduler/recurring_job'
 require 'bixby/modules/scheduler/resque' if Bixby::Scheduler.drivers.empty?
+
+require 'bixby/modules/scheduler/defer'
