@@ -120,8 +120,11 @@ module Bixby
           # when an agent is upgraded to >= 0.2.0 and we don't know the version # yet
           # just assume it's at least 0.2.0 (the first to support websockets)
           # then schedule a version update in a few seconds
+          #
+          # also force the monitoring config to be updated so we can install the new service script
           agent.version = "0.2.0"
           Bixby::Inventory.defer(10).update_version(agent.host.id)
+          Bixby::Monitoring.defer(20).update_check_config(agent.id)
         end
 
         agent.save
