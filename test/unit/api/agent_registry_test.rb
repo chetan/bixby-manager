@@ -12,6 +12,7 @@ module Bixby
         super
         @agent = FactoryGirl.create(:agent)
         @chan = MockAPIChannel.new
+        Bixby::Scheduler.driver = Bixby::Scheduler::Sidekiq
       end
 
       def teardown
