@@ -3,6 +3,9 @@ require 'helper'
 require 'setup/mock_api_channel'
 require 'setup/sidekiq_mock_redis'
 
+require "bixby/modules/scheduler"
+require "bixby/modules/scheduler/sidekiq"
+
 module Bixby
   module Test
 
