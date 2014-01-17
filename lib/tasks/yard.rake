@@ -11,6 +11,5 @@ begin
   end
 
 rescue LoadError
-  warn "yard not available, documentation tasks not provided."
 end
 

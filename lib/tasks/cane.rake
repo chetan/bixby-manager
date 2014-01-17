@@ -10,5 +10,4 @@ begin
   end
 
 rescue LoadError
-  warn "cane not available, quality task not provided."
 end
