@@ -54,6 +54,10 @@ module Bixby
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
+    # http://stackoverflow.com/questions/20361428/rails-i18n-validation-deprecation-warning
+    config.i18n.enforce_available_locales = true
+    I18n.config.enforce_available_locales = true
+
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
