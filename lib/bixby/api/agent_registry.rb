@@ -113,6 +113,17 @@ module Bixby
         agent = Agent.find(agent) if not agent.kind_of? Agent
         agent.last_seen_at = Time.new
         agent.is_connected = connected
+
+        if connected && agent.version.blank? then
+          # hack to get the proper version # for upgraded hosts
+          #
+          # when an agent is upgraded to >= 0.2.0 and we don't know the version # yet
+          # just assume it's at least 0.2.0 (the first to support websockets)
+          # then schedule a version update in a few seconds
+          agent.version = "0.2.0"
+          Bixby::Inventory.defer(10).update_version(agent.host.id)
+        end
+
         agent.save
       end
 
