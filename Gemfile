@@ -108,14 +108,16 @@ group :assets do
     gem 'font-awesome-rails'
     gem 'sprockets-font_compressor', :require => false
 
-    # needed for messing with asset tasks
-    gem 'rake-hooks', :require => false
-
     # execjs prefers ruby racer (needed by uglifier and coffee-script)
     # added due to sudden segfaulting with nodejs driver
     gem 'execjs'
     gem 'therubyracer', :platforms => [:mri, :rbx]
     gem 'therubyrhino', :platforms => [:jruby]
+end
+
+group :assets, :development do
+  # needed for messing with asset tasks
+  gem 'rake-hooks', :require => false
 end
 
 group :development do
@@ -167,7 +169,6 @@ end
 group :test do
 
   # test tools (frameworks, mock, runners, etc)
-  gem 'rake-hooks', :require => false
   gem 'webmock', :require => false
   gem "minitest", "~>4.7", :require => false
   gem 'mocha', :require => false
