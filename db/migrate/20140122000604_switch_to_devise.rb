@@ -10,7 +10,7 @@ class SwitchToDevise < ActiveRecord::Migration
     add_column :users, :confirmation_token, :string, :limit => 255
     add_column :users, :confirmed_at, :timestamp
     add_column :users, :confirmation_sent_at, :timestamp
-    execute "UPDATE users SET confirmed_at = now(), confirmation_sent_at = now()"
+    execute "UPDATE users SET confirmed_at = current_timestamp, confirmation_sent_at = current_timestamp"
     add_column :users, :unconfirmed_email, :string, :limit => 255
 
     ## Recoverable
