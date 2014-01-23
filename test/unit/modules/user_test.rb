@@ -17,17 +17,18 @@ class Bixby::Test::Modules::User < Bixby::Test::TestCase
 
   def test_create_user
     o = FactoryGirl.create(:org)
-    u = Bixby::User.new.create_user(o.tenant.id, "John Doe", "jdoe", "secret", "jdoe@example.com")
+    u = Bixby::User.new.create_user(o.tenant.id, "John Doe", "jdoe", "secret123", "jdoe@example.com")
     assert u
 
     assert_throws(Bixby::API::Error) do
-      Bixby::User.new.create_user(o.tenant.id, "John Doe", "jdoe", "secret", "jdoe@example.com")
+      Bixby::User.new.create_user(o.tenant.id, "John Doe", "jdoe", "secret123", "jdoe@example.com")
     end
 
     u = User.where(:username => "jdoe").first
     assert u
     refute u.phone
-    assert SCrypt::Password.new(u.crypted_password) == "secret"
+    assert Devise::Encryptable::Encryptors::Scrypt.compare(
+      u.encrypted_password, "secret123", nil, u.password_salt, Devise.pepper)
     assert_equal o, u.org
   end
 

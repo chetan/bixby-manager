@@ -57,6 +57,7 @@ class User < API
     u.password = password
     u.password_confirmation = password
     u.phone = phone
+    u.skip_confirmation!
     u.save!
 
    return u

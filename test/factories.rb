@@ -100,8 +100,11 @@ FactoryGirl.define do
     association :org
     username { generate(:username) }
     email { generate(:email_id) }
-    password "foobar"
-    password_confirmation "foobar"
+    password "foobar123"
+    password_confirmation "foobar123"
+    before(:create) do |user|
+      user.skip_confirmation!
+    end
   end
 
 end
