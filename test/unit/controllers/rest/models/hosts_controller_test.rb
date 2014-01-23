@@ -13,6 +13,12 @@ class Rest::Models::Hosts < TestCase
     @host = Host.first
     BIXBY_CONFIG[:crypto] = true
     ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
+
+    # Create a user and sign him in
+    @user = FactoryGirl.create(:user)
+    @user.org_id = @host.org_id
+    @user.save!
+    sign_in @user
   end
 
   def test_index
