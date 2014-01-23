@@ -1,37 +1,24 @@
 
-class SessionsController < UiController
+class SessionsController < Devise::SessionsController
 
-  # display login page
-  def new
-    if current_user and is_valid_session? then
-      # looks we already have a properly logged in user
-      bootstrap Host.for_user(current_user)
-      return render :index
-    end
-
-    # nuke current_user before login
-    current_user_session.destroy if current_user_session
+  def create
+    resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
+    sign_in_and_redirect(resource_name, resource)
   end
 
-  # POST to log in
-  def create
-    u = params[:username]
-    p = params[:password]
-    user_session = UserSession.new(:login => u, :password => p, :remember_me => true)
-    if not user_session.save then
-      return render :text => "error", :status => 401
-    end
+  def sign_in_and_redirect(resource_or_scope, resource=nil)
+    scope = Devise::Mapping.find_scope!(resource_or_scope)
+    resource ||= resource_or_scope
+    sign_in(scope, resource) unless warden.user(scope) == resource
 
-    ret = { :user => User.find_by_username_or_email(user_session.login) }
+    # return the user object and a new csrf token
+    ret = { :user => current_user, :csrf => form_authenticity_token }
     ret[:redir] = URI.parse(session.delete(:return_to)).path if session.include? :return_to
     restful ret
   end
 
-  # POST to logout
-  def destroy
-    current_user_session.destroy if current_user_session
-    reset_session
-    head :no_content
+  def failure
+    return render :json => {:success => false, :errors => ["Login failed"]}
   end
 
 end

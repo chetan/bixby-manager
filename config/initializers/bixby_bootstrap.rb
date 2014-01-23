@@ -79,6 +79,10 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   # rescan plugins
   Bixby::Repository.rescan_plugins << Bixby::Metrics::RescanPlugin
 
+  # devise
+  Devise.secret_key = BIXBY_CONFIG[:devise_secret_token]
+  Devise.pepper = BIXBY_CONFIG[:devise_pepper]
+
   # Start EventMachine/pubsub server
   if ENV["BIXBY_SKIP_EM"] != "1" then
     Bixby::AgentRegistry.redis_channel.start!

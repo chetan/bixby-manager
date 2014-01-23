@@ -19,8 +19,8 @@ namespace "Bixby.view", (exports, top) ->
     events: {
       "click a#logout": (e) ->
         v = @
-        $.ajax("/logout", {
-          type: "POST"
+        $.ajax("/users/sign_out", {
+          type: "DELETE"
           data: _.csrf()
           success: ->
             v.app.current_user = null

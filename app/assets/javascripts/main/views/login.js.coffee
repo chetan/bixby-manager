@@ -7,7 +7,7 @@ namespace "Bixby.view", (exports, top) ->
 
     app_events: {
       "state:activate": ->
-        $("input.username").putCursorAtEnd();
+        $("input.username").putCursorAtEnd()
     }
 
     events: {
@@ -22,9 +22,13 @@ namespace "Bixby.view", (exports, top) ->
         view = @
         $.ajax("/login", {
           type: "POST",
-          data: _.csrf({username: user, password: pass}),
+          data: _.csrf({user: {username: user, password: pass}}),
           success: (data, textStatus, jqXHR) ->
             ret = JSON.parse(data)
+
+            # update csrf token
+            $("meta[name='csrf-token']").attr('content', ret.csrf)
+
             view.app.current_user = new Bixby.model.User(ret.user)
             if ret.redir && view.app.router.route(ret.redir) == true
               return

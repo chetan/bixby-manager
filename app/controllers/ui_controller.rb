@@ -3,6 +3,7 @@ class UiController < ApplicationController
 
   ensure_security_headers
 
+  before_filter :authenticate_user!
   before_filter :login_required?
   before_filter :set_current_tenant
 
@@ -10,6 +11,13 @@ class UiController < ApplicationController
   # TODO better handling
   rescue_from ActiveRecord::RecordNotFound, :with => :bail_from_ex
   rescue_from MultiTenant::AccessException, :with => :bail_from_ex
+
+  # Helpers from Devise:
+  #
+  # user_signed_in?
+  # current_user
+  # user_session
+  alias_method :current_user_session, :user_session
 
 
   # Placeholder route for simply returning bootstrap html
@@ -19,17 +27,6 @@ class UiController < ApplicationController
 
 
   protected
-
-  def current_user
-    return @current_user if defined?(@current_user)
-    @current_user = current_user_session && current_user_session.user
-  end
-
-  def current_user_session
-    return @current_user_session if defined?(@current_user_session)
-  # causes a deprecation warning in rails 4 - need an authlogic update
-    @current_user_session = UserSession.find
-  end
 
   def set_current_tenant
     MultiTenant.current_tenant = current_user.tenant if current_user
@@ -41,7 +38,7 @@ class UiController < ApplicationController
   def login_required?
 
     # check for user session
-    if current_user and is_valid_session? then
+    if current_user and user_signed_in? then
       bootstrap current_user, :name => :current_user
       return false
     end
@@ -66,11 +63,6 @@ class UiController < ApplicationController
     path = params[:i].blank? ? login_index_path : login_index_path(qp)
 
     redirect_to path
-  end
-
-  # Test if the current session hash if valid
-  def is_valid_session?
-    session && session.include?("_csrf_token") && (current_user && session.include?("user_credentials"))
   end
 
   def bail_from_ex(ex)

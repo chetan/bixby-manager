@@ -1,7 +1,14 @@
 Bixby::Application.routes.draw do
 
-  # Default route - show login page (redirects to /inventory if logged in)
-  root :to => 'sessions#new'
+  devise_for :users, :controllers => { :sessions => 'sessions' }
+  devise_scope :user do
+    get  "/login"  => "sessions#new"
+    post "/login"  => "sessions#create"
+    post "/logout" => "sessions#destroy"
+  end
+
+  # Default route
+  root "inventory/hosts#index"
 
   # API Controller endpoint
   post '/api' => 'api#handle'
@@ -43,10 +50,6 @@ Bixby::Application.routes.draw do
     resources :triggers
     resources :actions
   end
-
-  # Other actions
-  resources 'login', :controller => 'sessions', :as => :login, :only => [:index, :create]
-  post 'logout' => 'sessions#destroy', :as => :logout
 
 
   ##############################################################################

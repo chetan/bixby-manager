@@ -58,7 +58,8 @@ gem "oj",           :platforms => [:mri, :rbx]
 gem "json",         :platforms => [:mri, :rbx, :jruby]
 
 gem "scrypt"
-gem "authlogic"
+gem "devise"
+gem "devise-encryptable"
 gem "api-auth", :github => "chetan/api_auth", :branch => "bixby"
 gem "mixlib-shellout"
 
