@@ -1,6 +1,7 @@
 
 class Rest::ApiController < UiController
 
+  before_filter :login_required?
   around_action :catch_exceptions
 
   private

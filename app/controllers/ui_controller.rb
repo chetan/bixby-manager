@@ -4,7 +4,7 @@ class UiController < ApplicationController
   ensure_security_headers
 
   before_filter :authenticate_user!
-  before_filter :login_required?
+  # before_filter :login_required?
   before_filter :set_current_tenant
 
   # Handle some common errors by simply redirecting to /inventory (for now)
