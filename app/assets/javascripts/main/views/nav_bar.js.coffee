@@ -29,6 +29,10 @@ namespace "Bixby.view", (exports, top) ->
       "change select#pretend": (e) ->
         view = @
         user_id = $(e.target).val() # new user id
+
+        if !user_id? || user_id == ""
+          user_id = @true_user.id # impersonation was cleared
+
         new Bixby.model.User().impersonate user_id, (data, status, xhr) ->
           view.$("li.dropdown").removeClass('open')
           view.current_user = Bixby.app.current_user = new Bixby.model.User(data)
