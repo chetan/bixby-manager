@@ -27,17 +27,12 @@ namespace "Bixby.view", (exports, top) ->
         })
 
       "change select#pretend": (e) ->
-        view = @
         user_id = $(e.target).val() # new user id
+        @impersonate(user_id)
 
-        if !user_id? || user_id == ""
-          user_id = @true_user.id # impersonation was cleared
+      "click a#stop_impersonating": (e) ->
+        @impersonate()
 
-        new Bixby.model.User().impersonate user_id, (data, status, xhr) ->
-          view.$("li.dropdown").removeClass('open')
-          view.current_user = Bixby.app.current_user = new Bixby.model.User(data)
-          view.redraw()
-          Bixby.app.transition Bixby.app.current_state.name
     }
 
     app_events: {
@@ -49,6 +44,18 @@ namespace "Bixby.view", (exports, top) ->
 
     }
 
+    impersonate: (user_id) ->
+      if !user_id? || user_id == ""
+        user_id = @true_user.id # impersonation was cleared
+
+      view = @
+      new Bixby.model.User().impersonate user_id, (data, status, xhr) ->
+        view.$("li.dropdown").removeClass('open')
+        view.current_user = Bixby.app.current_user = new Bixby.model.User(data)
+        view.redraw()
+        Bixby.app.transition Bixby.app.current_state.name
+
+
     is_impersonating: ->
       @true_user.id != @current_user.id
 
@@ -59,4 +66,11 @@ namespace "Bixby.view", (exports, top) ->
       super
 
     after_render: ->
-      @$("select#pretend").select2({ allowClear: true })
+      @$("select#pretend").select2({
+        allowClear: true
+        matcher: (term, text, opt) ->
+          # use default matcher to evaluate the option as well its option group label
+          optgroup = $(opt).parent().attr("label")
+          $.prototype.select2.defaults.matcher(term, text) ||
+            $.prototype.select2.defaults.matcher(term, optgroup)
+        })

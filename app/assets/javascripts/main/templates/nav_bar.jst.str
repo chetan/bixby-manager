@@ -47,6 +47,7 @@
 
             <% if (true_user.id !== current_user.id) { %>
               <li class="disabled real"><a>Real User: <%= true_user.get_name() %></a></li>
+              <li><a id="stop_impersonating"><%= _.icon("ban", "red") %> Stop Impersonating</a></li>
             <% } %>
 
             <li class="divider"></li>

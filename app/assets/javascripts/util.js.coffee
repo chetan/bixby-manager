@@ -49,8 +49,11 @@ _.isScrolledIntoView = (el, partial) ->
     return ((elBottom <= docViewBottom) && (elTop >= docViewTop))
 
 
-_.icon = (icon) ->
-  "<i class='fa fa-#{icon}'></i>"
+_.icon = (icon, clazz) ->
+  c = "fa fa-#{icon}"
+  if clazz?
+    c += " " + clazz
+  "<i class='#{c}'></i>"
 
 _.disable = (el) ->
   $(el).addClass("disabled")
