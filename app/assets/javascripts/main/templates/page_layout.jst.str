@@ -1,37 +1,5 @@
 
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-
-    <div class="container-fluid">
-      <a class="brand">BIXBY</a>
-
-      <ul class="nav">
-        <li class="tab inventory">
-          <a>Inventory</a>
-        </li>
-        <li class="tab monitoring">
-          <a>Monitoring</a>
-        </li>
-        <li class="tab repository">
-          <a>Repository</a>
-        </li>
-      </ul>
-
-      <ul class="user-menu nav secondary-nav pull-right">
-        <li class="tab user dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown"><%= current_user.get_name() %><img class="gravatar" src="<%= current_user.gravatar() %>" alt="gravatar" height="20"/></a>
-          <ul class="dropdown-menu">
-            <li><a id="profile">Profile</a></li>
-            <li><a id="logout">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
-
-      <%= include_partial(Bixby.view.NavSearch) %>
-    </div>
-
-  </div>
-</div>
+<%= include_partial(Bixby.view.NavBar) %>
 
 <div class="container-fluid">
 

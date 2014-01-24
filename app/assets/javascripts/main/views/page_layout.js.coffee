@@ -5,34 +5,3 @@ namespace "Bixby.view", (exports, top) ->
     reuse: true
     el: "#body"
     template: "main/page_layout"
-
-    links: {
-      "a.brand": [ "inventory" ]
-      ".tab.inventory a": [ "inventory" ]
-      ".tab.monitoring a": [ "monitoring" ]
-      ".tab.repository a": [ "repository" ]
-
-      # user menu
-      "a#profile": [ "profile" ]
-    }
-
-    events: {
-      "click a#logout": (e) ->
-        v = @
-        $.ajax("/users/sign_out", {
-          type: "DELETE"
-          data: _.csrf()
-          success: ->
-            v.app.current_user = null
-            v.app.redir_to_login()
-        })
-    }
-
-    app_events: {
-      "state:activate": (state) ->
-        if state.tab? and state.tab != @current_tab
-          $("div.navbar li.tab").removeClass("active")
-          if @current_tab = state.tab
-            $("div.navbar li.tab.#{@current_tab}").addClass("active")
-
-    }
