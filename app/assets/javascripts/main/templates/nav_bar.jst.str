@@ -52,8 +52,8 @@
 
             <li class="divider"></li>
 
-            <li><a id="profile">Profile</a></li>
-            <li><a id="logout">Logout</a></li>
+            <li><a id="profile"><%= _.icon("user") %> Profile</a></li>
+            <li><a id="logout"><%= _.icon("sign-out") %> Logout</a></li>
           </ul>
         </li>
       </ul>
