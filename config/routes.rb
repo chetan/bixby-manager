@@ -62,7 +62,7 @@ Bixby::Application.routes.draw do
   # replaced by login resource above
   # get 'login' => 'sessions#new', :as => :login
 
-  get 'getting_started' => "ui#default"
+  get 'getting_started' => "inventory/hosts#index"
 
   get 'profile' => "ui#default"
   get 'profile/edit' => "ui#default"

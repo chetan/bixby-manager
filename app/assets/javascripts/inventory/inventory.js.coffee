@@ -12,6 +12,13 @@ Bixby.app.add_state(
     tab:  "inventory"
 
     views:      [ _bv.PageLayout, _vi.Layout, _vi.GettingStarted ]
+    models:     { hosts: Bixby.model.HostList } # so we can attempt to validate that we belong here
+
+    validate: ->
+      if @hosts? && !@hosts.isEmpty()
+        @transition "inventory", {hosts: @hosts}
+        return false
+      return true
 )
 
 Bixby.app.add_state(
@@ -26,7 +33,7 @@ Bixby.app.add_state(
 
     validate: ->
       if !@hosts? or @hosts.isEmpty()
-        @transition "getting_started"
+        @transition "getting_started", {hosts: @hosts}
         return false
       return true
 
