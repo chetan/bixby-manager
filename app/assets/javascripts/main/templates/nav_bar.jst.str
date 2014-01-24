@@ -20,6 +20,33 @@
         <li class="tab user dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown"><%= current_user.get_name() %><img class="gravatar" src="<%= current_user.gravatar() %>" alt="gravatar" height="20"/></a>
           <ul class="dropdown-menu">
+
+            <li class="pretend">
+              <select name="users" id="pretend" class="" style="padding-left:5px; width:96%;" data-placeholder="Impersonate user">
+                <option></option>
+
+                <% // display each user, grouped by tenant %>
+                <%
+                var t = null;
+                _.each(users.sortBy("tenant"), function(user) {
+                  if (user.g("tenant") !== t) {
+                    if (t !== null) { %></optgroup><% }
+                    t = user.g("tenant");
+                    %><optgroup label="<%= t %>"><%
+                  }
+                %>
+                  <option value="<%= user.id %>"><%= user.get_name() %></option>
+                <% }); %>
+
+                </optgroup>
+              </select>
+            </li>
+
+            <!--
+            <li class="disabled"><a><small>Impersonating <%= current_user.get_name() %><br/>Really:</small></a></li>
+            -->
+            <li class="divider"></li>
+
             <li><a id="profile">Profile</a></li>
             <li><a id="logout">Logout</a></li>
           </ul>

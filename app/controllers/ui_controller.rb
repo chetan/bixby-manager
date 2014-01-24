@@ -3,10 +3,13 @@ class UiController < ApplicationController
 
   ensure_security_headers
 
+  impersonates :user
+
   before_filter :authenticate_user!
   # before_filter :login_required?
   before_filter :set_current_tenant
   before_filter :bootstrap_current_user
+  before_filter :bootstrap_users
 
   # Handle some common errors by simply redirecting to /inventory (for now)
   # TODO better handling
@@ -19,6 +22,12 @@ class UiController < ApplicationController
   # current_user
   # user_session
   alias_method :current_user_session, :user_session
+
+  # Helpers from pretender:
+  #
+  # true_user                 # returns authenticated user
+  # impersonate_user(user)    # allows you to login as another user
+  # stop_impersonating_user   # become yourself again
 
 
   # Placeholder route for simply returning bootstrap html
@@ -34,10 +43,18 @@ class UiController < ApplicationController
   end
 
   def bootstrap_current_user
-    if current_user and user_signed_in? then
+    if current_user then
       bootstrap current_user, :name => :current_user
     end
+    if true_user then
+      MultiTenant.with(nil){ bootstrap true_user, :name => :true_user }
+    end
     true
+  end
+
+  def bootstrap_users
+    # TODO add permission check here, (allow impersonating)
+    MultiTenant.with(nil){ bootstrap User.all, :type => User }
   end
 
   # Check for a valid user session

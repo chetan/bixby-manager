@@ -42,6 +42,7 @@ Bixby::Application.routes.draw do
     resources :users do
       collection do
         get "valid"
+        get "impersonate"
       end
     end
 

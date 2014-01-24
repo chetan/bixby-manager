@@ -17,6 +17,11 @@ class SessionsController < Devise::SessionsController
     restful ret
   end
 
+  def destroy
+    stop_impersonating_user()
+    super
+  end
+
   def failure
     return render :json => {:success => false, :errors => ["Login failed"]}, :status => 401
   end

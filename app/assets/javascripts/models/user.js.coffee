@@ -25,6 +25,12 @@ namespace 'Bixby.model', (exports, top) ->
         success: callback
       }
 
+    impersonate: (user_id, callback) ->
+      $.ajax @urlRoot + "/impersonate?user_id=" + user_id, {
+        dataType: "json"
+        success: callback
+      }
+
   class exports.UserList extends Stark.Collection
     model: exports.User
     url: "/rest/users"

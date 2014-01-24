@@ -25,6 +25,25 @@ class Rest::Models::UsersController < ::Rest::ApiController
     end
   end
 
+  def impersonate
+    # TODO permission check
+
+    id = _id()
+    if id == true_user.id then
+      stop_impersonating_user
+      return restful(true_user)
+    end
+
+    u = nil
+    MultiTenant.with(nil) do
+      u = User.find(_id)
+      impersonate_user(u)
+      u.tenant
+    end
+    set_current_tenant # update it
+    restful u
+  end
+
   def update
     user = User.find(_id)
     attrs = pick(:name, :username, :email, :phone, :password, :password_confirmation)

@@ -134,7 +134,10 @@ class Stark.App
     if @data?
       @current_user = @data.current_user
       _.extend state_data, @data
-      @data = null # clear any bootstrapped data
+
+      # clear any bootstrapped data, but store a backup copy
+      @bootstrap_data = @data
+      @data = null
 
     state = new @states[state_name]()
     state.app = @

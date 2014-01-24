@@ -57,9 +57,11 @@ gem "multi_json"
 gem "oj",           :platforms => [:mri, :rbx]
 gem "json",         :platforms => [:mri, :rbx, :jruby]
 
+gem "request_store"
 gem "scrypt"
 gem "devise"
 gem "devise-encryptable"
+gem "pretender"
 gem "api-auth", :github => "chetan/api_auth", :branch => "bixby"
 gem "mixlib-shellout"
 

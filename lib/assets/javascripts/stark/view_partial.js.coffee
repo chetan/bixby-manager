@@ -35,6 +35,12 @@ class Stark.Partial extends Stark.View
     else
       @parent.after_render_hooks.unshift(func)
 
+  redraw: ->
+    @$el.html(@render_html())
+    $("span#"+@id).html(@$el.html())
+    @bind_events()
+    @
+
   # Render the partial, setup its events and return its HTML
   render_partial_html: ->
 
