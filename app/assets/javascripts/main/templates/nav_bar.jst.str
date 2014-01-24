@@ -35,16 +35,20 @@
                     %><optgroup label="<%= t %>"><%
                   }
                 %>
-                  <option value="<%= user.id %>"><%= user.get_name() %></option>
+                  <option value="<%= user.id %>"
+                    <% if (is_impersonating() && user.id === current_user.id) { %> selected="true" <% } %>
+                    <% if (!is_impersonating() && user.id === true_user.id) { %> disabled="true" <% } %>
+                    ><%= user.get_name() %><% if (user.id === true_user.id) { %> (you)<% } %></option>
                 <% }); %>
 
                 </optgroup>
               </select>
             </li>
 
-            <!--
-            <li class="disabled"><a><small>Impersonating <%= current_user.get_name() %><br/>Really:</small></a></li>
-            -->
+            <% if (true_user.id !== current_user.id) { %>
+              <li class="disabled real"><a>Real User: <%= true_user.get_name() %></a></li>
+            <% } %>
+
             <li class="divider"></li>
 
             <li><a id="profile">Profile</a></li>

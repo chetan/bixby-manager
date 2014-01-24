@@ -37,7 +37,6 @@ namespace "Bixby.view", (exports, top) ->
     }
 
     app_events: {
-      # "nav:refresh"
       "state:activate": (state) ->
         if state.tab? and state.tab != @current_tab
           $("div.navbar li.tab").removeClass("active")
@@ -46,8 +45,11 @@ namespace "Bixby.view", (exports, top) ->
 
     }
 
+    is_impersonating: ->
+      @true_user.id != @current_user.id
+
     render_partial_html: ->
-      @current_user ||= Bixby.app.bootstrap_data.current_user
+      @current_user ||= (Bixby.app.current_user || Bixby.app.bootstrap_data.current_user)
       @true_user ||= Bixby.app.bootstrap_data.true_user
       @users ||= Bixby.app.bootstrap_data.users
       super
