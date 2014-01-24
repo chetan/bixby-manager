@@ -6,6 +6,7 @@ class UiController < ApplicationController
   before_filter :authenticate_user!
   # before_filter :login_required?
   before_filter :set_current_tenant
+  before_filter :bootstrap_current_user
 
   # Handle some common errors by simply redirecting to /inventory (for now)
   # TODO better handling
@@ -30,6 +31,13 @@ class UiController < ApplicationController
 
   def set_current_tenant
     MultiTenant.current_tenant = current_user.tenant if current_user
+  end
+
+  def bootstrap_current_user
+    if current_user and user_signed_in? then
+      bootstrap current_user, :name => :current_user
+    end
+    true
   end
 
   # Check for a valid user session
