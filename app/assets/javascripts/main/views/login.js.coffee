@@ -29,9 +29,12 @@ namespace "Bixby.view", (exports, top) ->
             # update csrf token
             $("meta[name='csrf-token']").attr('content', ret.csrf)
 
+            Bixby.app.bootstrap_data.users = new Bixby.model.UserList().reset(ret.users)
             view.app.current_user = new Bixby.model.User(ret.user)
+
             if ret.redir && view.app.router.route(ret.redir) == true
               return
+
             if view.app.redir
               r = view.app.redir
               view.app.redir = null
@@ -39,6 +42,7 @@ namespace "Bixby.view", (exports, top) ->
 
             # send to default route
             view.app.router.route(view.app.default_route)
+
           error: (jqXHR, textStatus, errorThrown) ->
             alert("Invalid username or password")
         })

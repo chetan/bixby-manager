@@ -61,7 +61,7 @@ namespace "Bixby.view", (exports, top) ->
 
     render_partial_html: ->
       @current_user ||= (Bixby.app.current_user || Bixby.app.bootstrap_data.current_user)
-      @true_user ||= Bixby.app.bootstrap_data.true_user
+      @true_user ||= (Bixby.app.bootstrap_data.true_user || @current_user)
       @users ||= Bixby.app.bootstrap_data.users
       super
 
