@@ -83,5 +83,11 @@ class User < ActiveRecord::Base
     # match the resource type & optionally the instance id
     return !perms.find{ |p| p.resource == object.class && (p.resource_id.nil? || p.resource_id == object.id) }
   end
+  alias_method :can, :can?
+
+  def cant?(permission, object=nil)
+    !can?(permission, object)
+  end
+  alias_method :cant, :cant?
 
 end
