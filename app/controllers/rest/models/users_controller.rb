@@ -26,7 +26,10 @@ class Rest::Models::UsersController < ::Rest::ApiController
   end
 
   def impersonate
-    # TODO permission check
+
+    if !true_user.can?("impersonate_users") then
+      return render :json => "denied", :status => 401
+    end
 
     id = _id()
     if id == true_user.id then
