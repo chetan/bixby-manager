@@ -25,6 +25,10 @@ namespace 'Bixby.model', (exports, top) ->
         success: callback
       }
 
+    can: (permission) ->
+      # TODO implement resource checks as well
+      !! _.find @get("permissions"), (p) -> !p.resource? && p.name == permission
+
     impersonate: (user_id, callback) ->
       $.ajax @urlRoot + "/impersonate?user_id=" + user_id, {
         dataType: "json"

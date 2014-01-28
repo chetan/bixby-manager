@@ -45,6 +45,8 @@ namespace "Bixby.view", (exports, top) ->
     }
 
     impersonate: (user_id) ->
+      return if !@true_user.can("impersonate_users")
+
       if !user_id? || user_id == ""
         user_id = @true_user.id # impersonation was cleared
 
@@ -62,7 +64,8 @@ namespace "Bixby.view", (exports, top) ->
     render_partial_html: ->
       @current_user ||= (Bixby.app.current_user || Bixby.app.bootstrap_data.current_user)
       @true_user ||= (Bixby.app.bootstrap_data.true_user || @current_user)
-      @users ||= Bixby.app.bootstrap_data.users
+      if @true_user.can("impersonate_users")
+        @users ||= Bixby.app.bootstrap_data.users
       super
 
     after_render: ->

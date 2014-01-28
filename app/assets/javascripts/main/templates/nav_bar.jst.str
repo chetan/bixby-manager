@@ -21,6 +21,13 @@
           <a class="dropdown-toggle" data-toggle="dropdown"><%= current_user.get_name() %><img class="gravatar" src="<%= current_user.gravatar() %>" alt="gravatar" height="20"/></a>
           <ul class="dropdown-menu">
 
+
+            <% /* ================================ */ %>
+            <% /* show user impersonation controls */ %>
+            <% /* ================================ */ %>
+
+            <% if (true_user.can("impersonate_users")) { %>
+
             <li class="pretend">
               <select name="users" id="pretend" class="" style="padding-left:5px; width:96%;" data-placeholder="Impersonate user">
                 <option></option>
@@ -51,6 +58,10 @@
             <% } %>
 
             <li class="divider"></li>
+
+            <% } /* if can impersonate_users */ %>
+            <% /* ================================ */ %>
+
 
             <li><a id="profile"><%= _.icon("user") %> Profile</a></li>
             <li><a id="logout"><%= _.icon("sign-out") %> Logout</a></li>

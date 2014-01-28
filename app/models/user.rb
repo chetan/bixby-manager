@@ -65,6 +65,8 @@ class User < ActiveRecord::Base
   end
 
   # Set of all permissions, either directly assigned or via an active role assignment
+  #
+  # @return [Array<UserPermission> + Array<RolePermission>]
   def permissions
     @permissions ||= (self.user_permissions.to_a + self.roles.map{ |r| r.role_permissions.to_a }).flatten
   end

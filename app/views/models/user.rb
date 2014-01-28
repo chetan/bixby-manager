@@ -11,6 +11,7 @@ module Bixby
         hash = attrs(obj, :id, :username, :name, :email, :phone)
         hash[:org] = obj.org.name
         hash[:tenant] = obj.org.tenant.name
+        hash[:permissions] = render(obj.permissions)
 
         return hash
       end
