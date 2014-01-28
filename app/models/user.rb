@@ -64,6 +64,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Set of all permissions, either directly assigned or via an active role assignment
+  def permissions
+    @permissions ||= (self.user_permissions.to_a + self.roles.map{ |r| r.role_permissions.to_a }).flatten
+  end
+
   # Test if this user has the given permission. Optionally tests access to the given object.
   #
   # @param [String] permission
@@ -72,16 +77,17 @@ class User < ActiveRecord::Base
   # @return [Boolean] true if user has the given access
   def can?(permission, object=nil)
 
-    perms = (self.user_permissions.to_a + self.roles.map{ |r| r.role_permissions.to_a }).flatten
-
     if object.nil? then
       # test for an object-less permission
       # ex: impersonate_users
-      return !perms.find{ |p| p.resource.nil? && p.name == permission.to_s }.nil?
+      return !self.permissions.find{ |p| p.resource.nil? && p.name == permission.to_s }.nil?
     end
 
     # match the resource type & optionally the instance id
-    return !perms.find{ |p| p.resource == object.class && (p.resource_id.nil? || p.resource_id == object.id) }
+    return !self.permissions.find{ |p|
+        p.resource == object.class &&
+          (p.resource_id.nil? || p.resource_id == object.id)
+      }.nil?
   end
   alias_method :can, :can?
 
