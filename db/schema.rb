@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140122000604) do
+ActiveRecord::Schema.define(version: 20140128170149) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -184,6 +184,11 @@ ActiveRecord::Schema.define(version: 20140122000604) do
 
   add_index "orgs", ["tenant_id"], name: "fk_orgs_tenants1", using: :btree
 
+  create_table "permissions", force: true do |t|
+    t.string "name",        null: false
+    t.string "description"
+  end
+
   create_table "repos", force: true do |t|
     t.integer  "org_id"
     t.string   "name"
@@ -203,6 +208,24 @@ ActiveRecord::Schema.define(version: 20140122000604) do
   end
 
   add_index "resources", ["host_id"], name: "fk_resources_hosts1", using: :btree
+
+  create_table "role_permissions", force: true do |t|
+    t.integer "role_id",       null: false
+    t.integer "permission_id", null: false
+    t.string  "resource"
+    t.integer "resource_id"
+  end
+
+  add_index "role_permissions", ["permission_id"], name: "role_permissions_permission_id_fk", using: :btree
+  add_index "role_permissions", ["role_id"], name: "role_permissions_role_id_fk", using: :btree
+
+  create_table "roles", force: true do |t|
+    t.integer "tenant_id"
+    t.string  "name",        null: false
+    t.string  "description"
+  end
+
+  add_index "roles", ["tenant_id"], name: "roles_tenant_id_fk", using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
@@ -268,6 +291,16 @@ ActiveRecord::Schema.define(version: 20140122000604) do
   add_index "triggers", ["check_id"], name: "triggers_check_id_fk", using: :btree
   add_index "triggers", ["metric_id"], name: "triggers_metric_id_fk", using: :btree
 
+  create_table "user_permissions", force: true do |t|
+    t.integer "user_id",       null: false
+    t.integer "permission_id", null: false
+    t.string  "resource"
+    t.integer "resource_id"
+  end
+
+  add_index "user_permissions", ["permission_id"], name: "user_permissions_permission_id_fk", using: :btree
+  add_index "user_permissions", ["user_id"], name: "user_permissions_user_id_fk", using: :btree
+
   create_table "users", force: true do |t|
     t.integer  "org_id",                             null: false
     t.string   "username",                           null: false
@@ -302,6 +335,14 @@ ActiveRecord::Schema.define(version: 20140122000604) do
   add_index "users", ["org_id"], name: "fk_users_orgs1", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
+
+  create_table "users_roles", id: false, force: true do |t|
+    t.integer "user_id", null: false
+    t.integer "role_id", null: false
+  end
+
+  add_index "users_roles", ["role_id"], name: "users_roles_role_id_fk", using: :btree
+  add_index "users_roles", ["user_id"], name: "users_roles_user_id_fk", using: :btree
 
   add_foreign_key "actions", "triggers", name: "actions_trigger_id_fk"
 
@@ -339,6 +380,11 @@ ActiveRecord::Schema.define(version: 20140122000604) do
 
   add_foreign_key "resources", "hosts", name: "fk_resources_hosts1"
 
+  add_foreign_key "role_permissions", "permissions", name: "role_permissions_permission_id_fk"
+  add_foreign_key "role_permissions", "roles", name: "role_permissions_role_id_fk"
+
+  add_foreign_key "roles", "tenants", name: "roles_tenant_id_fk"
+
   add_foreign_key "taggings", "tags", name: "fk_taggings_tags1"
 
   add_foreign_key "trigger_histories", "checks", name: "trigger_histories_check_id_fk"
@@ -348,6 +394,12 @@ ActiveRecord::Schema.define(version: 20140122000604) do
   add_foreign_key "triggers", "checks", name: "triggers_check_id_fk"
   add_foreign_key "triggers", "metrics", name: "triggers_metric_id_fk"
 
+  add_foreign_key "user_permissions", "permissions", name: "user_permissions_permission_id_fk"
+  add_foreign_key "user_permissions", "users", name: "user_permissions_user_id_fk"
+
   add_foreign_key "users", "orgs", name: "fk_users_orgs1"
+
+  add_foreign_key "users_roles", "roles", name: "users_roles_role_id_fk"
+  add_foreign_key "users_roles", "users", name: "users_roles_user_id_fk"
 
 end

@@ -44,6 +44,10 @@ class User < ActiveRecord::Base
          :confirmable, :lockable, :timeoutable, :encryptable,
          :authentication_keys => [ :username ]
 
+  has_and_belongs_to_many :roles, :join_table => :users_roles
+  has_many :user_permissions, -> { includes :permissions }
+  # has_many :permissions, :through => :user_permissions
+
   belongs_to :org
   multi_tenant :via => :org
 
@@ -58,6 +62,26 @@ class User < ActiveRecord::Base
     else
       where("username = ?", login).first
     end
+  end
+
+  # Test if this user has the given permission. Optionally tests access to the given object.
+  #
+  # @param [String] permission
+  # @param [Object] object            (optional, default: nil)
+  #
+  # @return [Boolean] true if user has the given access
+  def can?(permission, object=nil)
+
+    perms = (self.user_permissions.to_a + self.roles.map{ |r| r.role_permissions.to_a }).flatten
+
+    if object.nil? then
+      # test for an object-less permission
+      # ex: impersonate_users
+      return !perms.find{ |p| p.resource.nil? && p.name == permission.to_s }.nil?
+    end
+
+    # match the resource type & optionally the instance id
+    return !perms.find{ |p| p.resource == object.class && (p.resource_id.nil? || p.resource_id == object.id) }
   end
 
 end
