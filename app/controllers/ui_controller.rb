@@ -46,14 +46,14 @@ class UiController < ApplicationController
     if current_user then
       bootstrap current_user, :name => :current_user
     end
-    if true_user then
+    if true_user && true_user.can?("impersonate_users") then
       MultiTenant.with(nil){ bootstrap true_user, :name => :true_user }
     end
     true
   end
 
   def bootstrap_users
-    # TODO add permission check here, (allow impersonating)
+    return if !true_user.can?("impersonate_users")
     MultiTenant.with(nil){ bootstrap User.all, :type => User }
   end
 

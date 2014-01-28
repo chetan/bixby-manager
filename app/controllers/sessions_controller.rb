@@ -13,9 +13,16 @@ class SessionsController < Devise::SessionsController
 
     # return the user object and a new csrf token
     ret = { :user => current_user, :csrf => form_authenticity_token }
-    ret[:users] = MultiTenant.with(nil){ User.all } # TODO permissions check
     ret[:redir] = URI.parse(session.delete(:return_to)).path if session.include? :return_to
-    MultiTenant.with(nil){ restful ret }
+
+    if true_user.can?("impersonate_users")
+      MultiTenant.with(nil){
+        ret[:users] = User.all
+        restful ret
+      }
+    else
+      restful ret
+    end
   end
 
   def destroy
