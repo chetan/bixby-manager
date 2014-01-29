@@ -28,6 +28,7 @@ u = User.create(
 # password is a virtual field used by authlogic, so set this after
 u.password              = config["default_tenant_pw"]
 u.password_confirmation = config["default_tenant_pw"]
+u.skip_confirmation!
 u.save!
 
 # Create a job to update repos every hour
