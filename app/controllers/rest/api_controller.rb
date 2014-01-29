@@ -1,6 +1,8 @@
 
 class Rest::ApiController < UiController
 
+  skip_before_filter :bootstrap_current_user
+  skip_before_filter :bootstrap_users
   around_action :catch_exceptions
 
   private
