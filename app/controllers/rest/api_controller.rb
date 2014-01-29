@@ -1,7 +1,6 @@
 
 class Rest::ApiController < UiController
 
-  before_filter :login_required?
   around_action :catch_exceptions
 
   private
@@ -9,7 +8,7 @@ class Rest::ApiController < UiController
   # Check for a valid user session or API authentication header
   #
   # @return [Boolean] true if the request is not authenticated (user must login)
-  def login_required?
+  def authenticate_user!
     # check for API/signed requests
     if request.headers.env["HTTP_AUTHORIZATION"] || request.headers.env["Authorization"] then
       agent = Agent.where(:access_key => ApiAuth.access_id(request)).first
