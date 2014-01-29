@@ -15,7 +15,7 @@ class SessionsController < Devise::SessionsController
     ret = { :user => current_user, :csrf => form_authenticity_token }
     ret[:redir] = URI.parse(session.delete(:return_to)).path if session.include? :return_to
 
-    if true_user.can?("impersonate_users")
+    if current_user.can?("impersonate_users")
       MultiTenant.with(nil){
         ret[:users] = User.all
         restful ret
