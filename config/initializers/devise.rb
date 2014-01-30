@@ -82,7 +82,7 @@ Devise.setup do |config|
   config.email_regexp = /\A[^@]+@[^@]+\z/
 
   # ==> Configuration for :timeoutable
-  config.timeout_in = 30.minutes
+  config.timeout_in = 30.days
   config.expire_auth_token_on_timeout = false
 
   # ==> Configuration for :lockable
