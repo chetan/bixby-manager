@@ -23,6 +23,8 @@ begin
     # added after problemes with latest select2
     # see also: http://stackoverflow.com/a/16826131
     Uglifier::DEFAULTS[:output][:ascii_only] = true
+    # further fix for select2
+    Uglifier::DEFAULTS[:output][:quote_keys] = true
   end
 
   # create non-digest versions of files just in case
