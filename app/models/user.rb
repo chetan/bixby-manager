@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
 
     # match the resource type & optionally the instance id
     return !self.permissions.find{ |p|
-        p.resource == object.class &&
+        p.resource == object.class.name &&
           (p.resource_id.nil? || p.resource_id == object.id)
       }.nil?
   end

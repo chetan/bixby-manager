@@ -16,4 +16,17 @@ class Role < ActiveRecord::Base
 
   has_and_belongs_to_many :users, :join_table => :users_roles
 
+  def add_permission(permission, resource=nil)
+    self.save! if self.id.blank?
+    rp = RolePermission.new
+    rp.role_id = self.id
+    rp.permission_id = permission.kind_of?(Permission) ? permission.id : permission
+    if resource then
+      rp.resource = resource.class.name
+      rp.resource_id = resource.id
+    end
+    rp.save
+    self.role_permissions << rp
+  end
+
 end

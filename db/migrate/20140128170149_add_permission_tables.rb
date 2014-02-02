@@ -46,7 +46,7 @@ class AddPermissionTables < ActiveRecord::Migration
     god = Role.new(:name => "god")
     imp = Permission.new(:name => "impersonate_users")
     imp.save
-    god.permissions << imp
+    god.add_permission(imp)
     god.save
 
   end
