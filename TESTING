@@ -14,7 +14,7 @@ $ sidekiq -c 5 -e development -q "*,schedules"
 
 to generate monitoring/metrics data:
 (from the client dir)
-$ bin/bixby run mon_d start --ontop
+$ BIXBY_LOG=debug bin/bixby run mon_d start --ontop
 
 to run the agent:
-$ bundle exec bin/bixby-agent --debug
+$ BIXBY_LOG=debug bundle exec bin/bixby-agent --debug
