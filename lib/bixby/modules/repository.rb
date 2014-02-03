@@ -130,11 +130,14 @@ class Repository < API
     cmd = Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script).first
     if not cmd.blank? then
       spec = cmd.to_command_spec
-      if cmd.updated_at >= File.mtime(spec.command_file) and (!File.exists?(spec.config_file) or cmd.updated_at >= File.mtime(spec.config_file)) then
+      if cmd.updated_at and cmd.updated_at >= File.mtime(spec.command_file) and
+          (!File.exists?(spec.config_file) or cmd.updated_at >= File.mtime(spec.config_file)) then
+
         log.info "* skipping (not updated)"
         return
       end
       log.info("* updating existing Command")
+
     else
       log.info("* creating new Command")
       cmd = Command.new
