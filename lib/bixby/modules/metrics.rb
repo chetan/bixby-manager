@@ -87,6 +87,7 @@ class Metrics < API
   # @param [Time] end_time
   # @param [Hash] tags        Tags to filter by, only check-related filters by default
   # @param [String] agg
+  # @param [String] downsample   Whether or not to downsample values (default=nil)
   def get_for_host(host, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
 
     host = get_model(host, Host)
@@ -106,6 +107,7 @@ class Metrics < API
   # @param [Time] end_time
   # @param [Hash] tags        Tags to filter by, only check-related filters by default
   # @param [String] agg
+  # @param [String] downsample   Whether or not to downsample values (default=nil)
   def get_for_check(check, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
 
     check = get_model(check, Check)
@@ -270,26 +272,35 @@ class Metrics < API
   end
 
 
+  # Load data for a single Metric
+  #
+  # @param [Metric] metric
+  # @param [Time] start_time
+  # @param [Time] end_time
+  # @param [Hash] tags        Tags to filter by, only check-related filters by default
+  # @param [String] agg
+  # @param [String] downsample   Whether or not to downsample values (default=nil)
+  #
+  # @return [Metric] metric
+  def get_for_metric(metric, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
+    req = create_query(metric, start_time, end_time, tags, agg, downsample)
+    data = get(req)
+
+    metric.data     = data[:vals]
+    metric.metadata = data[:tags]
+
+    return metric
+  end
+
+
   private
 
   # Get Metrics for the given checks
   def get_for_checks(checks, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
     metrics = Metric.includes(:check).where(:check_id => checks).references(:checks).includes(:tags)
-    keys = metrics.map { |m| m.key }
 
-    reqs = []
-    metrics.each do |metric|
-      all_tags = {}
-      if metric.tags then
-        metric.tags.each{ |t| all_tags[t.key] = t.value }
-      end
-      all_tags.merge!(tags)
-      if Time.new - metric.created_at < 3600 then
-        downsample = nil
-      end
-      metric.query = { :start => start_time, :end => end_time, :tags => tags, :downsample => downsample }
-      downsample = (Time.new - metric.created_at < 43200) ? "5m-avg" : downsample # show 5m-avg if less than 12 hours old
-      reqs << { :key => metric.key, :start_time => start_time, :end_time => end_time, :tags => all_tags, :agg => agg, :downsample => downsample }
+    reqs = metrics.map do |metric|
+      create_query(metric, start_time, end_time, tags, agg, downsample)
     end
 
     responses = multi_get(reqs)
@@ -330,6 +341,29 @@ class Metrics < API
     end
 
     return metrics
+  end
+
+  # Create a query for the given metric
+  def create_query(metric, start_time, end_time, tags, agg, downsample)
+    all_tags = {}
+    if metric.tags then
+      metric.tags.each{ |t| all_tags[t.key] = t.value }
+    end
+    all_tags.merge!(tags)
+    if Time.new - metric.created_at < 3600 then
+      downsample = nil
+    end
+    metric.query = { :start => start_time, :end => end_time, :tags => tags, :downsample => downsample }
+    downsample = (Time.new - metric.created_at < 43200) ? "5m-avg" : downsample # show 5m-avg if less than 12 hours old
+
+    return {
+      :key        => metric.key,
+      :start_time => start_time,
+      :end_time   => end_time,
+      :tags       => all_tags,
+      :agg        => agg,
+      :downsample => downsample
+    }
   end
 
   # currently unused method

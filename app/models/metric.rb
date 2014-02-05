@@ -105,7 +105,8 @@ class Metric < ActiveRecord::Base
       # make sure we have at least 2 values so we can graph them
       if metric.data and metric.data.size < 2 then
         # run metrics query again w/o downsampling values this time
-        metric.data = metrics_for_check(metric.check, time_start, time_end, tags, agg).data
+        # data saved back in metric object
+        Bixby::Metrics.new.get_for_metric(metric, time_start, time_end, tags, agg, nil)
         metric.query[:downsample] = nil
       end
     end

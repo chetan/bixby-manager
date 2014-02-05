@@ -145,6 +145,9 @@ EOF
 
     assert_requested(stub)
     assert ret
+    assert_kind_of Array, ret
+
+    ret = ret.shift
     assert_kind_of Metric, ret
     assert_nil ret.data
     assert_nil ret.metadata
@@ -215,7 +218,7 @@ EOF
     @downsample = ":5m-avg" # get_for_host/get_for_checks default to 5m-avg for newly created metrics
     stub, req = create_req()
     ret = Bixby::Metrics.new.get_for_check(check, Time.new-86400, Time.new, {:foo=>"bar"})
-    common_check_tests(stub, ret)
+    common_check_tests(stub, ret.first)
     return ret
   end
 
