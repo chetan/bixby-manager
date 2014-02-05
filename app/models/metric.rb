@@ -97,15 +97,16 @@ class Metric < ActiveRecord::Base
 
     metrics = Bixby::Metrics.new.get_for_host(host, time_start, time_end, tags, agg, downsample)
 
+    # remove metrics which don't have enough/any data
+    # metrics.reject!{ |m| !m.updated_at.nil? && m.updated_at < 2.weeks.ago }
+
     # validate vals
-    metrics.each do |res|
+    metrics.each do |metric|
       # make sure we have at least 2 values so we can graph them
-      if res.data and res.data.size < 2 then
+      if metric.data and metric.data.size < 2 then
         # run metrics query again w/o downsampling values this time
-        check_id = res["check_id"]
-        check = Check.find(check_id.to_i)
-        res.data = metrics_for_check(check, time_start, time_end, tags, agg).data
-        res.query[:downsample] = nil
+        metric.data = metrics_for_check(metric.check, time_start, time_end, tags, agg).data
+        metric.query[:downsample] = nil
       end
     end
 
