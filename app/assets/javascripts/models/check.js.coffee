@@ -21,8 +21,16 @@ namespace 'Bixby.model', (exports, top) ->
     args_str: ->
       args = @get("args")
       if ! args
-        return null
-      _.map(args, (val, key) -> key + " = " + val ).join(", ")
+        return ""
+
+      _.map(args, (val, key) ->
+        s = key + " = "
+        if _.contains(["password", "pass", "pw"], key)
+          s += "[hidden]"
+        else
+          s += val
+        return s
+      ).join(", ")
 
 
   class exports.CheckList extends Stark.Collection
