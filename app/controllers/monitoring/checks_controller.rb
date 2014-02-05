@@ -1,6 +1,16 @@
 
 class Monitoring::ChecksController < Monitoring::BaseController
 
+  def show
+    host = Host.find(_id)
+    check = Check.find(_id)
+    downsample = params[:downsample] || "1h-avg"
+    metrics = Metric.metrics_for_check(check, nil, nil, {}, "sum", downsample)
+
+    bootstrap host, check
+    bootstrap metrics, :name => "metrics"
+  end
+
   def new
     @host = Host.find(params[:host_id])
     @commands = Command.where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")

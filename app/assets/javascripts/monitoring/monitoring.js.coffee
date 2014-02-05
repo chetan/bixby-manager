@@ -30,6 +30,17 @@ Bixby.app.add_state(
 Bixby.app.add_state(
   class extends Stark.State
 
+    name: "mon_hosts_check"
+    url:  "monitoring/hosts/:host_id/checks/:check_id"
+    tab:  "monitoring"
+
+    views:      [ _bv.PageLayout, _bvm.Layout, _bvm.CheckGroup ]
+    models:     { host: _bm.Host, check: _bm.Check, metrics: _bm.MetricList }
+)
+
+Bixby.app.add_state(
+  class extends Stark.State
+
     name: "mon_hosts_resources_metric"
     url:  "monitoring/hosts/:host_id/metrics/:metric_id"
     tab:  "monitoring"

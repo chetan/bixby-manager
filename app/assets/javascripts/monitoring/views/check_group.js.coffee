@@ -1,7 +1,8 @@
 namespace "Bixby.view.monitoring", (exports, top) ->
 
-  class exports.Check extends Stark.Partial
+  class exports.CheckGroup extends Stark.View
 
+    el: "div.monitoring_content"
     className: "check"
     template: "monitoring/_check"
 

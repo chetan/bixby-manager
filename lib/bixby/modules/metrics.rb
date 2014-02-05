@@ -117,9 +117,7 @@ class Metrics < API
     # tags[:org_id]    = @org_id
     # tags[:tenant_id] = @tenant_id
 
-    return Rails.cache.fetch("metrics_for_check_#{check.id}", :expires_in => 2.minutes) do
-      get_for_checks(check, start_time, end_time, tags, agg, downsample).first
-    end
+    get_for_checks(check, start_time, end_time, tags, agg, downsample)
   end
 
   # Get the metrics for the given keys

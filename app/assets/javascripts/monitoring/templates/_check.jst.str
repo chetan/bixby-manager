@@ -1,7 +1,7 @@
 
 <div class="check" check_id="<%= check.id %>">
 
-  <h4><%= check.get("name") %></h4>
+  <h4><a class="check"><%= check.get("name") %></a></h4>
   <%= include("monitoring/_check_args", {check: check}) %>
 
   <div class="spacer">&nbsp;</div>
