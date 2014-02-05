@@ -32,7 +32,7 @@ class Stark.Partial extends Stark.View
   add_render_hook: (func) ->
     if @parent instanceof Stark.Partial
       @parent.add_render_hook(func)
-    else
+    else if @parent
       @parent.after_render_hooks.unshift(func)
 
   redraw: ->
