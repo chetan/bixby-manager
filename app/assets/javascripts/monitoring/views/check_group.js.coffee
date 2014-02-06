@@ -9,3 +9,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "click button.return_host": (e) ->
         @transition "mon_view_host", {host: @host}
     }
+
+    after_render: ->
+      super()
+
+      graphs = @metrics.map (m) -> m.graph
+      @sync_helper = new Bixby.monitoring.PanSyncHelper(graphs)
