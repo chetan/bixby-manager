@@ -223,7 +223,7 @@ class Stark.App
       if window.location.hash
         # a little hack to clear out the hash no matter what
         # may need to revisit this later
-        history.replaceState('', document.title, window.location.pathname);
+        history.replaceState({}, document.title, window.location.pathname)
 
       url = state.create_url()
       if url == false
@@ -231,6 +231,8 @@ class Stark.App
       else
         @log "updating url: ", url
         @router.changeURL url
+
+      window.scroll(0, 0)
     else
       @log "no url change"
 
