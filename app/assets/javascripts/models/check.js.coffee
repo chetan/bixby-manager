@@ -6,7 +6,7 @@ namespace 'Bixby.model', (exports, top) ->
     urlRoot: ->
       s = "/rest/hosts/#{@host_id || @host.id}/checks"
 
-    params: [ "host", "metric" ]
+    params: [ "host", "metric", { name: "check", set_id: true } ]
 
     url: ->
       s = super()
