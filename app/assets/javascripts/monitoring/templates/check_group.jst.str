@@ -1,0 +1,3 @@
+
+<button class="btn return_host"><%= _.icon("reply") %> Return to Host</button>
+<%= include_partial(Bixby.view.monitoring.Check) %>
