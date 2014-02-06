@@ -1,4 +1,6 @@
 
+<button class="btn btn-small return_host"><%= _.icon("reply") %> Return to Host</button>
+
 <div class="check" metric_id="<%= metric.id %>">
 
   <h4><%= check.get("name") %></h4>

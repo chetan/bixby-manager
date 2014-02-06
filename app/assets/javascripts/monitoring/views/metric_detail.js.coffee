@@ -5,6 +5,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     template: "monitoring/metric_detail"
 
     events: {
+      "click button.return_host": (e) ->
+        @transition "mon_view_host", {host: @host}
+
       "click button#zoom": (e) ->
         @graph._bixby_mode = "zoom"
 
