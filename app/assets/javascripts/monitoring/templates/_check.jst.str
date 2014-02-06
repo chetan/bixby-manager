@@ -7,7 +7,10 @@
   <div class="spacer">&nbsp;</div>
 
   <%
-      var c_metrics = metrics.filter(function(m) { return m.get("check_id") == check.id });
+      var c_metrics = _.sortBy(
+        metrics.filter(function(m) { return m.get("check_id") == check.id }),
+        "id");
+
       var info;
       _.each(c_metrics, function(metric) {
         var tags = metric.display_tags();
