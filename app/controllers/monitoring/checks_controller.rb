@@ -2,7 +2,7 @@
 class Monitoring::ChecksController < Monitoring::BaseController
 
   def show
-    host = Host.find(_id)
+    host = Host.find(_id(:host))
     check = Check.find(_id)
     downsample = params[:downsample] || "1h-avg"
     metrics = Metric.metrics_for_check(check, nil, nil, {}, "sum", downsample)
