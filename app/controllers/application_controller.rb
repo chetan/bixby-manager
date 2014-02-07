@@ -111,15 +111,17 @@ class ApplicationController < ActionController::Base
     @bootstrap = []
   end
 
-  # bootstrap the given object
+  # bootstrap the given object into
   # automatically sets the hash and model names based on the type of object passed
   # (i.e. pluralizes and adds List for arrays, etc)
   def bootstrap_obj(obj, opts)
 
-    type = opts.delete(:type)
+    type = opts.delete(:type) || opts.delete(:model)
     name = opts.delete(:name)
     if type.nil? then
 
+      # infer the type from the object
+      # set name based on type, if not given
       if obj.kind_of? ActiveRecord::Base then
         type = obj.class.to_s
         name ||= type.downcase
@@ -130,9 +132,10 @@ class ApplicationController < ActionController::Base
         name ||= obj.first.class.to_s.pluralize.downcase
       end
 
-    else
+    elsif type !~ /List$/ then
       name ||= type.to_s.pluralize.downcase
       type = type.to_s + "List"
+
     end
 
     @bootstrap << {

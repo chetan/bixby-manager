@@ -66,8 +66,9 @@ Bixby.app.add_state(
 
     activate: ->
       # preload hosts in the background
-      @hosts = new _bm.HostList
-      Backbone.multi_fetch(@hosts)
+      if !@hosts?
+        @hosts = new _bm.HostList
+        Backbone.multi_fetch(@hosts)
 
 )
 

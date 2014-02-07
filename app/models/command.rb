@@ -54,4 +54,8 @@ class Command < ActiveRecord::Base
   def self.for_repos(repos)
     where(:repo_id => repos.map{|r| r.id})
   end
+
+  def self.for_monitoring
+    where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
+  end
 end
