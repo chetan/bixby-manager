@@ -168,11 +168,14 @@ class Host < ActiveRecord::Base
 
   end
 
-  # Get an alpha-sorted list of all tags used for Hosts
+  # Get an alpha-sorted list of all tags used for Hosts owned by the given user
+  #
+  # @param [User] user
   #
   # @return [Array<String>] tags
-  def self.all_tags
-    ActsAsTaggableOn::Tagging.where(:taggable_type => "Host").includes(:tag).map{ |t| t.tag.name }.sort
+  def self.all_tags(user)
+    # ActsAsTaggableOn::Tagging.where(:taggable_type => "Host").includes(:tag).map{ |t| t.tag.name }.sort
+    for_user(user).tag_counts_on(:tags).map{ |t| t.name }.sort
   end
 
   private

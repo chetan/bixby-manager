@@ -13,6 +13,6 @@ Bixby.app.add_state(
     tab:  "monitoring"
 
     views:      [ _bv.PageLayout, _bvm.Layout, _bvm.NewCheckTemplate ]
-    models:     { commands: _bm.MonitoringCommandList }
+    models:     { commands: _bm.MonitoringCommandList, tags: _bm.HostTagList }
 )
 

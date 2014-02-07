@@ -7,16 +7,18 @@
     <fieldset>
 
       <label for="name"><h4>Template name:</h4></label>
-      <input type="text" id="name">
+      <input type="text" id="name" class="input-xlarge">
 
-      <label for="tags"><h4>Tags to apply to:</h4></label>
-      <select id="tags" multiple="true" class="input-xlarge">
-        // <% users.each(function(user) { %>
-        //   <option value="<%= user.id %>"><%= user.get_name() %></option>
-        // <% }); %>
+      <label for="tags"><h4>Tags to apply:</h4></label>
+      <input type="hidden" class="tags input-xlarge"/>
+
+      <label for="tags"><h4>Apply if:</h4></label>
+      <select class="condition">
+        <option value="any">any tag matches</option>
+        <option value="all">all tags match</option>
       </select>
 
-    <h4>Select the checks to add to the template:</h4>
+      <h4>Select the checks to add to the template:</h4>
 
       <table class="table table-bordered table-striped">
         <thead>

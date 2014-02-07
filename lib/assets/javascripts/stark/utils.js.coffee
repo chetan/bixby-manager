@@ -27,15 +27,17 @@ window.namespace = (target, name, block) ->
 # Where:
 #   err = response object from fetch error, or NULL if no error
 #   results = models/collections that were fetched
-Backbone.multi_fetch = (fetches, callback) ->
-  if ! _.isArray(fetches)
-    fetches = [ fetches ]
+Backbone.multi_fetch = (models, callback) ->
+  if ! _.isArray(models)
+    models = [ models ]
 
-  tasks = _.map fetches, (f) ->
-    (cb) -> f.fetch({
-        success: (m, r) -> cb(null, m), # if success, collect the model
-        error: (m, r) -> cb(r, m) # if error, collect the response, then the model
-      })
+  tasks = _.map models, (model) ->
+    # call fetch on each model, passing callbacks for success/error
+    # see Backbone Model#fetch or Collection#fetch
+    (cb) -> model.fetch({
+      success:  (m, r) -> cb(null, m),  # collect the model
+      error:    (m, r) -> cb(r, m)      # collect the response and model
+    })
 
   async.parallel(tasks, callback)
 
@@ -47,13 +49,16 @@ Backbone.multi_fetch = (fetches, callback) ->
 # Where:
 #   err = response object from fetch error, or NULL if no error
 #   results = models/collections that were fetched
-Backbone.multi_save = (saves, callback) ->
-  if ! _.isArray(saves)
-    saves = [ saves ]
+Backbone.multi_save = (models, callback) ->
+  if ! _.isArray(models)
+    models = [ models ]
 
-  tasks = _.map saves, (f) ->
-    (cb) -> f.save({}, {
-        success: (m, r) -> cb(null, m)  # if success, collect the model
-        error: (m, r) -> cb(r, m)       # if error, collect the response, then the model
-      })
+  tasks = _.map models, (model) ->
+    # call save on each model, passing callbacks for success/error
+    # see Backbone Model#save or Collection#save
+    (cb) -> model.save({}, {
+      success:  (m, r) -> cb(null, m),  # collect the model
+      error:    (m, r) -> cb(r, m)      # collect the response and model
+    })
+
   async.parallel(tasks, callback)

@@ -8,4 +8,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     events: {
     }
 
-    # after_render: ->
+    after_render: ->
+      @$("input.tags").select2({
+        tags: @tags.get()
+        tokenSeparators: [",", " "]
+      })
