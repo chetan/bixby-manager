@@ -25,6 +25,11 @@ Bixby::Application.routes.draw do
     resources :agents
 
     resources :hosts do
+
+      collection do
+        get "tags" => "hosts#tags"
+      end
+
       get "update_facts" => "hosts#update_facts"
 
       resources :checks do
