@@ -22,5 +22,4 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     }
 
     after_render: ->
-      users = @$("select#users")
-      users.select2()
+      @$("select#users").select2()
