@@ -168,6 +168,12 @@ class Host < ActiveRecord::Base
 
   end
 
+  # Get an alpha-sorted list of all tags used for Hosts
+  #
+  # @return [Array<String>] tags
+  def self.all_tags
+    ActsAsTaggableOn::Tagging.where(:taggable_type => "Host").includes(:tag).map{ |t| t.tag.name }.sort
+  end
 
   private
 
