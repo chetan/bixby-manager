@@ -6,6 +6,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     template: "monitoring/home"
 
     links: {
+      ".create_check_template": [ "mon_check_template_new" ]
       ".create_schedule_link": [ "mon_oncalls_new" ]
     }
 

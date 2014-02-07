@@ -1,0 +1,54 @@
+
+<div class="content-inner">
+  <h2>Create Check Template</h2>
+
+
+  <form id="form_create_check_template" class="">
+    <fieldset>
+
+      <label for="name"><h4>Template name:</h4></label>
+      <input type="text" id="name">
+
+      <label for="tags"><h4>Tags to apply to:</h4></label>
+      <select id="tags" multiple="true" class="input-xlarge">
+        // <% users.each(function(user) { %>
+        //   <option value="<%= user.id %>"><%= user.get_name() %></option>
+        // <% }); %>
+      </select>
+
+    <h4>Select the checks to add to the template:</h4>
+
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Bundle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% commands.each(function(cmd) { %>
+         <tr title="<%= cmd.get_command() %>">
+            <td><input type="checkbox" class="checkbox"
+                       id="command_id_<%= cmd.id %>"
+                       value="<%= cmd.id %>"
+                       <%? cmd.checked %>checked="checked"<%/%>
+                       ></td>
+            <td><label for="command_id_<%= cmd.id %>"><%= cmd.name %></label></td>
+            <td><label for="command_id_<%= cmd.id %>"><%= cmd.bundle %></label></td>
+          </tr>
+          <% }); %>
+
+        </tbody>
+
+      </table>
+
+      <div class="command_opts">
+      </div>
+
+      <a id="submit_check" class="btn primary">Configure Check(s)</a>
+
+    </fieldset>
+  </form>
+
+</div>

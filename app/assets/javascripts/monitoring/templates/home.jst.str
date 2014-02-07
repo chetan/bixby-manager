@@ -1,6 +1,13 @@
 
-<h3>On Call Schedules</h3>
+<h3>Check Templates</h3>
+<p>
+  <a class="btn primary create_check_template">Create Template</a>
+</p>
 
+<br/>
+<hr/>
+
+<h3>On Call Schedules</h3>
 <p>
   <a class="btn primary create_schedule_link">Create Schedule</a>
 </p>

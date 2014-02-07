@@ -75,6 +75,7 @@ Bixby::Application.routes.draw do
 
   get "/monitoring" => "monitoring/base#index"
   namespace :monitoring do
+    resources :check_templates
     resources :on_calls
     resources :hosts do
 

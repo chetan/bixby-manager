@@ -127,9 +127,17 @@ class ApplicationController < ActionController::Base
         name ||= type.downcase
 
       elsif obj.kind_of? ActiveRecord::Relation or obj.kind_of? Array then
-        return if obj.empty?
-        type = obj.first.class.to_s + "List"
-        name ||= obj.first.class.to_s.pluralize.downcase
+        return if obj.empty? # can't determine type or name
+
+        if obj.first.kind_of? ActiveRecord::Base then
+          type = obj.first.class.to_s + "List"
+          name ||= obj.first.class.to_s.pluralize.downcase
+
+        elsif obj.first.kind_of? String then
+          type = "Array"
+          # assume name is passed in
+        end
+
       end
 
     elsif type !~ /List$/ then
