@@ -1,17 +1,13 @@
   <script type="text/javascript">
-<% @bootstrap.each do |boot| %>
     Bixby.app.bootstrap({
-      <%
-      if boot[:model] =~ /List$/ or boot[:data].kind_of? Array then
-      %>
-        <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>()).reset(<%= boot[:data] %>)
-      <%
-      else
-      %>
-        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(<%= boot[:data] %>)
+    <%
+    @bootstrap.each do |boot|
+      if boot[:model] =~ /List$/ or boot[:data].kind_of? Array then %>
+        <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>()).reset(<%= boot[:data] %>),
+      <% else %>
+        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(<%= boot[:data] %>),
       <%
       end
-      %>
+    end %>
      });
-<% end %>
   </script>
