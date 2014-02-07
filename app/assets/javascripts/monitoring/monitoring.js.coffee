@@ -5,6 +5,7 @@ _bv = Bixby.view
 _bvm = _bv.monitoring
 _bm = Bixby.model
 
+# Monitoring home
 Bixby.app.add_state(
   class extends Stark.State
     name:   "monitoring"
@@ -16,6 +17,7 @@ Bixby.app.add_state(
 
 )
 
+# Check list
 Bixby.app.add_state(
   class extends Stark.State
 
@@ -27,6 +29,7 @@ Bixby.app.add_state(
     models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
 )
 
+# Check group
 Bixby.app.add_state(
   class extends Stark.State
 
@@ -38,6 +41,7 @@ Bixby.app.add_state(
     models:     { host: _bm.Host, check: _bm.Check, metrics: _bm.MetricList }
 )
 
+# Metric detail
 Bixby.app.add_state(
   class extends Stark.State
 
@@ -49,6 +53,7 @@ Bixby.app.add_state(
     models:     { host: _bm.Host, check: _bm.Check, metric: _bm.Metric }
 )
 
+# Add resource
 Bixby.app.add_state(
   class extends Stark.State
 
@@ -66,6 +71,7 @@ Bixby.app.add_state(
 
 )
 
+# Configure resource options
 Bixby.app.add_state(
   class extends Stark.State
 
@@ -100,6 +106,7 @@ Bixby.app.add_state(
 
 )
 
+# New trigger
 Bixby.app.add_state(
   class extends Stark.State
 
@@ -118,6 +125,7 @@ Bixby.app.add_state(
       Backbone.multi_fetch(needed)
 )
 
+# Add trigger action
 Bixby.app.add_state(
   class extends Stark.State
 
