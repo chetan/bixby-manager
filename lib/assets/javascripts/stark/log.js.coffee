@@ -20,9 +20,9 @@ class Stark.Logger
   @.prototype[level] = create_logger(level) for level in [ "log", "debug", "info", "warn", "error" ]
 
   # wrapper around groups
-  begin_group: ->
+  begin_group: (args...) ->
     if console.group? && Stark.Logger.enabled
-      console.group()
+      console.group(args...)
 
   end_group: ->
     if console.group? && Stark.Logger.enabled

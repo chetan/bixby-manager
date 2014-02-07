@@ -107,8 +107,8 @@ class Stark.App
     @start_timer(timer_name)
 
     @log "---"
-    @log "transition", state_name, state_data
-    @begin_group()
+    @begin_group("transition to: #{state_name}")
+    @log "transition data:", state_data
 
     @trigger "before:transition", state_name, state_data
     target_state = @states[state_name]
@@ -209,8 +209,7 @@ class Stark.App
         @log "null view in #{state.name}: ", state.views
         throw new Error("Encountered an undefined view class in state #{state.name}")
 
-      @log "creating view #{state.name}::#{v.name}"
-      @begin_group()
+      @begin_group("creating view #{state.name}::#{v.name}")
       view = new v()
       view.set "current_user", @current_user
       @copy_data_from_state state, view
