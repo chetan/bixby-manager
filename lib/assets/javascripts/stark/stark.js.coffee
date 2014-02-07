@@ -205,6 +205,10 @@ class Stark.App
         state._views.push _.find(@current_state._views, (i) -> i instanceof v)
         return
 
+      if !v?
+        @log "null view in #{state.name}: ", state.views
+        throw new Error("Encountered an undefined view class in state #{state.name}")
+
       @log "creating view #{state.name}::#{v.name}"
       @begin_group()
       view = new v()
