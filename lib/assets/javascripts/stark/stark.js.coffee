@@ -85,6 +85,8 @@ class Stark.App
     if opts
       views = opts.views # views common to all states
       delete opts.views
+    else
+      views = []
 
     _.eachR @, states, (obj, name) ->
       if _.isFunction(obj)
