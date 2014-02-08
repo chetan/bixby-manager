@@ -1,3 +1,4 @@
+
 namespace "Bixby.view.inventory", (exports, top) ->
 
   class exports.HostEditor extends Stark.View

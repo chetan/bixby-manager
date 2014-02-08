@@ -1,9 +1,6 @@
 
 #= require_tree "./views"
 
-_bv = Bixby.view
-_vi = Bixby.view.inventory
-
 Bixby.app.add_states { tab: "inventory", views: [_bv.PageLayout, _vi.Layout] },
 
   "getting_started":

@@ -1,10 +1,8 @@
 
 #= require_tree "./views"
 
-_bv = Bixby.view
-_bm = Bixby.model
-
 Bixby.app.add_states { tab: "repository", views: [ _bv.PageLayout ] },
+
   "repository":
     url:    "repository"
 

@@ -1,8 +1,6 @@
 
 #= require_tree "./views"
 
-_bv = Bixby.view
-
 Bixby.app.add_states
 
   "login":

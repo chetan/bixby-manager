@@ -17,7 +17,8 @@ window.namespace = (target, name, block) ->
   [target, name, block] = [(if typeof exports isnt 'undefined' then exports else window), arguments...] if arguments.length < 3
   top    = target
   target = target[item] or= {} for item in name.split '.'
-  block target, top
+  block? && block target, top
+  target
 
 
 # Helper function for calling fetch() on multiple models/collections and then
