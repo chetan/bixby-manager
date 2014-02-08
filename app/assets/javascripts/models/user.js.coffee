@@ -5,6 +5,12 @@ namespace 'Bixby.model', (exports, top) ->
     urlRoot: "/rest/users"
     Backprop.create_strings @, "name", "username", "email", "phone", "org", "tenant"
 
+    @impersonate: (user_id, callback) ->
+      $.ajax @.prototype.urlRoot + "/impersonate?user_id=" + user_id, {
+        dataType: "json"
+        success: callback
+      }
+
     get_name: ->
       @get("name") || @get("username")
 
@@ -28,12 +34,6 @@ namespace 'Bixby.model', (exports, top) ->
     can: (permission) ->
       # TODO implement resource checks as well
       !! _.find @get("permissions"), (p) -> !p.resource? && p.name == permission
-
-    impersonate: (user_id, callback) ->
-      $.ajax @urlRoot + "/impersonate?user_id=" + user_id, {
-        dataType: "json"
-        success: callback
-      }
 
   class exports.UserList extends Stark.Collection
     model: exports.User

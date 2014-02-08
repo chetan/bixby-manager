@@ -51,7 +51,7 @@ namespace "Bixby.view", (exports, top) ->
         user_id = @true_user.id # impersonation was cleared
 
       view = @
-      new Bixby.model.User().impersonate user_id, (data, status, xhr) ->
+      Bixby.model.User.impersonate user_id, (data, status, xhr) ->
         view.$("li.dropdown").removeClass('open')
         view.current_user = Bixby.app.current_user = new Bixby.model.User(data)
         view.redraw()
