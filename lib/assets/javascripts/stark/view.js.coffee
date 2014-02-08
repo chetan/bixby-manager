@@ -134,7 +134,7 @@ class Stark.View extends Backbone.View
   jst: (tpl) ->
     tpl ||= @template
     @log "render #{tpl}" #,"\n\t\t\t", @
-    JST[tpl]
+    JST[tpl] || JST["states/#{tpl}"]
 
   # Create a Template object for the configured @template
   #
