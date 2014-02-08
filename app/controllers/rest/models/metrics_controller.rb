@@ -4,10 +4,10 @@ class Rest::Models::MetricsController < ::Rest::ApiController
   # List all metrics for the host
   # GET "/rest/hosts/3/metrics"
   def index
-    @host = Host.find(params[:host_id])
-    @metrics = Metric.metrics_for_host(@host)
+    host = Host.find(params[:host_id])
+    metrics = Metric.metrics_for_host(host)
 
-    restful @metrics
+    restful metrics
   end
 
   # List all metrics for the check

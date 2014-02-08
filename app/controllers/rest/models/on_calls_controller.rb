@@ -2,13 +2,11 @@
 class Rest::Models::OnCallsController < ::Rest::ApiController
 
   def index
-    @oncalls = OnCall.where(:org_id => current_user.org_id)
-    restful @oncalls
+    restful OnCall.where(:org_id => current_user.org_id)
   end
 
   def show
-    oncall = OnCall.find(_id)
-    restful @host
+    restful OnCall.find(_id)
   end
 
   def create

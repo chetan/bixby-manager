@@ -2,15 +2,15 @@
 class Rest::Models::ChecksController < ::Rest::ApiController
 
   def index
-    @host = Host.find(params[:host_id])
+    host = Host.find(params[:host_id])
 
     if params[:metric_id] then
-      @ret = Metric.find(params[:metric_id].to_i).check
+      ret = Metric.find(params[:metric_id].to_i).check
     else
-      @ret = Check.where(:host_id => @host)
+      ret = Check.where(:host_id => host)
     end
 
-    restful @ret
+    restful ret
   end
 
   def create
@@ -27,8 +27,7 @@ class Rest::Models::ChecksController < ::Rest::ApiController
       agent = Host.find(runhost_id).agent
     end
 
-    check = Bixby::Monitoring.new.add_check(host, command, opts, agent)
-    restful check
+    restful Bixby::Monitoring.new.add_check(host, command, opts, agent)
   end
 
   def show

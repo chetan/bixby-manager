@@ -4,39 +4,38 @@ class Rest::Models::HostsController < ::Rest::ApiController
   def index
     query = params[:q] || params[:query]
     if not query.blank? then
-      @hosts = Host.search(query, current_user)
+      hosts = Host.search(query, current_user)
     else
-      @hosts = Host.for_user(current_user)
+      hosts = Host.for_user(current_user)
     end
-    restful @hosts
+    restful hosts
   end
 
   def show
-    @host = Host.find(_id)
-    restful @host
+    restful Host.find(_id)
   end
 
   def update
-    @host = Host.find(_id)
+    host = Host.find(_id)
     attrs = pick(:alias, :desc)
     attrs[:tag_list] = params[:tags]
-    @host.update_attributes(attrs)
+    host.update_attributes(attrs)
 
-    restful @host
+    restful host
   end
 
   def destroy
-    @host = Host.find(_id)
-    @host.destroy
-    @host.agent.destroy if @host.agent
+    host = Host.find(_id)
+    host.destroy
+    host.agent.destroy if host.agent
 
-    restful @host
+    restful host
   end
 
   def update_facts
-    @host = Host.find(_id)
-    Bixby::Inventory.new.update_facts(@host)
-    restful @host
+    host = Host.find(_id)
+    Bixby::Inventory.new.update_facts(host)
+    restful host
   end
 
   def tags
