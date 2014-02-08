@@ -10,7 +10,7 @@ class Rest::Models::CommandsController < ::Rest::ApiController
     elsif repo_id
       commands = Command.where(:repo_id => repo_id)
     else
-      commands = Command.all
+      commands = Command.all.for_user(current_user)
     end
     restful commands
   end
