@@ -29,3 +29,9 @@ class Stark.Collection extends Backbone.Collection
     super(attributes, options)
     @bound_views = []
     @extract_params(attributes)
+
+  # Get the classname for this instance
+  #
+  # @return [String]
+  className: ->
+    /(\w+)\(/.exec(this.constructor.toString())[1]

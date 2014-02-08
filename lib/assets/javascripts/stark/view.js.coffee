@@ -70,6 +70,12 @@ class Stark.View extends Backbone.View
   _data: null
   _views: null
 
+  # Get the classname for this instance
+  #
+  # @return [String]
+  className: ->
+    /(\w+)\(/.exec(this.constructor.toString())[1]
+
   # Called from Backbone.View constructor
   initialize: (args) ->
     @_data = []

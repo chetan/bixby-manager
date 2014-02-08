@@ -33,3 +33,9 @@ class Stark.Model extends Backbone.Model
   # Proxy for @get(); will return empty string ("") instead of null
   g: (k) ->
     @get(k) || ""
+
+  # Get the classname for this instance
+  #
+  # @return [String]
+  className: ->
+    /(\w+)\(/.exec(this.constructor.toString())[1]

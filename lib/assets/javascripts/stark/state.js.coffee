@@ -50,6 +50,13 @@ class Stark.State
   _data: null
   _views: null
 
+
+  # Get the classname for this instance
+  #
+  # @return [String]
+  className: ->
+    /(\w+)\(/.exec(this.constructor.toString())[1]
+
   constructor: ->
     # internal attributes
     @_data  = {}
@@ -134,12 +141,13 @@ class Stark.State
 
   # Cleanup any resources used by the state. Should remove all views and unbind any events
   dispose: (new_state) ->
-    @log "disposing of state", @name, @
+    @begin_closed_group("disposing of state #{@name}")
     @unbind_app_events()
     _.eachR @, @_views, (v) ->
       if ! (_.any(new_state.views, (n) -> n && v instanceof n) && v.reuse == true)
         # only dispose of view IF NOT required by new state
         v.dispose()
+    @end_group()
 
   # Subscribe to all @app level events as defined in the @app_events var
   bind_app_events: ->
