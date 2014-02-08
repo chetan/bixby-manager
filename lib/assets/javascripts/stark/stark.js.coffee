@@ -73,6 +73,34 @@ class Stark.App
       @log "sending to login page: #{@login_route}"
       @router.route(@login_route)
 
+  # Shorthand method for registering an array of states
+  #
+  # @param [Object] opts              common options to apply to all states
+  # @param [Object] states            name = state name, value = object defininig the state prototype or a class
+  add_states: (opts, states) ->
+    if !states?
+      states = opts
+      opts = null
+
+    if opts
+      views = opts.views # views common to all states
+      delete opts.views
+
+    _.eachR @, states, (obj, name) ->
+      if _.isFunction(obj)
+        clazz = obj
+      else
+        clazz = class extends Stark.State
+        _.extend(clazz.prototype, obj)
+
+      clazz.prototype.name = name
+      clazz.prototype.views = views.concat(clazz.prototype.views || []) # prepend common views
+      _.extend(clazz.prototype, opts)
+      @add_state(clazz)
+
+  # Register a new state with the router
+  #
+  # @param [State] state
   add_state: (state) ->
     s = new state()
     @states[s.name] = state
