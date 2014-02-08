@@ -34,6 +34,7 @@ class Rest::Models::UsersController < ::Rest::ApiController
     id = _id()
     if id == true_user.id then
       stop_impersonating_user
+      set_current_tenant
       return restful(true_user)
     end
 
