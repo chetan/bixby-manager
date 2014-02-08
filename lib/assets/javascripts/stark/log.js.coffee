@@ -24,6 +24,10 @@ class Stark.Logger
     if console.group? && Stark.Logger.enabled
       console.group(args...)
 
+  begin_closed_group: (args...) ->
+    if console.groupCollapsed? && Stark.Logger.enabled
+      console.groupCollapsed(args...)
+
   end_group: ->
     if console.group? && Stark.Logger.enabled
       console.groupEnd()

@@ -23,21 +23,30 @@ window.namespace = (target, name, block) ->
 # Helper function for calling fetch() on multiple models/collections and then
 # calling a callback when all have completed (or there was an error)
 #
+# @param [Array<Model>] models
+# @param [Object] options               (optional)
+# @param [Function] callback
+#
 # Callback is of form: function(err, results)
 # Where:
 #   err = response object from fetch error, or NULL if no error
-#   results = models/collections that were fetched
-Backbone.multi_fetch = (models, callback) ->
+#   results = array of models/collections that were fetched
+Backbone.multi_fetch = (models, options, callback) ->
   if ! _.isArray(models)
     models = [ models ]
+
+  # handle optional options var
+  if _.isFunction(options)
+    callback = options
+    options = null
 
   tasks = _.map models, (model) ->
     # call fetch on each model, passing callbacks for success/error
     # see Backbone Model#fetch or Collection#fetch
-    (cb) -> model.fetch({
+    (cb) -> model.fetch(_.extend({
       success:  (m, r) -> cb(null, m),  # collect the model
-      error:    (m, r) -> cb(r, m)      # collect the response and model
-    })
+      error:    (m, r) -> cb(r, m),     # collect the response and model
+    }, options))
 
   async.parallel(tasks, callback)
 

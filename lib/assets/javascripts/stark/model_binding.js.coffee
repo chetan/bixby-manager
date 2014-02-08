@@ -36,9 +36,10 @@ class Stark.ModelBinding
 
     @bound_views.push(view)
     model = @
-    @onR view, "sync", ->
+    @onR view, "sync", (model, xhr, options) ->
+      return if options.initial_load == true # true when loading during state transition
       @log "redraw handler fired (sync) due to model binding on: ", model
-      @log "redrawing view: ", @
+      @begin_closed_group "redrawing view: #{@.className()}"
       @redraw()
 
     # @onR view, "change", ->

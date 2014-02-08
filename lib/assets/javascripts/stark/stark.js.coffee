@@ -151,7 +151,7 @@ class Stark.App
     needed = state.load_data(state_data)
     if needed? && needed.length > 0
       app = @
-      Backbone.multi_fetch needed, (err, results) ->
+      Backbone.multi_fetch needed, {initial_load: true}, (err, results) ->
         if err and err.status >= 400 and err.status < 500
           # session timeout
           app.redir = [ state_name, state_data ]
@@ -209,7 +209,7 @@ class Stark.App
         @log "null view in #{state.name}: ", state.views
         throw new Error("Encountered an undefined view class in state #{state.name}")
 
-      @begin_group("creating view #{state.name}::#{v.name}")
+      @begin_closed_group("creating view #{state.name}::#{v.name}")
       view = new v()
       view.set "current_user", @current_user
       @copy_data_from_state state, view
