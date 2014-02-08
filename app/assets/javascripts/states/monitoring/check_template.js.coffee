@@ -1,5 +1,5 @@
 
-#= require "./monitoring"
+#= require_tree "./views"
 
 Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] },
 
