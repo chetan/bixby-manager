@@ -3,14 +3,11 @@
 
 _bv = Bixby.view
 
-Bixby.app.add_state(
-  class extends Stark.State
+Bixby.app.add_states
 
-    name: "login"
-    url:  "login"
-    tab:  ""
-
-    views:      [ _bv.Login ]
+  "login":
+    url:   "login"
+    views: [ _bv.Login ]
 
     validate: ->
       # send to home if already logged in
@@ -18,22 +15,11 @@ Bixby.app.add_state(
         @transition "inventory"
         return false
       return true
-)
 
-Bixby.app.add_state(
-  class extends Stark.State
+  "profile":
+    url:   "profile"
+    views: [ _bv.PageLayout, _bv.Profile ]
 
-    name: "profile"
-    url:  "profile"
-
-    views:      [ _bv.PageLayout, _bv.Profile ]
-)
-
-Bixby.app.add_state(
-  class extends Stark.State
-
-    name: "profile_edit"
-    url:  "profile/edit"
-
-    views:      [ _bv.PageLayout, _bv.ProfileEdit ]
-)
+  "profile_edit":
+    url:   "profile/edit"
+    views: [ _bv.PageLayout, _bv.ProfileEdit ]

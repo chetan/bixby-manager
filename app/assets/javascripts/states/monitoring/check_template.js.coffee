@@ -5,14 +5,10 @@ _bv  = Bixby.view
 _bvm = _bv.monitoring
 _bm  = Bixby.model
 
-Bixby.app.add_state(
-  class extends Stark.State
+Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] },
 
-    name: "mon_check_template_new"
+  "mon_check_template_new":
     url:  "monitoring/check_templates/new"
-    tab:  "monitoring"
 
-    views:      [ _bv.PageLayout, _bvm.Layout, _bvm.NewCheckTemplate ]
-    models:     { commands: _bm.MonitoringCommandList, tags: _bm.HostTagList }
-)
-
+    views:  [ _bvm.NewCheckTemplate ]
+    models: { commands: _bm.MonitoringCommandList, tags: _bm.HostTagList }
