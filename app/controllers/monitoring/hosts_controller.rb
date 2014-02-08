@@ -9,8 +9,8 @@ class Monitoring::HostsController < Monitoring::BaseController
 
     # TODO error if no id
     host = Host.find(_id)
-    checks = Check.where(:host_id => @host)
-    metrics = Metric.metrics_for_host(@host)
+    checks = Check.where(:host_id => host)
+    metrics = Metric.metrics_for_host(host)
 
     bootstrap host, checks
     bootstrap metrics, :type => Metric
