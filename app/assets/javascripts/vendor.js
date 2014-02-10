@@ -26,7 +26,6 @@
 // utils
 //= require "async"
 //= require "md5.min"
-//= require "sprintf"
 //= require "strftime"
 
 // tagging

@@ -117,7 +117,7 @@ Bixby.monitoring.render_metric = (div, metric, opts) ->
     else
       unit_label = " " + unit
   last_val = vals[vals.length-1][1]
-  footer_text = sprintf("Last Value: %0.2f%s", last_val, unit_label)
+  footer_text = _.str.sprintf("Last Value: %0.2f%s", last_val, unit_label)
   footer.text(footer_text)
 
   # draw graph
@@ -188,7 +188,7 @@ Bixby.monitoring.render_metric = (div, metric, opts) ->
   xvf = xOptView('valueFormatter')
   opts = {
     highlightCallback: (e, x, pts, row) ->
-      date = xvf(x, xOptView, "", g) + ", " + sprintf("val = %0.2f%s", pts[0].yval, unit_label)
+      date = xvf(x, xOptView, "", g) + ", " + _.str.sprintf("val = %0.2f%s", pts[0].yval, unit_label)
       footer.text(date)
 
     unhighlightCallback: (e) ->
