@@ -35,3 +35,11 @@ class Stark.Collection extends Backbone.Collection
   # @return [String]
   className: ->
     /(\w+)\(/.exec(this.constructor.toString())[1]
+
+  # See Backbone.Collection#reset
+  #
+  # Backbone 1.1 introduced a change to this method. Instead of returning self,
+  # it now returns the list of models which were reset. We want the old behavior.
+  reset: (args...) ->
+    super
+    @
