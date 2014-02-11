@@ -9,6 +9,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     }
 
     after_render: ->
+      @$("select.condition").select2({minimumResultsForSearch: -1}) # -1 disables search input
       @$("input.tags").select2({
         tags: @tags.get()
         tokenSeparators: [",", " "]

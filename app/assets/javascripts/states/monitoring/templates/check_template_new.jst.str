@@ -9,41 +9,19 @@
       <label for="name"><h4>Template name:</h4></label>
       <input type="text" id="name" class="input-xlarge">
 
-      <label for="tags"><h4>Tags to apply:</h4></label>
-      <input type="hidden" class="tags input-xlarge"/>
-
-      <label for="tags"><h4>Apply if:</h4></label>
-      <select class="condition">
+      <label for="condition"><h4>Apply this template if:</h4></label>
+      <select id="condition" class="condition input-xlarge">
         <option value="any">any tag matches</option>
         <option value="all">all tags match</option>
+        <option value="except">all or no tags, except the following</option>
       </select>
+
+      <label for="tags"><h4>Tags:</h4></label>
+      <input type="hidden" id="tags" class="tags input-xlarge"/>
 
       <h4>Select the checks to add to the template:</h4>
 
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Bundle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% commands.each(function(cmd) { %>
-         <tr title="<%= cmd.get_command() %>">
-            <td><input type="checkbox" class="checkbox"
-                       id="command_id_<%= cmd.id %>"
-                       value="<%= cmd.id %>"
-                       <%? cmd.checked %>checked="checked"<%/%>
-                       ></td>
-            <td><label for="command_id_<%= cmd.id %>"><%= cmd.name %></label></td>
-            <td><label for="command_id_<%= cmd.id %>"><%= cmd.bundle %></label></td>
-          </tr>
-          <% }); %>
-
-        </tbody>
-
-      </table>
+      <%= include("monitoring/_command_table") %>
 
       <div class="command_opts">
       </div>
