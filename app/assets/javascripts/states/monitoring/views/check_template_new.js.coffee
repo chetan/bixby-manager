@@ -1,9 +1,9 @@
 
 namespace "Bixby.view.monitoring", (exports, top) ->
 
-  class exports.NewCheckTemplate extends Stark.View
+  class exports.CheckTemplateNew extends Stark.View
     el: "div.monitoring_content"
-    template: "monitoring/new_check_template"
+    template: "monitoring/check_template_new"
 
     events: {
     }
