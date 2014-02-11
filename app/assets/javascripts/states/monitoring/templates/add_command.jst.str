@@ -7,30 +7,7 @@
 
   <form method="get" id="form_select_check">
 
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Bundle</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% commands.each(function(cmd) { %>
-       <tr title="<%= cmd.get_command() %>">
-          <td><input type="checkbox" class="checkbox"
-                     id="command_id_<%= cmd.id %>"
-                     value="<%= cmd.id %>"
-                     <%? cmd.checked %>checked="checked"<%/%>
-                     ></td>
-          <td><label for="command_id_<%= cmd.id %>"><%= cmd.name %></label></td>
-          <td><label for="command_id_<%= cmd.id %>"><%= cmd.bundle %></label></td>
-        </tr>
-        <% }); %>
-
-      </tbody>
-
-    </table>
+    <%= include("monitoring/_command_table") %>
 
     <div class="command_opts">
     </div>
@@ -38,4 +15,5 @@
     <a id="submit_check" class="btn primary">Configure Check(s)</a>
 
   </form>
+
 </div>
