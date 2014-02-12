@@ -7,22 +7,20 @@
     <fieldset>
 
       <label for="name"><h4>Template name:</h4></label>
-      <input type="text" id="name" class="input-xlarge">
+      <input type="text" id="name" class="input-xlarge" required="true" <%? name %>value="<%= name %>"<%/%>>
 
-      <label for="condition"><h4>Apply this template if:</h4></label>
-      <select id="condition" class="condition input-xlarge">
+      <label for="mode"><h4>Apply this template if:</h4></label>
+      <select id="mode" class="mode input-xlarge">
         <option value="any">any tag matches</option>
         <option value="all">all tags match</option>
         <option value="except">all or no tags, except the following</option>
       </select>
 
       <label for="tags"><h4>Tags:</h4></label>
-      <input type="hidden" id="tags" class="tags input-xlarge"/>
+      <input type="hidden" id="tags" class="tags input-xlarge" <%? selected_tags %>value="<%= selected_tags %>"<%/%>/>
 
       <h4>Select the checks to add to the template:</h4>
-
       <%= include("monitoring/_command_table") %>
-
       <div class="command_opts">
       </div>
 
