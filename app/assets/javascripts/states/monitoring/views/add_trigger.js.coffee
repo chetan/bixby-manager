@@ -47,6 +47,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         }
         trigger.metric_key = $("#metric option").filter(":selected").text()
 
-        @transition "mon_hosts_actions_new", { host: host, trigger: trigger, users: @state.users, oncalls: @state.oncalls }
+        @transition "mon_hosts_actions_new", { host: host, trigger: trigger, users: @state.users, on_calls: @state.on_calls }
 
     } # events

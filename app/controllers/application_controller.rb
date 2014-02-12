@@ -131,7 +131,7 @@ class ApplicationController < ActionController::Base
 
         if obj.first.kind_of? ActiveRecord::Base then
           type = obj.first.class.to_s + "List"
-          name ||= obj.first.class.to_s.pluralize.downcase
+          name ||= obj.first.class.to_s.underscore.pluralize
 
         elsif obj.first.kind_of? String then
           type = "Array"
@@ -141,7 +141,7 @@ class ApplicationController < ActionController::Base
       end
 
     elsif type !~ /List$/ then
-      name ||= type.to_s.pluralize.downcase
+      name ||= type.to_s.underscore.pluralize
       type = type.to_s + "List"
 
     end

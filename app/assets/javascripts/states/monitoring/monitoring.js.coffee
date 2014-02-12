@@ -9,7 +9,7 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
 
     views:  [ _bvm.Monitoring ]
     models:
-      oncalls: _bm.OnCallList
+      on_calls: _bm.OnCallList
       users:   _bm.UserList
 
   # Check list
@@ -85,8 +85,8 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
     activate: ->
       # preload some extra data for next step
       @users = new _bm.UserList
-      @oncalls = new _bm.OnCallList
-      needed = [@users, @oncalls]
+      @on_calls = new _bm.OnCallList
+      needed = [@users, @on_calls]
       Backbone.multi_fetch(needed)
 
   # Add trigger action
@@ -94,4 +94,4 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
     url:  "monitoring/hosts/:host_id/triggers/:trigger_id/actions/new"
 
     views:      [ _bvm.AddTriggerAction ]
-    models:     { host: _bm.Host, trigger: _bm.Trigger, oncalls: _bm.OnCallList, users: _bm.UserList }
+    models:     { host: _bm.Host, trigger: _bm.Trigger, on_calls: _bm.OnCallList, users: _bm.UserList }

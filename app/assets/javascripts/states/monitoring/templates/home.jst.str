@@ -22,7 +22,7 @@
     </tr>
   </thead>
   <tbody>
-    <% oncalls.each(function(oncall) { %>
+    <% on_calls.each(function(oncall) { %>
       <tr>
         <td><%= oncall.g('name') %></td>
         <td><%= oncall_list(oncall) %></td>

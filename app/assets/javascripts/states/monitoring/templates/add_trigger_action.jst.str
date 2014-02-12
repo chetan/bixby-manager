@@ -47,7 +47,7 @@
 
   <label for="oncall">On Call Schedule</label>
   <select name="oncall" id="oncall">
-    <% oncalls.each(function(oncall) { %>
+    <% on_calls.each(function(oncall) { %>
       <option value="<%= oncall.id %>"><%= oncall.g("name") %></option>
     <% }); %>
   </select>
