@@ -73,8 +73,8 @@
 				return 'if (' + js + '){__out__+=' + js + '}';
 			},
 			'?': function (js) {
-				// open if block around js
-				return '{if((' + js + ')){';
+				// open if block around js w/ test for not-null value
+				return '{if(typeof(' + js + ') !== "undefined" && ' + js + ' !== null){';
 			},
 			'!': function (js) {
 				// open if block around !js
