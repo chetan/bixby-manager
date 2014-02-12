@@ -65,8 +65,15 @@ module Bixby
     mod.const_set(:CONST_MAP, map)
     mod.class_eval do
       def self.lookup(id)
-        id.upcase! if id.kind_of? String
+        if id.kind_of? String then
+          id.upcase!
+        elsif id.kind_of? Symbol then
+          id = id.to_s.upcase.to_sym
+        end
         self.const_get(:CONST_MAP)[id]
+      end
+      class << self
+        alias_method :[], :lookup
       end
     end
 
