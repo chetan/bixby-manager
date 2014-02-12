@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140207175214) do
+ActiveRecord::Schema.define(version: 20140211214901) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -50,6 +50,24 @@ ActiveRecord::Schema.define(version: 20140207175214) do
   end
 
   add_index "annotations", ["host_id"], name: "fk_annotations_hosts1_idx", using: :btree
+
+  create_table "check_template_items", force: true do |t|
+    t.integer "check_template_id", null: false
+    t.integer "command_id",        null: false
+    t.text    "args"
+  end
+
+  add_index "check_template_items", ["check_template_id"], name: "check_template_items_check_template_id_fk", using: :btree
+  add_index "check_template_items", ["command_id"], name: "check_template_items_command_id_fk", using: :btree
+
+  create_table "check_templates", force: true do |t|
+    t.integer "org_id"
+    t.string  "name",             null: false
+    t.integer "mode",   limit: 2, null: false
+    t.string  "tags"
+  end
+
+  add_index "check_templates", ["org_id"], name: "check_templates_org_id_fk", using: :btree
 
   create_table "checks", force: true do |t|
     t.integer  "host_id",                                   null: false
@@ -351,6 +369,11 @@ ActiveRecord::Schema.define(version: 20140207175214) do
   add_foreign_key "agents", "hosts", name: "fk_agents_hosts1"
 
   add_foreign_key "annotations", "hosts", name: "fk_annotations_hosts1"
+
+  add_foreign_key "check_template_items", "check_templates", name: "check_template_items_check_template_id_fk"
+  add_foreign_key "check_template_items", "commands", name: "check_template_items_command_id_fk"
+
+  add_foreign_key "check_templates", "orgs", name: "check_templates_org_id_fk"
 
   add_foreign_key "checks", "agents", name: "fk_checks_agents1"
   add_foreign_key "checks", "commands", name: "fk_checks_commands1"
