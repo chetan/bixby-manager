@@ -24,6 +24,10 @@ Bixby::Application.routes.draw do
 
     resources :agents
 
+    resources :check_templates do
+      resources :items
+    end
+
     resources :hosts do
 
       collection do

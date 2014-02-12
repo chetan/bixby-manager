@@ -11,5 +11,7 @@
 
 class CheckTemplateItem < ActiveRecord::Base
   belongs_to :check_template
-  has_one :command
+  belongs_to :command
+
+  serialize :args, JSONColumn.new
 end

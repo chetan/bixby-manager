@@ -10,26 +10,34 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       # to another view (CheckTemplateNew)
       view = @
       $("#submit_check").on "click", null, (e) ->
+
+        template = new Bixby.model.CheckTemplate()
+        template.set {
+          name: _.val($("#name"))
+          mode: _.val($("#mode"))
+          tags: _.val($("#tags"))
+          items: []
+        }
+
         # create the commands
-        checks = []
         _.each view.opts, (cmd) ->
-          check = new Bixby.model.CheckTemplateItem()
-          check.set { command_id: cmd.id }
+          check = { command_id: cmd.id }
 
           args = {}
           # gather values
           _.each cmd.get("options"), (opt_hash, opt) ->
             args[opt] = view.$("##{opt}").val()
+          check.args = args
 
           # set runhost if exists
           # TODO handle this later
           if view.$("#runhost").length > 0
-            check.set("runhost_id", view.$("#runhost").val())
+            check.runhost_id = view.$("#runhost").val()
 
-          check.set({ args: args })
-          checks.push check
+          template.attributes.items.push check
 
-        Backbone.multi_save checks, (err, results) ->
+        view.log template
+        Backbone.multi_save template, (err, results) ->
           view.transition "monitoring"
 
       return {} # return empty event hash to backbone delegateEvents
