@@ -39,7 +39,7 @@ class UiController < ApplicationController
   protected
 
   def set_current_tenant
-    if current_user.can?("impersonate_users") then
+    if current_user.kind_of?(User) && current_user.can?("impersonate_users") then
       MultiTenant.current_tenant = MultiTenant.with(nil) { current_user.tenant }
     else
       MultiTenant.current_tenant = current_user.tenant if current_user
