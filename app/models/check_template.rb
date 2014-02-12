@@ -12,7 +12,7 @@
 
 class CheckTemplate < ActiveRecord::Base
 
-  has_many :check_template_items, :dependent => :destroy
+  has_many :items, :class_name => CheckTemplateItem, :dependent => :destroy
   belongs_to :org
   multi_tenant :via => :org
 
