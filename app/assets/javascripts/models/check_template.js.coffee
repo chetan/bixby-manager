@@ -5,6 +5,15 @@ namespace 'Bixby.model', (exports, top) ->
     urlRoot: ->
       "/rest/check_templates"
 
+    mode: ->
+      switch @g("mode")
+        when "ANY"
+          "any tag matches"
+        when "ALL"
+          "all tags match"
+        when "EXCEPT"
+          "all or no tags, except the following"
+
   class exports.CheckTemplateList extends Stark.Collection
     model: exports.CheckTemplate
     url: -> "/rest/check_templates"
