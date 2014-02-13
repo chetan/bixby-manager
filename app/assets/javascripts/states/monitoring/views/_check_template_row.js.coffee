@@ -10,14 +10,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "#mode":
         observe: "mode"
         onGet: (val, opts) ->
-          console.log "got val", val
-          switch val
-            when "ANY"
-              "any tag matches"
-            when "ALL"
-              "all tags match"
-            when "EXCEPT"
-              "all or no tags, except the following"
+          _bm.CheckTemplate.mode_str(val)
       "#tags":
         observe: "tags"
         onGet: (val, opts) ->
@@ -29,14 +22,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     links:
       "a#name": [ "mon_check_template_view", (el) -> { check_template: @check_template } ]
-
-    events:
-      "click button.pubkey": (el) ->
-        el.preventDefault()
-        @$(".modal").modal("show")
-        @$("div.modal textarea").focus()
-
-      "focusin div.modal textarea": _.select_text
 
     after_render: ->
       @stickit(@check_template)

@@ -1,0 +1,13 @@
+
+@import "twitter/variables";
+@import "twitter/mixins";
+
+div#check_template {
+  span#mode {
+    font-style: italic;
+    font-weight: bold;
+  }
+  span#tags {
+    font-weight: bold;
+  }
+}

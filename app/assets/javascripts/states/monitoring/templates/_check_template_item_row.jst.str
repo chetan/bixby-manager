@@ -1,0 +1,16 @@
+
+<div class="check_template_item">
+
+  <h4 id="name"><%= check_template_item.command.name %></h4>
+  <span id="args">
+  <%? _.isEmpty(check_template_item.args) %>
+  [no arguments]
+  <% } else { %>
+    Args:
+    <% _.each(check_template_item.args, function(val, key) { %>
+      <%= key %>: <%= val %>
+    <% }); %>
+  <%/%>
+  </span>
+
+</div>

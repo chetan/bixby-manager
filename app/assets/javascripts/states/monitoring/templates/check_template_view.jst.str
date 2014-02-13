@@ -1,0 +1,11 @@
+
+<div id="check_template">
+  <h3>Check template: <span id="name"></span></h3>
+
+  When registering a new agent and <span id="mode"></span> (tags: <span id="tags"></span>), attach the following checks:
+
+  <div id="checks">
+    <%= each_partial(check_template.g("items"), "check_template_item", _bvm.CheckTemplateItemRow) %>
+  </div>
+
+</div>

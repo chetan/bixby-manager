@@ -8,7 +8,10 @@ namespace 'Bixby.model', (exports, top) ->
     params: [ { name: "check_template", set_id: true } ]
 
     mode: ->
-      switch @g("mode")
+      @prototype.mode_str @g("mode")
+
+    @mode_str: (val) ->
+      switch val
         when "ANY"
           "any tag matches"
         when "ALL"
