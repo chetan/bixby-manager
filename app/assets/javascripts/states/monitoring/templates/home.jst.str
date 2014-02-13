@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <%= each_partial(check_templates, "ct", _bvm.CheckTemplateRow) %>
+    <%= each_partial(check_templates, "check_template", _bvm.CheckTemplateRow) %>
   </tbody>
 </table>
 

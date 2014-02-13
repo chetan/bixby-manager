@@ -28,7 +28,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           _.map(val, (c) -> return c.command.name).sort().join(", ")
 
     links:
-      "a#name": [ "mon_check_template_view", (el) -> { check_template: @ct } ]
+      "a#name": [ "mon_check_template_view", (el) -> { check_template: @check_template } ]
 
     events:
       "click button.pubkey": (el) ->
@@ -39,5 +39,5 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "focusin div.modal textarea": _.select_text
 
     after_render: ->
-      @stickit(@ct)
+      @stickit(@check_template)
       @
