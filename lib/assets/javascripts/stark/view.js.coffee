@@ -366,6 +366,30 @@ class Stark.View extends Backbone.View
   include_partial: (clazz, data) ->
     return @create_partial(clazz, data).render_partial_html()
 
+  # Create a partial for each object in the given collection
+  #
+  # @param [Stark.Collection] collection        can be of type Collection or Array
+  # @param [String] context                     context var to assign when passing data to view
+  # @param [Class] clazz                        class name of partial view to render
+  #
+  # @return [String] html
+  each_partial: (collection, context, clazz) ->
+    [s, v] = ["", @]
+
+    if collection instanceof Stark.Collection
+      collection.each (obj) ->
+        ctx = {}
+        ctx[context] = obj
+        s += v.include_partial(clazz, ctx)
+
+    else
+      _.each collection, (obj) ->
+        ctx = {}
+        ctx[context] = obj
+        s += v.include_partial(clazz, ctx)
+
+    return s
+
   # Render a partial (sub) view into the given selector
   #
   # NOTE: this should be called from within a View class

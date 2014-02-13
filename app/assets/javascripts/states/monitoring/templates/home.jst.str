@@ -14,9 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <% check_templates.each(function(ct) { %>
-      <%= include_partial(_bvm.CheckTemplateRow, {ct: ct}) %>
-    <% }); %>
+    <%= each_partial(check_templates, "ct", _bvm.CheckTemplateRow) %>
   </tbody>
 </table>
 
