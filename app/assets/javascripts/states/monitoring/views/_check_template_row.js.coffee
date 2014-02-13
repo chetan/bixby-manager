@@ -27,8 +27,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         onGet: (val, opts) ->
           _.map(val, (c) -> return c.command.name).sort().join(", ")
 
-    # links:
-    #   "a#name": [ "repository_view", (el) -> { repo: @repo } ]
+    links:
+      "a#name": [ "mon_check_template_view", (el) -> { check_template: @ct } ]
 
     events:
       "click button.pubkey": (el) ->
