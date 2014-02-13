@@ -15,14 +15,7 @@
   </thead>
   <tbody>
     <% check_templates.each(function(ct) { %>
-      <tr>
-        <td><%= ct.g('name') %></td>
-        <td><%= ct.mode() %></td>
-        <td><%= ct.g('tags') %></td>
-        <td>
-        <%= _.map(ct.g('items'), function(c) { return c.command.name }).join(", "); %>
-        </td>
-      </tr>
+      <%= include_partial(_bvm.CheckTemplateRow, {ct: ct}) %>
     <% }); %>
   </tbody>
 </table>

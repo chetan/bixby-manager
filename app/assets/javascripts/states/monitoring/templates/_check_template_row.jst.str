@@ -1,0 +1,7 @@
+
+<tr>
+  <td><a id="name"></a></td>
+  <td id="mode"></td>
+  <td id="tags"></td>
+  <td id="items"></td>
+</tr>
