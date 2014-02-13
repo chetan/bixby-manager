@@ -124,7 +124,7 @@ class ApplicationController < ActionController::Base
       # set name based on type, if not given
       if obj.kind_of? ActiveRecord::Base then
         type = obj.class.to_s
-        name ||= type.downcase
+        name ||= type.underscore
 
       elsif obj.kind_of? ActiveRecord::Relation or obj.kind_of? Array then
         return if obj.empty? # can't determine type or name

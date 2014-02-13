@@ -6,4 +6,8 @@ class Monitoring::CheckTemplatesController < Monitoring::BaseController
     bootstrap Command.for_monitoring(), :name => "commands", :model => "MonitoringCommandList"
   end
 
+  def show
+    bootstrap CheckTemplate.find(_id)
+  end
+
 end

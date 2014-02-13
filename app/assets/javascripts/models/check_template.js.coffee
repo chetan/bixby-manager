@@ -5,6 +5,8 @@ namespace 'Bixby.model', (exports, top) ->
     urlRoot: ->
       "/rest/check_templates"
 
+    params: [ { name: "check_template", set_id: true } ]
+
     mode: ->
       switch @g("mode")
         when "ANY"

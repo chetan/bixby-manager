@@ -5,6 +5,10 @@ class Rest::Models::CheckTemplatesController < ::Rest::ApiController
     restful CheckTemplate.where(:org_id => current_user.org_id)
   end
 
+  def show
+    restful CheckTemplate.find(_id)
+  end
+
   def create
 
     # Parameters: {
