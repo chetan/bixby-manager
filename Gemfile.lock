@@ -285,6 +285,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    marco-polo (1.1.0)
     metaclass (0.0.1)
     method_source (0.8.2)
     mime-types (1.25.1)
@@ -538,6 +539,7 @@ DEPENDENCIES
   logging
   logging-rails!
   lograge
+  marco-polo
   micron!
   minitest (~> 4.7)
   mixlib-shellout

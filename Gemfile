@@ -156,6 +156,7 @@ group :development do
     # utils
     gem "pry"
     gem "pry-rails"
+    gem "marco-polo"
     gem "sextant" # displays routes at http://localhost:3000/rails/routes in dev mode
     gem "highline"
     gem "ruby-termios"
