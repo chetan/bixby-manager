@@ -138,11 +138,6 @@ class Monitoring < API
     check.enabled         = true
     check.save!
 
-    # update checks in bg
-    job = Bixby::Scheduler::Job.create(Bixby::Monitoring, :update_check_config,
-            host.agent.id)
-    Bixby::Scheduler.new.schedule_in(0, job)
-
     return check
   end
 

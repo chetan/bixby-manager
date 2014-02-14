@@ -38,6 +38,11 @@ class Rest::Models::HostsController < ::Rest::ApiController
     restful host
   end
 
+  def update_check_config
+    host = Host.find(_id)
+    restful Bixby::Monitoring.new.update_check_config(host.agent)
+  end
+
   def tags
     restful Host.all_tags(current_user)
   end

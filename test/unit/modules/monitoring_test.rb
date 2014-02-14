@@ -29,10 +29,6 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
   def test_add_check
     agent = FactoryGirl.create(:agent)
 
-    Bixby::Scheduler.any_instance.expects(:schedule_in).once.with { |time, job|
-      time == 0 && job.method == :update_check_config && job.args.first == agent.id
-    }
-
     ret = Bixby::Monitoring.new.add_check(agent.host.id, @check.command, nil)
     assert_kind_of Check, ret
 
@@ -60,10 +56,6 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     agent = FactoryGirl.create(:agent)
     agent2 = FactoryGirl.create(:agent)
-
-    Bixby::Scheduler.any_instance.expects(:schedule_in).once.with { |time, job|
-      time == 0 && job.method == :update_check_config && job.args.first == agent.id
-    }
 
     ret = Bixby::Monitoring.new.add_check(agent.host.id, @check.command, nil, agent2)
     assert_kind_of Check, ret

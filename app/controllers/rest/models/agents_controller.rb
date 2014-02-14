@@ -9,4 +9,9 @@ class Rest::Models::AgentsController < ::Rest::ApiController
     restful Agent.find(_id)
   end
 
+  def update_check_config
+    agent = Agent.find(_id)
+    restful Bixby::Monitoring.new.update_check_config(agent)
+  end
+
 end

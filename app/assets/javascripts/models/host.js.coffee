@@ -41,6 +41,10 @@ namespace 'Bixby.model', (exports, top) ->
     update_facts: (callback) ->
       $.getJSON @url() + "/update_facts", callback
 
+    # Monitoring#update_check_config
+    update_check_config: (callback) ->
+      $.getJSON @url() + "/update_check_config", callback
+
 
   class exports.HostList extends Stark.Collection
     model: exports.Host

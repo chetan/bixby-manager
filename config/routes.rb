@@ -22,7 +22,9 @@ Bixby::Application.routes.draw do
 
   namespace :rest, :module => "rest/models" do
 
-    resources :agents
+    resources :agents do
+      get "update_check_config" => "agents#update_check_config"
+    end
 
     resources :check_templates do
       resources :items
@@ -35,6 +37,7 @@ Bixby::Application.routes.draw do
       end
 
       get "update_facts" => "hosts#update_facts"
+      get "update_check_config" => "hosts#update_check_config"
 
       resources :checks do
         get "metrics" => "metrics#index_for_check"

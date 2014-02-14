@@ -29,6 +29,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           checks.push check
 
         Backbone.multi_save checks, (err, results) ->
+          view.host.update_check_config() # fire and forget, no callback here
           view.transition "mon_view_host", { host: view.host }
 
       return {} # return empty event hash to backbone delegateEvents
