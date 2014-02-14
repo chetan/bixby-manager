@@ -30,7 +30,7 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     }
 
     ip = "4.4.4.4"
-    http_req = mock_ip("4.4.4.4")
+    http_req = mock_ip(ip)
 
     hostname = "foo.example.com"
     ret = Bixby::Inventory.new(http_req).register_agent({

@@ -15,6 +15,7 @@ FactoryGirl.define do
   sequence(:pubkey) { |n|  }
   sequence(:username) { |n| "chetan#{n}" }
   sequence(:email_id) { |n| "test#{n}@fw2.net" }
+  sequence(:tenant_name) { |n| "foo.org #{n}" }
 
   factory :agent do
     ip "2.2.2.2"
@@ -93,7 +94,7 @@ FactoryGirl.define do
   factory :tenant do
     password SCrypt::Password.create("test").to_s
     private_key OpenSSL::PKey::RSA.new(File.read(File.join(Rails.root, "test", "support", "keys", "tenant_rsa"))).to_s
-    name "Foo.org"
+    name { generate(:tenant_name) }
   end
 
   factory :user do
