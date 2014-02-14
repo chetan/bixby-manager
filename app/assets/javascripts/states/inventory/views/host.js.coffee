@@ -17,10 +17,9 @@ namespace "Bixby.view.inventory", (exports, top) ->
         @spinner = new Bixby.view.Spinner($("button.refresh-facts"), { length: 3, width: 2, radius: 2, top: '-10px', left: '0' })
 
         view = @
-        $.getJSON "/rest/hosts/" + @host.id + "/update_facts",
-          (data, status, jqXHR) ->
-            view.host = new Bixby.model.Host(data)
-            view.redraw()
+        @host.update_facts (data, status, jqXHR) ->
+          view.host = new Bixby.model.Host(data)
+          view.redraw()
     }
 
     links: {

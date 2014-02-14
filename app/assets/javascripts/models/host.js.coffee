@@ -34,6 +34,14 @@ namespace 'Bixby.model', (exports, top) ->
 
       @set("tags", tags)
 
+
+    # API methods
+
+    # Inventory#update_facts
+    update_facts: (callback) ->
+      $.getJSON @url() + "/update_facts", callback
+
+
   class exports.HostList extends Stark.Collection
     model: exports.Host
     url: ->
