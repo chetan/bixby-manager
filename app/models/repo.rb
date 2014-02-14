@@ -21,7 +21,11 @@ class Repo < ActiveRecord::Base
   multi_tenant :via => :org
 
   def self.for_user(user)
-    for_org(user.org_id)
+    if user.respond_to? :org_id then
+      for_org(user.org_id)
+    else
+      for_org(user.org.id)
+    end
   end
 
   def self.for_org(id)
