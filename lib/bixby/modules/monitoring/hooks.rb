@@ -104,35 +104,35 @@ class Monitoring < API
 
       # tags = agent.host.tags.inject({}){ |h,t| h[t.name] = 1; h }
       tags = Set.new(agent.host.tags.map{|t| t.name})
-      p tags
 
+      update = false
       cts.each do |ct|
-        ctags = Set.new(ct.tags.split(/,/))
-
-
         apply = false
+        ctags = Set.new(ct.tags.split(/,/))
         common = tags.intersection(ctags)
 
         if !common.empty? then
-          logger.warn "any?"
           if CheckTemplate::Mode::ANY == ct.mode then
             apply = true
-          elsif CheckTemplate::Mode::ALL == ct.mode && tags.intersection(ctags).size == ctags.size then
-            logger.warn "all"
+          elsif CheckTemplate::Mode::ALL == ct.mode && common.size == ctags.size then
             apply = true
           end
         elsif CheckTemplate::Mode::EXCEPT == ct.mode then
-          logger.warn "except"
           apply = true
         end
 
         if apply then
-          logger.warn "applying checks"
+          update = true
           ct.items.each do |item|
             Bixby::Monitoring.new.add_check(agent.host, item.command, item.args, agent)
           end
         end
 
+      end
+
+      if update then
+        # update checks in bg (no delay)
+        Bixby::Monitoring.defer.update_check_config(agent.id)
       end
 
     end # self.add_checks_on_register

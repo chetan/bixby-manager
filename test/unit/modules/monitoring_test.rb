@@ -286,6 +286,20 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     cti.command_id = command.id
     cti.save!
 
+    jobs = []
+    jobs << lambda { |time, job|
+      time == 10 && job.method == :update_facts && job.args.first == Agent.last.host.id
+    }
+
+    Bixby::Scheduler.any_instance.expects(:schedule_in).with { |time, job|
+      jobs.shift.call(time, job)
+    }
+
+    if expected_size > 0 then
+      jobs << lambda { |time, job|
+        time == 0 && job.method == :update_check_config && job.args.first == Agent.last.id
+      }
+    end
 
     http_req = mock()
     http_req.expects(:ip).returns("4.4.4.4").once()
