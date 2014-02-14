@@ -17,9 +17,9 @@ class CheckTemplate < ActiveRecord::Base
   multi_tenant :via => :org
 
   module Mode
-    ANY    = 1
-    ALL    = 2
-    EXCEPT = 3
+    ANY    = 1 # any tag matches
+    ALL    = 2 # all tags match
+    EXCEPT = 3 # all or no tags, except the following (don't apply if any of the tags are present)
   end if not const_defined? :Mode
   Bixby::Util.create_const_map(Mode)
 

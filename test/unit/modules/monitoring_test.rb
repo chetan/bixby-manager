@@ -72,6 +72,30 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
   end
 
+  def test_add_check_on_register_any
+    common_add_check_on_register("any", "dev,foo", 1)
+  end
+
+  def test_add_check_on_register_all_no_match
+    common_add_check_on_register("all", "dev,foo", 0)
+  end
+
+  def test_add_check_on_register_all_match
+    common_add_check_on_register("all", "bar,foo", 1)
+  end
+
+  def test_add_check_on_register_except_match
+    common_add_check_on_register("except", "bar", 0)
+  end
+
+  def test_add_check_on_register_except_no_match
+    common_add_check_on_register("except", "dev", 1)
+  end
+
+  def test_add_check_on_register_except_no_tags
+    common_add_check_on_register("except", "", 1, nil)
+  end
+
   def test_update_check_config
 
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
@@ -255,6 +279,39 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     a.save!
 
     return [m, t, a]
+  end
+
+  def common_add_check_on_register(mode, tags, expected_size, host_tags="foo,bar")
+    org = Org.first
+
+    # create template
+    ct = CheckTemplate.new(:name => "default", :mode => mode, :tags => tags, :org_id => org.id)
+    ct.save!
+
+    command = FactoryGirl.create(:command)
+    cti = CheckTemplateItem.new
+    cti.check_template_id = ct.id
+    cti.command_id = command.id
+    cti.save!
+
+
+    http_req = mock()
+    http_req.expects(:ip).returns("4.4.4.4").once()
+    ret = Bixby::Inventory.new(http_req).register_agent({
+      :uuid => "foo", :public_key => "bar",
+      :hostname => "foo.example.com",
+      :tenant => org.tenant.name,
+      :password => "test",
+      :tags => host_tags,
+      :version => "0.5.3"
+      })
+
+    assert ret
+    assert_kind_of Hash, ret
+
+    agent = Agent.last
+    checks = Check.where(:host_id => agent.host_id)
+    assert_equal expected_size, checks.size, "there should be #{expected_size} check(s)"
   end
 
 end

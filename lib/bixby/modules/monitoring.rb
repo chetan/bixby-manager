@@ -323,3 +323,5 @@ class Monitoring < API
 end
 
 end # Bixby
+
+require "bixby/modules/monitoring/hooks"

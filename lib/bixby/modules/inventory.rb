@@ -1,7 +1,15 @@
 
 module Bixby
 
+# Inventory management APIs
+#
+# Offered hooks:
+#
+#   * #register\_agent(agent)
+#
 class Inventory < API
+
+  extend Bixby::Hooks
 
   METADATA_FACTER = 3
 
@@ -83,6 +91,9 @@ class Inventory < API
     end
 
     a.save!
+
+
+    self.class.run_hook(:register_agent, a)
 
     # update facts in bg (10 sec delay)
     job = Bixby::Scheduler::Job.create(Bixby::Inventory, :update_facts, h.id)
