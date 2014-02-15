@@ -1,9 +1,5 @@
 
-@import "twitter/variables";
-@import "twitter/mixins";
-
 div.check {
-  // @include gridSystem-columns($gridGutterWidth, $gridColumnWidth, $gridRowWidth, 4);
   h4 {
     padding-top: 15px;
   }

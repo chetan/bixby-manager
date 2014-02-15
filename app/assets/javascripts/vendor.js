@@ -17,7 +17,7 @@
 
 // ui stuff
 //= require "template"
-//= require "twitter/bootstrap.min"
+//= require "bootstrap"
 //= require "spin.min"
 //= require "Markdown.Converter"
 //= require "mailcheck.min"
