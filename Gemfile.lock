@@ -150,6 +150,8 @@ GEM
       logging
       multi_json
       semver2
+    bootstrap-sass (3.1.1.0)
+      sass (~> 3.2)
     bson (2.0.0.rc3)
     bson (2.0.0.rc3-java)
     builder (3.1.4)
@@ -505,6 +507,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bixby-common
+  bootstrap-sass (~> 3.1.1)
   cane
   capistrano (~> 2.0)
   coffee-rails-source-maps

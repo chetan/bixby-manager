@@ -103,6 +103,7 @@ group :assets do
     gem 'sprockets-rails'
     gem 'sass'
     gem 'sass-rails'
+    gem 'bootstrap-sass', '~> 3.1.1'
     gem 'sprockets-jst-str'
     gem 'coffee-script'
     gem 'coffee-script-source'
