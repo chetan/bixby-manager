@@ -1,5 +1,6 @@
-<div class="input-prepend">
-  <span class="add-on"><%= _.icon("dollar") %></span>
-  <input class="install" type="text" readonly="readonly"
+
+<div class="input-group">
+  <span class="input-group-addon"><%= _.icon("dollar") %></span>
+  <input class="form-control install" type="text" readonly="readonly"
     value="\\curl -sL https://get.bixby.io | bash -s <%= current_user.g('tenant') %> <%= app.manager_uri %>">
 </div>
