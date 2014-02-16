@@ -53,7 +53,7 @@
   </select>
 
   <br/><br/>
-  <a id="submit_action" class="btn btn-primary">Add Action</a>
+  <button type="button" id="submit_action" class="btn btn-primary">Add Action</button>
 
   </fieldset>
 </form>

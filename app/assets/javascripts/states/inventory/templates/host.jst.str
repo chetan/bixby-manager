@@ -5,7 +5,7 @@
     <div class="body span5">
       <h3>
         <%= host.name() %>
-        <span class="edit"><button class="btn btn-mini edit">edit</button></span>
+        <span class="edit"><button type="button" class="btn btn-info btn-xs edit">edit</button></span>
       </h3>
 
       <div class="tags">
@@ -25,7 +25,7 @@
 
   <div class="row-fluid">
 
-    <h4>Facts <button type="button" class="btn btn-mini refresh-facts"><%= _.icon("refresh") %></button></h4>
+    <h4>Facts <button type="button" class="btn btn-xs refresh-facts"><%= _.icon("refresh") %></button></h4>
     <div class="metadata span8">
       <%= include_partial(Bixby.view.inventory.HostMetadata, { metadata: host.get("metadata") }) %>
     </div>

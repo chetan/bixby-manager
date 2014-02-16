@@ -3,8 +3,8 @@
 
 <p>
   <!-- TODO: this is duped at bottom of page. only show when that is not visible -->
-  <a class="btn primary add_resource_link" host_id="<%= host.get('id') %>">Add Resource</a>
-  <a class="btn primary add_trigger_link" host_id="<%= host.get('id') %>">Add Trigger</a>
+  <button type="button" class="btn btn-primary add_resource_link" host_id="<%= host.get('id') %>">Add Resource</button>
+  <button type="button" class="btn btn-primary add_trigger_link" host_id="<%= host.get('id') %>">Add Trigger</button>
 </p>
 
 <% if (checks.length == 0) { %>

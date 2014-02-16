@@ -61,7 +61,7 @@
 
 
   <br/><br/>
-  <a id="submit_trigger" class="btn primary">Add Trigger</a>
+  <button type="button" id="submit_trigger" class="btn btn-primary">Add Trigger</button>
 
 </fieldset>
 </form>

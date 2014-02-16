@@ -1,7 +1,7 @@
 
 <h3>Check Templates</h3>
 <p>
-  <a class="btn primary create_check_template">Create Template</a>
+  <button type="button" class="btn btn-primary create_check_template">Create Template</button>
 </p>
 
 <table class="table table-bordered">
@@ -24,7 +24,7 @@
 
 <h3>On Call Schedules</h3>
 <p>
-  <a class="btn primary create_schedule_link">Create Schedule</a>
+  <button type="button" class="btn btn-primary create_schedule_link">Create Schedule</button>
 </p>
 
 <table class="table table-bordered">

@@ -2,7 +2,7 @@
 <h3>Repositories</h3>
 
 <p>
-  <a class="btn primary add_repo_link">Add Repository</a>
+  <button type="button" class="btn btn-primary add_repo_link">Add Repository</button>
 </p>
 
 <table class="table table-bordered">
