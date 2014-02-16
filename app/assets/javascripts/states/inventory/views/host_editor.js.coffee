@@ -4,7 +4,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
   class exports.HostEditor extends Stark.View
 
     tagName: "div"
-    className: "modal hide host_editor"
+    className: "modal host_editor"
     template: "inventory/_host_editor"
 
     bindings: [ "host" ]
