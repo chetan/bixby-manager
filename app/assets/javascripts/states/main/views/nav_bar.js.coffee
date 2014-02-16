@@ -5,7 +5,7 @@ namespace "Bixby.view", (exports, top) ->
     reuse: true
     template: "main/nav_bar"
 
-    links: {
+    links:
       "a.brand": [ "inventory" ]
       ".tab.inventory a": [ "inventory" ]
       ".tab.monitoring a": [ "monitoring" ]
@@ -13,9 +13,8 @@ namespace "Bixby.view", (exports, top) ->
 
       # user menu
       "a#profile": [ "profile" ]
-    }
 
-    events: {
+    events:
       "click a#logout": (e) ->
         v = @
         $.ajax("/users/sign_out", {
@@ -33,16 +32,12 @@ namespace "Bixby.view", (exports, top) ->
       "click a#stop_impersonating": (e) ->
         @impersonate()
 
-    }
-
-    app_events: {
+    app_events:
       "state:activate": (state) ->
         if state.tab? and state.tab != @current_tab
           $("ul.nav li.tab").removeClass("active")
           if @current_tab = state.tab
             $("ul.nav li.tab.#{@current_tab}").addClass("active")
-
-    }
 
     impersonate: (user_id) ->
       return if !@true_user.can("impersonate_users")
