@@ -15,9 +15,11 @@ Bixby.app.add_states
       return true
 
   "profile":
+    tab:   "user"
     url:   "profile"
     views: [ _bv.PageLayout, _bv.Profile ]
 
   "profile_edit":
+    tab:   "user"
     url:   "profile/edit"
     views: [ _bv.PageLayout, _bv.ProfileEdit ]
