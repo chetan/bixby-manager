@@ -6,7 +6,7 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/nav_bar"
 
     links:
-      "a.brand": [ "inventory" ]
+      "a.navbar-brand": [ "inventory" ]
       ".tab.inventory a": [ "inventory" ]
       ".tab.monitoring a": [ "monitoring" ]
       ".tab.repository a": [ "repository" ]
