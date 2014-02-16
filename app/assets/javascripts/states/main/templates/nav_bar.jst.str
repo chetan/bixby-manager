@@ -1,24 +1,36 @@
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
 
-    <div class="container-fluid">
-      <a class="brand">BIXBY</a>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">BIXBY</a>
+    </div>
 
-      <ul class="nav">
-        <li class="tab inventory">
-          <a>Inventory</a>
-        </li>
-        <li class="tab monitoring">
-          <a>Monitoring</a>
-        </li>
-        <li class="tab repository">
-          <a>Repository</a>
-        </li>
+
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+
+      <!-- MAIN NAV -->
+      <ul class="nav navbar-nav">
+        <li class="tab inventory"><a>Inventory</a></li>
+        <li class="tab monitoring"><a>Monitoring</a></li>
+        <li class="tab repository"><a>Repository</a></li>
       </ul>
 
-      <ul class="user-menu nav secondary-nav pull-right">
-        <li class="tab user dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown"><%= current_user.get_name() %><img class="gravatar" src="<%= current_user.gravatar() %>" alt="gravatar" height="20"/></a>
+
+      <!-- USER -->
+      <ul class="nav navbar-nav navbar-right user">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <%= current_user.get_name() %>
+            <b class="caret"></b>
+            <img class="gravatar" src="<%= current_user.gravatar() %>" alt="gravatar"/>
+          </a>
           <ul class="dropdown-menu">
 
 
@@ -59,18 +71,24 @@
 
             <li class="divider"></li>
 
-            <% } /* if can impersonate_users */ %>
-            <% /* ================================ */ %>
+            <%   /* ============================== */ %>
+            <% } /* if can impersonate_users       */ %>
+            <%   /* ============================== */ %>
+
 
 
             <li><a id="profile"><%= _.icon("user") %> Profile</a></li>
             <li><a id="logout"><%= _.icon("sign-out") %> Logout</a></li>
+
           </ul>
         </li>
       </ul>
 
+
+      <!-- SEARCH -->
       <%= include_partial(Bixby.view.NavSearch) %>
+
     </div>
 
   </div>
-</div>
+</nav>

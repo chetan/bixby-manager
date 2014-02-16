@@ -1,3 +1,5 @@
-<form class="navbar-search pull-right">
-  <input type="text" placeholder="Search" value="<%= get_query() %>">
+<form class="navbar-form navbar-right" role="search">
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Search" value="<%= get_query() %>">
+  </div>
 </form>

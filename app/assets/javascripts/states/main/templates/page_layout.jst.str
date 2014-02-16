@@ -2,8 +2,6 @@
 <%= include_partial(Bixby.view.NavBar) %>
 
 <div class="container-fluid">
-
-  <div id="content" class="span12">
+  <div id="content" class="col-sm-12 col-md-12">
   </div>
-
 </div>

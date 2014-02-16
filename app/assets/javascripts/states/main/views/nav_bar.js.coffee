@@ -38,9 +38,9 @@ namespace "Bixby.view", (exports, top) ->
     app_events: {
       "state:activate": (state) ->
         if state.tab? and state.tab != @current_tab
-          $("div.navbar li.tab").removeClass("active")
+          $("ul.nav li.tab").removeClass("active")
           if @current_tab = state.tab
-            $("div.navbar li.tab.#{@current_tab}").addClass("active")
+            $("ul.nav li.tab.#{@current_tab}").addClass("active")
 
     }
 
