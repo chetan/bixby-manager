@@ -3,6 +3,13 @@
 
 Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] },
 
+  "mon_check_template_view":
+    url:  "monitoring/check_templates/:check_template_id"
+
+    views: _bvm.CheckTemplateView
+    models:
+      check_template: _bm.CheckTemplate
+
   "mon_check_template_new":
     url:  "monitoring/check_templates/new"
 
@@ -45,10 +52,3 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
       activate: ->
         @spinner.stop()
         $("a#submit_check").html("Add Check(s)")
-
-  "mon_check_template_view":
-    url:  "monitoring/check_templates/:check_template_id"
-
-    views: _bvm.CheckTemplateView
-    models:
-      check_template: _bm.CheckTemplate
