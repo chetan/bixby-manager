@@ -1,10 +1,12 @@
 
-<h2>
-  Add Repository
-</h2>
+<div class="row">
+  <h2>Add Repository</h2>
+</div>
 
-<br>
-<form class="form-horizontal">
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-4">
+
+<form class="form-horizontal" role="form">
 
   <!-- name -->
   <%= include("main/_text_input", {name: "name"}) %>
@@ -16,13 +18,21 @@
   <%= include("main/_text_input", {name: "branch"}) %>
 
   <!-- requires key -->
-  <%= include("main/_text_input", {name: "requires_key", type: "checkbox"}) %>
+  <div class="form-group">
+    <label for="requires_key">
+      <input class="" id="requires_key" type="checkbox">
+      Requires Key
+    </label>
+    <br/>
+    <span class="valid requires_key"></span>
+  </div>
 
   <!-- submit -->
-  <div class="control-group">
-    <div class="controls">
-      <button type="submit" class="btn btn-primary submit">Add</button>
-    </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary submit">Add</button>
   </div>
 
 </form>
+
+</div>
+</div>
