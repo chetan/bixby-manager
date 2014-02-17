@@ -58,11 +58,16 @@ div.host {
     display: block;
     overflow: auto;
     max-height: 400px;
-    .popover {
-      width: 400px;
-    }
   }
 
+}
+
+div.popover {
+  width: 600px;
+  max-width: 600px;
+  textarea {
+    cursor: default !important;
+  }
 }
 
 div.host_editor {
