@@ -1,32 +1,46 @@
 
-<div class="content-inner">
   <h2>Create Check Template</h2>
 
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 col-md-4">
 
-  <form id="form_create_check_template" class="">
-    <fieldset>
+        <div class="form-group">
+          <label class="control-label" for="name"><h4>Template name:</h4></label>
+          <input type="text" id="name" class="form-control" required="true" <%? name %>value="<%= name %>"<%/%>>
+        </div>
 
-      <label for="name"><h4>Template name:</h4></label>
-      <input type="text" id="name" class="input-xlarge" required="true" <%? name %>value="<%= name %>"<%/%>>
+        <div class="form-group">
+          <label for="mode"><h4>Apply this template if:</h4></label>
+          <select id="mode" class="mode form-control">
+            <option value="any">any tag matches</option>
+            <option value="all">all tags match</option>
+            <option value="except">all or no tags, except the following</option>
+          </select>
+        </div>
 
-      <label for="mode"><h4>Apply this template if:</h4></label>
-      <select id="mode" class="mode input-xlarge">
-        <option value="any">any tag matches</option>
-        <option value="all">all tags match</option>
-        <option value="except">all or no tags, except the following</option>
-      </select>
+        <div class="form-group">
+          <label for="tags"><h4>Tags:</h4></label>
+          <input type="hidden" id="tags" class="tags form-control" <%? selected_tags %>value="<%= selected_tags %>"<%/%>/>
+        </div>
 
-      <label for="tags"><h4>Tags:</h4></label>
-      <input type="hidden" id="tags" class="tags input-xlarge" <%? selected_tags %>value="<%= selected_tags %>"<%/%>/>
-
-      <h4>Select the checks to add to the template:</h4>
-      <%= include("monitoring/_command_table") %>
-      <div class="command_opts">
       </div>
+    </div>
 
-      <a id="submit_check" class="btn primary">Configure Check(s)</a>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-6">
 
-    </fieldset>
-  </form>
+        <h4>Select the checks to add to the template:</h4>
+        <%= include("monitoring/_command_table") %>
 
-</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 col-md-4">
+        <div class="command_opts"></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button type="button" id="submit_check" class="btn btn-primary">Configure Check(s)</a>
+    </div>
