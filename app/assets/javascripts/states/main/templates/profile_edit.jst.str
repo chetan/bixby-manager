@@ -1,16 +1,16 @@
 
-<h2>
-  <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
-    <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
-  <span><%= current_user.get_name() %></span>
-</h2>
-
-<div class="row-fluid">
+<div class="row">
+  <h2>
+    <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
+      <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
+    <span><%= current_user.get_name() %></span>
+  </h2>
   <span><%= _.icon("group") %> <%= current_user.tenant %></span><br>
 </div>
 
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-4">
 
-<br>
 <form class="form-horizontal">
 
   <!-- name -->
@@ -37,3 +37,6 @@
   </div>
 
 </form>
+
+</div>
+</div>
