@@ -1,23 +1,31 @@
 
 <div class="row">
-  <h2>
-    <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
-      <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
-    <span><%= current_user.get_name() %></span>
-    <%? current_user.get_name() !== current_user.username %>
-      <small title="your username"><%= current_user.username %></small>
-    <%/%>
-  </h2>
-</div>
+  <div class="col-md-12">
 
-<div class="row">
-  <span><%= _.icon("group") %> <%= current_user.tenant %></span><br>
-  <%? current_user.email %>
-    <span><%= _.icon("envelope") %> <%= current_user.email %></span><br>
-  <%/%>
-  <%? current_user.phone %>
-    <span><%= _.icon("phone") %> <%= current_user.phone %></span><br>
-  <%/%>
-</div>
+    <h2>
+      <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
+        <img class="gravatar gravatar-profile" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
+      <span><%= current_user.get_name() %></span>
+      <%? current_user.get_name() !== current_user.username %>
+        <small title="your username"><%= current_user.username %></small>
+      <%/%>
+    </h2>
 
-<div class="row"><button class="btn btn-xs btn-info btn-edit">Edit</button></div>
+    <p>
+      <%= _.icon("group") %> <%= current_user.tenant %><br>
+
+      <%? current_user.email %>
+        <%= _.icon("envelope") %> <%= current_user.email %><br>
+      <%/%>
+
+      <%? current_user.phone %>
+        <%= _.icon("phone") %> <%= current_user.phone %><br>
+      <%/%>
+    </p>
+
+    <p>
+      <button class="btn btn-xs btn-info btn-edit">Edit</button>
+    </p>
+
+  </div>
+</div>
