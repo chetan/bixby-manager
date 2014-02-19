@@ -1,3 +1,10 @@
 
-<button class="btn btn-small return_host"><%= _.icon("reply") %> Return to Host</button>
-<%= include_partial(Bixby.view.monitoring.Check) %>
+<div class="row">
+  <div class="col-xs-12 col-md-12">
+
+    <br/>
+    <button class="btn btn-small return_host"><%= _.icon("reply") %> Return to Host</button>
+    <%= include_partial(Bixby.view.monitoring.Check) %>
+
+  </div>
+</div>
