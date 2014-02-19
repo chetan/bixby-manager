@@ -1,53 +1,81 @@
 
-<div class="content-inner">
-  <h2>Create On Call Schedule</h2>
+<div class="row">
+  <div class="col-xs-12 col-md-12">
 
-  <form id="form_create_schedule">
-    <fieldset>
+    <h2>Create On Call Schedule</h2>
 
-      <label for="name">Name</label>
-      <input type="text" name="name" id="name">
+    <form id="form_create_schedule" class="form-horizontal" role="form">
 
-      <label for="rotation_period">Rotation Period</label>
-      <div class="input-append">
-        <input type="text" name="rotation_period" id="rotation_period" class="input-mini">
-        <span class="add-on">days</span>
+      <div class="row">
+        <div class="col-xs-12 col-sm-4">
+
+          <div class="form-group">
+            <label for="name" class="control-label">Name</label>
+            <input type="text" name="name" id="name" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="rotation_period" class="control-label">Rotation Period</label>
+            <div class="input-group">
+              <input type="text" name="rotation_period" id="rotation_period" class="form-control">
+              <span class="input-group-addon">days</span>
+            </div>
+          </div>
+
+        </div>
       </div>
 
-      <label for="handoff_day">Handoff Day &amp; Time</label>
-      <select name="handoff_day" id="handoff_day" class="input-medium">
-        <option value="1">Monday</option>
-        <option value="2">Tuesday</option>
-        <option value="3">Wednesday</option>
-        <option value="4">Thursday</option>
-        <option value="5">Friday</option>
-        <option value="6">Saturday</option>
-        <option value="7">Sunday</option>
-      </select>
-      <select name="handoff_hour" id="handoff_hour" class="input-mini">
-        <% for (var i=0; i<24; i++) { %>
-          <option value="<%= i %>"><%= _.str.lpad(i, 2, '0') %></option>
-        <% } %>
-      </select>
-      <select name="handoff_min" id="handoff_min" class="input-mini">
-        <option value="00">00</option>
-        <option value="15">15</option>
-        <option value="30">30</option>
-        <option value="45">45</option>
-      </select>
-
-      <label for="users">Users</label>
-      <select name="users" id="users" multiple="true" class="input-xlarge">
-        <% users.each(function(user) { %>
-          <option value="<%= user.id %>"><%= user.get_name() %></option>
-        <% }); %>
-      </select>
-
-      <div class="form-actions">
-        <a id="submit" class="btn btn-primary">Create</a>
+      <div class="form-group">
+        <label for="handoff_day" class="control-label">Handoff Day, Hour &amp; Minute</label>
+        <div class="row">
+          <div class="col-xs-4 col-sm-4 col-md-3">
+            <select name="handoff_day" id="handoff_day" class="form-control">
+              <option value="1">Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+              <option value="5">Friday</option>
+              <option value="6">Saturday</option>
+              <option value="7">Sunday</option>
+            </select>
+          </div>
+          <div class="col-xs-4 col-sm-2 col-md-2">
+            <select name="handoff_hour" id="handoff_hour" class="form-control">
+              <% for (var i=0; i<24; i++) { %>
+                <option value="<%= i %>"><%= _.str.lpad(i, 2, '0') %></option>
+              <% } %>
+            </select>
+          </div>
+          <div class="col-xs-4 col-sm-2 col-md-2">
+            <select name="handoff_min" id="handoff_min" class="form-control">
+              <option value="00">00</option>
+              <option value="15">15</option>
+              <option value="30">30</option>
+              <option value="45">45</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-    </fieldset>
-  </form>
+      <div class="row">
+        <div class="col-xs-12 col-sm-4">
+          <div class="form-group">
+            <label for="users" class="control-label">Users</label>
+            <select name="users" id="users" multiple="true" class="form-control">
+              <% users.each(function(user) { %>
+                <option value="<%= user.id %>"><%= user.get_name() %></option>
+              <% }); %>
+            </select>
+          </div>
 
+          <div class="form-group">
+            <button id="submit" class="btn btn-primary">Create</button>
+          </div>
+
+        </div>
+      </div>
+
+    </form>
+
+  </div>
 </div>
