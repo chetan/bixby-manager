@@ -16,8 +16,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         @graph._bixby_mode = "pan"
         @$("#zoom").removeClass("active")
 
-      "change select#zoom_level": (e) ->
-        @update_zoom($(e.target).val())
+      "click .zoom_level a": (e) ->
+        @update_zoom($(e.target).attr("data-level"))
 
     # Change the zoom level of the graph
     # Load data based on the time period selected, at the same sampling rate
@@ -64,9 +64,14 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       # set defaults
       @$("button#zoom").addClass("active")
       if @level
-        @$("select#zoom_level").val(@level)
+        zoom = @level
       else if query.start == 0 && query.end == 0
-        @$("select#zoom_level").val("day")
+        zoom = "day"
+
+      view = @
+      @$("div.zoom_level a").each (i, el) ->
+        if $(el).attr("data-level") == zoom
+          view.$("div.zoom_level button .text").text($(el).text())
 
       @graph = Bixby.monitoring.render_metric(@$("div.metric"), @metric)
       @sync_helper = new Bixby.monitoring.PanSyncHelper(@graph)
@@ -78,7 +83,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           d[0] = query.start*1000
           @graph.updateOptions({ dateWindow: d })
 
-      view = @
       # on first load, fetch more data
       # specifically when moving from list view which has less granular (1h-avg) data
       if !@level && query.downsample == "1h-avg"

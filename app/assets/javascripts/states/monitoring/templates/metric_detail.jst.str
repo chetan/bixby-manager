@@ -15,14 +15,9 @@
 
       <div class="btn-toolbar" role="toolbar">
 
-        <div class="btn-group" data-toggle="buttons-radio">
-          <button id="zoom" type="button" class="btn btn-default" title="Zoom mode"><%= _.icon("search") %></button>
-          <button id="pan" type="button" class="btn btn-default" title="Pan mode"><%= _.icon("clock-o") %></button>
-        </div>
-
         <div class="zoom_level btn-group">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Zoom Level
+            <span class="text">Zoom Level</span>
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
@@ -32,6 +27,11 @@
             <li><a data-level="month">1 Month</a></li>
             <li><a data-level="custom">Custom</a></li>
           </ul>
+        </div>
+
+        <div class="btn-group" data-toggle="buttons-radio">
+          <button id="zoom" type="button" class="btn btn-default" title="Zoom mode"><%= _.icon("search") %></button>
+          <button id="pan" type="button" class="btn btn-default" title="Pan mode"><%= _.icon("clock-o") %></button>
         </div>
 
       </div>
