@@ -10,9 +10,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       "click button#zoom": (e) ->
         @graph._bixby_mode = "zoom"
+        @$("#pan").removeClass("active")
 
       "click button#pan": (e) ->
         @graph._bixby_mode = "pan"
+        @$("#zoom").removeClass("active")
 
       "change select#zoom_level": (e) ->
         @update_zoom($(e.target).val())

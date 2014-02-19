@@ -14,22 +14,16 @@ div.metric {
   margin-top: 10px;
   margin-right: 10px;
   padding: 10px;
-  // padding-left: 20px;
   border: 1px solid #999999;
 
   .graph_container {
-    // position: relative;
     padding-top: 10px;
     .y_axis {
       float: left;
-      // position: absolute;
       left: -10px;
-      // width: 40px;
-      // top: 0;
     }
     .x_tick {
       div.title {
-        // top: 100px;
       }
     }
     .graph {
@@ -48,13 +42,14 @@ div.metric {
   }
 
   h6.footer {
-    margin-top: 5px;
+    margin-top: 20px;
+    margin-left: 30px;
   }
 }
 
 div.metric.detail {
   border: 0;
-  width: 95%;
+  width: 100%;
   .graph_container {
     width: auto;
     height: 400px;
@@ -67,14 +62,4 @@ div.metric.detail {
 div.spacer {
   clear: both;
   height: 0px;
-}
-
-// graph controls
-div.graph_controls {
-  div.zoom_level {
-    padding-top: 10px;
-    select {
-      padding-left: 5px;
-    }
-  }
 }
