@@ -12,14 +12,9 @@ namespace "Bixby.view.inventory", (exports, top) ->
     setButton: (button) ->
       @button = button
       @button.on "click", _.bindR @, (ev) ->
-        e = $(ev.target)
-        if e.html() == "edit"
-          @$el.modal("show")
-          e.html("cancel")
-        else
-          @hide_editor()
+        @$el.modal("show")
 
-    events: {
+    events:
       # save
       "click button.save": (e) ->
         e.preventDefault()
@@ -49,7 +44,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
         if e.keyCode == 13
           e.preventDefault()
           @save_edits()
-    }
 
     hide_editor: ->
       @$el.modal("hide")
