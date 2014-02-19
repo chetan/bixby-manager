@@ -19,6 +19,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "click .zoom_level a": (e) ->
         @update_zoom($(e.target).attr("data-level"))
 
+      "click button#reset": (e) ->
+        @graph.resetZoom()
+
     # Change the zoom level of the graph
     # Load data based on the time period selected, at the same sampling rate
     #
@@ -82,7 +85,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       zoom_callback = (reset) ->
         if reset
           view.set_zoom_level_label(zoom)
+          view.$("button#reset").addClass("disabled")
         else
+          view.$("button#reset").removeClass("disabled")
           view.$("div.zoom_level button .text").text("Custom")
 
       @graph = Bixby.monitoring.render_metric(@$("div.metric"), @metric, {}, zoom_callback)

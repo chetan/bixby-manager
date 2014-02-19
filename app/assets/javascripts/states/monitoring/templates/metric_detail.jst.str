@@ -28,6 +28,10 @@
           </ul>
         </div>
 
+        <div class="btn-group">
+          <button type="button" id="reset" class="btn btn-default disabled">Reset Zoom</button>
+        </div>
+
         <div class="btn-group" data-toggle="buttons">
           <label class="btn btn-default active" id="zoom">
             <input type="radio"> <%= _.icon("search-plus") %>
