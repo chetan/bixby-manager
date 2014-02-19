@@ -4,7 +4,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/metric_detail"
 
-    events: {
+    events:
       "click button.return_host": (e) ->
         @transition "mon_view_host", {host: @host}
 
@@ -18,7 +18,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       "change select#zoom_level": (e) ->
         @update_zoom($(e.target).val())
-    }
 
     # Change the zoom level of the graph
     # Load data based on the time period selected, at the same sampling rate
@@ -79,12 +78,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           d[0] = query.start*1000
           @graph.updateOptions({ dateWindow: d })
 
-      #setup redrawing
       view = @
-      $(window).resize _.debounceR 200, ->
-        view.log "redrawing graph view on resize"
-        view.redraw()
-
       # on first load, fetch more data
       # specifically when moving from list view which has less granular (1h-avg) data
       if !@level && query.downsample == "1h-avg"

@@ -6,6 +6,12 @@ div.check {
   h5 {
     text-transform: uppercase;
   }
+
+  .graph_controls {
+    .btn-toolbar {
+      float: right;
+    }
+  }
 }
 
 div.metric {
@@ -50,10 +56,14 @@ div.metric {
 div.metric.detail {
   border: 0;
   width: 100%;
+  margin: 0;
+  padding: 0;
   .graph_container {
+    padding-top: 0;
     width: auto;
     height: 400px;
     .graph {
+      width: auto;
       height: auto;
     }
   }

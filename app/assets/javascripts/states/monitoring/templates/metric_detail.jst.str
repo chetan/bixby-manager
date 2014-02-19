@@ -11,30 +11,33 @@
 
   <br/>
   <div class="row">
-    <div class="graph_controls col-xs-4 col-sm-2 col-md-2 col-lg-2">
+    <div class="graph_controls col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-      <div class="form-group">
-        <label class="control-label">Graph Mode</label><br/>
+      <div class="btn-toolbar" role="toolbar">
+
         <div class="btn-group" data-toggle="buttons-radio">
           <button id="zoom" type="button" class="btn btn-default" title="Zoom mode"><%= _.icon("search") %></button>
           <button id="pan" type="button" class="btn btn-default" title="Pan mode"><%= _.icon("clock-o") %></button>
         </div>
-      </div>
 
-      <div class="zoom_level form-group">
-        <label for="zoom_level" class="control-label">Zoom Level</label>
-        <select name="zoom_level" id="zoom_level" class="form-control">
-          <option value="12hours">12 Hours</option>
-          <option value="day">1 Day</option>
-          <option value="week">1 Week</option>
-          <option value="month">1 Month</option>
-          <option value="custom">Custom</option>
-        </select>
+        <div class="zoom_level btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Zoom Level
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a data-level="12hours">12 Hours</a></li>
+            <li><a data-level="day">1 Day</a></li>
+            <li><a data-level="week">1 Week</a></li>
+            <li><a data-level="month">1 Month</a></li>
+            <li><a data-level="custom">Custom</a></li>
+          </ul>
+        </div>
+
       </div>
 
     </div>
   </div>
-
 
   <div class="metric detail" metric_id="<%= metric.id %>">
     <h5 class="title">

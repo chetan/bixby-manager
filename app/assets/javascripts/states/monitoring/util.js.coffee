@@ -130,7 +130,7 @@ Bixby.monitoring.render_metric = (div, metric, opts) ->
   }, opts)
 
   gc = $(div).find(".graph_container")
-  opts.width = gc.width()
+  # opts.width = gc.width()
   opts.height = gc.height()
 
   # Fix the y-axis value range
