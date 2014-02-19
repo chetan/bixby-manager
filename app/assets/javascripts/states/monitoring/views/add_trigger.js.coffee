@@ -3,13 +3,13 @@ namespace "Bixby.view.monitoring", (exports, top) ->
   class exports.AddTrigger extends Stark.View
     el: "div.monitoring_content"
     template: "monitoring/add_trigger"
-    events: {
 
+    events:
       # update Sign in button text
       "click ul.trigger_sign a": (e) ->
         e.preventDefault()
-        $("button.trigger_sign").text $(e.target).text()
-        $("input.sign").val $(e.target).attr("value")
+        @$("span.trigger_sign").text $(e.target).text()
+        @$("input.sign").val $(e.target).attr("data-sign")
 
       # disable auto-toggling of statuses
       "click input.trigger_status": (e) ->
@@ -48,5 +48,3 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         trigger.metric_key = $("#metric option").filter(":selected").text()
 
         @transition "mon_hosts_actions_new", { host: host, trigger: trigger, users: @state.users, on_calls: @state.on_calls }
-
-    } # events
