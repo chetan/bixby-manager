@@ -40,6 +40,12 @@ div.metric {
       .na {
         height: 50px;
       }
+      &.zoom {
+        cursor: pointer;
+      }
+      &.pan {
+        cursor: move;
+      }
     }
   }
 

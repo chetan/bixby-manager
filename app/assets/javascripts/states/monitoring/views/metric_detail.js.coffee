@@ -11,10 +11,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "click button#zoom": (e) ->
         @graph._bixby_mode = "zoom"
         @$("#pan").removeClass("active")
+        @$("div.graph").addClass("zoom").removeClass("pan")
 
       "click button#pan": (e) ->
         @graph._bixby_mode = "pan"
         @$("#zoom").removeClass("active")
+        @$("div.graph").addClass("pan").removeClass("zoom")
 
       "click .zoom_level a": (e) ->
         @update_zoom($(e.target).attr("data-level"))
@@ -38,6 +40,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       range_end = query.end || (@graph.xAxisRange()[1]/1000)
       range_start = range_end - period
 
+      # TODO spinner?
       view = @
       new_met = new Bixby.model.Metric({
         id: view.metric.id
@@ -49,6 +52,13 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       Backbone.multi_fetch [ new_met ], (err, results) ->
         view.metric = new_met
         view.redraw()
+
+    # set zoom level menu text
+    set_zoom_level_label: (level) ->
+      view = @
+      @$("div.zoom_level a").each (i, el) ->
+        if $(el).attr("data-level") == level
+          view.$("div.zoom_level button .text").text( $(el).text() )
 
 
     dispose: ->
@@ -62,18 +72,23 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       query = @metric.get("query")
 
       # set defaults
+      @$("div.graph").addClass("zoom")
       @$("button#zoom").addClass("active")
       if @level
         zoom = @level
       else if query.start == 0 && query.end == 0
         zoom = "day"
+      @set_zoom_level_label(zoom)
 
       view = @
-      @$("div.zoom_level a").each (i, el) ->
-        if $(el).attr("data-level") == zoom
-          view.$("div.zoom_level button .text").text($(el).text())
 
-      @graph = Bixby.monitoring.render_metric(@$("div.metric"), @metric)
+      zoom_callback = (reset) ->
+        if reset
+          view.set_zoom_level_label(zoom)
+        else
+          view.$("div.zoom_level button .text").text("Custom")
+
+      @graph = Bixby.monitoring.render_metric(@$("div.metric"), @metric, {}, zoom_callback)
       @sync_helper = new Bixby.monitoring.PanSyncHelper(@graph)
 
       if @level

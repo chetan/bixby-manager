@@ -15,7 +15,7 @@
 
       <div class="btn-toolbar" role="toolbar">
 
-        <div class="zoom_level btn-group">
+        <div class="zoom_level btn-group" title="Zoom Level">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             <span class="text">Zoom Level</span>
             <span class="caret"></span>
@@ -25,7 +25,6 @@
             <li><a data-level="day">1 Day</a></li>
             <li><a data-level="week">1 Week</a></li>
             <li><a data-level="month">1 Month</a></li>
-            <li><a data-level="custom">Custom</a></li>
           </ul>
         </div>
 

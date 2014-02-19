@@ -101,7 +101,8 @@ class Bixby.monitoring.PanSyncHelper
 # div: parent div container for the metric, e.g., <div class="metric">
 # metric: Metric model instance
 # opts: extra opts for graph [optional]
-Bixby.monitoring.render_metric = (div, metric, opts) ->
+# zoom_callback: fires after zoom is complete (data is loaded)
+Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
 
   vals = metric.tuples()
   if !vals || vals.length == 0
@@ -204,7 +205,10 @@ Bixby.monitoring.render_metric = (div, metric, opts) ->
           g.updateOptions({ file: g._bixby_less_granular })
           g._bixby_less_granular = null
           g._bixby_is_granular = null
+          zoom_callback? && zoom_callback(true)
         return
+
+      zoom_callback? && zoom_callback()
 
       r = (maxX - minX) / 1000
       if r < 43200
