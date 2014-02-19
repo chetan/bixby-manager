@@ -13,9 +13,7 @@
 
 <%
 } else {
-  checks.each(function(check) {
-    __out__ += include_partial(Bixby.view.monitoring.Check, {check: check})
-  });
+  __out__ += each_partial(checks, "check", _bvm.Check)
 }
 %>
 
