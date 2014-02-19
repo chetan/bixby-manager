@@ -8,14 +8,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "click button.return_host": (e) ->
         @transition "mon_view_host", {host: @host}
 
-      "click button#zoom": (e) ->
+      "click label#zoom": (e) ->
         @graph._bixby_mode = "zoom"
-        @$("#pan").removeClass("active")
         @$("div.graph").addClass("zoom").removeClass("pan")
 
-      "click button#pan": (e) ->
+      "click label#pan": (e) ->
         @graph._bixby_mode = "pan"
-        @$("#zoom").removeClass("active")
         @$("div.graph").addClass("pan").removeClass("zoom")
 
       "click .zoom_level a": (e) ->
@@ -73,7 +71,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       # set defaults
       @$("div.graph").addClass("zoom")
-      @$("button#zoom").addClass("active")
       if @level
         zoom = @level
       else if query.start == 0 && query.end == 0

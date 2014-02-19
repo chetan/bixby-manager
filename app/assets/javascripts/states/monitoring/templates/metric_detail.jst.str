@@ -28,9 +28,13 @@
           </ul>
         </div>
 
-        <div class="btn-group" data-toggle="buttons-radio">
-          <button id="zoom" type="button" class="btn btn-default" title="Zoom mode"><%= _.icon("search") %></button>
-          <button id="pan" type="button" class="btn btn-default" title="Pan mode"><%= _.icon("clock-o") %></button>
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-default active" id="zoom">
+            <input type="radio"> <%= _.icon("search-plus") %>
+          </label>
+          <label class="btn btn-default" id="pan">
+            <input type="radio"><%= _.icon("clock-o") %>
+          </label>
         </div>
 
       </div>
