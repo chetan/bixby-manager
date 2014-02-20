@@ -1,40 +1,42 @@
 
 <div class="row">
-  <h2>
-    <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
-      <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
-    <span><%= current_user.get_name() %></span>
-  </h2>
-  <span><%= _.icon("group") %> <%= current_user.tenant %></span><br>
+  <div class="col-xs-12 col-sm-4 col-md-4">
+    <h2>
+      <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
+        <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
+      <span><%= current_user.get_name() %></span>
+    </h2>
+    <span><%= _.icon("group") %> <%= current_user.tenant %></span><br/><br/><br/>
+  </div>
 </div>
 
 <div class="row">
-<div class="col-xs-12 col-sm-4 col-md-4">
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 
-<form class="form-horizontal" autocomplete="off">
+    <form autocomplete="off" role="form">
 
-  <!-- name -->
-  <%= include("main/_text_input", {name: "name", value: current_user.name}) %>
+      <!-- name -->
+      <%= include("main/_text_input", {name: "name", value: current_user.name}) %>
 
-  <!-- username -->
-  <%= include("main/_text_input", {name: "username", value: current_user.username}) %>
+      <!-- username -->
+      <%= include("main/_text_input", {name: "username", value: current_user.username}) %>
 
-  <!-- email -->
-  <%= include("main/_text_input", {name: "email", value: current_user.email}) %>
+      <!-- email -->
+      <%= include("main/_text_input", {name: "email", value: current_user.email}) %>
 
-  <!-- phone -->
-  <%= include("main/_text_input", {name: "phone", value: current_user.phone}) %>
+      <!-- phone -->
+      <%= include("main/_text_input", {name: "phone", value: current_user.phone}) %>
 
-  <!-- password -->
-  <%= include("main/_text_input", {name: "password", type: "password"}) %>
-  <%= include("main/_text_input", {name: "password_confirmation", label: "Confirm", type: "password"}) %>
+      <!-- password -->
+      <%= include("main/_text_input", {name: "password", type: "password"}) %>
+      <%= include("main/_text_input", {name: "password_confirmation", label: "Confirm", type: "password"}) %>
 
-  <!-- submit -->
-  <div class="form-group">
-    <button type="submit" class="btn btn-primary submit">Save</button>
+      <!-- submit -->
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary submit">Save</button>
+      </div>
+
+    </form>
+
   </div>
-
-</form>
-
-</div>
 </div>

@@ -1,12 +1,14 @@
 
 <div class="row">
-  <h2>Add Repository</h2>
+  <div class="col-xs-12 col-sm-4 col-md-4">
+    <h2>Add Repository</h2>
+  </div>
 </div>
 
 <div class="row">
 <div class="col-xs-12 col-sm-4 col-md-4">
 
-<form class="form-horizontal" role="form">
+<form role="form">
 
   <!-- name -->
   <%= include("main/_text_input", {name: "name"}) %>

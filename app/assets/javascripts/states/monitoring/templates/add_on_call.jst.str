@@ -4,7 +4,7 @@
 
     <h2>Create On Call Schedule</h2>
 
-    <form id="form_create_schedule" class="form-horizontal" role="form">
+    <form id="form_create_schedule" role="form">
 
       <div class="row">
         <div class="col-xs-12 col-sm-4">

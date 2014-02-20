@@ -6,7 +6,7 @@
       <h1>BIXBY</h1>
 
 
-      <form class="form-horizontal" role="form">
+      <form role="form">
 
         <div class="form-group">
           <label class="control-label"><small><strong>USERNAME OR EMAIL</strong></small></label>
