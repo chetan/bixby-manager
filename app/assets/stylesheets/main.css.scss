@@ -2,29 +2,29 @@
 @import "bootstrap";
 
 body {
-    padding-top: 50px;
+  padding-top: 50px;
 }
 
 td.button {
-    width: 60px;
-    ul.button {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-    }
+  width: 60px;
+  ul.button {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
 }
 
 a.action_btn {
-    font-size: 11px;
-    padding: 2px 6px;
-    display: none;
-    position: absolute;
-    /*right: 76px;*/
-    top: 8px;
+  font-size: 11px;
+  padding: 2px 6px;
+  display: none;
+  position: absolute;
+  /*right: 76px;*/
+  top: 8px;
 }
 
 tr.actionable:hover td:first-child a.action_btn {
-    display: inline-block;
+  display: inline-block;
 }
 
 a {
@@ -35,24 +35,24 @@ a {
 @import "monitoring";
 
 .btn .spinner {
-    margin: 0 auto 0 auto;
-    top: -10px;
+  margin: 0 auto 0 auto;
+  top: -10px;
 }
 
 img.gravatar {
-    height: 20px;
-    width: 20px;
-    margin-left: 10px;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 0 1px 0 #FFFFFF;
+  height: 20px;
+  width: 20px;
+  margin-left: 10px;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 0 1px 0 #FFFFFF;
 }
 
 img.gravatar-profile {
-    margin-left: 0px;
+  margin-left: 0px;
 }
 
 ui.nav li.real {
-    text-align: center;
+  text-align: center;
 }
 
 i.red {
@@ -61,17 +61,17 @@ i.red {
 
 /* PROFILE PAGE */
 h2 {
-    span {
-        display: inline-block;
-    }
+  span {
+    display: inline-block;
+  }
 }
 
 form span.valid {
-    font-size: larger;
-    &.pass {
-        color: green;
-    }
-    &.fail {
-        color: red;
-    }
+  font-size: larger;
+  &.pass {
+    color: green;
+  }
+  &.fail {
+    color: red;
+  }
 }
