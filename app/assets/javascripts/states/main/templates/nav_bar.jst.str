@@ -24,7 +24,7 @@
 
 
       <!-- USER -->
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="user nav navbar-nav navbar-right">
         <li class="dropdown tab user">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <%= current_user.get_name() %>

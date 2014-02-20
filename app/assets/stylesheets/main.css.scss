@@ -39,9 +39,20 @@ a {
   top: -10px;
 }
 
+nav {
+  ul.user {
+    padding-left: 10px;
+
+    li.tab.user a.dropdown-toggle {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
+}
+
 img.gravatar {
-  height: 20px;
-  width: 20px;
+  height: 40px;
+  width: 40px;
   margin-left: 10px;
   border-radius: 3px 3px 3px 3px;
   box-shadow: 0 1px 0 #FFFFFF;
