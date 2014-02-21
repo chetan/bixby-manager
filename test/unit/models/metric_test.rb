@@ -74,6 +74,27 @@ EOF
     common_tests(metrics)
   end
 
+  def test_tag_hash_should_be_idempotent
+    check = FactoryGirl.create(:check)
+
+    tags = {
+      check_id: "12",
+      host: "foobar",
+      host_id: "6",
+      org_id: "2",
+      tenant_id: "2"
+    }
+
+    hash_a = Metric.for(check, "foo.bar", tags).tag_hash
+
+    # shuffle tags and check hash again; should match!
+    new_tags = {}
+    tags.keys.shuffle.each{ |k| new_tags[k] = tags[k] }
+    hash_b = Metric.for(check, "foo.bar", new_tags).tag_hash
+
+    assert_equal hash_a, hash_b
+  end
+
 
   private
 

@@ -163,9 +163,9 @@ class Metric < ActiveRecord::Base
 
 
   def self.hash_metadata(metadata)
-    key = []
-    metadata.keys.each { |k| key << k << metadata[k] }
-    return Digest::MD5.new.hexdigest(key.join("_"))
+    parts = []
+    metadata.keys.sort.each { |k| parts << k << metadata[k] }
+    return Digest::MD5.new.hexdigest(parts.join("_"))
   end
 
 end
