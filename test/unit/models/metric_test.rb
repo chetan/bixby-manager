@@ -77,15 +77,18 @@ EOF
   def test_tag_hash_should_be_idempotent
     check = FactoryGirl.create(:check)
 
+    # mix symbols and strings as inputs
+    # since this is what generally does happen in prod (Metric#put_check_result)
     tags = {
-      check_id: "12",
-      host: "foobar",
-      host_id: "6",
-      org_id: "2",
-      tenant_id: "2"
+      "check_id" => "12",
+      "host"     => "foobar",
+      :host_id   => "6",
+      "org_id"   => "2",
+      :tenant_id => "2"
     }
 
     hash_a = Metric.for(check, "foo.bar", tags).tag_hash
+    assert_equal "81e4a5f71d58a8fab1066cd09072ec68", hash_a
 
     # shuffle tags and check hash again; should match!
     new_tags = {}

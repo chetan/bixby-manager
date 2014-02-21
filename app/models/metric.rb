@@ -159,12 +159,19 @@ class Metric < ActiveRecord::Base
     self.status == Status::TIMEOUT
   end
 
+
   private
 
-
+  # Create a unique hash from the given key/value metadata pairs
+  # All keys are first sorted so this function should be idempotent, regardless of ordering.
+  #
+  # @param [Hash] metadata      key/value pairs
+  #
+  # @return [String] md5 hash, in hex
   def self.hash_metadata(metadata)
     parts = []
-    metadata.keys.map{ |k| k.to_s }.sort.each{ |k| parts << k << metadata[k] }
+    md = metadata.with_indifferent_access # required since we stringify all keys for sorting
+    md.keys.map{ |k| k.to_s }.sort.each{ |k| parts << k << md[k] }
     return Digest::MD5.new.hexdigest(parts.join("_"))
   end
 
