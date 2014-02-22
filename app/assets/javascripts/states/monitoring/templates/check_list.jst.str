@@ -1,10 +1,10 @@
 
-<h3>Resources for <%= host.name() %></h3>
+<h3>Metrics for <%= host.name() %></h3>
 
 <p>
   <!-- TODO: this is duped at bottom of page. only show when that is not visible -->
-  <button type="button" class="btn btn-primary add_resource_link" host_id="<%= host.get('id') %>">Add Check</button>
-  <button type="button" class="btn btn-primary add_trigger_link" host_id="<%= host.get('id') %>">Add Trigger</button>
+  <button type="button" class="btn btn-primary add_check" host_id="<%= host.get('id') %>">Add Check</button>
+  <button type="button" class="btn btn-primary add_trigger" host_id="<%= host.get('id') %>">Add Trigger</button>
 </p>
 
 <% if (checks.length == 0) { %>
@@ -19,6 +19,6 @@
 
 <br />
 <p>
-  <button type="button" class="btn btn-primary add_resource_link" host_id="<%= host.get('id') %>">Add Check</button>
-  <button type="button" class="btn btn-primary add_trigger_link" host_id="<%= host.get('id') %>">Add Trigger</button>
+  <button type="button" class="btn btn-primary add_check" host_id="<%= host.get('id') %>">Add Check</button>
+  <button type="button" class="btn btn-primary add_trigger" host_id="<%= host.get('id') %>">Add Trigger</button>
 </p>
