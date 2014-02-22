@@ -17,7 +17,7 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
   "mon_view_host":
     url:  "monitoring/hosts/:host_id"
 
-    views:      [ _bvm.MetricList ]
+    views:      [ _bvm.CheckList ]
     models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
 
   # Check group
@@ -28,14 +28,14 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
     models:     { host: _bm.Host, check: _bm.Check, metrics: _bm.MetricList }
 
   # Metric detail
-  "mon_hosts_resources_metric":
+  "mon_hosts_metric":
     url:  "monitoring/hosts/:host_id/metrics/:metric_id"
 
     views:      [ _bvm.MetricDetail ]
     models:     { host: _bm.Host, check: _bm.Check, metric: _bm.Metric }
 
-  # Add resource
-  "mon_hosts_resources_new":
+  # Add check
+  "mon_hosts_checks_new":
     url:  "monitoring/hosts/:host_id/checks/new"
 
     views:      [ _bvm.AddCommand ]
@@ -47,8 +47,8 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
         @hosts = new _bm.HostList
         Backbone.multi_fetch(@hosts)
 
-  # Configure resource options
-  "mon_hosts_resources_new_opts":
+  # Configure check options
+  "mon_hosts_checks_new_opts":
     class extends Stark.State
       url:  "#configure"
 

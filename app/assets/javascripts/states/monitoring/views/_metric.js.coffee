@@ -6,7 +6,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     template: "monitoring/_metric"
 
     links: {
-      "div.metric a.metric": [ "mon_hosts_resources_metric", (el) ->
+      "div.metric a.metric": [ "mon_hosts_metric", (el) ->
           return { host: @host, check: @check, metric: @metric }
         ]
     }
