@@ -37,9 +37,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     # Get option name for display. Shows default value if present.
     # e.g., Foo Option [default: ``blah``]
     #
-    # @return [String]
+    # @return [String] markdown formatted html
     opt_name: (key, hash) ->
       s = (hash["name"] || _.split_cap(key))
       if hash["default"]?
         s += " [default: ``#{hash['default']}``]"
-      @markdown(s)
+
+      return "<span class='markdown'>" + @markdown(s) + "</span>"

@@ -1,5 +1,5 @@
 
-<div class="control-group">
+<div class="form-group">
   <label for="runhost" class="control-label">Run check from host</label>
   <div class="controls">
     <select name="runhost" id="runhost">

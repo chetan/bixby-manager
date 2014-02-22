@@ -1,19 +1,22 @@
 
-<div class="content-inner">
-  <h2>Add Resource</h2>
-  <p>Host: <%= host.name() %></p>
+<div class="row">
+  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
 
-  <h3>Select a resource check from the list below:</h3>
+    <h2>Add Check</h2>
+    <p>Host: <%= host.name() %></p>
 
-  <form method="get" id="form_select_check">
+    <h3>Select a check from the list below:</h3>
 
-    <%= include("monitoring/_command_table") %>
+    <form method="get" id="form_select_check">
 
-    <div class="command_opts">
-    </div>
+      <%= include("monitoring/_command_table") %>
 
-    <a id="submit_check" class="btn primary">Configure Check(s)</a>
+      <div class="command_opts">
+      </div>
 
-  </form>
+      <button id="submit_check" class="btn btn-primary">Configure Check(s)</button>
 
+    </form>
+
+  </div>
 </div>
