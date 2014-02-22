@@ -24,7 +24,7 @@
     </p>
 
     <p>
-      <button class="btn btn-xs btn-info btn-edit">Edit</button>
+      <button type="button" class="btn btn-xs btn-info btn-edit">Edit</button>
     </p>
 
   </div>

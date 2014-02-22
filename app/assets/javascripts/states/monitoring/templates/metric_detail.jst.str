@@ -1,6 +1,6 @@
 
 <br/>
-<button class="btn btn-small return_host"><%= _.icon("reply") %> Return to Host</button>
+<button type="button" class="btn btn-small return_host"><%= _.icon("reply") %> Return to Host</button>
 
 <div class="check" metric_id="<%= metric.id %>">
 

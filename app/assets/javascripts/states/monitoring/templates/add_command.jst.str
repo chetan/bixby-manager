@@ -7,14 +7,14 @@
 
     <h3>Select a check from the list below:</h3>
 
-    <form method="get" id="form_select_check">
+    <form id="form_select_check">
 
       <%= include("monitoring/_command_table") %>
 
       <div class="command_opts">
       </div>
 
-      <button id="submit_check" class="btn btn-primary">Configure Check(s)</button>
+      <button type="button" id="submit_check" class="btn btn-primary">Configure Check(s)</button>
 
     </form>
 

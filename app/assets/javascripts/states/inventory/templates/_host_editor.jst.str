@@ -38,9 +38,9 @@
     </div>
 
     <div class="modal-footer">
-      <button class="btn btn-danger delete pull-left">Delete</button>
-      <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-      <button class="btn btn-primary save">Save</button>
+      <button type="button" class="btn btn-danger delete pull-left">Delete</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-primary save">Save</button>
     </div>
 
   </div>

@@ -5,19 +5,17 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/login"
     el: "#body"
 
-    app_events: {
+    app_events:
       "state:activate": ->
         $("input.username").putCursorAtEnd()
-    }
 
-    events: {
+    events:
       "blur input.username": (e) ->
         _.mailcheck(e.target)
 
-      "submit form": (e) ->
-        e.preventDefault()
-        user = $("input.username").val()
-        pass = $("input.password").val()
+      "click button.login": (e) ->
+        user = @$("input.username").val()
+        pass = @$("input.password").val()
 
         view = @
         $.ajax("/login", {
@@ -46,6 +44,3 @@ namespace "Bixby.view", (exports, top) ->
           error: (jqXHR, textStatus, errorThrown) ->
             alert("Invalid username or password")
         })
-
-    }
-

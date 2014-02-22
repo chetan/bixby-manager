@@ -17,12 +17,10 @@ namespace "Bixby.view.inventory", (exports, top) ->
     events:
       # save
       "click button.save": (e) ->
-        e.preventDefault()
         @save_edits()
 
       # delete
       "click button.delete": (e) ->
-        e.preventDefault()
         @hide_editor()
         v = @
         c = new Bixby.view.Confirm({

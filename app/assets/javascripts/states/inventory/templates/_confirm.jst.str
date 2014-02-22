@@ -11,7 +11,7 @@
 
 <div class="modal-footer">
   <div class="controls">
-    <button class="btn cancel" data-dismiss="modal">Cancel</button>
-    <button class="btn btn-primary btn-danger proceed">Proceed</button>
+    <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-primary btn-danger proceed">Proceed</button>
   </div>
 </div>

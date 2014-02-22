@@ -3,7 +3,7 @@
     <div class="body span5">
       <h3>
         <a class="host"><%= host.name() %></a>
-        <span class="edit"><button class="btn btn-xs btn-info edit">edit</button></span>
+        <span class="edit"><button type="button" class="btn btn-xs btn-info edit">edit</button></span>
       </h3>
       <div class="tags">
         <%= include_partial(Bixby.view.inventory.HostTags, {host: host}) %>

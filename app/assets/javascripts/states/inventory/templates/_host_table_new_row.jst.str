@@ -3,8 +3,8 @@
     <div class="body span5">
       <h3>
         <a class="host"><%= host.name() %></a>
-        <span class="edit"><button class="btn btn-mini approve">approve</button></span>
-        <span class="edit"><button class="btn btn-mini reject">reject</button></span>
+        <span class="edit"><button type="button" class="btn btn-mini approve">approve</button></span>
+        <span class="edit"><button type="button" class="btn btn-mini reject">reject</button></span>
       </h3>
     </div>
   </div>

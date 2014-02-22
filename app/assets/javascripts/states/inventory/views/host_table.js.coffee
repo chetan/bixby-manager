@@ -10,7 +10,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
       "focusin input.install": _.select_text
 
       "click button.add_host":(e) ->
-        e.preventDefault()
         @$("#addHostModal").modal("show")
         @$("#addHostModal input.install").focus()
 
