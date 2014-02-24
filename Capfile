@@ -34,6 +34,6 @@ set :deploy_via, :remote_cache
 set :rails_env, 'production'
 
 # load custom tasks
-%w(rake uname sidekiq puma deploy bixby).each do |t|
+%w(rake uname sidekiq puma deploy bixby update_deploy_branch).each do |t|
   load File.join(RAILS_ROOT, "lib/capistrano/#{t}.rb")
 end
