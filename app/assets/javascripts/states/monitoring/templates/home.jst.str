@@ -1,50 +1,54 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
 
-<h3>Check Templates</h3>
-<p>
-  <button type="button" class="btn btn-primary create_check_template">Create Template</button>
-</p>
+    <h3>Check Templates</h3>
+    <p>
+      <button type="button" class="btn btn-primary create_check_template">Create Template</button>
+    </p>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Template Name</th>
-      <th>Apply If</th>
-      <th>Tags</th>
-      <th>Checks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= each_partial(check_templates, "check_template", _bvm.CheckTemplateRow) %>
-  </tbody>
-</table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Template Name</th>
+          <th>Apply If</th>
+          <th>Tags</th>
+          <th>Checks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= each_partial(check_templates, "check_template", _bvm.CheckTemplateRow) %>
+      </tbody>
+    </table>
 
 
-<br/>
-<hr/>
+    <br/>
+    <hr/>
 
-<h3>On Call Schedules</h3>
-<p>
-  <button type="button" class="btn btn-primary create_schedule_link">Create Schedule</button>
-</p>
+    <h3>On Call Schedules</h3>
+    <p>
+      <button type="button" class="btn btn-primary create_schedule_link">Create Schedule</button>
+    </p>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Schedule Name</th>
-      <th>Users</th>
-      <th>Currently On Call</th>
-      <th>Handoff</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% on_calls.each(function(oncall) { %>
-      <tr>
-        <td><%= oncall.g('name') %></td>
-        <td><%= oncall_list(oncall) %></td>
-        <td><%= user_for(oncall).get_name() %></td>
-        <td><%= handoff(oncall) %></td>
-      </tr>
-    <% }); %>
-  </tbody>
-</table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Schedule Name</th>
+          <th>Users</th>
+          <th>Currently On Call</th>
+          <th>Handoff</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% on_calls.each(function(oncall) { %>
+          <tr>
+            <td><%= oncall.g('name') %></td>
+            <td><%= oncall_list(oncall) %></td>
+            <td><%= user_for(oncall).get_name() %></td>
+            <td><%= handoff(oncall) %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
 
+  </div>
+</div>

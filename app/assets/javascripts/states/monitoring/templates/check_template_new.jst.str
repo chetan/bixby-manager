@@ -30,7 +30,7 @@
     </div>
 
     <div class="row">
-      <div class="col-xs-12 col-sm-6 col-md-6">
+      <div class="col-xs-12 col-sm-8 col-md-8">
 
         <h4>Select the checks to add to the template:</h4>
         <%= include("monitoring/_command_table") %>
