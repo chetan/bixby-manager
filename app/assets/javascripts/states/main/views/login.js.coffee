@@ -3,7 +3,7 @@ namespace "Bixby.view", (exports, top) ->
   class exports.Login extends Stark.View
 
     template: "main/login"
-    el: "#body"
+    el: "body"
 
     app_events:
       "state:activate": ->
