@@ -50,4 +50,5 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       s = (hash["name"] || _.split_cap(key))
       if hash["default"]?
         s += "<br/><span class='default-opt'>[default: ``#{hash['default']}``]</span>"
-      @markdown(s)
+
+      return "<span class='markdown'>" + @markdown(s) + "</span>"

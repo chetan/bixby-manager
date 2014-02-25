@@ -4,6 +4,8 @@
 
     <h2>Create Check Template</h2>
 
+    <form role="form">
+
     <div class="row">
       <div class="col-xs-12 col-sm-4 col-md-4">
 
@@ -47,6 +49,8 @@
     <div class="form-group">
       <button type="button" id="submit_check" class="btn btn-primary">Configure Check(s)</button>
     </div>
+
+    </form>
 
   </div>
 </div>
