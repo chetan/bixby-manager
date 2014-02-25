@@ -1,4 +1,10 @@
 
-<h2>Welcome!</h2>
-<p>Let's get started by adding some hosts. Simply run the following on each server:</p>
-<%= include("inventory/_add_host_info") %>
+<div class="row">
+  <div class="col-xs-12 col-sm-8 col-md-7 col-lg-6">
+
+    <h2>Welcome!</h2>
+    <p>Let's get started by adding some hosts. Simply run the following on each server:</p>
+    <%= include("inventory/_add_host_info") %>
+
+  </div>
+</div>
