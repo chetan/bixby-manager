@@ -1,7 +1,7 @@
 
 <%= include("main/_text_input", {
       name: opt_key,
-      label: opt_name(opt_key, opt_hash),
+      label: Bixby.model.Command.opt_name(opt_key, opt_hash),
       help: (!opt_hash["required"] ? "[Optional] " : "") + opt_hash["desc"],
       icon: (opt_hash["required"] ? "asterisk" : null)
       }) %>

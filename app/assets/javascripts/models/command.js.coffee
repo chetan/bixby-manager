@@ -27,6 +27,19 @@ namespace 'Bixby.model', (exports, top) ->
       return need
 
 
+    # Get option name for display. Shows default value if present.
+    # e.g., Foo Option [default: ``blah``]
+    #
+    # @return [String] markdown formatted html
+    @opt_name: (key, hash) ->
+      s = (hash["name"] || _.split_cap(key))
+      if hash["default"]?
+        s += "<br/><span class='default-opt'>[default: ``#{hash['default']}``]</span>"
+
+      md = new Markdown.Converter()
+      return "<span class='markdown'>" + md.makeHtml(s) + "</span>"
+
+
   class exports.CommandList extends Stark.Collection
     model: exports.Command
     params: [ "repo" ]
