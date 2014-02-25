@@ -4,11 +4,13 @@
 // only name is required
 this.label = this.label || _.split_cap(name);
 this.title = this.title || null;
-this.type = this.type || "text";
+this.type  = this.type  || "text";
 this.value = this.value || null;
+this.help  = this.help  || null;
+this.icon  = this.icon  || null;
 %>
 
-<div class="form-group">
+<div class="form-group has-feedback">
   <label class="control-label" for="<%= name %>" <%? title %>title="<%= title %>"<%/%>><%= label %></label>
   <input
     class="form-control"
@@ -18,4 +20,6 @@ this.value = this.value || null;
     <%? value %>value="<%- value %>"<%/%>
     >
   <span class="valid <%= name %>"></span>
+  <%? icon %><span class="form-control-feedback"><%= _.icon(icon) %></span><%/%>
+  <%? help %><p class="help-block"><%= help %></p><%/%>
 </div>

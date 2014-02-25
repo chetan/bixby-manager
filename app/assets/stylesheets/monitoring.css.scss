@@ -5,3 +5,14 @@
 span.default-opt {
   font-weight: normal;
 }
+
+div.command_opts {
+  .has-feedback .form-control-feedback {
+    top: 35px;
+    color: #C7254E;
+  }
+
+  p.help-block {
+    font-size: smaller;
+  }
+}
