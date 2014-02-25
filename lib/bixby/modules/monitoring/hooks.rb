@@ -131,8 +131,8 @@ class Monitoring < API
       end
 
       if update then
-        # update checks in bg (no delay)
-        Bixby::Monitoring.defer.update_check_config(agent.id)
+        # update checks in bg with delay for server to come up
+        Bixby::Monitoring.defer(15).update_check_config(agent.id)
       end
 
     end # self.add_checks_on_register
