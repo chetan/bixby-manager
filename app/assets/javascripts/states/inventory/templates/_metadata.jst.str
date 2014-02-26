@@ -8,7 +8,7 @@
   </thead>
 
   <tbody>
-    <% _.each(metadata, function(md) { %>
+    <% _.each(_.sortBy(metadata, "key"), function(md) { %>
     <tr title="<%= md.key %>" data-content="<%= md.value %>">
       <td><%= md.key %></td>
       <td><%= md.value %></td>
