@@ -95,12 +95,25 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
 
 
   ####
+  # override touch events to make them optional
+  opts.interactionModel.touchstart = (event, g, context) ->
+    Dygraph.Interaction.startTouch(event, g, context) if g._bixby_touch_enabled
+
+  opts.interactionModeltouchmove = (event, g, context) ->
+    Dygraph.Interaction.moveTouch(event, g, context) if g._bixby_touch_enabled
+
+  opts.interactionModeltouchend = (event, g, context) ->
+    Dygraph.Interaction.endTouch(event, g, context) if g._bixby_touch_enabled
+
+
+  ####
   # draw
   el = $(div).find(".graph")[0]
   g = new Dygraph(el, vals, opts)
   g._bixby_metric = metric
   g._bixby_el = el
   g._bixby_mode = "zoom"
+  g._bixby_touch_enabled = false # default to disabled
 
   # set callbacks - have to do this after initial graph created
   xOptView = g.optionsViewForAxis_('x')
