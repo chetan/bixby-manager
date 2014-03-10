@@ -77,10 +77,7 @@ class Metric < ActiveRecord::Base
 
   # Retrieve metrics for the given check
   def self.metrics_for_check(check_id, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
-    time_start = Time.new - 86400 if time_start.nil?
-    time_end = Time.new if time_end.nil?
-    tags ||= {}
-    agg ||= "sum"
+    time_start, time_end, tags, agg = default_args(time_start, time_end, tags, agg)
 
     metrics = Bixby::Metrics.new.get_for_check(check_id, time_start, time_end, tags, agg, downsample)
     fetch_more_granular(metrics, time_start, time_end, tags, agg)
@@ -89,12 +86,7 @@ class Metric < ActiveRecord::Base
 
   # Retrieve metrics for the given host
   def self.metrics_for_host(host, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
-
-    # set defaults
-    time_start = Time.new - 86400 if time_start.nil?
-    time_end = Time.new if time_end.nil?
-    tags ||= {}
-    agg ||= "sum"
+    time_start, time_end, tags, agg = default_args(time_start, time_end, tags, agg)
     downsample ||= "1h-avg"
 
     metrics = Bixby::Metrics.new.get_for_host(host, time_start, time_end, tags, agg, downsample)
@@ -106,12 +98,7 @@ class Metric < ActiveRecord::Base
 
   # Load the metric data associated with this Metric instance (using @key)
   def metrics(time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
-
-    time_start = Time.new - 86400 if time_start.nil?
-    time_end = Time.new if time_end.nil?
-    tags ||= {}
-    agg ||= "sum"
-
+    time_start, time_end, tags, agg = default_args(time_start, time_end, tags, agg)
     tags[:check_id] = self.check.id
     self.tags.each{ |t| tags[t.key] = t.value }
 
@@ -177,6 +164,20 @@ class Metric < ActiveRecord::Base
         metric.query[:downsample] = nil
       end
     end
+  end
+
+  # Set default query args
+  def self.default_args(time_start=nil, time_end=nil, tags = {}, agg = "sum")
+    time_start = Time.new - 86400 if time_start.nil?
+    time_end = Time.new if time_end.nil?
+    tags ||= {}
+    agg ||= "sum"
+
+    return [time_start, time_end, tags, agg]
+  end
+
+  def default_args(*args)
+    self.class.default_args(*args)
   end
 
 end
