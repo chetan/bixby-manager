@@ -30,8 +30,19 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   opts ||= {}
   opts = _.extend({
     labels: [ "Date/Time", "v" ]
-    strokeWidth: 2
+    # strokeWidth: 3
+    stackedGraph: true
     showLabelsOnHighlight: false
+
+    highlightCircleSize: 2
+    strokeWidth: 3
+    strokeBorderWidth: 0 # border/padding between graph line and stacked area/fill
+
+    highlightSeriesOpts:
+      strokeWidth: 3
+      strokeBorderWidth: 0
+      highlightCircleSize: 5,
+
     legend: "never"
   }, opts)
 
