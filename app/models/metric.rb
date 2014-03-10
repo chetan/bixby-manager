@@ -82,7 +82,9 @@ class Metric < ActiveRecord::Base
     tags ||= {}
     agg ||= "sum"
 
-    Bixby::Metrics.new.get_for_check(check_id, time_start, time_end, tags, agg, downsample)
+    metrics = Bixby::Metrics.new.get_for_check(check_id, time_start, time_end, tags, agg, downsample)
+    fetch_more_granular(metrics, time_start, time_end, tags, agg)
+    return metrics
   end
 
   # Retrieve metrics for the given host
@@ -96,21 +98,9 @@ class Metric < ActiveRecord::Base
     downsample ||= "1h-avg"
 
     metrics = Bixby::Metrics.new.get_for_host(host, time_start, time_end, tags, agg, downsample)
-
     # remove metrics which don't have enough/any data
     # metrics.reject!{ |m| !m.updated_at.nil? && m.updated_at < 2.weeks.ago }
-
-    # validate vals
-    metrics.each do |metric|
-      # make sure we have at least 2 values so we can graph them
-      if metric.data and metric.data.size < 2 then
-        # run metrics query again w/o downsampling values this time
-        # data saved back in metric object
-        Bixby::Metrics.new.get_for_metric(metric, time_start, time_end, tags, agg, nil)
-        metric.query[:downsample] = nil
-      end
-    end
-
+    fetch_more_granular(metrics, time_start, time_end, tags, agg)
     return metrics
   end
 
@@ -173,6 +163,20 @@ class Metric < ActiveRecord::Base
     md = metadata.with_indifferent_access # required since we stringify all keys for sorting
     md.keys.map{ |k| k.to_s }.sort.each{ |k| parts << k << md[k] }
     return Digest::MD5.new.hexdigest(parts.join("_"))
+  end
+
+  # Check each metric to see if we have enough data. If we returned less than 2 datapoints, lower
+  # the granularity (don't downsample)
+  def self.fetch_more_granular(metrics, time_start, time_end, tags, agg)
+    metrics.each do |metric|
+      # make sure we have at least 2 values so we can graph them
+      if metric.data and metric.data.size < 2 then
+        # run metrics query again w/o downsampling values this time
+        # data saved back in metric object
+        Bixby::Metrics.new.get_for_metric(metric, time_start, time_end, tags, agg, nil)
+        metric.query[:downsample] = nil
+      end
+    end
   end
 
 end
