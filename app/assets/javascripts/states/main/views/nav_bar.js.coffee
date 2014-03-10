@@ -15,6 +15,12 @@ namespace "Bixby.view", (exports, top) ->
       "a#profile": [ "profile" ]
 
     events:
+      "click a": (e) ->
+        # hide the navbar-toggle on click (only visible on xs or sm screens)
+        e = $(e.target)
+        if !(e.hasClass("dropdown-toggle") or e.parent().hasClass("dropdown-toggle"))
+          @$("button.navbar-toggle:visible").click()
+
       "click a#logout": (e) ->
         v = @
         $.ajax("/users/sign_out", {
