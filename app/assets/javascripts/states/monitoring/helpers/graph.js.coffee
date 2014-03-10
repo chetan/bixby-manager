@@ -43,6 +43,8 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
       strokeBorderWidth: 0
       highlightCircleSize: 5,
 
+    colors: [ "#428bca"]
+
     legend: "never"
   }, opts)
 
