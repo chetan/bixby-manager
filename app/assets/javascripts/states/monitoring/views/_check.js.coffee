@@ -5,9 +5,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     className: "check"
     template: "monitoring/_check"
 
-    links: {
+    links:
       "a.check": [ "mon_hosts_check", (el) ->
         { host: @host, check: @check, metrics: @metrics }
       ]
-    }
 
