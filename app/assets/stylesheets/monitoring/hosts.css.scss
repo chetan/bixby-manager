@@ -50,6 +50,7 @@ div.metric {
         }
       }
       .graph {
+        overflow: hidden;
         position: relative;
         left: -25px;
         width: 100%;
@@ -86,11 +87,10 @@ div.metric.detail {
   padding: 0;
   .graph_container {
     padding-top: 0;
-    width: auto;
+    width: 100%;
     height: 400px;
     .graph {
-      width: auto;
-      height: auto;
+      overflow: hidden;
     }
   }
 }
