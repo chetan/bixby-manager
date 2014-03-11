@@ -43,10 +43,4 @@ class Check < ActiveRecord::Base
     @metric_infos ||= MetricInfo.where(:command_id => self.command_id)
   end
 
-  def serializable_hash(opts={})
-    hash = super
-    hash[:name] = self.command.name
-    return hash
-  end
-
 end
