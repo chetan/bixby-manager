@@ -15,6 +15,20 @@ div.check {
 }
 
 div.metric {
+
+  &.col-xs-12 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  @media (min-width: $screen-sm-min) {
+    &.col-xs-12 {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
+
   float: left;
   margin-top: 10px;
 
