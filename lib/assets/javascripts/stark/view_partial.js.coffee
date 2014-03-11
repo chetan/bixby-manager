@@ -16,7 +16,7 @@ class Stark.Partial extends Stark.View
   # If ID is null, then one will be generated for you
   # id: null
   # className: null
-  tagName: "span"
+  tagName: "div"
 
   # Reference to parent view
   parent: null
@@ -37,7 +37,7 @@ class Stark.Partial extends Stark.View
 
   redraw: ->
     @$el.html(@render_html())
-    $("span#"+@id).html(@$el.html())
+    $("div#"+@id).html(@$el.html())
     @bind_events()
     @
 
@@ -49,7 +49,7 @@ class Stark.Partial extends Stark.View
     # unless first element is a tr, wrap in a span
     first = @$el.children().first()
     if @wrap && first && first[0].tagName != "TR"
-      @$el.html( "<span id='#{@id}'>" + @$el.html() + "</span>" )
+      @$el.html( "<div id='#{@id}'>" + @$el.html() + "</div>" )
     else
       first.attr("id", @id)
 
