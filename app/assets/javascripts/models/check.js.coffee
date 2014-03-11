@@ -32,8 +32,18 @@ namespace 'Bixby.model', (exports, top) ->
         return s
       ).join(", ")
 
+    # Get list of metrics of for this check (same check id)
+    filter_metrics: (metrics) ->
+      c = @
+      _.sortBy(
+        metrics.filter((m) -> m.get("check_id") == c.id),
+        "id")
+
 
   class exports.CheckList extends Stark.Collection
     model: exports.Check
     url: -> "/rest/hosts/#{@host_id || @host.id}/checks"
     params: [ "host" ]
+
+    comparator: (check) ->
+      check.get("name")
