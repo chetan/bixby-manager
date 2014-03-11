@@ -4,7 +4,7 @@
 
 <div class="check" metric_id="<%= metric.id %>">
 
-  <h4><%= check.get("name") %></h4>
+  <h4><a class="check"><%= check.get("name") %></a></h4>
   <h5><%= metric.display_name() %></h5>
 
   <%= include("monitoring/_check_args") %>

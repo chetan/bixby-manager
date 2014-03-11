@@ -4,6 +4,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/metric_detail"
 
+    links:
+      "a.check": [ "mon_hosts_check", (el) ->
+        { host: @host, check: @check }
+      ]
+
     events:
       "click button.return_host": (e) ->
         @transition "mon_view_host", {host: @host}
