@@ -40,7 +40,7 @@ Bixby::Application.configure do
   config.assets.precompile << %w(*.otf *.eot *.svg *.ttf *.woff) # font assets
 
   # Version of your assets, change this if you want to expire all your assets
-  config.assets.version = '1.0'
+  config.assets.version = '1.1'
 
 
   # Specifies the header that your server uses for sending files
