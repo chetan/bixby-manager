@@ -82,3 +82,6 @@ namespace 'Bixby.model', (exports, top) ->
     model: exports.Metric
     url: -> "/rest/hosts/#{@host_id}/metrics"
     params: [ "host" ]
+
+    comparator: (metric) ->
+      metric.display_name()
