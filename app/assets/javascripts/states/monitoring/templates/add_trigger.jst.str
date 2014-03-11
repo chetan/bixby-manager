@@ -14,8 +14,9 @@
           <% checks.each(function(check) {
             _.each(check.filter_metrics(metrics), function(metric) { %>
 
-            <option value="<%= metric.id %>"
-                    check_id="<%= check.id %>"><%= metric_name(check, metric) %></option>
+              <option value="<%= metric.id %>"
+                      <%? for_metric && metric.id == for_metric.id %>selected<%/%>
+                      check_id="<%= check.id %>"><%= metric_name(check, metric) %></option>
 
           <%
             });

@@ -10,6 +10,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       ]
 
     events:
+      "click button#create_trigger": (e) ->
+        @transition "mon_hosts_triggers_new", { host: @host, for_check: @check, for_metric: @metric }
+
       "click button.return_host": (e) ->
         @transition "mon_view_host", {host: @host}
 

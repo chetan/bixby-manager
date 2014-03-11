@@ -118,6 +118,7 @@ class ApplicationController < ActionController::Base
 
     type = opts.delete(:type) || opts.delete(:model)
     name = opts.delete(:name)
+
     if type.nil? then
 
       # infer the type from the object
@@ -140,15 +141,18 @@ class ApplicationController < ActionController::Base
 
       end
 
-    elsif type !~ /List$/ then
+    elsif type !~ /List$/ && obj.respond_to?(:to_a) then
       name ||= type.to_s.underscore.pluralize
       type = type.to_s + "List"
+
+    elsif name.blank?
+      name = type.to_s.underscore
 
     end
 
     @bootstrap << {
       :name  => name.to_s,
-      :model => type,
+      :model => type.to_s,
       :data  => to_api(obj)
     }
   end

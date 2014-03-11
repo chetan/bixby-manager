@@ -1,6 +1,7 @@
 
 <br/>
 <button type="button" class="btn btn-default btn-sm return_host"><%= _.icon("reply") %> Return to Host</button>
+<button class="btn btn-default btn-sm" id="create_trigger" type="button">Create Trigger</button>
 
 <div class="check" metric_id="<%= metric.id %>">
 

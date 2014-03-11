@@ -78,17 +78,24 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
 
   # New trigger
   "mon_hosts_triggers_new":
-    url:  "monitoring/hosts/:host_id/triggers/new"
+    class extends Stark.State
+      url: "monitoring/hosts/:host_id/triggers/new"
 
-    views:      [ _bvm.AddTrigger ]
-    models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
+      create_url: ->
+        s = super()
+        if @for_check? and @for_metric?
+          s += "?for_check=#{@for_check.id}&for_metric=#{@for_metric.id}"
+        s
 
-    activate: ->
-      # preload some extra data for next step
-      @users = new _bm.UserList
-      @on_calls = new _bm.OnCallList
-      needed = [@users, @on_calls]
-      Backbone.multi_fetch(needed)
+      views:      [ _bvm.AddTrigger ]
+      models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
+
+      activate: ->
+        # preload some extra data for next step
+        @users = new _bm.UserList
+        @on_calls = new _bm.OnCallList
+        needed = [@users, @on_calls]
+        Backbone.multi_fetch(needed)
 
   # Add trigger action
   "mon_hosts_actions_new":
