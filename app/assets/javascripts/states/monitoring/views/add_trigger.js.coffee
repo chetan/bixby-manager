@@ -48,3 +48,23 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         trigger.metric_key = $("#metric option").filter(":selected").text()
 
         @transition "mon_hosts_actions_new", { host: host, trigger: trigger, users: @state.users, on_calls: @state.on_calls }
+
+    # Create a display name for the metric with all relevant info for the trigger
+    #
+    # e.g., "Disk Usage (mount = ALL, mount=/, type=hfs): Disk Size (GB)"
+    # TODO: get rid of the dupe mount=
+    metric_name: (check, metric) ->
+      s = check.g("name")
+
+      # add in check args & any metric tags
+      args = check.args_str()
+      tags = metric.display_tags()
+      if args? and args.length and tags? and tags.length
+        s += " (#{args}, #{tags})"
+      else if args? and args.length
+        s += " (#{args})"
+      else if tags? and tags.length
+        s += " (#{tags})"
+
+      s += ": " + metric.display_name()
+      s

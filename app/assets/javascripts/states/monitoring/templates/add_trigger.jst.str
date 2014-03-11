@@ -11,10 +11,16 @@
         <label for="metric" class="control-label">Select metric</label>
         <select name="metric" id="metric" class="form-control">
           <option value=""></option>
-          <% metrics.each(function(metric) { %>
-            <option value="<%= metric.g('id') %>"
-                    check_id="<%= metric.g('check_id') %>"><%= metric.g("key") %></option>
-          <% }); %>
+          <% checks.each(function(check) {
+            _.each(check.filter_metrics(metrics), function(metric) { %>
+
+            <option value="<%= metric.id %>"
+                    check_id="<%= check.id %>"><%= metric_name(check, metric) %></option>
+
+          <%
+            });
+          });
+          %>
         </select>
       </div>
 
