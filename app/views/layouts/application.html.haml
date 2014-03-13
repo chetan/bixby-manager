@@ -10,5 +10,6 @@
     = javascript_include_tag "application"
 
   %body
+    %div.body
     - if not @bootstrap.blank?
       = render(:partial => "layouts/bootstrap", :locals => { :bootstrap => @bootstrap })
