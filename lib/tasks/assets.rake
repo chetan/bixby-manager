@@ -29,7 +29,7 @@ begin
 
   # create non-digest versions of files just in case
   after 'assets:precompile' do
-    logger = Module.const_defined?("::Logging") ? ::Logging.logger["Assets::PreCompile"] : Rails.logger
+    logger = Module.const_defined?("Logging".to_sym) ? ::Logging.logger["Assets::PreCompile"] : Rails.logger
 
     asset_path = File.join(Rails.root, "public", Rails.application.config.assets.prefix)
     manifest = File.join(asset_path, "manifest.json")
