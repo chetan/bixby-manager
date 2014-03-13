@@ -74,6 +74,10 @@
 			},
 			'?': function (js) {
 				// open if block around js w/ test for not-null value
+				var m = js.match(/^(.*?)([&|]{2}.*)$/);
+				if (m) {
+					return '{if(typeof(' + m[1] + ') !== "undefined" && ' + m[1] + m[2] + '){';
+				}
 				return '{if(typeof(' + js + ') !== "undefined" && ' + js + '){';
 			},
 			'!': function (js) {
