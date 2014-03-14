@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # need jruby alternative for:
 # scrypt
 
-gem 'rails', '4.0.3'
+gem 'rails', '~> 4.0.4'
 gem 'activerecord-session_store'
 
 # webserver
@@ -102,7 +102,7 @@ group :assets do
     # asset related gems
     gem 'sprockets-rails'
     gem 'sass'
-    gem 'sass-rails'
+    gem 'sass-rails', '~> 4.0.2'
     gem 'bootstrap-sass', '~> 3.1.1'
     gem 'sprockets-jst-str'
     gem 'coffee-script'
