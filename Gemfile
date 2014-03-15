@@ -66,7 +66,7 @@ gem "api-auth", :github => "chetan/api_auth", :branch => "bixby"
 gem "mixlib-shellout"
 
 # repository module
-gem "git"
+gem "git", "= 1.2.5"
 gem "sshkey"
 
 # rails plugins

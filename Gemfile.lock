@@ -243,7 +243,7 @@ GEM
       railties (>= 3.2, < 5.0)
     foreigner (1.6.1)
       activerecord (>= 3.0.0)
-    git (1.2.6)
+    git (1.2.5)
     growl (1.0.3)
     haml (4.0.5)
       tilt
@@ -540,7 +540,7 @@ DEPENDENCIES
   faye-websocket
   font-awesome-rails
   foreigner
-  git
+  git (= 1.2.5)
   haml
   haml_assets
   highline
