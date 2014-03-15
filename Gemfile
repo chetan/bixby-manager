@@ -83,8 +83,9 @@ gem "redis", "~> 3.0", :require => ["redis/connection/hiredis", "redis"]
 # though hiredis is an extension, it should degrade gracefully for jruby
 gem "hiredis"
 
-gem "resque"
-gem "resque-scheduler", :require => ["resque_scheduler"]
+# uncomment if you are using resque in production
+# gem "resque"
+# gem "resque-scheduler", :require => ["resque_scheduler"]
 
 gem "sidekiq", "~> 2.9"
 gem "slim", "~> 1.3.0"                  # for sidekiq web ui
@@ -202,5 +203,8 @@ group :test do
 
   # for testing mongo metrics driver
   gem 'mongoid', :github => "mongoid/mongoid" # use git/master for rails4 support
+
+  gem "resque"
+  gem "resque-scheduler", :require => ["resque_scheduler"]
 
 end
