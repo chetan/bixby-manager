@@ -189,7 +189,7 @@ GEM
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     curb (0.8.5)
-    curb_threadpool (0.6.0)
+    curb_threadpool (0.6.1)
       curb
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
