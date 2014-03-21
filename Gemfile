@@ -22,10 +22,6 @@ gem "activerecord-jdbc-adapter", "~> 1.3.0", :platforms => :jruby
 gem "pg", :platforms => [:mri, :rbx]
 gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.0", :platforms => :jruby
 
-gem "curb",                             :platforms => [:mri, :rbx]
-gem "curb_threadpool",                  :platforms => [:mri, :rbx] # used in continuum gem
-gem "httpclient",                       :platforms => :jruby
-
 # misc/production support
 gem "secure_headers"
 gem "rack-health", :require => "rack/health"
@@ -92,7 +88,8 @@ gem "slim", "~> 1.3.0"                  # for sidekiq web ui
 gem "sinatra", :require => nil          # for sidekiq web ui
 
 # metrics module
-gem 'continuum', :git => "https://github.com/chetan/continuum.git"
+gem 'continuum', :github => "chetan/continuum"
+gem 'bixby-api_pool', :github => 'chetan/bixby-api_pool'
 
 # uncomment if using mongo for metrics storage
 # warning: you *really* shouldn't use this in production

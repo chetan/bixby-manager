@@ -6,6 +6,22 @@ GIT
     api-auth (1.0.3)
 
 GIT
+  remote: git://github.com/chetan/bixby-api_pool.git
+  revision: 9d5489f091da3e0ec04cfc5c48cf2d35fc69eef7
+  specs:
+    bixby-api_pool (0.1.0)
+      actionpool (~> 0.2)
+      ethon (~> 0.7)
+
+GIT
+  remote: git://github.com/chetan/continuum.git
+  revision: cdbe688cfbe4dee0d9840103c35c9f7ff8e42892
+  specs:
+    continuum (0.2)
+      multi_json
+      rake
+
+GIT
   remote: git://github.com/chetan/micron.git
   revision: 9290253b06d11b1b8d92c3f5152533809ae3a58f
   specs:
@@ -37,14 +53,6 @@ GIT
     newrelic-curb (0.0.6)
       curb
       newrelic_rpm
-
-GIT
-  remote: https://github.com/chetan/continuum.git
-  revision: 68543676419ae1929beab823aeeb78c82e21c257
-  specs:
-    continuum (0.2)
-      multi_json
-      rake
 
 GIT
   remote: https://github.com/chetan/logging-rails.git
@@ -93,6 +101,8 @@ GEM
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
+    actionpool (0.2.3)
+      splib (~> 1.4)
     activemodel (4.0.4)
       activesupport (= 4.0.4)
       builder (~> 3.1.0)
@@ -189,8 +199,6 @@ GEM
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     curb (0.8.5)
-    curb_threadpool (0.6.1)
-      curb
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
     debugger (1.6.6)
@@ -220,6 +228,8 @@ GEM
     em-hiredis (0.2.1)
       hiredis (~> 0.4.0)
     erubis (2.7.0)
+    ethon (0.7.0)
+      ffi (>= 1.3.0)
     eventmachine (1.0.3)
     eventmachine (1.0.3-java)
     exception_notification (4.0.1)
@@ -257,7 +267,6 @@ GEM
     hiredis (0.4.5-java)
     hitimes (1.2.1)
     hitimes (1.2.1-java)
-    httpclient (2.3.4.1)
     httpi (2.1.0)
       rack
       rubyntlm (~> 0.3.2)
@@ -438,6 +447,7 @@ GEM
       temple (~> 0.6.3)
       tilt (~> 1.3, >= 1.3.3)
     slop (3.5.0)
+    splib (1.4.3)
     spoon (0.0.4)
       ffi
     sprockets (2.11.0)
@@ -516,6 +526,7 @@ DEPENDENCIES
   bahia
   better_errors
   binding_of_caller
+  bixby-api_pool!
   bixby-common
   bootstrap-sass (~> 3.1.1)
   cane
@@ -525,8 +536,6 @@ DEPENDENCIES
   coffee-script-source
   continuum!
   coveralls
-  curb
-  curb_threadpool
   database_cleaner (= 1.0.1)
   debugger
   debugger-pry
@@ -545,7 +554,6 @@ DEPENDENCIES
   haml_assets
   highline
   hiredis
-  httpclient
   immigrant
   json
   letter_opener
