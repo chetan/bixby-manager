@@ -75,7 +75,7 @@ EOF
   end
 
   def test_tag_hash_should_be_idempotent
-    check = FactoryGirl.create(:check)
+    check = Check.first
 
     # mix symbols and strings as inputs
     # since this is what generally does happen in prod (Metric#put_check_result)

@@ -58,7 +58,6 @@ class Bixby::Test::Models::Trigger < Bixby::Test::TestCase
 
   def test_status_thresholds
     m = FactoryGirl.create(:metric)
-    m = FactoryGirl.create(:metric)
     a = Trigger.new
     a.metric = m
     a.severity = Trigger::Severity::WARNING
