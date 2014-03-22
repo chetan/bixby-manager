@@ -40,6 +40,8 @@ gem 'haml'
 gem 'bixby-common'
 # gem 'bixby-common', :path => "../common"
 
+gem 'curb', '~> 0.8'
+
 gem "semver2"
 
 # api server for agents
