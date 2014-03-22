@@ -1,6 +1,5 @@
 
 require 'helper'
-require 'setup/sidekiq_mock_redis'
 
 module Bixby
   module Test
