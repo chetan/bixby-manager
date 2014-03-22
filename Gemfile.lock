@@ -536,7 +536,7 @@ DEPENDENCIES
   coffee-script-source
   continuum!
   coveralls
-  curb
+  curb (~> 0.8)
   database_cleaner (= 1.0.1)
   debugger
   debugger-pry
