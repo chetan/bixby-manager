@@ -11,7 +11,8 @@ require 'rails/test_help'
 
 # load curb first so webmock can stub it out as necessary
 require 'curb'
-require 'curb_threadpool'
+require 'httpi'
+require 'continuum/http/httpi'
 require 'webmock'
 require 'mocha/setup'
 require 'mock_redis'
