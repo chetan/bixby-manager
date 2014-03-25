@@ -1,19 +1,27 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: commands
+# Table name: `commands`
 #
-#  id         :integer          not null, primary key
-#  repo_id    :integer
-#  name       :string(255)
-#  desc       :string(255)
-#  location   :string(255)
-#  bundle     :string(255)
-#  command    :string(255)
-#  options    :text
-#  updated_at :datetime
-#  deleted_at :datetime
+# ### Columns
 #
-
+# Name              | Type               | Attributes
+# ----------------- | ------------------ | ---------------------------
+# **`id`**          | `integer`          | `not null, primary key`
+# **`repo_id`**     | `integer`          |
+# **`name`**        | `string(255)`      |
+# **`desc`**        | `string(255)`      |
+# **`location`**    | `string(255)`      |
+# **`bundle`**      | `string(255)`      |
+# **`command`**     | `string(255)`      |
+# **`options`**     | `text`             |
+# **`updated_at`**  | `datetime`         |
+# **`deleted_at`**  | `datetime`         |
+#
+# ### Indexes
+#
+# * `fk_commands_repos1`:
+#     * **`repo_id`**
+#
 
 class Command < ActiveRecord::Base
 

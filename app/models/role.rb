@@ -1,13 +1,21 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: roles
+# Table name: `roles`
 #
-#  id          :integer          not null, primary key
-#  tenant_id   :integer
-#  name        :string(255)      not null
-#  description :string(255)
+# ### Columns
 #
-
+# Name               | Type               | Attributes
+# ------------------ | ------------------ | ---------------------------
+# **`id`**           | `integer`          | `not null, primary key`
+# **`tenant_id`**    | `integer`          |
+# **`name`**         | `string(255)`      | `not null`
+# **`description`**  | `string(255)`      |
+#
+# ### Indexes
+#
+# * `roles_tenant_id_fk`:
+#     * **`tenant_id`**
+#
 
 class Role < ActiveRecord::Base
 

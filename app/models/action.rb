@@ -1,15 +1,23 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: actions
+# Table name: `actions`
 #
-#  id          :integer          not null, primary key
-#  trigger_id  :integer          not null
-#  action_type :integer          not null
-#  target_id   :integer          not null
-#  args        :text
-#  deleted_at  :datetime
+# ### Columns
 #
-
+# Name               | Type               | Attributes
+# ------------------ | ------------------ | ---------------------------
+# **`id`**           | `integer`          | `not null, primary key`
+# **`trigger_id`**   | `integer`          | `not null`
+# **`action_type`**  | `integer`          | `not null`
+# **`target_id`**    | `integer`          | `not null`
+# **`args`**         | `text`             |
+# **`deleted_at`**   | `datetime`         |
+#
+# ### Indexes
+#
+# * `actions_trigger_id_fk`:
+#     * **`trigger_id`**
+#
 
 class Action < ActiveRecord::Base
 

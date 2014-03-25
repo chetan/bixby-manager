@@ -1,19 +1,31 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: trigger_histories
+# Table name: `trigger_histories`
 #
-#  id         :integer          not null, primary key
-#  trigger_id :integer          not null
-#  created_at :datetime
-#  check_id   :integer
-#  metric_id  :integer
-#  severity   :integer
-#  threshold  :decimal(20, 2)
-#  status     :string(255)
-#  sign       :string(2)
-#  value      :decimal(20, 2)
+# ### Columns
 #
-
+# Name              | Type               | Attributes
+# ----------------- | ------------------ | ---------------------------
+# **`id`**          | `integer`          | `not null, primary key`
+# **`trigger_id`**  | `integer`          | `not null`
+# **`created_at`**  | `datetime`         |
+# **`check_id`**    | `integer`          |
+# **`metric_id`**   | `integer`          |
+# **`severity`**    | `integer`          |
+# **`threshold`**   | `decimal(20, 2)`   |
+# **`status`**      | `string(255)`      |
+# **`sign`**        | `string(2)`        |
+# **`value`**       | `decimal(20, 2)`   |
+#
+# ### Indexes
+#
+# * `trigger_histories_check_id_fk`:
+#     * **`check_id`**
+# * `trigger_histories_metric_id_fk`:
+#     * **`metric_id`**
+# * `trigger_histories_trigger_id_fk`:
+#     * **`trigger_id`**
+#
 
 class TriggerHistory < ActiveRecord::Base
 

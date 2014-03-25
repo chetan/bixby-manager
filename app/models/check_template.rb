@@ -1,14 +1,25 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: check_templates
+# Table name: `check_templates`
 #
-#  id     :integer          not null, primary key
-#  org_id :integer
-#  name   :string(255)      not null
-#  mode   :integer          not null
-#  tags   :string(255)
+# ### Columns
 #
-
+# Name              | Type               | Attributes
+# ----------------- | ------------------ | ---------------------------
+# **`id`**          | `integer`          | `not null, primary key`
+# **`org_id`**      | `integer`          |
+# **`name`**        | `string(255)`      | `not null`
+# **`mode`**        | `integer`          | `not null`
+# **`tags`**        | `string(255)`      |
+# **`created_at`**  | `datetime`         |
+# **`updated_at`**  | `datetime`         |
+# **`deleted_at`**  | `datetime`         |
+#
+# ### Indexes
+#
+# * `check_templates_org_id_fk`:
+#     * **`org_id`**
+#
 
 class CheckTemplate < ActiveRecord::Base
 

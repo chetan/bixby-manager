@@ -1,17 +1,28 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: triggers
+# Table name: `triggers`
 #
-#  id         :integer          not null, primary key
-#  check_id   :integer
-#  metric_id  :integer
-#  severity   :integer
-#  threshold  :decimal(20, 2)
-#  status     :string(255)
-#  sign       :string(2)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  deleted_at :datetime
+# ### Columns
+#
+# Name              | Type               | Attributes
+# ----------------- | ------------------ | ---------------------------
+# **`id`**          | `integer`          | `not null, primary key`
+# **`check_id`**    | `integer`          |
+# **`metric_id`**   | `integer`          |
+# **`severity`**    | `integer`          |
+# **`threshold`**   | `decimal(20, 2)`   |
+# **`status`**      | `string(255)`      |
+# **`sign`**        | `string(2)`        |
+# **`created_at`**  | `datetime`         | `not null`
+# **`updated_at`**  | `datetime`         | `not null`
+# **`deleted_at`**  | `datetime`         |
+#
+# ### Indexes
+#
+# * `triggers_check_id_fk`:
+#     * **`check_id`**
+# * `triggers_metric_id_fk`:
+#     * **`metric_id`**
 #
 
 # status: OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT

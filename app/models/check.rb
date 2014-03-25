@@ -1,22 +1,34 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: checks
+# Table name: `checks`
 #
-#  id              :integer          not null, primary key
-#  host_id         :integer          not null
-#  agent_id        :integer          not null
-#  command_id      :integer          not null
-#  args            :text
-#  normal_interval :integer
-#  retry_interval  :integer
-#  timeout         :integer
-#  plot            :boolean
-#  enabled         :boolean          default(FALSE)
-#  created_at      :datetime
-#  updated_at      :datetime
-#  deleted_at      :datetime
+# ### Columns
 #
-
+# Name                   | Type               | Attributes
+# ---------------------- | ------------------ | ---------------------------
+# **`id`**               | `integer`          | `not null, primary key`
+# **`host_id`**          | `integer`          | `not null`
+# **`agent_id`**         | `integer`          | `not null`
+# **`command_id`**       | `integer`          | `not null`
+# **`args`**             | `text`             |
+# **`normal_interval`**  | `integer`          |
+# **`retry_interval`**   | `integer`          |
+# **`timeout`**          | `integer`          |
+# **`plot`**             | `boolean`          |
+# **`enabled`**          | `boolean`          | `default(FALSE)`
+# **`created_at`**       | `datetime`         |
+# **`updated_at`**       | `datetime`         |
+# **`deleted_at`**       | `datetime`         |
+#
+# ### Indexes
+#
+# * `checks_host_id_fk`:
+#     * **`host_id`**
+# * `fk_checks_agents1`:
+#     * **`agent_id`**
+# * `fk_checks_commands1`:
+#     * **`command_id`**
+#
 
 class Check < ActiveRecord::Base
 

@@ -1,34 +1,51 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: users
+# Table name: `users`
 #
-#  id                     :integer          not null, primary key
-#  org_id                 :integer          not null
-#  username               :string(255)      not null
-#  encrypted_password     :string(255)
-#  name                   :string(255)
-#  email                  :string(255)
-#  phone                  :string(255)
-#  sign_in_count          :integer          default(0), not null
-#  failed_attempts        :integer          default(0), not null
-#  last_request_at        :datetime
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :string(255)
-#  last_sign_in_ip        :string(255)
-#  password_salt          :string(255)
-#  confirmation_token     :string(255)
-#  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
-#  unconfirmed_email      :string(255)
-#  reset_password_token   :string(255)
-#  reset_password_sent_at :datetime
-#  remember_token         :string(255)
-#  remember_created_at    :datetime
-#  unlock_token           :string(255)
-#  locked_at              :datetime
-#  created_at             :datetime
-#  updated_at             :datetime
+# ### Columns
+#
+# Name                          | Type               | Attributes
+# ----------------------------- | ------------------ | ---------------------------
+# **`id`**                      | `integer`          | `not null, primary key`
+# **`org_id`**                  | `integer`          | `not null`
+# **`username`**                | `string(255)`      | `not null`
+# **`encrypted_password`**      | `string(255)`      |
+# **`name`**                    | `string(255)`      |
+# **`email`**                   | `string(255)`      |
+# **`phone`**                   | `string(255)`      |
+# **`sign_in_count`**           | `integer`          | `default(0), not null`
+# **`failed_attempts`**         | `integer`          | `default(0), not null`
+# **`last_request_at`**         | `datetime`         |
+# **`current_sign_in_at`**      | `datetime`         |
+# **`last_sign_in_at`**         | `datetime`         |
+# **`current_sign_in_ip`**      | `string(255)`      |
+# **`last_sign_in_ip`**         | `string(255)`      |
+# **`password_salt`**           | `string(255)`      |
+# **`confirmation_token`**      | `string(255)`      |
+# **`confirmed_at`**            | `datetime`         |
+# **`confirmation_sent_at`**    | `datetime`         |
+# **`unconfirmed_email`**       | `string(255)`      |
+# **`reset_password_token`**    | `string(255)`      |
+# **`reset_password_sent_at`**  | `datetime`         |
+# **`remember_token`**          | `string(255)`      |
+# **`remember_created_at`**     | `datetime`         |
+# **`unlock_token`**            | `string(255)`      |
+# **`locked_at`**               | `datetime`         |
+# **`created_at`**              | `datetime`         |
+# **`updated_at`**              | `datetime`         |
+#
+# ### Indexes
+#
+# * `fk_users_orgs1`:
+#     * **`org_id`**
+# * `index_users_on_confirmation_token` (_unique_):
+#     * **`confirmation_token`**
+# * `index_users_on_last_request_at`:
+#     * **`last_request_at`**
+# * `index_users_on_reset_password_token` (_unique_):
+#     * **`reset_password_token`**
+# * `index_users_on_unlock_token` (_unique_):
+#     * **`unlock_token`**
 #
 
 # temp workaround for load order issues

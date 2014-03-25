@@ -1,12 +1,20 @@
-# == Schema Information
+# ## Schema Information
 #
-# Table name: orgs
+# Table name: `orgs`
 #
-#  id        :integer          not null, primary key
-#  tenant_id :integer
-#  name      :string(255)
+# ### Columns
 #
-
+# Name             | Type               | Attributes
+# ---------------- | ------------------ | ---------------------------
+# **`id`**         | `integer`          | `not null, primary key`
+# **`tenant_id`**  | `integer`          |
+# **`name`**       | `string(255)`      |
+#
+# ### Indexes
+#
+# * `fk_orgs_tenants1`:
+#     * **`tenant_id`**
+#
 
 class Org < ActiveRecord::Base
 
