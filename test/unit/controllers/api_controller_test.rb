@@ -176,8 +176,9 @@ class API < TestCase
     req = JsonRequest.new("inventory:register_agent", params)
     @request.env['RAW_POST_DATA'] = req.to_json
 
-    Bixby::Scheduler.any_instance.expects(:schedule_in).with do |interval, job|
-      interval == 10 and job.method == :update_facts and job.klass == Bixby::Inventory
+    Bixby::Scheduler.any_instance.expects(:schedule_at).with do |t, job|
+      t = t.to_i # a bit of fudge on the time range
+      (t >= Time.now.to_i+10 || t <= Time.now.to_i+11) && job.klass = Bixby::Inventory && job.method == :update_facts
     end
 
     post :handle

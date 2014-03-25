@@ -286,9 +286,10 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     cti.command_id = command.id
     cti.save!
 
-    Bixby::Scheduler.any_instance.expects(:schedule_in).with { |time, job|
-      time == 10 && job.method == :update_facts && job.args.first == Agent.last.host.id
-    }
+    Bixby::Scheduler.any_instance.expects(:schedule_at).with do |t, job|
+      t = t.to_i # a bit of fudge on the time range
+      (t >= Time.now.to_i+10 || t <= Time.now.to_i+11) && job.klass = Bixby::Inventory && job.method == :update_facts && job.args.first == Agent.last.host.id
+    end
 
     if expected_size > 0 then
       Bixby::Scheduler.any_instance.expects(:schedule_at).with { |timestamp, job|
