@@ -12,7 +12,8 @@ class AddCommandLogs < ActiveRecord::Migration
       t.integer :status, :null => true
       t.text :stdout, :null => true
       t.text :stderr, :null => true
-      t.timestamp :created_at
+      t.timestamp :requested_at
+      t.decimal :time_taken, :precision => 10, :scale => 3
 
       t.foreign_key :orgs
       t.foreign_key :agents

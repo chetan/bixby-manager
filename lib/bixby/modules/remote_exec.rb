@@ -79,9 +79,9 @@ class RemoteExec < API
     #
     # @return [JsonResponse]
     def exec_internal(agent, command)
-      json_res = exec_api(agent, "shell_exec", command.to_hash)
-      CommandLog.create(agent, command, json_res)
-      return json_res
+      return CommandLog.log_exec(agent, command) do
+        exec_api(agent, "shell_exec", command.to_hash)
+      end
     end
 
     # Execute the given API request on an Agent. Will not try to provision;

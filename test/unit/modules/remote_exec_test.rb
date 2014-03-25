@@ -88,6 +88,9 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     assert_equal 0, log.status
     assert_equal "frobnicator echoed", log.stdout
     assert_nil log.stderr
+
+    assert log.requested_at
+    assert log.time_taken > 0
   end
 
   def test_exec_with_provision

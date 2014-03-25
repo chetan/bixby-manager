@@ -2,10 +2,10 @@
 class CommandLog < ActiveRecord::Base
 
   # all fields are read-only
-  attr_readonly :agent_id, :command_id, :args,
+  attr_readonly :agent_id, :command_id, :stdin, :args,
                 :exec_status, :exec_code,
                 :status, :stdout, :stderr,
-                :created_at
+                :requested_at, :time_taken
 
   multi_tenant :via => :agent
 
@@ -13,11 +13,20 @@ class CommandLog < ActiveRecord::Base
   belongs_to :agent
   belongs_to :command
 
-  # Create a new log entry for the given JSONResponse
+  # Create a new log entry for the given remote exec block
   #
+  # @param [Agent] agent
   # @param [CommandSpec] request
-  # @param [JsonResponse] response
-  def self.create(agent, request, response)
+  #
+  # @return [JsonResponse]
+  def self.log_exec(agent, request)
+
+    requested_at = Time.new
+    response = nil
+    time_taken = Benchmark.realtime do
+      response = yield
+    end
+
     c = CommandLog.new
     c.org = agent.host.org
     c.agent = agent
@@ -32,8 +41,12 @@ class CommandLog < ActiveRecord::Base
     c.stdout = cr.stdout if not cr.stdout.blank?
     c.stderr = cr.stderr if not cr.stderr.blank?
 
+    c.requested_at = requested_at
+    c.time_taken = time_taken
+
     c.save!
-    c
+
+    return response
   end
 
 end

@@ -105,7 +105,8 @@ ActiveRecord::Schema.define(version: 20140325151716) do
     t.integer  "status"
     t.text     "stdout"
     t.text     "stderr"
-    t.datetime "created_at"
+    t.datetime "requested_at"
+    t.decimal  "time_taken",   precision: 10, scale: 3
   end
 
   add_index "command_logs", ["agent_id"], name: "command_logs_agent_id_fk", using: :btree
