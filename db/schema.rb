@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20140325151716) do
   create_table "command_logs", force: true do |t|
     t.integer  "agent_id"
     t.integer  "command_id"
+    t.text     "stdin"
     t.text     "args"
     t.boolean  "exec_status"
     t.integer  "exec_code"

@@ -4,6 +4,7 @@ class AddCommandLogs < ActiveRecord::Migration
     create_table :command_logs do |t|
       t.integer :agent_id
       t.integer :command_id
+      t.text :stdin, :null => true
       t.text :args, :null => true
       t.boolean :exec_status
       t.integer :exec_code
