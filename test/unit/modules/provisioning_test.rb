@@ -14,6 +14,8 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
     @repo  = Repo.new(:name => "vendor")
     @agent = FactoryGirl.create(:agent)
     @cmd   = Command.new(:bundle => "test_bundle", :command => "echo", :repo => @repo)
+
+    Command.new(:bundle => "system/provision", :command => "get_bundle.rb", :repo => @repo).save
   end
 
   def test_list_files

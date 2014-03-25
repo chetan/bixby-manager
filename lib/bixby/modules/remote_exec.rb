@@ -21,7 +21,7 @@ class RemoteExec < API
       agent = get_model(agent, Agent)
       command = create_spec(command)
 
-      ret = exec_api(agent, "shell_exec", command.to_hash)
+      ret = exec_internal(agent, command)
 
       if ret.success? || ret.code != 404 then
         return CommandResponse.from_json_response(ret)
@@ -34,7 +34,7 @@ class RemoteExec < API
       end
 
       # try to exec again
-      ret = exec_api(agent, "shell_exec", command.to_hash)
+      ret = exec_internal(agent, command)
       return CommandResponse.from_json_response(ret)
     end
 
@@ -69,11 +69,25 @@ class RemoteExec < API
       spec
     end
 
+
+    private
+
+    # Execute a command on an Agent. Does not try to provision on failure
+    #
+    # @param [Agent] agent
+    # @param [CommandSpec] command
+    #
+    # @return [JsonResponse]
+    def exec_internal(agent, command)
+      json_res = exec_api(agent, "shell_exec", command.to_hash)
+      CommandLog.create(agent, command, json_res)
+      return json_res
+    end
+
     # Execute the given API request on an Agent. Will not try to provision;
     # simply returns any errors.
     #
-    # NOTE: This 'raw' method should only be called by #exec or
-    #       Bixby::Provisioning#provision
+    # NOTE: This 'raw' method should only be called by #exec_internal
     #
     # @param [Agent] agent
     # @param [String] operation

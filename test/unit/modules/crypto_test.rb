@@ -44,7 +44,7 @@ class Test::Modules::Crypto < Bixby::Test::TestCase
 
   def test_exec_api_with_crypto
 
-    repo  = Repo.new(:name => "vendor")
+    repo  = FactoryGirl.create(:repo)
     agent = FactoryGirl.create(:agent)
     cmd   = Command.new(:bundle => "foobar", :command => "baz", :repo => repo)
 

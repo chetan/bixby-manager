@@ -31,7 +31,7 @@ class Provisioning < API
     results = []
     commands.each do |command|
       spec = create_provision_command(command)
-      ret = exec_api(agent, "shell_exec", spec)
+      ret = exec_internal(agent, spec)
       if ret.success? or ret.code != 404 then
         results << ret
         next
@@ -48,8 +48,8 @@ class Provisioning < API
       # fake the digest in the provision call
       fake_digest = $1
       spec_self = create_provision_command(spec)
-      spec_self[:digest] = fake_digest
-      ret = exec_api(agent, "shell_exec", spec_self)
+      spec_self.digest = fake_digest
+      ret = exec_internal(agent, spec_self)
       if not ret.success? then
         return ret # bail out. can't even provision ourselves!
       end
@@ -62,7 +62,7 @@ class Provisioning < API
       logger.debug { "system/provisioning updated! continuing with #{command.bundle}" }
 
       # finally, provision the real spec
-      results << exec_api(agent, "shell_exec", spec)
+      results << exec_internal(agent, spec)
     end
 
     return results.last # return the original package being provisioned
@@ -129,7 +129,7 @@ class Provisioning < API
       :bundle  => "system/provisioning",
       :command => "get_bundle.rb",
       :stdin   => noargs.to_json
-    }).to_hash
+    })
   end
 
   # Get a list of dependent bundles, if any
@@ -178,9 +178,9 @@ class Provisioning < API
       :bundle  => "system/provisioning",
       :command => "get_bundles.rb",
       :stdin   => all_files.to_json
-    }).to_hash
+    })
 
-    ret = exec_api(agent, "shell_exec", cmd)
+    ret = exec_internal(agent, cmd)
     if ret.success? or ret.code != 404 then
       # succeeded or a failure besides 404 (which we can't handle)
       return ret
@@ -197,7 +197,7 @@ class Provisioning < API
 
 
     # try again
-    return exec_api(agent, "shell_exec", cmd)
+    return exec_internal(agent, cmd)
   end
 
   def provision_self(agent, fake_digest)
@@ -205,8 +205,8 @@ class Provisioning < API
 
     # fake the digest in the provision call
     spec_self = create_provision_command(create_provision_command({}))
-    spec_self[:digest] = fake_digest
-    ret = exec_api(agent, "shell_exec", spec_self)
+    spec_self.digest = fake_digest
+    ret = exec_internal(agent, spec_self)
     if not ret.success? then
       return ret # bail out. can't even provision ourselves!
     end
