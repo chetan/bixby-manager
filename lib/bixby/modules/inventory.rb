@@ -96,8 +96,7 @@ class Inventory < API
     self.class.run_hook(:register_agent, a)
 
     # update facts in bg (10 sec delay)
-    job = Bixby::Scheduler::Job.create(Bixby::Inventory, :update_facts, h.id)
-    Bixby::Scheduler.new.schedule_in(10, job)
+    Bixby::Inventory.defer(10).update_facts(h.id)
 
     { :server_key => server_key_for_agent(a).public_key.to_s,
       :access_key => a.access_key,

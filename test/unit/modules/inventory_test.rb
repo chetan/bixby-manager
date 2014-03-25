@@ -25,8 +25,10 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
   def test_register_agent
     org = FactoryGirl.create(:org)
 
-    Bixby::Scheduler.any_instance.expects(:schedule_in).once().with { |interval, job|
-      interval == 10 && job.klass = Bixby::Inventory && job.method == :update_facts
+    now = Time.new.to_i
+    Bixby::Scheduler.any_instance.expects(:schedule_at).once().with { |t, job|
+      t = t.to_i # a bit of fudge on the time range
+      (t >= now+10 || t <= now+11) && job.klass = Bixby::Inventory && job.method == :update_facts
     }
 
     ip = "4.4.4.4"
