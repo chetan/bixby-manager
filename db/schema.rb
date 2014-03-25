@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140325143942) do
+ActiveRecord::Schema.define(version: 20140325151716) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -93,6 +93,21 @@ ActiveRecord::Schema.define(version: 20140325143942) do
   add_index "checks", ["agent_id"], name: "fk_checks_agents1", using: :btree
   add_index "checks", ["command_id"], name: "fk_checks_commands1", using: :btree
   add_index "checks", ["host_id"], name: "checks_host_id_fk", using: :btree
+
+  create_table "command_logs", force: true do |t|
+    t.integer  "agent_id"
+    t.integer  "command_id"
+    t.text     "args"
+    t.boolean  "exec_status"
+    t.integer  "exec_code"
+    t.integer  "status"
+    t.text     "stdout"
+    t.text     "stderr"
+    t.datetime "created_at"
+  end
+
+  add_index "command_logs", ["agent_id"], name: "command_logs_agent_id_fk", using: :btree
+  add_index "command_logs", ["command_id"], name: "command_logs_command_id_fk", using: :btree
 
   create_table "commands", force: true do |t|
     t.integer  "repo_id"
@@ -384,6 +399,9 @@ ActiveRecord::Schema.define(version: 20140325143942) do
   add_foreign_key "checks", "agents", name: "fk_checks_agents1"
   add_foreign_key "checks", "commands", name: "fk_checks_commands1"
   add_foreign_key "checks", "hosts", name: "checks_host_id_fk"
+
+  add_foreign_key "command_logs", "agents", name: "command_logs_agent_id_fk"
+  add_foreign_key "command_logs", "commands", name: "command_logs_command_id_fk"
 
   add_foreign_key "commands", "repos", name: "fk_commands_repos1"
 
