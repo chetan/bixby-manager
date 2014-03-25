@@ -14,4 +14,6 @@ class CheckTemplateItem < ActiveRecord::Base
   belongs_to :command
 
   serialize :args, JSONColumn.new
+
+  acts_as_paranoid
 end

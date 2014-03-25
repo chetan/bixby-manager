@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140221225557) do
+ActiveRecord::Schema.define(version: 20140325143942) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -52,19 +52,25 @@ ActiveRecord::Schema.define(version: 20140221225557) do
   add_index "annotations", ["host_id"], name: "fk_annotations_hosts1_idx", using: :btree
 
   create_table "check_template_items", force: true do |t|
-    t.integer "check_template_id", null: false
-    t.integer "command_id",        null: false
-    t.text    "args"
+    t.integer  "check_template_id", null: false
+    t.integer  "command_id",        null: false
+    t.text     "args"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
   add_index "check_template_items", ["check_template_id"], name: "check_template_items_check_template_id_fk", using: :btree
   add_index "check_template_items", ["command_id"], name: "check_template_items_command_id_fk", using: :btree
 
   create_table "check_templates", force: true do |t|
-    t.integer "org_id"
-    t.string  "name",             null: false
-    t.integer "mode",   limit: 2, null: false
-    t.string  "tags"
+    t.integer  "org_id"
+    t.string   "name",                 null: false
+    t.integer  "mode",       limit: 2, null: false
+    t.string   "tags"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
   add_index "check_templates", ["org_id"], name: "check_templates_org_id_fk", using: :btree

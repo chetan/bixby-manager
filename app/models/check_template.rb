@@ -16,6 +16,8 @@ class CheckTemplate < ActiveRecord::Base
   belongs_to :org
   multi_tenant :via => :org
 
+  acts_as_paranoid
+
   module Mode
     ANY    = 1 # any tag matches
     ALL    = 2 # all tags match
