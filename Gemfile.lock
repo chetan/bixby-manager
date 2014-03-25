@@ -158,7 +158,7 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bixby-common (0.4.10)
+    bixby-common (0.4.11)
       api-auth
       faye-websocket
       httpi
