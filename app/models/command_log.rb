@@ -9,6 +9,7 @@ class CommandLog < ActiveRecord::Base
 
   multi_tenant :via => :agent
 
+  belongs_to :org
   belongs_to :agent
   belongs_to :command
 
@@ -18,6 +19,7 @@ class CommandLog < ActiveRecord::Base
   # @param [JsonResponse] response
   def self.create(agent, request, response)
     c = CommandLog.new
+    c.org = agent.host.org
     c.agent = agent
     c.command = Command.from_command_spec(request)
     c.stdin = request.stdin

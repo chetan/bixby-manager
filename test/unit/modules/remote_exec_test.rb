@@ -74,8 +74,10 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
 
     log = CommandLog.first
     assert log
+    assert_equal @agent.host.org.id, log.org_id
     assert_equal @agent.id, log.agent_id
     assert_equal cmd.id, log.command_id
+    assert log.org
     assert log.agent
     assert log.command
     assert_nil log.args

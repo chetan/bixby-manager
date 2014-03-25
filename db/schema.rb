@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20140325151716) do
   add_index "checks", ["host_id"], name: "checks_host_id_fk", using: :btree
 
   create_table "command_logs", force: true do |t|
+    t.integer  "org_id"
     t.integer  "agent_id"
     t.integer  "command_id"
     t.text     "stdin"
@@ -109,6 +110,7 @@ ActiveRecord::Schema.define(version: 20140325151716) do
 
   add_index "command_logs", ["agent_id"], name: "command_logs_agent_id_fk", using: :btree
   add_index "command_logs", ["command_id"], name: "command_logs_command_id_fk", using: :btree
+  add_index "command_logs", ["org_id"], name: "command_logs_org_id_fk", using: :btree
 
   create_table "commands", force: true do |t|
     t.integer  "repo_id"
@@ -403,6 +405,7 @@ ActiveRecord::Schema.define(version: 20140325151716) do
 
   add_foreign_key "command_logs", "agents", name: "command_logs_agent_id_fk"
   add_foreign_key "command_logs", "commands", name: "command_logs_command_id_fk"
+  add_foreign_key "command_logs", "orgs", name: "command_logs_org_id_fk"
 
   add_foreign_key "commands", "repos", name: "fk_commands_repos1"
 
