@@ -1,4 +1,6 @@
 
+require 'timeout'
+
 module PumaRunner
 
   # Handles socket binding and passes control to Puma::Server
@@ -72,7 +74,7 @@ module PumaRunner
       end
 
       Signal.trap("USR2") do
-        log "* Graceful restart on USR2 signal (#{Time.new})"
+        log "* Gracefully restarting on USR2 signal (#{Time.new})"
         do_restart()
       end
 
@@ -149,11 +151,49 @@ module PumaRunner
       # First spawn a replacement node and pass it our FDs
       # then tell this server to quit
 
-      respawn_child()
+      # try up to 3 times to get it to start
+      started = false
+      3.times do |try|
+        child_pid = respawn_child()
 
-      # wait for child to come up fully
-      while Process.pid == @pid.read || @daemon_starter.starting? do
-        sleep 1
+        if try > 1 then
+          $0 = "puma: server (spawning replacement, try #{try} of 3)"
+        end
+
+        # wait for child to come up fully
+        begin
+
+          Timeout.timeout(60) do
+            # wait for the pid file to get updated with the new pid id
+            while (Process.pid == @pid.read || @daemon_starter.starting?) && Pid.running?(child_pid) do
+              sleep 1
+            end
+          end
+
+          if Pid.running?(child_pid) then
+            # success!
+            started = true
+            break
+          end
+
+        rescue Timeout::Error
+          # if we got here, kill the child process and try again
+          log "* replacement startup timed out"
+          if Pid.running?(child_pid) then
+            Process.kill(9, child_pid) # kill!
+          else
+            log "* child process seems to have died"
+          end
+          @daemon_starter.cleanup! # nuke locks so we can try again
+
+        end
+
+      end
+
+      if !started then
+        log "* failed to start after 3 tries.. bailing out!"
+        $0 = "puma: server (running, respawn failed)"
+        return
       end
 
       $0 = "puma: server (winding down)"
