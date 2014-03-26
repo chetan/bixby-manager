@@ -28,6 +28,8 @@ set :application, "bixby"
 
 set :scm, :git
 set :repository, "https://github.com/chetan/bixby-manager.git"
+set :branch, fetch(:branch, "master")
+# to deploy some other branch: cap --set-before branch=branchname deploy
 
 set :deploy_to, "/var/www/#{application}"
 set :deploy_via, :remote_cache
@@ -36,6 +38,9 @@ set :rails_env, 'production'
 # cleanup on every deploy
 set :keep_releases, 10
 after "deploy:restart", "deploy:cleanup"
+
+# always run migrations
+after 'deploy:update_code', 'deploy:migrate'
 
 # load custom tasks
 %w(rake uname sidekiq puma deploy bixby update_deploy_branch).each do |t|
