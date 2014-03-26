@@ -19,6 +19,10 @@ module Bixby
     # (the default), certain long column types will be truncated
     module ConsoleTable
 
+      def self.col_type(rows, col)
+        rows.first.class.columns.find{ |c| c.name == col }.type.to_s
+      end
+
       def self.to_table(rows, columns, truncate=false)
         table = Terminal::Table.new do |t|
           t.headings = columns.map{ |c| c.name }
@@ -26,8 +30,12 @@ module Bixby
             t << columns.map { |c|
               col = c.name
               val = row.send(col.to_sym)
-              if truncate && (col =~ /_(key|token)$/ || col =~ /_?password$/) then
-                val = val.blank?() ? val : val[0,3] + "...[snip]"
+              if truncate then
+                if col =~ /_(key|token)$/ || col =~ /_?password$/ then
+                  val = val.blank?() ? val : val[0,3] + "...[snip]"
+                elsif %w{string text}.include? col_type(rows, col) then
+                  val = val.blank?() || val.length < 35 ? val : val[0,30] + "...[snip]"
+                end
               end
               val
             }
