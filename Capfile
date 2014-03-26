@@ -33,6 +33,10 @@ set :deploy_to, "/var/www/#{application}"
 set :deploy_via, :remote_cache
 set :rails_env, 'production'
 
+# cleanup on every deploy
+set :keep_releases, 10
+after "deploy:restart", "deploy:cleanup"
+
 # load custom tasks
 %w(rake uname sidekiq puma deploy bixby update_deploy_branch).each do |t|
   load File.join(RAILS_ROOT, "lib/capistrano/#{t}.rb")
