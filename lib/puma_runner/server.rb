@@ -1,5 +1,8 @@
 
 module PumaRunner
+
+  # Handles socket binding and passes control to Puma::Server
+  # Takes care of trapping signals for graceful stop or restart
   class Server < Base
 
     def initialize
@@ -37,9 +40,7 @@ module PumaRunner
       begin
         return config.app
       rescue Exception => e
-        error "Unable to load rails app!"
-        error e
-        error e.backtrace.join("\n")
+        error ["Unable to load rails app!", e, e.backtrace].flatten.join("\n")
         exit 1
       end
     end
