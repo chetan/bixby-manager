@@ -95,6 +95,7 @@ module PumaRunner
       cmd = PUMA_SCRIPT + " server"
       redirects = export_fds()
       child_pid = fork { exec(cmd, redirects) }
+      Process.detach(child_pid)
 
       log "* started server process #{child_pid}"
 
