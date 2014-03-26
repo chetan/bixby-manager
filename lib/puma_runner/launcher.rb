@@ -1,5 +1,12 @@
 
 module PumaRunner
+
+  # Puma service control
+  #
+  # It's primary job is to spawn new processes (start) or interact with already running processes
+  #
+  # This class implements the following command line actions:
+  # - start, stop, restart, zap, status, dump
   class Launcher < Base
 
     # Configure and start the server!
@@ -75,7 +82,7 @@ module PumaRunner
         log "* a server is still trying to start!"
 
       elsif pid.running? then
-        log "* signalling server to restart"
+        log "* signalling server #{pid.read} to restart (#{Time.new})"
         Process.kill("USR2", pid.read)
       end
     end
