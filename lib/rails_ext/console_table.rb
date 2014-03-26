@@ -3,6 +3,20 @@ require 'terminal-table'
 
 module Bixby
   module RailsExt
+
+
+    # Adds the following helper methods to ActiveRecord:
+    # * #describe
+    # * #to_table
+    #
+    # `describe` can be used on the model class or an instance of a relatiion, e.g.
+    # `User.describe` or `User.first.describe` or `User.where(...).describe`
+    #
+    # `to_table` can be used on any relation instance, e.g.
+    # `User.first.to_table` or `User.all.to_table`, `User.where(...).to_table`
+    #
+    # In addition, to_table takes an optional boolean param to control truncation. When true
+    # (the default), certain long column types will be truncated
     module ConsoleTable
 
       def self.to_table(rows, columns, truncate=false)
