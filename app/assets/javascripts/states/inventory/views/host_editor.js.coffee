@@ -74,11 +74,8 @@ namespace "Bixby.view.inventory", (exports, top) ->
             tags.trigger("change")
 
       @$el.modal({ show: false })
-      @$el.on "shown.bs.modal", _.bindR @, ->
-        @$("input.alias").putCursorAtEnd()
-      @$el.on "hidden.bs.modal", _.bindR @, ->
-        @button.html("edit")
-        @redraw()
+      @$el.on "shown.bs.modal", _.bindR @, -> @$("input.alias").putCursorAtEnd()
+      @$el.on "hidden.bs.modal", _.bindR @, -> @redraw()
 
     dispose: ->
       @$el.off "hidden"
