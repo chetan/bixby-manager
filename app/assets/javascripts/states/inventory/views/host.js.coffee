@@ -6,7 +6,10 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     bindings: [ "host" ]
 
-    events: {
+    events:
+      "click a.edit": ->
+        @host_editor.show()
+
       "click button.refresh-facts": (e) ->
         e.preventDefault()
         return if $(e.target).hasClass("disabled")
@@ -20,14 +23,11 @@ namespace "Bixby.view.inventory", (exports, top) ->
         @host.update_facts (data, status, jqXHR) ->
           view.host = new Bixby.model.Host(data)
           view.redraw()
-    }
 
-    links: {
+    links:
       "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
-    }
 
     render: ->
       super
-      @_he = @partial(exports.HostEditor, { host: @host })
-      @_he.setButton( @$("a.edit") )
+      @host_editor = @partial(exports.HostEditor, { host: @host })
       @

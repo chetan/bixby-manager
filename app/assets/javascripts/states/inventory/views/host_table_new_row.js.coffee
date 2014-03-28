@@ -1,16 +1,15 @@
 namespace "Bixby.view.inventory", (exports, top) ->
 
   class exports.HostTableNewRow extends Stark.View
-    template: "inventory/_host_table_new_row"
-    tagName: "div"
+    template:  "inventory/_host_table_new_row"
+    tagName:   "div"
     className: "host"
 
-    links: {
+    links:
       "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
       "div.body a.host":          [ "inv_view_host", (el) -> { host: @host } ]
-    }
 
-    events: {
+    events:
       "click button.approve": (e) ->
         @host.remove_tag("new")
         @host.save()
@@ -19,12 +18,5 @@ namespace "Bixby.view.inventory", (exports, top) ->
         @host.remove_tag("new")
         @host.add_tag("reject")
         @host.save()
-    }
 
     bindings: [ "host" ]
-
-    render: ->
-      super
-      @_he ||= @partial(exports.HostEditor, { host: @host })
-      @_he.setButton( @$("a.edit") )
-      @
