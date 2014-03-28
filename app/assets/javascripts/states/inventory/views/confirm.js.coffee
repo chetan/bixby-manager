@@ -24,11 +24,11 @@ namespace "Bixby.view", (exports, top) ->
       v = @
 
       if v.options.shown_cb
-        @$el.on "shown", ->
+        @$el.on "shown.bs.modal", ->
           v.options.shown_cb.call(v, v.confirmed)
 
       if v.options.hidden_cb
-        @$el.on "hidden", ->
+        @$el.on "hidden.bs.modal", ->
           v.options.hidden_cb.call(v, v.confirmed)
 
       @$el.modal("show")
