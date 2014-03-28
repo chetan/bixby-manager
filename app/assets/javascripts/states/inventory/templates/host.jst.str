@@ -30,7 +30,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-8">
 
-      <h4>Facts <button type="button" class="btn btn-xs refresh-facts"><%= _.icon("refresh") %></button></h4>
+      <h4>Facts <button type="button" class="btn btn-default btn-xs refresh-facts"><%= _.icon("refresh") %></button></h4>
       <div class="metadata">
         <%= include_partial(Bixby.view.inventory.HostMetadata, { metadata: host.get("metadata") }) %>
       </div>
