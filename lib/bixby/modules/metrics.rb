@@ -223,9 +223,6 @@ class Metrics < API
           end
 
           # attach extra metadata before storing
-          if not metadata["host"] then
-            metadata[:host] = check.host.hostname || check.host.ip
-          end
           metadata[:host_id]     = check.host.id
           metadata[:check_id]    = check.id
           metadata[:org_id]      = check.org.id

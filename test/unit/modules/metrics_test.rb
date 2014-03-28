@@ -47,12 +47,12 @@ EOF
     assert_equal 1329775841, m.updated_at.to_i
 
     assert m.tags
-    assert_equal 7, m.tags.size
+    assert_equal 6, m.tags.size
     assert_kind_of Metadata, m.tags.first
 
     tags = Metadata.find(:all)
     assert tags
-    assert_equal 28, tags.size # 7 tags for each metric = 28
+    assert_equal 24, tags.size # 6 tags for each metric = 24
 
     assert tags.find{ |t| t.key == "mount" && t.value == "/" }
     assert tags.find{ |t| t.key == "type" && t.value == "hfs" }
