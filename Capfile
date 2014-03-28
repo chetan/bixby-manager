@@ -43,6 +43,6 @@ after "deploy:restart", "deploy:cleanup"
 after 'deploy:update_code', 'deploy:migrate'
 
 # load custom tasks
-%w(rake uname sidekiq puma deploy bixby update_deploy_branch).each do |t|
+%w(rake uname sidekiq puma deploy bixby update_deploy_branch assets).each do |t|
   load File.join(RAILS_ROOT, "lib/capistrano/#{t}.rb")
 end
