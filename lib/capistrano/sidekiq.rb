@@ -11,9 +11,9 @@ if Object.const_defined? :Capistrano then
 
     desc "Install symlink for properly serving assets for sidekiq-web"
     task :link_sidekiq_assets, :roles => :web do
-      bundle_path = capture "cd #{release_path}; bundle show sidekiq"
+      bundle_path = capture "cd #{latest_release}; bundle show sidekiq"
       bundle_path = "#{bundle_path.strip}/web/assets"
-      run "ln -nfs #{bundle_path} #{release_path}/public/sidekiq"
+      run "ln -nfs #{bundle_path} #{latest_release}/public/sidekiq"
     end
   end
 
