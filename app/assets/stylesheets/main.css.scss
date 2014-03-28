@@ -1,9 +1,6 @@
 
 @import "bootstrap";
 
-body {
-}
-
 .control-label .markdown > p {
   margin: 0;
 }
@@ -91,5 +88,11 @@ form span.valid {
   }
   &.fail {
     color: red;
+  }
+}
+
+div.markdown {
+  p:last-of-type {
+    margin-bottom: 0;
   }
 }

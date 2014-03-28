@@ -7,11 +7,20 @@
       <div class="tags">
         <%= include_partial(Bixby.view.inventory.HostTags, {host: host}) %>
       </div>
-      <%? host.get("desc") %>
-        <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>
-      <%//%>
     </div>
   </div>
+
+  <%? host.get("desc") %>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="desc panel panel-default">
+          <div class="panel-body">
+            <%= markdown(host.g("desc")) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <%//%>
 
   <div class="row">
     <div class="actions col-xs-12">

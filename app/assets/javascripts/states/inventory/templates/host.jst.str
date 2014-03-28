@@ -1,7 +1,7 @@
 <div class="host">
 
   <div class="row">
-    <div class="body col-xs-12 col-sm-4">
+    <div class="body col-xs-12">
 
       <h3>
         <%= host.name() %>
@@ -11,12 +11,20 @@
         <%= include_partial(Bixby.view.inventory.HostTags, {host: host}) %>
       </div>
 
-      <%? host.get("desc") %>
-        <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>
-      <%/%>
-
     </div>
   </div>
+
+      <%? host.get("desc") %>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="desc panel panel-default">
+              <div class="panel-body">
+                <%= markdown(host.g("desc")) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <%/%>
 
   <br/>
   <div class="row">
