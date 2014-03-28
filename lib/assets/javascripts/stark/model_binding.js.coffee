@@ -41,6 +41,7 @@ class Stark.ModelBinding
       @log "redraw handler fired (sync) due to model binding on: ", model
       @begin_closed_group "redrawing view: #{@.className()}"
       @redraw()
+      @end_group()
 
     # @onR view, "change", ->
     #   @log "redraw handler fired (change) due to model binding on: ", model
