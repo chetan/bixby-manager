@@ -1,9 +1,8 @@
 
-  <div class="row-fluid">
-    <div class="body span5">
+  <div class="row">
+    <div class="body col-xs-12">
       <h3>
         <a class="host"><%= host.name() %></a>
-        <span class="edit"><button type="button" class="btn btn-xs btn-info edit">edit</button></span>
       </h3>
       <div class="tags">
         <%= include_partial(Bixby.view.inventory.HostTags, {host: host}) %>
@@ -12,9 +11,11 @@
         <blockquote class="desc"><%= markdown(host.g("desc")) %></blockquote>
       <%//%>
     </div>
-
   </div>
 
-  <div class="row-fluid">
-    <div class="actions span5"><a class="monitoring">Monitoring</a></div>
+  <div class="row">
+    <div class="actions col-xs-12">
+      <a class="edit btn btn-primary btn-xs" role="button">Edit Host</a>
+      <a class="monitoring btn btn-primary btn-xs" role="button">Monitoring</a>
+    </div>
   </div>

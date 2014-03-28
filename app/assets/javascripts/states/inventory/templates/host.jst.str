@@ -5,7 +5,6 @@
 
       <h3>
         <%= host.name() %>
-        <span class="edit"><button type="button" class="btn btn-info btn-xs edit">edit</button></span>
       </h3>
 
       <div class="tags">
@@ -19,8 +18,10 @@
     </div>
   </div>
 
+  <br/>
   <div class="row">
-    <div class="actions col-xs-12 col-sm-4">
+    <div class="actions col-xs-12">
+      <a class="edit btn btn-primary btn-sm" role="button">Edit Host</a>
       <a class="monitoring btn btn-primary btn-sm" role="button">Monitoring</a>
     </div>
   </div>

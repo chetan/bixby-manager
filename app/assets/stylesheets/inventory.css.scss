@@ -24,9 +24,6 @@ div.host {
   margin-bottom: 10px;
 
   div.body {
-    span.edit {
-      display: none;
-    }
     blockquote p {
       /* override some normal bootstrap blockquote styles */
       font-size: inherit;
@@ -39,15 +36,6 @@ div.host {
     div.tags {
       margin-bottom: 10px;
     }
-  }
-
-  div.body:hover {
-    span.edit {
-      display: inline;
-    }
-  }
-
-  div.actions {
   }
 
   button.refresh-facts {
