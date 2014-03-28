@@ -83,6 +83,13 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   Devise.secret_key = BIXBY_CONFIG[:devise_secret_token]
   Devise.pepper = BIXBY_CONFIG[:devise_pepper]
 
+  # set default url_for options in action mailer (required by devise)
+  uri = URI(Bixby.manager_uri)
+  Rails.application.config.action_mailer.default_url_options = {
+    :host     => uri.host + (uri.port == uri.default_port ? "" : ":#{uri.port}"),
+    :protocol => uri.scheme
+  }
+
   # Start EventMachine/pubsub server
   if ENV["BIXBY_SKIP_EM"] != "1" then
     Bixby::AgentRegistry.redis_channel.start!

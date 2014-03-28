@@ -54,11 +54,13 @@ Bixby::Application.configure do
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
+
+  #############
+  # EMAIL SETUP
+  config.action_mailer.delivery_method = :sendmail
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
-  # for devise
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)

@@ -54,6 +54,10 @@ Bixby::Application.configure do
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
+
+  #############
+  # EMAIL SETUP
+  config.action_mailer.delivery_method = :sendmail
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
