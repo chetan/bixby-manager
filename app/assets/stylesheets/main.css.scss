@@ -1,6 +1,11 @@
 
 @import "bootstrap";
 
+@import "navbar";
+@import "inventory";
+@import "monitoring";
+@import "profile";
+
 .control-label .markdown > p {
   margin: 0;
 }
@@ -14,71 +19,17 @@ td.button {
   }
 }
 
-a.action_btn {
-  font-size: 11px;
-  padding: 2px 6px;
-  display: none;
-  position: absolute;
-  /*right: 76px;*/
-  top: 8px;
-}
-
-tr.actionable:hover td:first-child a.action_btn {
-  display: inline-block;
-}
-
 a {
   cursor: pointer;
 }
-
-@import "inventory";
-@import "monitoring";
 
 .btn .spinner {
   margin: 0 auto 0 auto;
   top: -10px;
 }
 
-.navbar {
-  margin-bottom: 0;
-}
-
-nav {
-  ul.user {
-    padding-left: 10px;
-
-    li.tab.user a.dropdown-toggle {
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-  }
-}
-
-img.gravatar {
-  height: 40px;
-  width: 40px;
-  margin-left: 10px;
-  border-radius: 3px 3px 3px 3px;
-  box-shadow: 0 1px 0 #FFFFFF;
-}
-
-img.gravatar-profile {
-  margin-left: 0px;
-}
-
-ui.nav li.real {
-  text-align: center;
-}
-
 i.red {
   color: #bd362f;
-}
-
-/* PROFILE PAGE */
-h2 {
-  span {
-    display: inline-block;
-  }
 }
 
 form span.valid {
