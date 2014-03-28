@@ -10,11 +10,16 @@ script/log/
 script/temp/
 tmp/
 */*.bak
+*.sql
 
 # config
 config/database.yml
 config/mongoid.yml
 config/bixby.yml
+
+# deploy
+config/deploy/staging.rb
+config/deploy/production.rb
 
 # build output
 .micron/
