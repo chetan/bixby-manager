@@ -10,10 +10,6 @@ module PumaRunner
       @pid        = Pid.new(config.options[:pidfile])
 
       @daemon_starter = DaemonStarter.new(pid.pid_dir, File.basename(pid.pid_file))
-
-      # always change to configured app dir
-      # don't expand path because we don't want to resolve any symlinks
-      Dir.chdir(@config.options[:directory])
     end
 
     def log(str)
@@ -45,7 +41,7 @@ module PumaRunner
 
         # custom defaults (differ from Puma)
         :redirect_append => true,
-        :config_file     => PUMA_CONF
+        :config_file     => File.join("config", "deploy", "puma.conf.rb")
       }
 
       config = Puma::Configuration.new(options)
@@ -92,7 +88,7 @@ module PumaRunner
     #
     # @return [Fixnum] new child pid
     def respawn_child
-      cmd = PUMA_SCRIPT + " server"
+      cmd = "script/puma server" # working dir should always be Rails.root
       redirects = export_fds()
       child_pid = fork { exec(cmd, redirects) }
       Process.detach(child_pid)

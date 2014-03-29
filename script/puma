@@ -3,11 +3,28 @@
 require 'puma'
 require 'puma/cli'
 
-PUMA_SCRIPT = File.expand_path(__FILE__)
-RAILS_ROOT  = File.expand_path("../..", __FILE__)
-PUMA_CONF   = File.join(RAILS_ROOT, "config", "deploy", "puma.conf.rb")
+# grab the actual rails root location from the puma config file
+#
+# Dir.pwd always seems to return the path with symlinks resolved (real path):
+#
+#   $ pwd
+#   /var/www/bixby/current
+#   $ ruby -e 'puts Dir.pwd'
+#   /var/www/bixby/releases/20140328223148
+#
+# In this case, we want 'current' not '20140328223148'
 
-$: << File.join(RAILS_ROOT, "lib")
+rails_root = File.expand_path("../..", __FILE__)
+conf_file = File.join(rails_root, "config", "deploy", "puma.conf.rb")
+config = Puma::Configuration.new({:config_file => conf_file})
+config.load
+rails_root = config.options[:directory] # at last!
+
+# make sure we always run from rails root, no matter how we're called
+# (god, for instance, should always set the wd correctly)
+# Dir.chdir(rails_root)
+
+$: << File.join(rails_root, "lib")
 require 'puma_runner'
 
 cmd = ARGV.shift
