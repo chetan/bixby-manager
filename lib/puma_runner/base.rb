@@ -12,6 +12,10 @@ module PumaRunner
       @daemon_starter = DaemonStarter.new(pid.pid_dir, File.basename(pid.pid_file))
     end
 
+    def rails_root
+      @config.options[:directory]
+    end
+
     def log(str)
       events.log(str)
     end
@@ -88,7 +92,7 @@ module PumaRunner
     #
     # @return [Fixnum] new child pid
     def respawn_child
-      cmd = "script/puma server" # working dir should always be Rails.root
+      cmd = File.join(self.rails_root, "script", "puma") + " server"
       redirects = export_fds()
       child_pid = fork { exec(cmd, redirects) }
       Process.detach(child_pid)

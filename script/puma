@@ -22,7 +22,7 @@ rails_root = config.options[:directory] # at last!
 
 # make sure we always run from rails root, no matter how we're called
 # (god, for instance, should always set the wd correctly)
-# Dir.chdir(rails_root)
+Dir.chdir(rails_root)
 
 $: << File.join(rails_root, "lib")
 require 'puma_runner'
