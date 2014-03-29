@@ -165,13 +165,14 @@ module PumaRunner
 
           Timeout.timeout(60) do
             # wait for the pid file to get updated with the new pid id
-            while (Process.pid == @pid.read || @daemon_starter.starting?) && Pid.running?(child_pid) do
+            # or for the startup lock to be cleared
+            while Process.pid == @pid.read || @daemon_starter.starting? do
               sleep 1
             end
           end
 
-          if Pid.running?(child_pid) then
-            # success!
+          if Process.pid != @pid.read && @pid.running? then
+            # pid file changed and daemon is running
             started = true
             break
           end
