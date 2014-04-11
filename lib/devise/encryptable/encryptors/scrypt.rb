@@ -28,17 +28,32 @@ module Devise
       #   * http://www.tarsnap.com/scrypt.html
       #
       class Scrypt < Base
+
         def self.digest(password, stretches, salt, pepper)
           SCrypt::Password.create("#{password}#{salt}#{pepper}").to_s
         end
 
         def self.compare(encrypted_password, password, stretches, salt, pepper)
+          pw = SCrypt::Password.new(encrypted_password)
           if salt.blank? then
-            SCrypt::Password.new(encrypted_password) == password
+            pw == password
           else
-            SCrypt::Password.new(encrypted_password) == "#{password}#{salt}#{pepper}"
+            if pw == "#{password}#{salt}#{pepper}" then
+              return true
+            elsif pw == "#{password}#{salt}" then
+              # update stored pw - temp workaround for missing pepper
+              u = User.where(:encrypted_password => encrypted_password).first
+              u.password = password
+              u.password_confirmation = password
+              u.phone = phone
+              u.skip_confirmation!
+              u.save!
+              return true
+            end
+            false
           end
         end
+
       end
     end
   end
