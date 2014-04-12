@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: git://github.com/chetan/continuum.git
-  revision: cdbe688cfbe4dee0d9840103c35c9f7ff8e42892
+  revision: 1b4a491c3e6233da6d19199e6c958ef267793533
   specs:
     continuum (0.2)
       multi_json
@@ -383,7 +383,7 @@ GEM
       activesupport (= 4.0.4)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (10.1.1)
+    rake (10.2.2)
     rake-hooks (1.2.3)
       rake
     rb-fchange (0.0.6)
