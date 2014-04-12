@@ -7,9 +7,9 @@ GIT
 
 GIT
   remote: git://github.com/chetan/bixby-api_pool.git
-  revision: 9d5489f091da3e0ec04cfc5c48cf2d35fc69eef7
+  revision: fab3cb1a397d0f456968ad30a8bc265beca8f78d
   specs:
-    bixby-api_pool (0.1.0)
+    bixby-api_pool (0.1.1)
       actionpool (~> 0.2)
       ethon (~> 0.7)
 
