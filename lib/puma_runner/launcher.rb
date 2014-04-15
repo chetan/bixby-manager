@@ -17,15 +17,19 @@ module PumaRunner
 
       case cmd
         when "start"
+          log "puma_launcher: start @ #{Time.new}"
           do_start()
 
         when "stop"
+          log "puma_launcher: stop @ #{Time.new}"
           do_stop()
 
         when "restart"
+          log "puma_launcher: restart @ #{Time.new}"
           do_restart()
 
         when "zap"
+          log "puma_launcher: zap @ #{Time.new}"
           do_zap()
 
         when "status"
@@ -33,6 +37,9 @@ module PumaRunner
 
         when "dump"
           do_dump()
+
+        else
+          do_help()
 
        end
 
@@ -63,8 +70,9 @@ module PumaRunner
         return
       end
 
-      STDOUT.write "* stopping server gracefully... "
-      Process.kill("QUIT", pid.read)
+      pid_id = pid.read
+      STDOUT.write "* stopping server #{pid_id} gracefully... "
+      Process.kill("QUIT", pid_id)
       while pid.exists? do
         sleep 0.1
       end
@@ -103,11 +111,35 @@ module PumaRunner
 
     # Status
     def do_status
-      if pid.running? then
-        log "server is running"
+      if pid.exists? then
+
+        if pid.running? then
+          log "server #{pid.read} is running"
+        else
+          log "server is not running; pid file exists, but found stale pid #{pid.read}"
+          begin
+            pid.delete
+          rescue
+          end
+          exit 1
+        end
+
       else
-        log "server is not running"
+
+        # try to find via ps
+        ps = pid.ps
+        if !ps.empty? then
+          warn "WARNING: pid file not found, but found the following processes:"
+          warn ""
+          ps.each{ |s| warn s }
+          warn ""
+          exit 2
+        end
+
+        log "server is not running; pid file not found"
+        exit 1
       end
+
     end
 
     # Thread dump
@@ -117,8 +149,28 @@ module PumaRunner
         return
       end
 
-      puts "thread dump [should be] written to stderr: #{config.options[:redirect_stderr]}"
+      puts "thread dump written to stderr: #{config.options[:redirect_stderr]}"
       Process.kill("ALRM", pid.read)
+    end
+
+    def do_help
+
+      puts <<-EOF
+puma launcher
+
+usage: bundle exec script/puma start|stop|restart|zap|status|dump
+
+commands:
+
+start               start the server, unless already started
+stop                stop the server gracefully, if running
+restart             restart the server gracefully, if running
+zap                 forcefully stop the server (kill -9 and delete pid file)
+status              see if server is running (via pid and `ps`)
+dump                thread dump to stderr
+EOF
+
+
     end
 
   end # Launcher

@@ -84,6 +84,14 @@ module PumaRunner
       end
     end
 
+    def ps
+      `ps auxwww | grep -v grep | grep 'puma: server'`.split(/\n/)
+    end
+
+    def find
+      ps.map{ |s| s.split(/\s+/)[1] }
+    end
+
   end
 
 end

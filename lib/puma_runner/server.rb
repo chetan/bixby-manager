@@ -100,7 +100,9 @@ module PumaRunner
         self.server = create_server(binder)
 
         # housekeeping
+        old_pid_id = Process.pid
         Process.daemon(true, true)
+        log "* Daemonized (pid changed #{old_pid_id} -> #{Process.pid})"
         pid.write
         setup_signals()
 
@@ -114,7 +116,7 @@ module PumaRunner
         @daemon_starter.cleanup!
       end
 
-      log("* Server is up! (pid=#{Process.pid})")
+      log "* Server is up!"
       $0 = "puma: server (running)"
       server.thread.join
     end
