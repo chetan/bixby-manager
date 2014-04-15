@@ -63,15 +63,27 @@ module PumaRunner
     # Stop
     def do_stop
       if not pid.running? then
-        log "* server not running!"
         if pid.exists? then
           pid.delete()
         end
+
+        # look for dangling pids
+        pids = pid.find
+        if !pids.empty? then
+          warn "* found the following dangling pids: " + pids.join(", ")
+          pids.each do |p|
+            log "* sending QUIT signal to #{p}"
+            Process.kill("QUIT", p)
+          end
+          return
+        end
+
+        log "* server not running!"
         return
       end
 
       pid_id = pid.read
-      STDOUT.write "* stopping server #{pid_id} gracefully... "
+      STDOUT.write "* stopping server #{pid_id} gracefully (sending QUIT)... "
       Process.kill("QUIT", pid_id)
       while pid.exists? do
         sleep 0.1
@@ -101,11 +113,19 @@ module PumaRunner
         @daemon_starter.cleanup!
       end
 
-      if @pid.exists? then
-        if @pid.running? then
-          Process.kill(9, @pid.read)
+      if pid.exists? then
+        if pid.running? then
+          warn "* Killing server at #{pid.read}"
+          Process.kill(9, pid.read)
         end
-        @pid.delete()
+        pid.delete()
+      else
+        # look for dangling pids
+        pids = pid.find
+        pids.each do |p|
+          warn "* Killing dangling server at #{p}"
+          Process.kill(9, p)
+        end
       end
     end
 

@@ -84,12 +84,14 @@ module PumaRunner
       end
     end
 
+    # Use 'ps' to find running server processes
     def ps
       `ps auxwww | grep -v grep | grep 'puma: server'`.split(/\n/)
     end
 
+    # Return list of all running server processes found using 'ps'
     def find
-      ps.map{ |s| s.split(/\s+/)[1] }
+      ps.map{ |s| s.split(/\s+/)[1].strip.to_i }
     end
 
   end
