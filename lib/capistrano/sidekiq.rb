@@ -5,7 +5,7 @@ if Object.const_defined? :Capistrano then
     %w(start stop restart).each do |action|
       desc "#{action.capitalize} the sidekiq worker cluster"
       task action.to_sym do
-        run "#{sudo} god restart sidekiq-bixby"
+        run "#{sudo} god restart sidekiq"
       end
     end
 

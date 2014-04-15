@@ -5,7 +5,7 @@ if Object.const_defined? :Capistrano then
     %w(start stop restart).each do |action|
       desc "#{action.capitalize} the Puma cluster"
       task action.to_sym do
-        run "#{sudo} god #{action} puma-bixby"
+        run "#{sudo} god #{action} puma"
       end
     end
   end
