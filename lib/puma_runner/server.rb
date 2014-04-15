@@ -205,7 +205,7 @@ module PumaRunner
       server.begin_restart
       server.thread.join
 
-      log "* Server shutdown complete (pid=#{Process.pid})"
+      log "* Server shutdown complete"
     end
 
     # Delete the PID file if the PID within it is ours
