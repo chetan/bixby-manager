@@ -19,7 +19,7 @@ module Bixby
 
   class API
 
-    include MiniTest::Assertions
+    include Micron::TestCase::Assertions
 
     class Stub
       attr_accessor :block, :response
