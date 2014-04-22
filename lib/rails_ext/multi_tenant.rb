@@ -95,7 +95,7 @@ module MultiTenant
 
         end
 
-        self.after_find do |rec|
+        self.after_find lambda { |rec|
           return if rec.nil? or MultiTenant.current_tenant.nil?
           curr_id = MultiTenant.current_tenant.id
 
@@ -106,7 +106,7 @@ module MultiTenant
             # PANIC
             raise AccessException, "illegal access: tried to access tenant.id=#{other_id}; current_tenant.id=#{curr_id}"
           end
-        end
+        }
 
       end
 
