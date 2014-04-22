@@ -3,8 +3,9 @@ source 'https://rubygems.org'
 # need jruby alternative for:
 # scrypt
 
-gem 'rails', '~> 4.0.4'
+gem 'rails', '~> 4.1'
 gem 'activerecord-session_store'
+gem 'psych'
 
 # webserver
 gem "puma",     :platforms => [:mri, :rbx, :jruby], :require => false
@@ -13,14 +14,14 @@ gem "puma",     :platforms => [:mri, :rbx, :jruby], :require => false
 gem "foreigner"
 gem "immigrant"
 
-gem "activerecord-jdbc-adapter", "~> 1.3.0", :platforms => :jruby
-
 # uncomment if using in production
 # gem "mysql2", :platforms => [:mri, :rbx]
+# gem "activerecord-jdbc-adapter", :platforms => :jruby
 # gem "activerecord-jdbcmysql-adapter, "~> 1.3.0"", :platforms => :jruby
 
 gem "pg", :platforms => [:mri, :rbx]
-gem "activerecord-jdbcpostgresql-adapter", "~> 1.3.0", :platforms => :jruby
+gem "activerecord-jdbc-adapter", :platforms => :jruby
+gem "activerecord-jdbcpostgresql-adapter", :platforms => :jruby
 
 # misc/production support
 gem "secure_headers"
@@ -70,7 +71,7 @@ gem "sshkey"
 # rails plugins
 gem "acts-as-taggable-on"
 gem "acts_as_tree"      # replace with closure_tree (better perf)?
-gem "delete_paranoid"   # https://github.com/socialcast/delete_paranoid
+gem "delete_paranoid", :github => "socialcast/delete_paranoid"
 
 # notifications module
 gem "twilio-ruby"
@@ -174,9 +175,9 @@ end
 group :test do
 
   # test tools (frameworks, mock, runners, etc)
-  gem 'webmock', :require => false
-  gem "minitest", "~>4.7", :require => false
-  gem 'mocha', :require => false
+  gem 'webmock',  :require => false
+  gem "minitest", :require => false
+  gem 'mocha',    :require => false
   gem "bahia"
   gem "database_cleaner", "=1.0.1"
   gem "factory_girl_rails"

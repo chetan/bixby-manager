@@ -23,9 +23,9 @@ GIT
 
 GIT
   remote: git://github.com/chetan/micron.git
-  revision: 9290253b06d11b1b8d92c3f5152533809ae3a58f
+  revision: 2b207cb8febdc36bd4987c0c34e66707dd37d783
   specs:
-    micron (0.5.0)
+    micron (0.5.1)
       ansi
       easycov
       hitimes
@@ -38,13 +38,13 @@ GIT
 
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: 248b60ebc3174e0e031c1aa49ab7977d8e78e53a
+  revision: 030442edebe25ec19c66f37f51b46db22ae25850
   specs:
-    mongoid (4.0.0)
-      activemodel (~> 4.0.0)
-      moped (~> 2.0.beta3)
-      origin (~> 1.0)
-      tzinfo (~> 0.3.37)
+    mongoid (4.0.0.beta1)
+      activemodel (>= 4.0.0)
+      moped (~> 2.0.beta6)
+      origin (~> 2.1)
+      tzinfo (>= 0.3.37)
 
 GIT
   remote: git://github.com/red5studios/newrelic-curb.git
@@ -53,6 +53,13 @@ GIT
     newrelic-curb (0.0.6)
       curb
       newrelic_rpm
+
+GIT
+  remote: git://github.com/socialcast/delete_paranoid.git
+  revision: f882d4062ab51d520f8c63bbfac5ef02ad869cce
+  specs:
+    delete_paranoid (2.0.0)
+      activerecord
 
 GIT
   remote: https://github.com/chetan/logging-rails.git
@@ -92,26 +99,28 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    actionmailer (4.0.4)
-      actionpack (= 4.0.4)
+    actionmailer (4.1.0)
+      actionpack (= 4.1.0)
+      actionview (= 4.1.0)
       mail (~> 2.5.4)
-    actionpack (4.0.4)
-      activesupport (= 4.0.4)
-      builder (~> 3.1.0)
-      erubis (~> 2.7.0)
+    actionpack (4.1.0)
+      actionview (= 4.1.0)
+      activesupport (= 4.1.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
     actionpool (0.2.3)
       splib (~> 1.4)
-    activemodel (4.0.4)
-      activesupport (= 4.0.4)
-      builder (~> 3.1.0)
-    activerecord (4.0.4)
-      activemodel (= 4.0.4)
-      activerecord-deprecated_finders (~> 1.0.2)
-      activesupport (= 4.0.4)
-      arel (~> 4.0.0)
-    activerecord-deprecated_finders (1.0.3)
+    actionview (4.1.0)
+      activesupport (= 4.1.0)
+      builder (~> 3.1)
+      erubis (~> 2.7.0)
+    activemodel (4.1.0)
+      activesupport (= 4.1.0)
+      builder (~> 3.1)
+    activerecord (4.1.0)
+      activemodel (= 4.1.0)
+      activesupport (= 4.1.0)
+      arel (~> 5.0.0)
     activerecord-jdbc-adapter (1.3.6)
       activerecord (>= 2.2)
     activerecord-jdbcmysql-adapter (1.3.6)
@@ -127,12 +136,12 @@ GEM
       actionpack (>= 4.0.0, < 5)
       activerecord (>= 4.0.0, < 5)
       railties (>= 4.0.0, < 5)
-    activesupport (4.0.4)
+    activesupport (4.1.0)
       i18n (~> 0.6, >= 0.6.9)
-      minitest (~> 4.2)
-      multi_json (~> 1.3)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
       thread_safe (~> 0.1)
-      tzinfo (~> 0.3.37)
+      tzinfo (~> 1.1)
     acts-as-taggable-on (3.0.1)
       rails (>= 3, < 5)
     acts_as_tree (1.5.0)
@@ -142,9 +151,7 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     ansi (1.4.3)
-    arel (4.0.2)
-    atomic (1.1.15)
-    atomic (1.1.15-java)
+    arel (5.0.1.20140414130214)
     bahia (0.7.2)
       open4 (~> 1.3.0)
     bcrypt (3.1.7)
@@ -169,7 +176,7 @@ GEM
       sass (~> 3.2)
     bson (2.0.0)
     bson (2.0.0-java)
-    builder (3.1.4)
+    builder (3.2.2)
     cane (2.6.1)
       parallel
     capistrano (2.15.5)
@@ -187,7 +194,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
-    colorize (0.6.0)
+    colorize (0.7.2)
     columnize (0.3.6)
     connection_pool (1.1.0)
     coveralls (0.7.0)
@@ -210,8 +217,6 @@ GEM
       debugger (~> 1)
       pry (>= 0.9.9)
     debugger-ruby_core_source (1.3.2)
-    delete_paranoid (1.0.5)
-      activerecord
     devise (3.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -308,7 +313,7 @@ GEM
     metaclass (0.0.1)
     method_source (0.8.2)
     mime-types (1.25.1)
-    minitest (4.7.5)
+    minitest (5.3.3)
     mixlib-shellout (1.3.0)
     mocha (0.14.0)
       metaclass (~> 0.0.1)
@@ -338,7 +343,7 @@ GEM
     oj (2.6.0)
     open4 (1.3.0)
     optionable (0.1.1)
-    origin (1.1.0)
+    origin (2.1.1)
     orm_adapter (0.5.0)
     parallel (0.9.0)
     pg (0.17.1)
@@ -357,6 +362,7 @@ GEM
       spoon (~> 0.0)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
+    psych (2.0.5)
     puma (2.6.0)
       rack (>= 1.1, < 2.0)
     puma (2.6.0-java)
@@ -370,20 +376,22 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rails (4.0.4)
-      actionmailer (= 4.0.4)
-      actionpack (= 4.0.4)
-      activerecord (= 4.0.4)
-      activesupport (= 4.0.4)
+    rails (4.1.0)
+      actionmailer (= 4.1.0)
+      actionpack (= 4.1.0)
+      actionview (= 4.1.0)
+      activemodel (= 4.1.0)
+      activerecord (= 4.1.0)
+      activesupport (= 4.1.0)
       bundler (>= 1.3.0, < 2.0)
-      railties (= 4.0.4)
-      sprockets-rails (~> 2.0.0)
-    railties (4.0.4)
-      actionpack (= 4.0.4)
-      activesupport (= 4.0.4)
+      railties (= 4.1.0)
+      sprockets-rails (~> 2.0)
+    railties (4.1.0)
+      actionpack (= 4.1.0)
+      activesupport (= 4.1.0)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (10.2.2)
+    rake (10.3.1)
     rake-hooks (1.2.3)
       rake
     rb-fchange (0.0.6)
@@ -455,8 +463,8 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-font_compressor (1.1.2)
-      rails (~> 4.0.0)
+    sprockets-font_compressor (1.1.3)
+      rails (~> 4.0)
       rake-hooks
     sprockets-jst-str (1.0.0)
       sprockets (>= 2.0.3)
@@ -477,11 +485,9 @@ GEM
     therubyrhino (2.0.3)
       therubyrhino_jar (>= 1.7.3)
     therubyrhino_jar (1.7.4)
-    thor (0.18.1)
-    thread_safe (0.2.0)
-      atomic (>= 1.1.7, < 2)
-    thread_safe (0.2.0-java)
-      atomic (>= 1.1.7, < 2)
+    thor (0.19.1)
+    thread_safe (0.3.3)
+    thread_safe (0.3.3-java)
     tilt (1.4.1)
     timers (1.1.0)
     tins (0.13.1)
@@ -492,7 +498,8 @@ GEM
       builder (>= 2.1.2)
       jwt (>= 0.1.2)
       multi_json (>= 1.3.0)
-    tzinfo (0.3.39)
+    tzinfo (1.1.0)
+      thread_safe (~> 0.1)
     uglifier (2.4.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
@@ -513,9 +520,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-jdbc-adapter (~> 1.3.0)
+  activerecord-jdbc-adapter
   activerecord-jdbcmysql-adapter (~> 1.3.0)
-  activerecord-jdbcpostgresql-adapter (~> 1.3.0)
+  activerecord-jdbcpostgresql-adapter
   activerecord-jdbcsqlite3-adapter (~> 1.3.0)
   activerecord-session_store
   acts-as-taggable-on
@@ -540,7 +547,7 @@ DEPENDENCIES
   database_cleaner (= 1.0.1)
   debugger
   debugger-pry
-  delete_paranoid
+  delete_paranoid!
   devise
   devise-encryptable
   em-hiredis
@@ -563,7 +570,7 @@ DEPENDENCIES
   lograge
   marco-polo
   micron!
-  minitest (~> 4.7)
+  minitest
   mixlib-shellout
   mocha
   mock_redis
@@ -581,10 +588,11 @@ DEPENDENCIES
   pretender
   pry
   pry-rails
+  psych
   puma
   quiet_assets
   rack-health
-  rails (~> 4.0.4)
+  rails (~> 4.1)
   rake-hooks
   rb-fchange
   rb-fsevent
