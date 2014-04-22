@@ -39,7 +39,7 @@ class Metric < ActiveRecord::Base
   Bixby::Util.create_const_map(Status)
 
   belongs_to :check
-  has_many :tags, -> { where("object_type = #{Metadata::Type::METRIC}") }, :class_name => :Metadata, :foreign_key => :object_fk_id
+  has_many :tags, -> { where("object_type = #{Metadata::Type::METRIC}") }, :class_name => "Metadata", :foreign_key => :object_fk_id
 
   multi_tenant :via => :check
 

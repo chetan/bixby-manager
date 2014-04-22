@@ -41,7 +41,7 @@ class OnCall < ActiveRecord::Base
   end
 
   belongs_to :org
-  belongs_to :current_user, :class_name => User
+  belongs_to :current_user, :class_name => "User"
   multi_tenant :via => :org
 
   serialize :users, CSVColumn.new

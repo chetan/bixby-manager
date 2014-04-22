@@ -28,8 +28,8 @@ class Host < ActiveRecord::Base
   has_one :agent
   acts_as_taggable # adds :tags accessor
   acts_as_paranoid
-  has_many :metadata, -> { where("object_type = #{Metadata::Type::HOST}") }, :class_name => :Metadata, :foreign_key => :object_fk_id
-  has_and_belongs_to_many :groups, :class_name => :HostGroup, :join_table => "hosts_host_groups"
+  has_many :metadata, -> { where("object_type = #{Metadata::Type::HOST}") }, :class_name => "Metadata", :foreign_key => :object_fk_id
+  has_and_belongs_to_many :groups, :class_name => "HostGroup", :join_table => "hosts_host_groups"
 
   multi_tenant :via => :org
 
