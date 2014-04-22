@@ -39,7 +39,7 @@ EOF
     put_check_result()
 
     # make sure metrics records got written
-    assert Metric.find(:all).size == 4
+    assert Metric.all.size == 4
     m = Metric.where(:key => "hardware.storage.disk.size").first
 
     assert m
@@ -50,7 +50,7 @@ EOF
     assert_equal 6, m.tags.size
     assert_kind_of Metadata, m.tags.first
 
-    tags = Metadata.find(:all)
+    tags = Metadata.all
     assert tags
     assert_equal 24, tags.size # 6 tags for each metric = 24
 
