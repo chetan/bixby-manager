@@ -87,8 +87,8 @@ gem "hiredis"
 # gem "resque-scheduler", :require => ["resque_scheduler"]
 
 gem "sidekiq", "~> 2.9"
-gem "slim", "~> 1.3.0"                  # for sidekiq web ui
-gem "sinatra", :require => nil          # for sidekiq web ui
+gem "slim", "~> 1.3.0"                        # for sidekiq web ui
+gem 'sinatra', '>= 1.3.0', :require => nil    # for sidekiq web ui
 
 # metrics module
 gem 'continuum', :github => "chetan/continuum"

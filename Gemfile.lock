@@ -614,7 +614,7 @@ DEPENDENCIES
   simplecov
   simplecov-console!
   simplecov-html!
-  sinatra
+  sinatra (>= 1.3.0)
   slim (~> 1.3.0)
   sprockets-font_compressor
   sprockets-jst-str

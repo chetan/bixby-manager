@@ -108,10 +108,8 @@ Bixby::Application.routes.draw do
   ##############################################################################
   # MISC
 
-  if Object.const_defined? :BIXBY_CONFIG and BIXBY_CONFIG[:scheduler] == "sidekiq" then
-    require "sidekiq/web"
-    mount Sidekiq::Web => "/sidekiq"
-  end
+  require "sidekiq/web"
+  mount Sidekiq::Web => "/sidekiq"
 
 
   ##############################################################################
