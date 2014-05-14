@@ -309,10 +309,10 @@ class Stark.View extends Backbone.View
       Backbone.Validation.bind(@, opts)
 
   valid: (attr) ->
-    _.pass @$("span.valid.#{attr}")
+    _.pass @$("div.valid.#{attr}")
 
   invalid: (attr, error) ->
-    _.fail @$("span.valid.#{attr}"), error
+    _.fail @$("div.valid.#{attr}"), error
 
 
 

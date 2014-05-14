@@ -11,7 +11,7 @@ namespace "Bixby.view", (exports, top) ->
 
       "keyup input#username": _.debounceR 200, (e) ->
         v = @
-        span = @$("span.valid.username")
+        span = @$("div.valid.username")
         u = @$(e.target).val()
         if u && u != @current_user.username
           # check if its valid/not taken
@@ -47,7 +47,7 @@ namespace "Bixby.view", (exports, top) ->
       _.disable @$("button.submit")
 
     validate_password: _.debounceR 50, (e) ->
-      span = @$("span.valid.password_confirmation")
+      span = @$("div.valid.password_confirmation")
       p = @$("#password").val()
       if p && p == @$("#password_confirmation").val()
         _.pass span, _.icon("ok")
