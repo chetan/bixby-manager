@@ -32,9 +32,9 @@ i.red {
   color: #bd362f;
 }
 
-span.valid {
-  font-size: larger;
-  float: right;
+div.valid {
+  font-size: normal;
+  text-align: right;
   &.pass {
     color: green;
   }

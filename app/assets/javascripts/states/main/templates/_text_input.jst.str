@@ -19,7 +19,7 @@ this.icon  = this.icon  || null;
     <%? title %>title="<%= title %>"<%/%>
     <%? value %>value="<%- value %>"<%/%>
     >
-  <span class="valid <%= name %>"></span>
+  <div class="valid <%= name %>"></div>
   <%? icon %><span class="form-control-feedback"><%= _.icon(icon) %></span><%/%>
   <%? help %><p class="help-block"><%= help %></p><%/%>
 </div>
