@@ -14,6 +14,14 @@ Bixby.app.add_states
         return false
       return true
 
+  "forgot":
+    url:   "forgot_password"
+    views: [ _bv.ForgotPassword ]
+
+  "reset_password":
+    url: "users/password/edit"
+    views: [ _bv.ResetPassword ]
+
   "profile":
     tab:   "user"
     url:   "profile"

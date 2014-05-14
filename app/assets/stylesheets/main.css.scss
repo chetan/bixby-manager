@@ -32,8 +32,9 @@ i.red {
   color: #bd362f;
 }
 
-form span.valid {
+span.valid {
   font-size: larger;
+  float: right;
   &.pass {
     color: green;
   }
@@ -46,4 +47,12 @@ div.markdown {
   p:last-of-type {
     margin-bottom: 0;
   }
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
 }

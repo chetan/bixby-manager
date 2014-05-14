@@ -93,7 +93,7 @@ Devise.setup do |config|
   config.last_attempt_warning = false
 
   # ==> Configuration for :recoverable
-  config.reset_password_keys = [ :email ]
+  config.reset_password_keys = [ :username, :email ]
   config.reset_password_within = 6.hours
 
   # ==> Configuration for :encryptable

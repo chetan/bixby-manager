@@ -55,7 +55,7 @@ class UiController < ApplicationController
 
   # Bootstrap objects used for impersonation
   def bootstrap_users
-    return if !true_user.can?("impersonate_users")
+    return if !true_user || !true_user.can?("impersonate_users")
     MultiTenant.with(nil) {
       bootstrap true_user, :name => :true_user
       bootstrap User.all, :type => User

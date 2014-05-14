@@ -1,11 +1,14 @@
 Bixby::Application.routes.draw do
 
-  devise_for :users, :controllers => { :sessions => 'sessions' }
+  # put 'users/password' => "users#reset_password"
   devise_scope :user do
     get  "/login"  => "sessions#new"
     post "/login"  => "sessions#create"
     post "/logout" => "sessions#destroy"
+    post "/users/password" => "passwords#create"
+    put  "/users/password" => "passwords#update"
   end
+  devise_for :users, :controllers => { :sessions => 'sessions' }
 
   # Default route
   root "inventory/hosts#index"
@@ -73,6 +76,8 @@ Bixby::Application.routes.draw do
 
   # replaced by login resource above
   # get 'login' => 'sessions#new', :as => :login
+
+  get 'forgot_password' => "application#default_route"
 
   get 'getting_started' => "inventory/hosts#index"
 

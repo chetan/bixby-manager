@@ -11,6 +11,10 @@
         <%= include("main/_text_input", {name: "username", label: "USERNAME OR EMAIL"}) %>
         <%= include("main/_text_input", {name: "password", type: "password", label: "PASSWORD"}) %>
 
+        <div class="text-right">
+          <a id="forgot" class="uppercase">forgot password</a>
+        </div>
+
         <div class="form-group">
           <button type="button" class="btn btn-primary login">Login</button>
         </div>
@@ -19,4 +23,5 @@
 
     </div>
   </div>
+
 </div>

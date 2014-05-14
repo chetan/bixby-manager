@@ -5,6 +5,9 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/login"
     el: "div.body"
 
+    links:
+      "a#forgot": [ "forgot" ]
+
     app_events:
       "state:activate": ->
         $("#username").putCursorAtEnd()
