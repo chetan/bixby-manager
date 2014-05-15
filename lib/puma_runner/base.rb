@@ -94,7 +94,7 @@ module PumaRunner
     def respawn_child
       cmd = File.join(self.rails_root, "script", "puma") + " server"
       redirects = export_fds()
-      child_pid = fork { exec(cmd, redirects) }
+      child_pid = fork { Dir.chdir(self.rails_root); exec(cmd, redirects) }
       Process.detach(child_pid)
 
       log "* started server process #{child_pid}"
