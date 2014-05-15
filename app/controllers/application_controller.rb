@@ -1,9 +1,15 @@
+
 class ApplicationController < ActionController::Base
 
   protect_from_forgery
   respond_to :html, :json
   before_filter :init_bootstrap
   multi_tenant
+
+  # Placeholder route for simply returning bootstrap html
+  def default_route
+    render :index
+  end
 
   protected
 
