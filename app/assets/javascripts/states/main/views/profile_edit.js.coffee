@@ -46,18 +46,28 @@ namespace "Bixby.view", (exports, top) ->
     disable_save: ->
       _.disable @$("button.submit")
 
-    validate_password: _.debounceR 50, (e) ->
+    validate_password: _.debounceR 100, (e) ->
       div1 = "div.valid.password"
       div2 = "div.valid.password_confirmation"
       p = @$("#password").val()
-      if p && p == @$("#password_confirmation").val()
-        _.pass div1
-        _.pass div2
-        @enable_save()
+      pc = @$("#password_confirmation").val()
+      if p && p.length > 0
+        if p.length < 8
+          _.fail div1
+          _.fail div2, 'must be at least 8 characters'
+          @disable_save()
+        else if p != pc
+          _.fail div1
+          _.fail div2, 'passwords must match'
+          @disable_save()
+        else
+          _.pass div1
+          _.pass div2
+          @enable_save()
       else
-        _.fail div1
-        _.fail div2, 'passwords must match'
-        @disable_save()
+        _.clear_valid_input(div1)
+        _.clear_valid_input(div2)
+        @enable_save()
 
     after_render: ->
       @$("a[data-toggle='tooltip']").tooltip()

@@ -6,10 +6,13 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/reset_password"
 
     events:
+      "keypress #password": (e) -> @validate_password(e)
       "keypress #password_confirmation": (e) ->
         if e.keyCode == 13
           e.preventDefault()
           @reset_password()
+        else
+          @validate_password(e)
 
       "click #reset": (e) ->
         @reset_password()
@@ -37,3 +40,22 @@ namespace "Bixby.view", (exports, top) ->
     after_render: ->
       super
       @$("#password").focus()
+
+    validate_password: _.debounceR 100, (e) ->
+      div1 = "div.valid.password"
+      div2 = "div.valid.password_confirmation"
+      p = @$("#password").val()
+      pc = @$("#password_confirmation").val()
+      if p && p.length > 0
+        if p.length < 8
+          _.fail div1
+          _.fail div2, 'must be at least 8 characters'
+        else if p != pc
+          _.fail div1
+          _.fail div2, 'passwords must match'
+        else
+          _.pass div1
+          _.pass div2
+      else
+        _.clear_valid_input(div1)
+        _.clear_valid_input(div2)

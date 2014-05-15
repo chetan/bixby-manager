@@ -36,7 +36,7 @@ _.fail = (el, msg) ->
   _.toggle_valid_input(el, msg, false)
 
 # Toggle pass/fail of the given input
-_.toggle_valid_input = (el, msg, valid) ->
+_.toggle_valid_input = (el, msg, valid, clear) ->
   msg ||= ""
 
   if _.isString(el)
@@ -48,6 +48,19 @@ _.toggle_valid_input = (el, msg, valid) ->
     valid_div = el
     icon_span = null
 
+  p = $(valid_div).parent()
+  if !(p[0].nodeName == "DIV" && p.hasClass("has-feedback"))
+    p = null
+
+  # clear all validations
+  if clear
+    $(valid_div).removeClass("pass fail").html("")
+    $(icon_span).removeClass("fa fa-check fa-times") if icon_span
+    p.removeClass("has-success has-error has-warning") if p
+    return
+
+
+  # set validations
   if valid
     c = [ "fa fa-check", "fa-times", "pass", "fail", "has-success", "has-error" ]
   else
@@ -59,7 +72,7 @@ _.toggle_valid_input = (el, msg, valid) ->
     c.shift(); c.shift()
 
   $(valid_div).addClass(c.shift()).removeClass(c.shift()).html(msg)
+  p.addClass(c.shift()).removeClass(c.shift()) if p
 
-  p = $(valid_div).parent()
-  if p[0].nodeName == "DIV" && p.hasClass("has-feedback")
-    p.addClass(c.shift()).removeClass(c.shift())
+_.clear_valid_input = (el) ->
+  _.toggle_valid_input(el, null, null, true)
