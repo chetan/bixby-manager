@@ -3,7 +3,7 @@ Devise.setup do |config|
   config.secret_key ||= "temp" # set during bootstrap
 
   # ==> Mailer Configuration
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  # config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
   # config.mailer = 'Devise::Mailer'
 
   # ==> ORM configuration
