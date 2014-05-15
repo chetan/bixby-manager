@@ -42,23 +42,6 @@ _.disable = (el) ->
 _.enable = (el) ->
   $(el).removeClass("disabled")
 
-# Add pass and remove fail, set the given html
-_.pass = (el, html) ->
-  html = "" if not html?
-  $(el).addClass("pass").removeClass("fail").html(html)
-  p = $(el).parent()
-  if p[0].nodeName == "DIV" && p.hasClass("has-feedback")
-    p.addClass("has-success").removeClass("has-error")
-
-# Add fail and remove pass, set the given html
-_.fail = (el, msg) ->
-  if msg && msg.length > 0 && msg.charAt(0) != ' '
-    msg = " " + msg
-  $(el).addClass("fail").removeClass("pass").html(_.icon("exclamation-circle") + msg)
-  p = $(el).parent()
-  if p[0].nodeName == "DIV" && p.hasClass("has-feedback")
-    p.addClass("has-error").removeClass("has-success")
-
 # Dim the given element
 _.dim = (el) ->
   if !el.length?

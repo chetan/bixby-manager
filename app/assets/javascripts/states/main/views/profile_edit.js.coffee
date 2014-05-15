@@ -47,13 +47,16 @@ namespace "Bixby.view", (exports, top) ->
       _.disable @$("button.submit")
 
     validate_password: _.debounceR 50, (e) ->
-      span = @$("div.valid.password_confirmation")
+      div1 = "div.valid.password"
+      div2 = "div.valid.password_confirmation"
       p = @$("#password").val()
       if p && p == @$("#password_confirmation").val()
-        _.pass span, _.icon("ok")
+        _.pass div1
+        _.pass div2
         @enable_save()
       else
-        _.fail span, 'passwords must match'
+        _.fail div1
+        _.fail div2, 'passwords must match'
         @disable_save()
 
     after_render: ->

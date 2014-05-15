@@ -36,10 +36,10 @@ div.valid {
   font-size: normal;
   text-align: right;
   &.pass {
-    color: green;
+    color: $state-success-text;
   }
   &.fail {
-    color: red;
+    color: $state-danger-text;
   }
 }
 
