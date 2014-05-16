@@ -1,4 +1,5 @@
 
+require "active_support" # fix load order issues with mongoid, which directly requires active_support/core_ext
 require "mongoid"
 require "test_guard"
 require "minitest/unit" # require this first so we can stub properly
