@@ -74,7 +74,7 @@ namespace 'Bixby.model', (exports, top) ->
 
     # Return list of tuples with time in millisec
     tuples: ->
-      vals = _.map @get("data"), (v) ->
+      vals = _.map _.sortBy(@get("data"), "x"), (v) ->
         [ new Date(v.x * 1000), v.y ]
 
 
