@@ -1,0 +1,4 @@
+
+class AgentException < StandardError
+
+end

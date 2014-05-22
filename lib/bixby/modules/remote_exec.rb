@@ -109,6 +109,8 @@ class RemoteExec < API
         return Bixby::AgentRegistry.execute(agent, JsonRequest.new(operation, params))
 
       rescue Exception => ex
+        # re-raise if Agent comms issue, wrap others
+        raise ex if ex.kind_of? AgentException
         ret = JsonResponse.new("fail", ex.message, ex.backtrace)
         logger.warn { ex }
         return ret

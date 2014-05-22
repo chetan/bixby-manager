@@ -70,8 +70,7 @@ module Bixby
           # execute via agent connected to some other host
           host = find(agent)
           if host.nil? then
-            # TODO cleanup ex
-            raise "agent not found"
+            raise AgentException, "agent not online"
           end
           return exec_remote(agent, host, json_request)
         end
