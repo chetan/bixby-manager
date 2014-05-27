@@ -131,8 +131,12 @@ module Bixby
       end
 
       @agent = Agent.where(:access_key => ApiAuth.access_id(signed_request)).first
-      if not(@agent and ApiAuth.authentic?(signed_request, @agent.secret_key)) then
-        return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
+      begin
+        if not(@agent and ApiAuth.authentic?(signed_request, @agent.secret_key)) then
+          return Bixby::JsonResponse.new("fail", "authentication failed", nil, 401)
+        end
+      rescue ApiAuth::ApiAuthError => ex
+        return Bixby::JsonResponse.new("fail", ex.message, nil, 401)
       end
 
       return true

@@ -94,6 +94,23 @@ class API < TestCase
     assert_equal 401, res.code
   end
 
+  def test_old_request_fails
+    BIXBY_CONFIG[:crypto] = true
+
+    @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:hi", "joe").to_json
+    ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
+    @request.headers.env["DATE"] = (Time.now-1800).utc.strftime("%a, %d %b %Y %T GMT")
+    post :handle
+
+    # validate response
+    body = @response.body
+    res = JsonResponse.from_json(body)
+    assert res
+    refute res.success?
+    assert_equal 401, res.code
+    assert res.message =~ /900 seconds old/
+  end
+
   def test_signed_request_fails
     BIXBY_CONFIG[:crypto] = true
 

@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/chetan/api_auth.git
-  revision: 2ced7ba3afcc4d81e8a24e3d89f569b38b1e10a0
+  revision: ddb73695efba631fdebe310f6710c0badc2b7be9
   branch: bixby
   specs:
     api-auth (1.0.3)
@@ -391,7 +391,7 @@ GEM
       activesupport (= 4.1.1)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (10.3.1)
+    rake (10.3.2)
     rake-hooks (1.2.3)
       rake
     rb-fchange (0.0.6)
