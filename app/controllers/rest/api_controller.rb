@@ -25,6 +25,7 @@ class Rest::ApiController < UiController
       return false
     end
 
+    # authenticate a request from a browser session (via devise)
     super
   end
 

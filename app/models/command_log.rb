@@ -1,3 +1,35 @@
+# ## Schema Information
+#
+# Table name: `command_logs`
+#
+# ### Columns
+#
+# Name                | Type               | Attributes
+# ------------------- | ------------------ | ---------------------------
+# **`id`**            | `integer`          | `not null, primary key`
+# **`org_id`**        | `integer`          |
+# **`agent_id`**      | `integer`          |
+# **`command_id`**    | `integer`          |
+# **`stdin`**         | `text`             |
+# **`args`**          | `text`             |
+# **`exec_status`**   | `boolean`          |
+# **`exec_code`**     | `integer`          |
+# **`status`**        | `integer`          |
+# **`stdout`**        | `text`             |
+# **`stderr`**        | `text`             |
+# **`requested_at`**  | `datetime`         |
+# **`time_taken`**    | `decimal(10, 3)`   |
+#
+# ### Indexes
+#
+# * `command_logs_agent_id_fk`:
+#     * **`agent_id`**
+# * `command_logs_command_id_fk`:
+#     * **`command_id`**
+# * `command_logs_org_id_fk`:
+#     * **`org_id`**
+#
+
 
 class CommandLog < ActiveRecord::Base
 
