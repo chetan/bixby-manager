@@ -20,7 +20,7 @@
 //= require "bootstrap"
 //= require "spin.min"
 //= require "Markdown.Converter"
-//= require "mailcheck.min"
+//= require "mailcheck"
 //= require "moment.min"
 
 // utils
