@@ -7,6 +7,7 @@
 # Name              | Type               | Attributes
 # ----------------- | ------------------ | ---------------------------
 # **`id`**          | `integer`          | `not null, primary key`
+# **`org_id`**      | `integer`          | `not null`
 # **`host_id`**     | `integer`          |
 # **`name`**        | `string(255)`      | `not null`
 # **`detail`**      | `text`             |
@@ -17,6 +18,7 @@
 # * `fk_annotations_hosts1_idx`:
 #     * **`host_id`**
 #
+
 
 class Annotation < ActiveRecord::Base
 

@@ -41,7 +41,7 @@ class ApiController < ApplicationController
     json_req = extract_request()
     return json_req if json_req.kind_of? Bixby::JsonResponse
 
-    return Bixby::ServerHandler.new(request).handle(json_req)
+    return Bixby::ServerHandler.new(request, current_user).handle(json_req)
   end
 
   # Extract JsonRequest from the POST body

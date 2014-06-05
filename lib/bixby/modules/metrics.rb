@@ -263,8 +263,13 @@ class Metrics < API
   # @param [Time] timestamp           timestamp of event (defaut: now)
   # @param [String] detail            extra detail for event
   def add_annotation(name, tags=[], timestamp=Time.new, detail=nil)
+
+    # find a suitable org_id to use
+    org_id = @current_user ? @current_user.org.id : MultiTenant.current_tenant.orgs.first.id
+
     a = Annotation.new(:name => name, :tag_list => tags.join(","),
-                       :created_at => timestamp, :detail => detail)
+                       :created_at => timestamp, :detail => detail,
+                       :org_id => org_id)
     a.save!
   end
 

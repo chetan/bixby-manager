@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140328142004) do
+ActiveRecord::Schema.define(version: 20140605185308) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20140328142004) do
   add_index "agents", ["host_id"], name: "fk_agents_hosts1", using: :btree
 
   create_table "annotations", force: true do |t|
+    t.integer  "org_id",     null: false
     t.integer  "host_id"
     t.string   "name",       null: false
     t.text     "detail"

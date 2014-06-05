@@ -13,13 +13,14 @@ class API
 
   include Bixby::Log
 
-  attr_accessor :http_request, :json_request
+  attr_reader :http_request, :json_request, :current_user
 
   # @param [ActionDispatch::Request] http_req   HTTP Request object
   # @param [JsonRequest] json_req               The original JsonRequest object
-  def initialize(http_req = nil, json_req = nil)
+  def initialize(http_req = nil, json_req = nil, current_user=nil)
     @http_request = http_req
     @json_request = json_req
+    @current_user = current_user
   end
 
   def version

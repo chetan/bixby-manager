@@ -28,12 +28,12 @@ module Bixby
 
         # convert to string & back
         msg = Bixby::WebSocket::Message.from_wire(connect_req.to_wire)
-        ret = ServerHandler.new(msg).connect(msg.json_request, @chan)
+        ret = ServerHandler.new(msg, @agent).connect(msg.json_request, @chan)
 
         refute_kind_of JsonResponse, ret
 
         Bixby::AgentRegistry.expects(:remove).with(@chan)
-        ServerHandler.new(nil).disconnect(@chan)
+        ServerHandler.new(nil, nil).disconnect(@chan)
       end
     end
 

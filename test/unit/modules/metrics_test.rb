@@ -159,20 +159,28 @@ EOF
   end
 
   def test_add_annotations
+
+    org = FactoryGirl.create(:org)
+    MultiTenant.current_tenant = org.tenant
+
     Bixby::Metrics.new.add_annotation("foo.bar")
     a = Annotation.all
     assert a
     refute_empty a
     a = a.first
     assert_equal "foo.bar", a.name
+    assert_equal org.id, a.org_id
 
-    Bixby::Metrics.new.add_annotation("foobar", ["baz", "test"])
+    user = FactoryGirl.create(:user)
+    MultiTenant.current_tenant = nil
+    Bixby::Metrics.new(nil, nil, user).add_annotation("foobar", ["baz", "test"])
     a = Annotation.last
     assert a
     assert a.tags
     refute_empty a.tags
     assert_equal 2, a.tags.size
     assert_equal "foobar", a.name
+    assert_equal user.org.id, a.org_id
 
     a = Annotation.tagged_with(["baz"]).first
     assert a

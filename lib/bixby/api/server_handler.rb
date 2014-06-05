@@ -11,8 +11,9 @@ module Bixby
     include Bixby::Log
     include Bixby::Crypto
 
-    def initialize(request)
+    def initialize(request, current_user)
       @request = request
+      @current_user = current_user
     end
 
     def handle(json_req)
@@ -61,7 +62,7 @@ module Bixby
       end
 
       begin
-        mod = find_module(mod).new(@request, json_req)
+        mod = find_module(mod).new(@request, json_req, @current_user)
         op  = op.to_sym
         if not(mod and mod.respond_to? op) then
           return unsupported_operation(json_req)
