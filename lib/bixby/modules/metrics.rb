@@ -266,8 +266,9 @@ class Metrics < API
 
     # find a suitable org_id to use
     org_id = @current_user ? @current_user.org.id : MultiTenant.current_tenant.orgs.first.id
+    tag_list = tags ? tags.join(",") : nil
 
-    a = Annotation.new(:name => name, :tag_list => tags.join(","),
+    a = Annotation.new(:name => name, :tag_list => tag_list,
                        :created_at => timestamp, :detail => detail,
                        :org_id => org_id)
     a.save!
