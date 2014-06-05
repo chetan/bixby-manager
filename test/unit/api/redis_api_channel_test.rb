@@ -4,7 +4,7 @@ require 'helper'
 module Bixby
   module Test
 
-    class ServerHandlerTest < Bixby::Test::TestCase
+    class RedisAPIChannelTest < Bixby::Test::TestCase
       def setup
         super
         @agent = FactoryGirl.create(:agent)
