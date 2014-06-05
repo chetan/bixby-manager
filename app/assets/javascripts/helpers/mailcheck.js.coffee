@@ -6,7 +6,7 @@ _.mailcheck = (target) ->
   Kicksend.mailcheck.run({
     email: $(target).val()
     suggested: (suggestion) ->
-      $(target).popover({
+      $(target).popover('destroy').popover({
         trigger: "manual"
         content: "Did you mean " + suggestion.full + "?"
       }).popover("show")
