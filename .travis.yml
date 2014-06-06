@@ -10,6 +10,7 @@ script: "bundle exec micron test/"
 after_script:
   - "bundle exec rake coverage"
   - "bundle exec rake coveralls"
+  - "bundle exec brakeman -q"
 
 rvm:
   - 2.1.1

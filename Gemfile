@@ -172,6 +172,7 @@ group :development do
 
     # quality
     gem "cane", :platforms => [:mri_19, :mri_20], :require => false
+    gem "brakeman", :require => false
 end
 
 group :test do
