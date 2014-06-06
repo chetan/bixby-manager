@@ -19,7 +19,7 @@ class Scheduler
 
       begin
         log.debug { "Going to execute: #{klass}.#{method}" }
-        klass.new.send(method, *args)
+        klass.new.send(method, *deserialize_args(args))
       rescue Exception => ex
         log.error { "Error while running job: #{klass}.#{method} with arguments: #{args}"}
         log.error { "Will reschedule anyway" }

@@ -1,4 +1,13 @@
 GIT
+  remote: git://github.com/chetan/activemodel-globalid.git
+  revision: 3390bc78986b75d70b8b8148c13b0cdf317d6136
+  branch: fix_railtie_load
+  specs:
+    activemodel-globalid (0.1.0)
+      activemodel (>= 4.1.0)
+      activesupport (>= 4.1.0)
+
+GIT
   remote: git://github.com/chetan/api_auth.git
   revision: ddb73695efba631fdebe310f6710c0badc2b7be9
   branch: bixby
@@ -520,6 +529,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activemodel-globalid!
   activerecord-jdbc-adapter
   activerecord-jdbcmysql-adapter (~> 1.3.0)
   activerecord-jdbcpostgresql-adapter

@@ -82,6 +82,8 @@ gem "redis", "~> 3.0", :require => ["redis/connection/hiredis", "redis"]
 # though hiredis is an extension, it should degrade gracefully for jruby
 gem "hiredis"
 
+gem "activemodel-globalid", :github => "chetan/activemodel-globalid", :branch => "fix_railtie_load"
+
 # uncomment if you are using resque in production
 # gem "resque"
 # gem "resque-scheduler", :require => ["resque_scheduler"]

@@ -1,4 +1,6 @@
 
+require 'active_model/global_locator'
+
 module Bixby
 class Scheduler
 
@@ -26,7 +28,11 @@ class Scheduler
       job = new
       job.klass = klass
       job.method = method
-      job.args = args.kind_of?(Array) ? args : [args]
+
+      # cleanup args - pass models through globalid
+      args = args.kind_of?(Array) ? args : [args]
+      args = args.map { |a| a.kind_of?(ActiveModel::GlobalIdentification) ? a.global_id : a }
+      job.args = args
 
       return job
     end
@@ -35,16 +41,29 @@ class Scheduler
     def initialize
     end
 
-    # Called by Resque worker. Expects as input the output of #queue_args
+    # Called by worker. Expects as input the output of #queue_args
     def self.perform(*args)
       klass = args.shift.constantize
       method = args.shift
-      klass.new.send(method, *args)
+      klass.new.send(method, *deserialize_args(args))
     end
 
     # Returns arguments needed by perform for running this job
     def queue_args
       [@klass.to_s, @method.to_s] + @args
+    end
+
+
+    private
+
+    def self.deserialize_args(args)
+      args.map do |arg|
+        if arg.kind_of? String then
+          ActiveModel::GlobalLocator.locate(arg) || arg
+        else
+          arg
+        end
+      end
     end
 
   end

@@ -72,6 +72,15 @@ module Bixby::Test::Modules::SchedulerDrivers
       Bixby::Scheduler::RecurringJob.perform(*args)
     end
 
+    def test_models_passed_via_id
+      toggle_inline_testing(true)
+      agent = FactoryGirl.create(:agent)
+      Foobar.any_instance.expects(:baz).once().with{ |params|
+        params.kind_of?(Agent) && params.id == agent.id
+      }
+      Bixby::Scheduler.new.schedule_in(0, Bixby::Scheduler::Job.create(Foobar, :baz, agent))
+    end
+
 
     private
 
