@@ -11,7 +11,7 @@ module Bixby
     include Bixby::Log
     include Bixby::Crypto
 
-    def initialize(request, current_user)
+    def initialize(request, current_user=nil)
       @request = request
       @current_user = current_user
     end
@@ -37,6 +37,7 @@ module Bixby
         return invalid
       end
 
+      @current_user = @agent
       Bixby::AgentRegistry.add(@agent, api)
       true
     end
