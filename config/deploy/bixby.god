@@ -12,6 +12,7 @@
 RAILS_ENV    = (ENV['RAILS_ENV']  ||= 'production')
 RAILS_ROOT   = (ENV['RAILS_ROOT'] ||= '/var/www/bixby/current')
 
+conf  = YAML.load_file(File.join(RAILS_ROOT, "config", "bixby.yml"))[RAILS_ENV]
 USER  = conf["user"]
 GROUP = conf["group"]
 
