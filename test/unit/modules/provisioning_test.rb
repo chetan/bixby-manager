@@ -90,7 +90,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
     # 1. call to provision test_bundle/echo command FAILS because get_bundle itself is out of date
     stub1 = stub_request(:post, "http://2.2.2.2:18000/").with{ |req|
         b = req.body
-        b =~ /get_bundle.rb/ && b =~ %r{system/provisioning} && b =~ /digest":"2429629015110c/
+        b =~ /get_bundle.rb/ && b =~ %r{system/provisioning} && b =~ /digest":"c2ac5c0ea/
       }.to_return{ {:status => 200, :body => res.shift} }
 
     # 2. call to provision get_bundle which succeeds

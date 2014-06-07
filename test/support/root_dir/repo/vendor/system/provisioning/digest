@@ -1,9 +1,13 @@
 {
-  "digest": "2429629015110c",
+  "digest": "c2ac5c0eafde9dfbca59c311c2549b48d151b76113ca2ca3d7ab30d20200ed2c",
   "files": [
     {
       "file": "bin/get_bundle.rb",
-      "digest": "6d14ab63802f"
+      "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "manifest.json",
+      "digest": "c2ac5c0eafde9dfbca59c311c2549b48d151b76113ca2ca3d7ab30d20200ed2c"
     }
   ]
 }
