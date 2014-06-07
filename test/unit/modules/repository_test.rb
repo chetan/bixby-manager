@@ -23,22 +23,14 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     # for some reason system() git commands directly screws up with working dir
     # issues. using git lib works..
 
+    # copy test_bundle to temp location and init git repo
     path = File.join(@tmp, "repo.git")
-    FileUtils.mkdir_p(path)
+    FileUtils.mkdir_p(File.join(path, "foo"))
+    FileUtils.cp_r(File.join(Rails.root, "test/support/root_dir/repo/vendor/test_bundle"), File.join(path, "foo", "bar"))
     Dir.chdir(path)
     g = Git.init(path)
-    system("echo hi > readme")
-    g.add("readme")
+    g.add("foo")
     g.commit("import")
-
-    # add a bin script
-    binpath = File.join(path, "foo/bar/bin")
-    FileUtils.mkdir_p(binpath)
-    Dir.chdir(binpath)
-    system("echo echo hi > echo.sh")
-    system("chmod 755 echo.sh")
-    g.add("foo/bar/bin/echo.sh")
-    g.commit("added echo.sh")
 
     # create repo
     org = FactoryGirl.create(:org)
@@ -59,14 +51,14 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
 
     assert_equal "0001_test", File.basename(repo.path)
     assert File.directory? repo.path
-    assert File.exists? File.join(repo.path, "readme")
+    assert File.exists? File.join(repo.path, "foo/bar/manifest.json")
 
     # check our new command
-    script = File.join(binpath, "echo.sh")
+    script = File.join(repo.path, "foo/bar/bin/echo")
     assert File.exists? script
-    c = Command.first
+    c = Command.last
     assert c
-    assert_equal "echo.sh", c.command
+    assert_equal "echo", c.command
     assert_equal "foo/bar", c.bundle
 
     # add a new file
@@ -86,12 +78,12 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     t = Repo.first.updated_at
 
     # remove our command, it should get deleted
-    g.remove(script)
+    g.remove(File.join(path, "foo/bar/bin/echo"))
     g.commit("removed script")
 
     Bixby::Repository.new.update
     refute File.exists? script
-    refute Command.first
+    assert_equal "cat", Command.last.command
   end
 
   def test_git_clone_private
