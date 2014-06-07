@@ -96,7 +96,7 @@ class Repository < API
     end
   end
 
-  # Rescan a repo for new/updated Commands
+  # Rescan a repo for new/updated Bundles and Commands
   #
   # @param [Repo] repo
   def rescan_repo(repo)
@@ -104,18 +104,54 @@ class Repository < API
     Find.find(repo.path+"/") do |path|
 
       # skip everything except for /bin/ scripts in bundle dirs
-      if File.basename(path) == ".git" then
+      filename = File.basename(path).downcase
+      if filename == ".git" || filename == ".test" then
         Find.prune
         next
+      end
 
-      elsif File.directory? path or path !~ %r{/bin/} or path =~ /\.(json|test.*)$/ then
+      if filename == "manifest.json" then
+        scan_bundle(repo, File.dirname(path))
+        Find.prune
+        next
+      end
+
+    end
+  end
+
+  # Scan the given bundle path
+  #
+  # @param [Repo] repo
+  # @param [String] path
+  def scan_bundle(repo, path)
+    bundle_path = path[repo.path.length+1, path.length]
+    bundle = Bundle.where(:repo_id => repo.id, :path => bundle_path).first
+    if bundle.blank? then
+      bundle         = Bundle.new
+      bundle.repo_id = repo.id
+      bundle.path    = bundle_path
+    end
+    bundle.digest = MultiJson.load(File.read(File.join(path, "digest")))["digest"]
+
+    # add/update manifest info
+    manifest_file = File.join(path, "manifest.json")
+    if bundle.new_record? || bundle.updated_at > File.mtime(manifest_file) || bundle.name.blank? then
+      manifest       = MultiJson.load(File.read(manifest_file))
+      bundle.name    = manifest["name"]
+      bundle.desc    = manifest["description"] || manifest["desc"]
+      bundle.version = manifest["version"]
+    end
+    bundle.save
+
+    # find the commands (bin/**)
+    Dir.glob("#{path}/**/**") do |f|
+      if File.directory?(f) or f !~ %r{/bin/} or f =~ /\.(json|test.*)$/ then
         next
       end
 
       # bin check
-      rel_path = path.gsub(/^#{repo.path}/, '').gsub(/^\/?/, '')
+      rel_path = f.gsub(/^#{repo.path}/, '').gsub(/^\/?/, '')
       rel_path =~ %r{^(.*?)/bin/(.*)$}
-      bundle = $1
       script = $2
 
       # add it
@@ -123,11 +159,15 @@ class Repository < API
     end
   end
 
-  # create or update the command
+  # Create or update a command
+  #
+  # @param [Repo] repo
+  # @param [Bundle] bundle
+  # @param [String] script
   def add_command(repo, bundle, script)
-    log.info("* found #{bundle} :: #{script}")
+    log.info("* found #{bundle.path} :: #{script}")
 
-    cmd = Command.where("repo_id = ? AND bundle = ? AND command = ?", repo.id, bundle, script).first
+    cmd = Command.where(:repo_id => repo.id, :bundle_id => [nil, bundle.id], :command => script).first
     if not cmd.blank? then
       spec = cmd.to_command_spec
       if cmd.updated_at and cmd.updated_at >= File.mtime(spec.command_file) and
@@ -142,7 +182,7 @@ class Repository < API
       log.info("* creating new Command")
       cmd = Command.new
       cmd.repo = repo
-      cmd.bundle = bundle
+      cmd.bundle_id = bundle.id
       cmd.command = script
     end
 
@@ -169,6 +209,7 @@ class Repository < API
   # @param [Repo] repo
   def verify_commands(repo)
     repo.commands.each do |cmd|
+      next if !cmd.bundle
       if not File.exist? cmd.path then
         cmd.destroy!
       end

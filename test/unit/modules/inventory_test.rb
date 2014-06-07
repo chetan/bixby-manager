@@ -85,9 +85,9 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
   end
 
   def test_update_facts
-    repo  = Repo.new(:name => "vendor")
+    repo  = FactoryGirl.create(:repo)
     agent = FactoryGirl.create(:agent)
-    cmd   = Command.new(:bundle => "system/inventory", :command => "list_facts.rb", :repo => repo)
+    cmd   = Command.new(:bundle => create_bundle("system/inventory"), :command => "list_facts.rb", :repo => repo)
     cmd.save
 
 
@@ -137,9 +137,9 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
       params[:bundle] == "system/inventory" && params[:command] == "get_agent_version.rb"
       }.returns(CommandResponse.new({:status => 0, :stdout => "1.5.19"}))
 
-    repo  = Repo.new(:name => "vendor")
+    repo  = FactoryGirl.create(:repo)
     agent = FactoryGirl.create(:agent)
-    cmd   = Command.new(:bundle => "system/inventory", :command => "get_agent_version.rb", :repo => repo)
+    cmd   = Command.new(:bundle => create_bundle("system/inventory"), :command => "get_agent_version.rb", :repo => repo)
     cmd.save
 
     Bixby::Inventory.new.update_version(agent)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140605185308) do
+ActiveRecord::Schema.define(version: 20140606235428) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -51,6 +51,20 @@ ActiveRecord::Schema.define(version: 20140605185308) do
   end
 
   add_index "annotations", ["host_id"], name: "fk_annotations_hosts1_idx", using: :btree
+
+  create_table "bundles", force: true do |t|
+    t.integer  "repo_id"
+    t.string   "path"
+    t.string   "name"
+    t.text     "desc"
+    t.string   "version"
+    t.string   "digest"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "deleted_at"
+  end
+
+  add_index "bundles", ["repo_id"], name: "bundles_repo_id_fk", using: :btree
 
   create_table "check_template_items", force: true do |t|
     t.integer  "check_template_id", null: false
@@ -116,16 +130,17 @@ ActiveRecord::Schema.define(version: 20140605185308) do
 
   create_table "commands", force: true do |t|
     t.integer  "repo_id"
+    t.integer  "bundle_id",  null: false
     t.string   "name"
     t.string   "desc"
     t.string   "location"
-    t.string   "bundle"
     t.string   "command"
     t.text     "options"
     t.datetime "updated_at"
     t.datetime "deleted_at"
   end
 
+  add_index "commands", ["bundle_id"], name: "commands_bundle_id_fk", using: :btree
   add_index "commands", ["repo_id"], name: "fk_commands_repos1", using: :btree
 
   create_table "escalation_policies", force: true do |t|
@@ -396,6 +411,8 @@ ActiveRecord::Schema.define(version: 20140605185308) do
 
   add_foreign_key "annotations", "hosts", name: "fk_annotations_hosts1"
 
+  add_foreign_key "bundles", "repos", name: "bundles_repo_id_fk"
+
   add_foreign_key "check_template_items", "check_templates", name: "check_template_items_check_template_id_fk"
   add_foreign_key "check_template_items", "commands", name: "check_template_items_command_id_fk"
 
@@ -409,6 +426,7 @@ ActiveRecord::Schema.define(version: 20140605185308) do
   add_foreign_key "command_logs", "commands", name: "command_logs_command_id_fk"
   add_foreign_key "command_logs", "orgs", name: "command_logs_org_id_fk"
 
+  add_foreign_key "commands", "bundles", name: "commands_bundle_id_fk"
   add_foreign_key "commands", "repos", name: "fk_commands_repos1"
 
   add_foreign_key "escalation_policies", "on_calls", name: "fk_escalation_policies_on_calls"

@@ -10,6 +10,10 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     Bixby.instance_eval{ @client = nil }
 
     @repo = FactoryGirl.create(:repo)
+    @bundle = Bundle.new(:path => "test_bundle", :repo => @repo)
+    @bundle.save
+    @bundle2 = Bundle.new(:path => "system/provisioning", :repo => @repo)
+    @bundle2.save
     @agent = FactoryGirl.create(:agent)
   end
 
@@ -22,8 +26,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
       assert_equal c.repo, s.repo
       assert_equal c.bundle, s.bundle
 
-      repo = Repo.new(:name => "vendor")
-      cmd = Command.new(:bundle => "test_bundle", :command => "cat", :repo => repo)
+      cmd = Command.new(:bundle => @bundle, :command => "cat", :repo => @repo)
       cs = Bixby::RemoteExec.new.create_spec(cmd)
 
       assert_not_equal cs, cmd
@@ -42,13 +45,13 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
   end
 
   def test_exec
-    cmd = Command.new(:bundle => "foobar", :command => "baz", :repo => @repo)
+    cmd = Command.new(:bundle => @bundle, :command => "baz", :repo => @repo)
     cmd.save
 
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
       j = MultiJson.load(req.body)
       jp = j["params"]
-      j["operation"] == "shell_exec" and jp["repo"] == "vendor" and jp["bundle"] == "foobar" and jp["command"] == "baz"
+      j["operation"] == "shell_exec" and jp["repo"] == "vendor" and jp["bundle"] == "test_bundle" and jp["command"] == "baz"
     }.to_return(:status => 200, :body => JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json)
 
     ret = Bixby::RemoteExec.new.exec(@agent, cmd)
@@ -58,13 +61,13 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
   end
 
   def test_exec_is_logged
-    cmd = Command.new(:bundle => "foobar", :command => "baz", :repo => @repo)
+    cmd = Command.new(:bundle => @bundle, :command => "baz", :repo => @repo)
     cmd.save
 
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
       j = MultiJson.load(req.body)
       jp = j["params"]
-      j["operation"] == "shell_exec" and jp["repo"] == "vendor" and jp["bundle"] == "foobar" and jp["command"] == "baz"
+      j["operation"] == "shell_exec" and jp["repo"] == "vendor" and jp["bundle"] == "test_bundle" and jp["command"] == "baz"
     }.to_return(:status => 200, :body => JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json)
 
     ret = Bixby::RemoteExec.new.exec(@agent, cmd)
@@ -94,7 +97,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
   end
 
   def test_exec_with_provision
-    cmd = Command.new(:bundle => "test_bundle", :command => "echo", :repo => @repo)
+    cmd = Command.new(:bundle => @bundle, :command => "echo", :repo => @repo)
     cmd.save
 
     url = "http://2.2.2.2:18000/"
@@ -143,7 +146,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
 
   def test_provision_failure
     # setup command
-    cmd = Command.new(:bundle => "test_bundle", :command => "echo", :repo => @repo)
+    cmd = Command.new(:bundle => @bundle, :command => "echo", :repo => @repo)
     cmd.save
 
     # stub out requests/responses

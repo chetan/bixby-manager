@@ -26,6 +26,7 @@
 class Command < ActiveRecord::Base
 
   belongs_to :repo
+  belongs_to :bundle
   multi_tenant :via => :repo
 
   acts_as_paranoid
@@ -33,7 +34,7 @@ class Command < ActiveRecord::Base
   serialize :options, JSONColumn.new
 
   def path
-    File.join(repo.path, bundle, "bin", command)
+    File.join(bundle.fullpath, "bin", command)
   end
 
   # Convert CommandSpec to Command
@@ -43,7 +44,8 @@ class Command < ActiveRecord::Base
   # @return [Command]
   def self.from_command_spec(spec)
     repo = Repo.where(:name => spec.repo).first
-    where(:repo_id => repo.id, :bundle => spec.bundle, :command => spec.command).first
+    bundle = Bundle.where(:repo_id => repo.id, :path => spec.bundle).first
+    where(:repo_id => repo.id, :bundle_id => bundle.id, :command => spec.command).first
   end
 
   # Convert this command to a CommandSpec
@@ -52,6 +54,7 @@ class Command < ActiveRecord::Base
   def to_command_spec
     attrs = self.attributes
     attrs["repo"] = File.basename(repo.path) # 'vendor' or '0001_test' etc
+    attrs["bundle"] = bundle.path
     return Bixby::CommandSpec.new(attrs)
   end
 

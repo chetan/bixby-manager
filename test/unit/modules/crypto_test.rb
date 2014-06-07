@@ -44,9 +44,8 @@ class Test::Modules::Crypto < Bixby::Test::TestCase
 
   def test_exec_api_with_crypto
 
-    repo  = FactoryGirl.create(:repo)
     agent = FactoryGirl.create(:agent)
-    cmd   = Command.new(:bundle => "foobar", :command => "baz", :repo => repo)
+    cmd   = FactoryGirl.create(:command)
 
     data = JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json
     crypt = encrypt_for_server(agent, data)

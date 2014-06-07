@@ -26,12 +26,21 @@ module Bixby
         DatabaseCleaner.start
         WebMock.reset!
       end
+
       def teardown
         DatabaseCleaner.clean
         MultiTenant.current_tenant = nil
         ActionMailer::Base.deliveries.clear
         WebMock.reset!
       end
+
+      def create_bundle(path)
+        repo = @repo || Repo.first || FactoryGirl.create(:repo)
+        bundle = Bundle.new(:repo => repo, :path => path)
+        bundle.save
+        bundle
+      end
+
     end
 
     module Models

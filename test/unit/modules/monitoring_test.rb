@@ -90,6 +90,9 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
   def test_update_check_config
 
+    create_bundle("system/provisioning")
+    create_bundle("system/monitoring")
+
     stub = stub_request(:post, "http://2.2.2.2:18000/").with { |req|
         r = MultiJson.load(req.body)
         r["operation"] == "shell_exec" and r["params"]["command"] == "update_check_config.rb"
@@ -99,7 +102,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     check = FactoryGirl.create(:check)
 
     Provisioning.any_instance.expects(:provision).once.with { |agent, cmd|
-      agent == check.agent and cmd.kind_of?(Array) and cmd.size == 1 and cmd.first.bundle == check.command.bundle
+      agent == check.agent and cmd.kind_of?(Array) and cmd.size == 1 and cmd.first.bundle == check.command.bundle.path
     }
 
     ret = Bixby::Monitoring.new.update_check_config(check.agent)

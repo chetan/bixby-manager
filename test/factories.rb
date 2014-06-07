@@ -69,13 +69,6 @@ FactoryGirl.define do
     next_handoff Time.new.next_week.change(:hour => t.hour, :min => t.min)
   end
 
-  factory :command do
-    association :repo
-    name "cat"
-    bundle "test_bundle"
-    command "cat"
-  end
-
   factory :host do
     association :org
     ip "127.0.0.1"
@@ -90,6 +83,22 @@ FactoryGirl.define do
   factory :repo do
     name "vendor"
   end
+
+  factory :bundle do
+    repo { Repo.first || FactoryGirl.create(:repo) }
+    path "test_bundle"
+    name "test bundle"
+    version "0.0.1"
+    desc "my test bundle"
+  end
+
+  factory :command do
+    repo { Repo.first || FactoryGirl.create(:repo) }
+    association :bundle
+    name "cat"
+    command "cat"
+  end
+
 
   factory :tenant do
     password SCrypt::Password.create("test").to_s

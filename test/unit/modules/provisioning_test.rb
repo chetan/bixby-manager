@@ -13,9 +13,11 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
 
     @repo  = Repo.new(:name => "vendor")
     @agent = FactoryGirl.create(:agent)
-    @cmd   = Command.new(:bundle => "test_bundle", :command => "echo", :repo => @repo)
+    @bundle = create_bundle("test_bundle")
+    @cmd   = Command.new(:bundle => @bundle, :command => "echo", :repo => @repo)
 
-    Command.new(:bundle => "system/provision", :command => "get_bundle.rb", :repo => @repo).save
+    @bundle2 = create_bundle("system/provisioning")
+    Command.new(:bundle => @bundle2, :command => "get_bundle.rb", :repo => @repo).save
   end
 
   def test_list_files
@@ -33,7 +35,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
   end
 
   def test_provision_missing_bundle
-    cmd = Command.new(:bundle => "test_bundle", :command => "echofoo", :repo => @repo)
+    cmd = Command.new(:bundle => @bundle, :command => "echofoo", :repo => @repo)
     assert_throws RuntimeError do
       Bixby::Provisioning.new.provision(@agent, cmd)
     end
@@ -99,7 +101,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
         b =~ /get_bundle.rb/ && b =~ %r{system/provisioning} && b =~ /digest":"my_old_hash_XXXX/
       }.to_return(:status => 200, :body => JsonResponse.new("success").to_json)
 
-    cmd = Command.new(:bundle => "system/provisioning", :command => "get_bundle.rb", :repo => @repo)
+    cmd = Command.new(:bundle => @bundle2, :command => "get_bundle.rb", :repo => @repo)
     Bixby::Provisioning.new.provision(@agent, cmd)
 
     assert_requested(stub1)
@@ -115,7 +117,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
       params[:command] == "get_bundle.rb"
       }.returns(JsonResponse.new("success")).times(2)
 
-    @cmd.bundle = "test_bundle_with_dep"
+    @cmd.bundle = create_bundle("test_bundle_with_dep")
     Bixby::Provisioning.new.provision(@agent, @cmd)
 
     assert_api_requests
@@ -124,7 +126,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
   def test_provision_multiple_bundles
     stub_multiple()
 
-    @cmd.bundle = "test_bundle_with_dep"
+    @cmd.bundle = create_bundle("test_bundle_with_dep")
     Bixby::Provisioning.new.provision(@agent, [@cmd])
 
     assert_api_requests
@@ -159,7 +161,7 @@ class Test::Modules::Provisioning < Bixby::Test::TestCase
     # 3. repeat of first
     stub_multiple()
 
-    @cmd.bundle = "test_bundle_with_dep"
+    @cmd.bundle = create_bundle("test_bundle_with_dep")
     ret = Bixby::Provisioning.new.provision(@agent, [@cmd])
     assert ret.success?
 
