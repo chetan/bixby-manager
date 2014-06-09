@@ -48,6 +48,10 @@ class Repo < ActiveRecord::Base
     end
   end
 
+  def relative_path
+    File.basename(self.path)
+  end
+
   def git?
     uri =~ /\.git$/
   end

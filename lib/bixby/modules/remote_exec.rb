@@ -47,6 +47,8 @@ class RemoteExec < API
         command
       elsif command.kind_of? Command then
         command.to_command_spec
+      elsif command.kind_of? Bundle then
+        command.to_command_spec
       elsif command.kind_of? Hash then
         CommandSpec.new(command)
       elsif command.kind_of? String then
