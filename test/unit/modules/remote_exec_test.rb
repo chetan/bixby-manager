@@ -42,6 +42,11 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
       cs = Bixby::RemoteExec.new.create_spec(cmd.id)
       assert_equal "cat", cs.command
       assert_equal "test_bundle", cs.bundle
+
+      # try using just a string bundle name
+      cs = Bixby::RemoteExec.new.create_spec("test_bundle")
+      assert_equal "test_bundle", cs.bundle
+      assert_equal "vendor", cs.repo
   end
 
   def test_exec

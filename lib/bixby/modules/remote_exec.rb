@@ -52,7 +52,19 @@ class RemoteExec < API
       elsif command.kind_of? Hash then
         CommandSpec.new(command)
       elsif command.kind_of? String then
-        CommandSpec.from_json(command)
+        # support a JSON hash as well as a bare bundle name (as long as there are no conflicts)
+        if command[0] == "{" then
+          CommandSpec.from_json(command)
+        else
+          # lookup repo
+          bundles = Bundle.where(:path => command)
+          if bundles.empty? then
+            raise "bundle not found"
+          elsif bundles.size > 1 then
+            raise "ambiguous bundle name '#{command}'"
+          end
+          bundles.first.to_command_spec
+        end
       elsif command.kind_of? Fixnum then
         Command.find(command).to_command_spec
       else
