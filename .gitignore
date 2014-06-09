@@ -11,17 +11,21 @@ script/temp/
 tmp/
 */*.bak
 *.sql
+*.pgsql
+*.sh
 
 # config
 config/database.yml
 config/mongoid.yml
 config/bixby.yml
+config/secrets.yml
 
 # deploy
 config/deploy/staging.rb
 config/deploy/production.rb
 
 # build output
+bin/
 .micron/
 .yardoc/
 yardoc/
