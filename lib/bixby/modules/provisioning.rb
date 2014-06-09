@@ -20,7 +20,7 @@ class Provisioning < API
     end
 
     command = create_spec(command)
-    if command.blank? or !command.bundle_exists? and (command.command.blank? or command.command_exists?) then
+    if command.blank? or !command.bundle_exists? or (!command.command.blank? && !command.command_exists?) then
       # TODO better error handling
       raise "error: tried to provision invalid bundle or command" + (command ? "\n" + command.to_s : "")
     end
