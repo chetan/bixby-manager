@@ -1,7 +1,7 @@
 
 namespace :db do
 
-  desc "dump the database to a file (mysql only)"
+  desc "dump the database to a file (mysql2 and postgresql only)"
   task :backup do
     conf = YAML.load(File.open(File.join(::Rails.root.to_s, "config", "database.yml")))
     conf = conf[Rails.env].with_indifferent_access
@@ -11,7 +11,7 @@ namespace :db do
     elsif conf[:adapter] == "postgresql" then
       pg_dump(conf)
     else
-      raise "only mysql is supported (#{Rails.env} is configured for #{conf[:adapter]})"
+      raise "only mysql2 and postgresql are supported (#{Rails.env} is configured for #{conf[:adapter]})"
     end
 
   end
@@ -64,7 +64,7 @@ def pg_dump(conf)
   cmd = %w{pg_dump -Fc -bc}
   cmd << "-h" + (conf[:host] ? conf[:host] : "localhost")
   cmd << "-U" + (conf[:username] ? conf[:username] : "root")
-  cmd << "-w"
+  cmd << "-W"
 
   dump(conf, cmd, ".pgsql")
 end
