@@ -45,12 +45,6 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
     BIXBY_CONFIG = bixby_config[::Rails.env].with_indifferent_access
   end
 
-  # set rails secret token
-  if Rails.env != "test" and BIXBY_CONFIG[:secret_token].blank? then
-    raise "secret_token not set in bixby.yml for the '#{::Rails.env}' environment!"
-  end
-  Bixby::Application.config.secret_key_base = BIXBY_CONFIG[:secret_token]
-
   # use an asset host for serving static assets
   if host = BIXBY_CONFIG[:static_asset_host] then
     host = "//#{host}" if host[0, 2] != "//"
