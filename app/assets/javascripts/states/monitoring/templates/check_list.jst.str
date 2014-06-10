@@ -7,6 +7,24 @@
   <button type="button" class="btn btn-primary add_trigger" host_id="<%= host.get('id') %>">Add Trigger</button>
 </p>
 
+<h3>Checks</h3>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Arguments</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+
+	<%= each_partial(checks, "check", _bvm.CheckTableRow) %>
+
+  </tbody>
+</table>
+
 <% if (checks.length == 0) { %>
 
   <p>No checks have been configured</p>

@@ -1,0 +1,12 @@
+<tr>
+        <td><%= check.get("name")%></td>
+        <td>
+        <%= check.args_str() %>
+        </td>
+        <td> Put Edit Button Here </td>
+        <td>
+
+        <button type="button" id="delete_check" class="btn btn-danger btn-large" host_id="<%= host.get('id') %>" check_id="<%= check.get('id') %>">Delete Check</button>
+
+        </td>
+</tr>
