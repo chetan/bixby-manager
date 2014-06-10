@@ -1,17 +1,23 @@
 #!/bin/bash
 
 # database.yml
-read -d '' yaml <<- EOF
+read -d '' yaml <<-EOF
 test:
   adapter: sqlite3
   database: tmp/db/test.sqlite3
 EOF
 echo "$yaml" > config/database.yml
 
+# secrets.yml
+read -d '' yaml <<-EOF
+test:
+  secret_key_base: "c2bf1135658989e337bff4bc3fc"
+EOF
+echo "$yaml" > config/secrets.yml
+
 # bixby.yml
 read -d '' yaml <<-EOF
 test:
-  secret_token: "c2bf1135658989e337bff4bc3fc"
   default_tenant: "pixelcop"
   default_tenant_pw: "test"
   redis: "localhost:6379"
