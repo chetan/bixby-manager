@@ -65,6 +65,7 @@ Bixby::Application.routes.draw do
     resources :on_calls
     resources :triggers
     resources :actions
+    resources :annotations
   end
 
 
