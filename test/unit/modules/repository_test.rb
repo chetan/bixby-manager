@@ -53,6 +53,7 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     assert File.directory? repo.path
     assert File.exists? File.join(repo.path, "foo/bar/manifest.json")
 
+    # Bundle should exist
     bundle = Bundle.first
     assert bundle
     assert_equal "foo/bar", bundle.path
@@ -65,7 +66,7 @@ class Bixby::Test::Modules::Repository < Bixby::Test::TestCase
     # check our new command
     script = File.join(repo.path, "foo/bar/bin/echo")
     assert File.exists? script
-    c = Command.last
+    c = Command.where(:command => "echo").first
     assert c
     assert_equal "echo", c.command
     assert_equal "foo/bar", c.bundle.path
