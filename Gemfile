@@ -169,10 +169,6 @@ group :development do
     # deployment
     gem "capistrano",      "~>2.0", :require => false
     gem "rvm-capistrano",           :require => false
-
-    # quality
-    gem "cane", :platforms => [:mri_19, :mri_20], :require => false
-    gem "brakeman", :require => false
 end
 
 group :test do
@@ -198,6 +194,10 @@ group :test do
   gem "simplecov",            :platforms => [:mri_19, :mri_20], :require => false
   gem "simplecov-html",       :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-html.git", :require => false
   gem "simplecov-console",    :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-console.git", :require => false
+
+  # quality
+  gem "cane", :platforms => [:mri_19, :mri_20], :require => false
+  gem "brakeman", :require => false
 
   # gems used for dev/test env
   # for using sqlite3 as db backend
