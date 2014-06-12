@@ -6,10 +6,9 @@ namespace 'Bixby.model', (exports, top) ->
     params: [ { name: "host", set_id: true } ]
 
     name: ->
-      name = (@get("hostname") || @get("ip"))
       if @get("alias")? && @get("alias").length > 0
-        name += " (" + @get("alias") + ")"
-      return name
+        return @get("alias")
+      @get("hostname")
 
     tags: ->
       return _.split(@get("tags"), ",").sort()
