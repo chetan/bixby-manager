@@ -30,18 +30,16 @@ class Stark.View extends Backbone.View
   #
   #   Simple links:
   #
-  #     links: {
-  #       "a.brand": [ "inventory" ]
+  #     links:
+  #       "a.brand": "inventory"
   #       ".tab.monitoring a": [ "monitoring", { foo: "bar" } ]
-  #     }
   #
   #   Using a function:
   #
-  #     links: {
+  #     links:
   #       ".monitoring_host_link": [ "mon_view_host", (el) ->
   #         return { host: @host }
   #       ]
-  #     }
   #
   #   Using a function makes sure you get the correct context
   #
@@ -199,6 +197,9 @@ class Stark.View extends Backbone.View
     _.eachR @, @links, (link, sel) -> # loop over each link definition
 
       _.eachR @, @$(sel), (el) -> # loop over each matching link
+
+        if !_.isArray(link)
+          link = [link] # handle simle string values
 
         state = link[0]
         data = null
