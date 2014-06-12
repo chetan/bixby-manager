@@ -13,8 +13,12 @@ namespace "Bixby.view.inventory", (exports, top) ->
         @$("#addHostModal").modal("show")
         @$("#addHostModal input.install").focus()
 
+    query_string: ->
+      return "" if !@query
+      return @query.replace(/tag:(.*?)\b/, "#$1")
+
     render: ->
-      if @hosts.length == 0
+      if !@query && @hosts.length == 0
         return @transition "getting_started"
 
       @new_hosts = @hosts.filter (h) -> h.is_new()

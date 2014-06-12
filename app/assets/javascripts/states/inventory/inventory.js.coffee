@@ -37,7 +37,7 @@ Bixby.app.add_states { tab: "inventory", views: [_bv.PageLayout, _vi.Layout] },
     class extends Stark.State
       url: "inventory/search/:query"
 
-      views:      [ _vi.HostSearchHeader, _vi.HostTable ]
+      views:      [ _vi.HostTable ]
       models:     { hosts: Bixby.model.HostList, query: "" }
 
       create_url: ->
