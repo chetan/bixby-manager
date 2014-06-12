@@ -10,18 +10,6 @@
     </div>
   </div>
 
-  <%? host.get("desc") %>
-    <div class="row">
-      <div class="col-xs-12 col-sm-6 col-md-3">
-        <div class="desc panel panel-default">
-          <div class="panel-body">
-            <%= markdown(host.g("desc")) %>
-          </div>
-        </div>
-      </div>
-    </div>
-  <%//%>
-
   <div class="row">
     <div class="actions col-xs-12">
       <a class="edit btn btn-primary btn-xs" role="button">Edit Host</a>
