@@ -6,7 +6,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
     className: "host"
 
     links:
-      "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
-      "div.body a.host":          [ "inv_view_host", (el) -> { host: @host } ]
+      "div.body a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
+      "div.body a.host":       [ "inv_view_host", (el) -> { host: @host } ]
 
     bindings: [ "host" ]
