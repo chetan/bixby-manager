@@ -5,16 +5,21 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Bundle</th>
       <th>Command</th>
       <th>Repo</th>
     </tr>
   </thead>
   <tbody>
-    <% commands.each(function(command) { %>
+    <%
+    var cur_bundle = null;
+    commands.each(function(command) {
+      if (cur_bundle !== command.bundle.path) {
+        cur_bundle = command.bundle.path; %>
+          <tr class="active"><td colspan="3"><strong><%= cur_bundle %></strong></td></tr>
+      <% } %>
+
       <tr>
         <td><%= command.name %></td>
-        <td><%= command.bundle %></td>
         <td><%= command.command %></td>
         <td><%= command.repo %></td>
       </tr>

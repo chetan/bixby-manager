@@ -49,4 +49,7 @@ namespace 'Bixby.model', (exports, top) ->
       s
 
     comparator: (cmd) ->
-      cmd.bundle + "-" + cmd.command
+      if cmd.isNew()
+        ""
+      else
+        (cmd.bundle.path + "-" + cmd.name).toLowerCase()
