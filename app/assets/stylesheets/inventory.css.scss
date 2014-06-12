@@ -32,10 +32,19 @@ div.host {
     }
     h3 {
       margin-bottom: 0;
+      ul.tags {
+        display: inline;
+        font-size: 14px;
+        vertical-align: middle;
+      }
     }
     div.tags {
       margin-bottom: 10px;
     }
+  }
+
+  div.actions {
+    margin-top: 10px;
   }
 
   div.desc .panel-body {

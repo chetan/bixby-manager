@@ -3,10 +3,8 @@
     <div class="body col-xs-12">
       <h3>
         <a class="host"><%= host.name() %></a>
-      </h3>
-      <div class="tags">
         <%= include_partial(Bixby.view.inventory.HostTags, {host: host}) %>
-      </div>
+      </h3>
     </div>
   </div>
 

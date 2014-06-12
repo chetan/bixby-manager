@@ -49,7 +49,7 @@ class Stark.Partial extends Stark.View
     # unless first element is a tr, wrap in a span
     first = @$el.children().first()
     if @wrap && first && first[0].tagName != "TR"
-      @$el.html( "<div id='#{@id}'>" + @$el.html() + "</div>" )
+      @$el.html( "<div id='#{@id}' class='partial'>" + @$el.html() + "</div>" )
     else
       first.attr("id", @id)
 
@@ -68,3 +68,18 @@ class Stark.Partial extends Stark.View
     @setElement( @parent.$("#" + @id) )
     @bind_events()
     return @
+
+# add a custom stylesheet for partials
+style = document.createElement("style")
+style.setAttribute("media", "screen")
+style.appendChild(document.createTextNode(""))
+document.head.appendChild(style)
+sheet = style.sheet
+
+# force partials to be inline by default
+sel = "div.partial"
+rules = "display: inline;"
+if sheet.insertRule
+  sheet.insertRule("#{sel} {" + rules + "}", 0)
+else
+  sheet.addRule(sel, rules, 0)
