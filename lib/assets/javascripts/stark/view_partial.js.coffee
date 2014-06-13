@@ -58,6 +58,7 @@ class Stark.Partial extends Stark.View
     p = @
     @add_render_hook ->
       p.post_render()
+      p.after_render()
 
     return @$el.html()
 
