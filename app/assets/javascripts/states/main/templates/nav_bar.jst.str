@@ -19,6 +19,7 @@
       <ul class="nav navbar-nav">
         <li class="tab inventory"><a>Inventory</a></li>
         <li class="tab monitoring"><a>Monitoring</a></li>
+        <li class="tab runbooks"><a>Runbooks</a></li>
         <li class="tab repository"><a>Repository</a></li>
       </ul>
 

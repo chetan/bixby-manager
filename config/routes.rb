@@ -110,6 +110,9 @@ Bixby::Application.routes.draw do
   get "/repository/new" => "repository#new"
   get "/repository/:id" => "repository#show"
 
+  get "/runbooks" => "runbooks/base#index"
+  namespace :runbooks do
+  end
 
   ##############################################################################
   # MISC

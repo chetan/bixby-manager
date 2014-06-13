@@ -1,0 +1,51 @@
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
+
+    <h3>Runbooks</h3>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
+
+        <div class="commands">
+          <label for="command">Select a command to execute</label>
+
+          <select id="command" class="form-control" data-placeholder="List of commands">
+            <option></option>
+            <%
+            var cur_bundle = null;
+            commands.each(function(c) {
+              if (cur_bundle !== c.bundle.path) {
+                if (cur_bundle !== null) { %></optgroup><% }
+                cur_bundle = c.bundle.path; %>
+                <optgroup label="<%= cur_bundle %>">
+              <% } %>
+              <option value="<%= c.id %>"><%= c.name %></option>
+            <% }); %>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
+
+        <div class="hosts">
+          <label for="host">Select host(s) to run on</label>
+
+          <select id="host" class="form-control" multiple="true">
+            <option></option>
+            <% hosts.each(function(h) { %>
+              <option value="<%= h.id %>"><%= h.name() %></option>
+            <% }); %>
+          </select>
+        </div>
+
+        <button type="button" class="btn btn-primary">Run</button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
