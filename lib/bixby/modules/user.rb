@@ -1,6 +1,12 @@
 
+require 'securerandom'
+
 module Bixby
 class User < API
+
+  # used for random pw generation
+  CHARS         = ((('A'..'Z').to_a + ('a'..'z').to_a + ('0'..'9').to_a)  - "io01lO".split(//u)).shuffle
+  SPECIAL_CHARS = "%&/()[]!\"§$,.-;:_#'+*?".split(//u)
 
   # Create a new tenant
   #
@@ -61,6 +67,14 @@ class User < API
     u.save!
 
    return u
+  end
+
+  # Generate a random password, 16 chars in length
+  def random_password
+    s = []
+    13.times { s << CHARS[SecureRandom.random_number(CHARS.length)] }
+    3.times { s << SPECIAL_CHARS[SecureRandom.random_number(SPECIAL_CHARS.length)] }
+    s.shuffle.join('')
   end
 
 end # User
