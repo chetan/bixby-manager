@@ -6,14 +6,14 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/nav_bar"
 
     links:
-      "a.navbar-brand":    [ "inventory" ]
-      ".tab.inventory  a": [ "inventory" ]
-      ".tab.monitoring a": [ "monitoring" ]
-      ".tab.runbooks   a": [ "runbooks" ]
-      ".tab.repository a": [ "repository" ]
+      "a.navbar-brand":    "inventory"
+      ".tab.inventory  a": "inventory"
+      ".tab.monitoring a": "monitoring"
+      ".tab.runbooks   a": "runbooks"
+      ".tab.repository a": "repository"
 
       # user menu
-      "a#profile": [ "profile" ]
+      "a#profile":         "profile"
 
     events:
       "click a": (e) ->

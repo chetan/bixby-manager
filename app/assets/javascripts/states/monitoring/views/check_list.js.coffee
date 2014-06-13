@@ -4,7 +4,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/check_list"
 
-    links: {
+    links:
       # add checks
       ".add_check": [ "mon_hosts_checks_new", (el) ->
         return { host: @host }
@@ -14,7 +14,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       ".add_trigger": [ "mon_hosts_triggers_new", (el) ->
         return { host: @host, metrics: @metrics, checks: @checks }
         ]
-    }
 
     after_render: ->
       super()

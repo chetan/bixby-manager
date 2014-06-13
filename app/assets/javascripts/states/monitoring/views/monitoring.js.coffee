@@ -5,10 +5,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/home"
 
-    links: {
-      ".create_check_template": [ "mon_check_template_new" ]
-      ".create_schedule_link": [ "mon_oncalls_new" ]
-    }
+    links:
+      ".create_check_template": "mon_check_template_new"
+      ".create_schedule_link":  "mon_oncalls_new"
 
     handoff: (oncall) ->
       s = "Every "

@@ -6,4 +6,4 @@ namespace "Bixby.view", (exports, top) ->
     template: "repository/home"
 
     links:
-      ".add_repo_link": [ "repo_new" ]
+      ".add_repo_link": "repo_new"

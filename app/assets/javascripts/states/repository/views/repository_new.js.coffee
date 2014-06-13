@@ -12,7 +12,7 @@ namespace "Bixby.view", (exports, top) ->
       "#requires_key": "requires_key"
 
     links:
-      ".add_repo_link": [ "repo_new" ]
+      ".add_repo_link": "repo_new"
 
     events:
       "click button.submit": (e) ->
