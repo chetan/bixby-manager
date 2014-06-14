@@ -46,9 +46,13 @@ God.watch do |w|
     end
   end
 
-  # start if process is not running
-  w.transition(:up, :start) do |on|
-    on.condition(:process_exits)
+  # for some reason this fails when running on travis
+  # god[3883]: Condition 'God::Conditions::ProcessExits' requires an event system but none has been loaded
+  if ENV["USER"] != "travis" then
+    # start if process is not running
+    w.transition(:up, :start) do |on|
+      on.condition(:process_exits)
+    end
   end
 
   # restart if memory or cpu is too high or http error on /
