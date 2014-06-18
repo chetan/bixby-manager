@@ -10,3 +10,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         @check.destroy success: (model, response) ->
           console.log this
           v.parent.redraw()
+      "click a.edit": ->
+      	@log "hi", @
+      	@check_editor.show()
+
+    post_render: ->
+    	@log "post_render"
+    	super
+    	@check_editor ||= @partial(exports.CheckEditor, { check: @check, host: @host })
+    	@

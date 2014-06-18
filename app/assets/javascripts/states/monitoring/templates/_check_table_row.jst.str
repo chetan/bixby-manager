@@ -3,7 +3,9 @@
         <td>
         <%= check.args_str() %>
         </td>
-        <td> Put Edit Button Here </td>
+        <td>
+        <a class="edit btn btn-primary btn-large" role="button">Edit Host</a>
+        </td>
         <td>
 
         <button type="button" id="delete_check" class="btn btn-danger btn-large" host_id="<%= host.get('id') %>" check_id="<%= check.get('id') %>">Delete Check</button>
