@@ -48,7 +48,7 @@ class Rest::Models::CommandsController < ::Rest::ApiController
 
     results = {}
     agents.each do |agent|
-      results[agent.host_id] = Bixby::RemoteExec.new.exec(agent, command)
+      results[agent.host_id] = Bixby::RemoteExec.new(request, nil, current_user).exec(agent, command)
     end
 
     restful results
