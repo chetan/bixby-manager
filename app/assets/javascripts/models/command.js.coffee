@@ -26,6 +26,15 @@ namespace 'Bixby.model', (exports, top) ->
 
       return need
 
+    run: (hosts, opts, successCb) ->
+      @ajax "post",
+        url: @url() + "/run"
+        data: {hosts: hosts, opts: opts}
+        success: (data, status, xhr) =>
+          successCb(data)
+        error: (xhr, status, err) =>
+          @log "error: ", err
+
 
     # Get option name for display. Shows default value if present.
     # e.g., Foo Option [default: ``blah``]

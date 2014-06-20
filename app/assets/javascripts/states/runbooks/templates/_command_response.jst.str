@@ -1,0 +1,19 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= host.name() %></h3>
+  </div>
+  <div class="panel-body">
+
+    <p>EXIT CODE: <%= response.status %> (<%= status_str() %>)</p>
+    <p>
+      STDOUT:<br/>
+      <textarea class="form-control" rows="3" readonly="true"><%= response.stdout %></textarea>
+    </p>
+    <p>
+      STDERR:<br/>
+      <%? response.stderr %><textarea class="form-control" rows="3" readonly="true"><%= response.stderr %></textarea><%/%>
+    </p>
+
+  </div>
+</div>

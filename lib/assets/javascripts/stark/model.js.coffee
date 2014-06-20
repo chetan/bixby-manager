@@ -25,6 +25,14 @@ class Stark.Model extends Backbone.Model
 
   bound_views: null
 
+  @ajax_methods = {
+    POST:   "create"
+    PUT:    "update"
+    PATCH:  "patch"
+    DELETE: "delete"
+    GET:    "read"
+  }
+
   initialize: (attributes, options) ->
     super(attributes, options)
     @bound_views = []
@@ -39,3 +47,13 @@ class Stark.Model extends Backbone.Model
   # @return [String]
   className: ->
     /(\w+)\(/.exec(this.constructor.toString())[1]
+
+  ajax: (method, options) ->
+    _.extend options, {
+      contentType: 'application/json'
+      dataType: "json"
+      data: JSON.stringify(_.csrf(options.data))
+    }
+
+    method = Stark.Model.ajax_methods[method.toUpperCase()] || method
+    (@sync || Backbone.sync).call @, method, @, options

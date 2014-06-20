@@ -52,6 +52,7 @@ Bixby::Application.routes.draw do
     resources :repos
     resources :commands do
       get "opts"
+      post "run"
     end
 
     resources :users do
