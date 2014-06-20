@@ -39,8 +39,11 @@
 		 * Helper function to make sure the line numbers are always
 		 * kept up to the current system
 		 */
-		var fillOutLines = function(codeLines, h, lineNo){
+		var fillOutLines = function(codeLines, h, lineNo, totalLines){
 			while ( (codeLines.height() - h ) <= 0 ){
+				if (lineNo > totalLines) {
+					return lineNo;
+				}
 				if ( lineNo == opts.selectedLine )
 					codeLines.append("<div class='lineno lineselect'>" + lineNo + "</div>");
 				else
@@ -58,6 +61,8 @@
 		return this.each(function() {
 			var lineNo = 1;
 			var textarea = $(this);
+
+			var totalLines = textarea.val().trim().split(/\n/).length;
 
 			/* Turn off the wrapping of as we don't want to screw up the line numbers */
 			textarea.attr("wrap", "off");
@@ -78,7 +83,7 @@
 			/* Draw the number bar; filling it out where necessary */
 			linesDiv.append( "<div class='codelines'></div>" );
 			var codeLinesDiv	= linesDiv.find(".codelines");
-			lineNo = fillOutLines( codeLinesDiv, linesDiv.height(), 1 );
+			lineNo = fillOutLines( codeLinesDiv, linesDiv.height(), 1, totalLines );
 
 			/* Move the textarea to the selected line */
 			if ( opts.selectedLine != -1 && !isNaN(opts.selectedLine) ){
@@ -105,7 +110,7 @@
 				var scrollTop 		= domTextArea.scrollTop;
 				var clientHeight 	= domTextArea.clientHeight;
 				codeLinesDiv.css( {'margin-top': (-1*scrollTop) + "px"} );
-				lineNo = fillOutLines( codeLinesDiv, scrollTop + clientHeight, lineNo );
+				lineNo = fillOutLines( codeLinesDiv, scrollTop + clientHeight, lineNo, totalLines );
 			});
 
 
