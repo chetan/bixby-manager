@@ -56,7 +56,7 @@ class CommandLog < ActiveRecord::Base
     requested_at = Time.new
     response = nil
     time_taken = Benchmark.realtime do
-      response = yield
+      response = yield # grab the JsonResponse
     end
 
     c = CommandLog.new
@@ -78,6 +78,7 @@ class CommandLog < ActiveRecord::Base
 
     c.save!
 
+    response.log = c # pass it back inside the JsonResponse
     return response
   end
 
