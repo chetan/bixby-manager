@@ -20,8 +20,18 @@
  *
  */
 
+ /* override bootstrap styles */
+div.linedwrap textarea.form-control {
+	background-color: white;
+	cursor: default;
+}
+div.linedwrap textarea.form-control:focus {
+	box-shadow: none;
+}
+
 .linedwrap {
 	/*border: 1px solid #c0c0c0;*/
+	padding-top: 10px;
 	padding: 3px;
 }
 
@@ -32,14 +42,16 @@
 
 .linedtextarea textarea, .linedwrap .codelines .lineno {
 	font-size: 10pt;
-	font-family: monospace;
+	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
 	line-height: normal !important;
 }
 
 .linedtextarea textarea {
+	padding-left: 0.3em;
 	padding-right:0.3em;
 	padding-top:0.3em;
 	border: 0;
+	box-shadow: none;
 }
 
 .linedwrap .lines {
