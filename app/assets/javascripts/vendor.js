@@ -3,6 +3,7 @@
 //= require "jquery_patch"
 //= require "jquery.putcursoratend"
 //= require "jquery.appear"
+//= require "jquery.linedtextarea"
 
 //= require "underscore"
 //= require "underscore_patch"
