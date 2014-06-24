@@ -43,8 +43,10 @@ class Rest::Models::CommandsController < ::Rest::ApiController
   end
 
   def run
-    command = Command.find(_id(:command_id))
-    agents = Agent.where(:host_id => params[:hosts])
+    agents        = Agent.where(:host_id => params[:hosts])
+    command       = Command.find(_id(:command_id)).to_command_spec
+    command.args  = params[:args] if !params[:args].blank?
+    command.stdin = params[:stdin] if !params[:stdin].blank?
 
     results = {}
     agents.each do |agent|
