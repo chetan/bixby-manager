@@ -24,6 +24,7 @@
 
 class Host < ActiveRecord::Base
 
+  has_many :checks
   belongs_to :org
   has_one :agent
   acts_as_taggable # adds :tags accessor
