@@ -35,6 +35,15 @@ _.icon = (icon, clazz) ->
     c += " " + clazz
   "<i class='#{c}'></i>"
 
+# Toggle a class on the given element, e.g., remove if present, else add
+_.toggleClass = (el, clazz) ->
+  btn = $(el)
+  if btn.hasClass(clazz)
+    btn.removeClass(clazz)
+  else
+    btn.addClass(clazz)
+
+
 # Add disabled class to given el
 _.disable = (el) ->
   $(el).addClass("disabled")

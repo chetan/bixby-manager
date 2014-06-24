@@ -25,13 +25,18 @@
       </div>
 
       <div class="form-group">
-        <label for="args" class="args">Arguments <%= _.icon("plus-circle") %></label>
-        <textarea id="args" rows="3" class="form-control start_hidden"></textarea>
+        <button class="btn btn-default btn-xs args" type="button">Arguments <%i plus-circle %></button>
+        <button class="btn btn-default btn-xs stdin" type="button">STDIN <%i plus-circle %></button>
       </div>
 
-      <div class="form-group">
-        <label for="stdin" class="stdin">STDIN <%= _.icon("plus-circle") %></label>
-        <textarea id="stdin" rows="3" class="form-control start_hidden"></textarea>
+      <div class="form-group start_hidden args">
+        <label for="args">Arguments</label>
+        <textarea id="args" rows="3" class="form-control"></textarea>
+      </div>
+
+      <div class="form-group start_hidden stdin">
+        <label for="stdin">STDIN</label>
+        <textarea id="stdin" rows="3" class="form-control"></textarea>
       </div>
 
       <div class="form-group">
