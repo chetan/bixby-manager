@@ -5,6 +5,11 @@ class Bixby.Runbooks extends Stark.View
   template: "runbooks/runbooks"
 
   events:
+    "change select#command": (e) ->
+      command = @commands.get @$("select#command").val()
+      @partial("runbooks/_command_detail", {command: command}, "div.detail")
+      @$("div.detail").show()
+
     "click button#run": (e) ->
       hosts = @$("select#hosts").val()
       command = @commands.get @$("select#command").val()

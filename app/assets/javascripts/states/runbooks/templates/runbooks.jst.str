@@ -24,6 +24,9 @@
         </select>
       </div>
 
+      <div class="form-group start_hidden detail">
+      </div>
+
       <div class="form-group">
         <button class="btn btn-default btn-xs args" type="button">Arguments <%i plus-circle %></button>
         <button class="btn btn-default btn-xs stdin" type="button">STDIN <%i plus-circle %></button>
