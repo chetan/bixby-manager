@@ -95,7 +95,11 @@
 			'/': function (js) {
 				// close open brackets
 				return '}}';
-			}
+			},
+			'i': function (js) {
+				// easy way to insert an icon
+				return '__out__+= _.icon("' + js + '");';
+			},
 		}
 
 		instance.template = function (val) {

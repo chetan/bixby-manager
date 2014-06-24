@@ -29,6 +29,7 @@ _.isScrolledIntoView = (el, partial) ->
 #
 # @return [String] icon html, e.g., <i class="fa fa-circle"></i>
 _.icon = (icon, clazz) ->
+  icon = icon.trim()
   c = "fa fa-#{icon}"
   if clazz?
     c += " " + clazz
