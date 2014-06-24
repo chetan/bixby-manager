@@ -68,14 +68,14 @@ class Inventory < API
 
     h = Host.new
     h.org_id = org.id
-    h.ip = @http_request.ip
+    # h.ip = @http_request.ip
     h.hostname = opts[:hostname]
     h.tag_list = tag_list
     h.save!
 
     a = Agent.new
     a.host_id = h.id
-    a.ip = h.ip
+    # a.ip = h.ip
     a.port = opts[:port]
     a.uuid = opts[:uuid]
     a.version = opts[:version]
