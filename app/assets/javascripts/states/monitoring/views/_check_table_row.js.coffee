@@ -12,10 +12,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           v.parent.redraw()
       "click a.edit": ->
       	@log "hi", @
-      	@check_editor.show()
+      	@check_editor.show() # TODO load options here
 
     post_render: ->
     	@log "post_render"
     	super
-    	@check_editor ||= @partial(exports.CheckEditor, { check: @check, host: @host })
+    	@check_editor ||= @partial(exports.CheckEditor, { check: @check, host: @host, hosts: @hosts })
     	@

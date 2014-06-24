@@ -15,6 +15,10 @@
           <% var check_cmd_id = check.get("command_id"); %>
           <% var cmd = commands.get(check_cmd_id); %>
 
+          <% if (cmd.location === "remote" || cmd.location === "any") { %>
+            <%= include("monitoring/_command_opts_agent", {command: cmd, host: host, hosts: hosts }) %>
+          <% } %>
+
           <% if (!cmd.has_options()) { %>
             <div class="form-group">
               <div class="no-opts">no options</div>
@@ -23,15 +27,8 @@
           } else {
 
             _.each(cmd.get("options"), function(opt_hash, opt_key) {
-
               var data = { opt_key: opt_key, opt_hash: opt_hash };
-
-              alert(opt_hash["values"] + "-" + opt_key);
-
               data.value = check.get("args")[opt_key];
-
-              console.log(data);
-
               var tpl = opt_hash["status"] === "failed" ? "failed" : opt_hash["type"];
           %>
               <%= include("monitoring/_command_opts_" + tpl, data) %>
@@ -41,71 +38,9 @@
           };
           %>
 
-
-
-<!--           <label class="control-label">Arguments</label>
-
-          <% var check_cmd_id = check.get("command_id"); %>
-          <% var cmd = commands.get(check_cmd_id); %>
-
-          <% if (cmd.has_options()) { %>
-
-          <% var options = cmd.get("options"); %>
-          <% var keys = _.keys(options); %>
-          <% var options_name = options[keys[0]]["name"]; %>
-          <% console.log(options_name); %>
-
-          <% var args = check.get("args"); %>
-          <% var arg_keys = _.keys(args); %>
-
-          <% for (var i = 0; i < keys.length; i++) { %>
-
-            <br/>
-            <strong><span id="args-<%= options[keys[i]]["name"] %>"> <%= options[keys[i]]["name"] %>: </span></strong>
-            <% if (options[keys[i]]["default"] != null) { %>
-
-
-
-              <span> &nbsp;&nbsp;&nbsp;Default Value: <%= options[keys[i]]["default"] %> </span>
-
-
-            <% } %>
-
-           <input id="options-<%= keys[i] %>-val" type="text" class="options form-control" placeholder="options" value="<%= options[keys[i]]["default"] %>">
-
-          <% } %> -->
-
- <!--          <input id="args" type="text" class="args form-control" placeholder="alias" value="<%= check.args_str() %>"> -->
-
-<!--           <% }  else { %>
-
-         <input id="alias" type="text" class="alias form-control" placeholder="alias" value="No Args">
-
-         <% } %>
- -->
-
-
-
-
         </div>
 
-<!--         <div class="form-group">
-          <label class="control-label desc">Description</label>
-          <textarea id="desc" class="desc form-control" placeholder="description"><%= host.g('desc') %></textarea>
-        </div> -->
 
-<!--         <p class="markdown">accepts -->
-          <!-- another good link: http://support.mashery.com/docs/customizing_your_portal/Markdown_Cheat_Sheet -->
-<!--           <a href="http://daringfireball.net/projects/markdown/syntax"
-             target="_new"
-             title="open markdown reference in new window">markdown</a>
-          </p> -->
-
-<!--         <div class="form-group">
-          <label class="control-label">Tags</label><br/>
-          <input id="tags" type="hidden" class="tags form-control" value="<%=host.tags().join(',')%>"/>
-        </div>
- -->
       </form>
 
     </div>

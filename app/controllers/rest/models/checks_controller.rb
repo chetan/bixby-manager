@@ -43,6 +43,8 @@ class Rest::Models::ChecksController < ::Rest::ApiController
   def update
     check = Check.find(_id)
     check.args = params[:args]
+
+    check.agent_id = params[:agent_id]
     check.save
 
     restful check

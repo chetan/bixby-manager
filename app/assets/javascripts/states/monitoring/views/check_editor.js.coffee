@@ -4,10 +4,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
   class exports.CheckEditor extends Stark.View
 
     tagName: "div"
-    className: "modal host_editor"
+    className: "modal check_editor"
     template: "monitoring/_check_editor"
-
-    # bindings: [ "host" ]
 
     events:
       # save
@@ -16,21 +14,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       # delete
       "click button.delete": (e) ->
-        # @hide_editor()
-        # v = @
-        # c = new Bixby.view.Confirm({
-        #   title: "Delete?",
-        #   message: "Are you sure you want to delete this host?",
-        #   show_cb: null,
-        #   hidden_cb: (confirmed) ->
-        #     if confirmed
-        #       v.host.destroy()
-        #       v.hide_editor()
-        #       v.transition "inventory"
-        #     else
-        #       v.$el.modal("show")
-        #   })
-        # c.render()
+        @hide_editor()
+        v = @
+        v.check.destroy()
+        v.hide_editor()
+        v.parent.parent.redraw()
 
       # save (on enter)
       "keyup input.alias": (e) ->
@@ -52,41 +40,26 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       _.each command.get("options"), (opt_hash, opt_key) ->
         args[opt_key] = @$("input##{opt_key}").val()
 
+      # set runhost if exists
+      if @$("#runhost").length > 0
+        @check.set { agent_id: @$("#runhost").val() }
+        # this is a workaround because the .set below clears the change event, see here: http://stackoverflow.com/questions/5072435/backbone-js-not-registering-model-haschanged-event
+        if @check.hasChanged()
+          @check.save()
+
       @check.set {
           args: args
       }
 
-      if @check.hasChanged()
-        @check.save()
-
-      # @host.set {
-      #   alias: @$("input.alias").val()
-      #   desc: @$("textarea.desc").val()
-      #   tags: @$("input.tags").val()
-      # }
-
-      # if @host.hasChanged()
-      #   @host.save()
 
       @hide_editor()
 
-    after_render: ->
-      # setup tag editor
-      # tags = @$("input.tags")
-      # tags.select2({
-      #   tags: []
-      #   tokenSeparators: [",", " "]
-      # })
-      # tags.on "change", (e) ->
-      #   if e.added? and e.added.text.substr(0, 1) == "#"
-      #     e.val.pop()
-      #     e.val.push(e.added.text.substring(1))
-      #     tags.val(e.val)
-      #     setTimeoutR 0, -> # trigger async - otherwise it won't update UI
-      #       tags.trigger("change")
+      if @check.hasChanged()
+        @check.save()
+        @parent.parent.redraw()
 
+    after_render: ->
       @$el.modal({ show: false })
-      @$el.on "shown.bs.modal", _.bindR @, -> @$("input.alias").putCursorAtEnd()
       @$el.on "hidden.bs.modal", _.bindR @, -> @redraw()
 
     dispose: ->
