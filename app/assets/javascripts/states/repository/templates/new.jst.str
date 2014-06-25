@@ -26,7 +26,7 @@
       Requires Key
     </label>
     <br/>
-    <span class="valid requires_key"></span>
+    <div class="valid requires_key"></div>
   </div>
 
   <!-- submit -->
