@@ -26,10 +26,28 @@ namespace 'Bixby.model', (exports, top) ->
 
       return need
 
-    run: (hosts, args, stdin, successCb) ->
+    run: (hosts, args, stdin, env, successCb) ->
+
+      if _.isString(env)
+        # convert env string into an object hash of key/value pairs
+        # expects env to have one pair on each line, separated by '=',
+        # e.g., "foo=bar\nbaz=boo"
+        e = {}
+        env.split(/\n/).forEach (line) ->
+          line = line.trim()
+          i = line.indexOf('=')
+          if i < 0
+            return
+          k = line.substr(0, i).trim()
+          v = line.substr(i+1).trim()
+          if v[0] == '"' || v[0] == "'"
+            v = JSON.parse(v)
+          e[k] = v
+        env = e
+
       @ajax "post",
         url: @url() + "/run"
-        data: {hosts: hosts, args: args, stdin: stdin}
+        data: {hosts: hosts, args: args, stdin: stdin, env: env}
         success: (data, status, xhr) =>
           successCb(data)
         error: (xhr, status, err) =>

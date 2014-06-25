@@ -19,23 +19,20 @@ class Bixby.Runbooks extends Stark.View
         return
 
       command = command.clone()
-      args    = @$("#args").val()
-      stdin   = @$("#stdin").val()
+      args    = @$("div.args textarea").val()
+      stdin   = @$("div.stdin textarea").val()
+      env     = @$("div.env textarea").val()
 
-      command.run hosts, args, stdin, (res) =>
+      command.run hosts, args, stdin, env, (res) =>
         _.each res, (r, host_id) =>
           host = @hosts.get(host_id)
           @partial B.CommandResponse, {host: host, response: r}, "div.results"
 
-    "click button.args": (e) ->
+    "click button.toggle": (e) ->
+      id = @$(e.target).attr("id")
       _.toggleClass(e.target, "active")
-      @$("div.form-group.args").toggle()
-      @$("textarea#args").focus()
-
-    "click button.stdin": (e) ->
-      _.toggleClass(e.target, "active")
-      @$("div.form-group.stdin").toggle()
-      @$("textarea#stdin").focus()
+      @$("div.form-group.#{id}").toggle()
+      @$("textarea##{id}_input").focus()
 
   after_render: ->
     @$("select#command").select2({
