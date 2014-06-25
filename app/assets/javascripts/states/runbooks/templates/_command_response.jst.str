@@ -7,22 +7,9 @@
     <p>TIME: <%= moment(response.log.requested_at).format("HH:mm:ss L") %></p>
     <p>ELAPSED TIME: <%= response.log.time_taken %>s</p>
     <p>EXIT CODE: <%= response.status %> (<%= status_str() %>)</p>
-    <p>
-      STDOUT:<br/>
-      <textarea class="form-control" rows="3" readonly="true"><%= response.stdout %></textarea>
-      <%? isJSON(response.stdout) %>
-        STDOUT (AS JSON):<br/ >
-        <%= _.prettyJSON(response.stdout) %>
-      <%/%>
-    </p>
-    <p>
-      STDERR:<br/>
-      <%? response.stderr %><textarea class="form-control" rows="3" readonly="true"><%= response.stderr %></textarea><%/%>
-      <%? isJSON(response.stderr) %>
-        STDERR (AS JSON):<br/ >
-        <%= _.prettyJSON(response.stderr) %>
-      <%/%>
-    </p>
+
+    <%= include("runbooks/_stdout", {label: "STDOUT", str: response.stdout}) %>
+    <%= include("runbooks/_stdout", {label: "STDERR", str: response.stderr}) %>
 
   </div>
 </div>

@@ -1,0 +1,18 @@
+
+<!--
+variables:
+* label - either STDOUT or STDERR
+* str - the actual contents to display
+-->
+
+<p><%= label %>: (<%= str.length %> byte<%? str.length !== 1 %>s<%/%>)</p>
+
+<%? str %>
+  <p>
+    <textarea class="form-control" rows="3" readonly="true"><%= str %></textarea>
+  </p>
+  <%? isJSON(str) %>
+    <p><%= label %> (AS JSON):</p>
+    <p><%= _.prettyJSON(str) %></p>
+  <%/%>
+<%/%>
