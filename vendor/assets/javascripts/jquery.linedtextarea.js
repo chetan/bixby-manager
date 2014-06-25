@@ -40,10 +40,7 @@
 		 * kept up to the current system
 		 */
 		var fillOutLines = function(codeLines, h, lineNo, totalLines){
-			while ( (codeLines.height() - h ) <= 0 ){
-				if (lineNo > totalLines) {
-					return lineNo;
-				}
+			while ( lineNo <= totalLines ) {
 				if ( lineNo == opts.selectedLine )
 					codeLines.append("<div class='lineno lineselect'>" + lineNo + "</div>");
 				else
@@ -66,7 +63,6 @@
 
 			/* Turn off the wrapping of as we don't want to screw up the line numbers */
 			textarea.attr("wrap", "off");
-			textarea.css({resize:'none'});
 			var originalTextAreaWidth	= textarea.outerWidth();
 
 			/* Wrap the text area in the elements we need */
@@ -115,17 +111,25 @@
 
 
 			/* Should the textarea get resized outside of our control */
-			textarea.resize( function(tn){
-				var domTextArea	= $(this)[0];
-				linesDiv.height( domTextArea.clientHeight + 6 );
+			// workaround for a lack of a resize event on textareas using the native resize control
+			// via http://stackoverflow.com/a/7055239
+			textarea.data('x', textarea.outerWidth());
+			textarea.data('y', textarea.outerHeight());
+			textarea.on("mousemove mouseup", function(tn) {
+				var $this = jQuery(this);
+				if ($this.outerWidth() != $this.data('x') || $this.outerHeight() != $this.data('y')) {
+					linesDiv.height( $this[0].clientHeight + 6 );
+				}
+				$this.data('x', $this.outerWidth());
+				$this.data('y', $this.outerHeight());
 			});
 
 		});
 	};
 
-  // default options
-  $.fn.linedtextarea.defaults = {
-  	selectedLine: -1,
-  	selectedClass: 'lineselect'
-  };
+	// default options
+	$.fn.linedtextarea.defaults = {
+		selectedLine: -1,
+		selectedClass: 'lineselect'
+	};
 })(jQuery);
