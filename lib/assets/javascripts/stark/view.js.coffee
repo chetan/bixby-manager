@@ -150,7 +150,11 @@ class Stark.View extends Backbone.View
   render_html: ->
     tpl = @jst()
     return "" if not @template? or not tpl
-    @create_template(tpl).render(@)
+    try
+      return @create_template(tpl).render(@)
+    catch ex
+      @log "error while rendering template '#{@template}': #{ex.message}"
+      throw ex
 
   # Get or set the view's html.
   #
@@ -354,7 +358,12 @@ class Stark.View extends Backbone.View
     if ! tpl_content?
       @error "failed to locate to locate tpl:", tpl
       return "ERROR: MISSING TPL"
-    return @create_template(tpl_content).render(data)
+
+    try
+      return @create_template(tpl_content).render(data)
+    catch ex
+      @log "error while rendering template '#{tpl}': #{ex.message}"
+      throw new Error("failed to include '#{tpl}'")
 
   # Create a partial, setup its events, and return the HTML
   #
