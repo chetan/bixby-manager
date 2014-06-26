@@ -133,6 +133,58 @@ class Stark.State
   validate: ->
     return true
 
+  render: ->
+    @log "render"
+    current_state = @app.current_state
+    _.each @views, (v) =>
+
+      if current_state? && _.include(current_state.views, v) && v.prototype.reuse == true
+        @log "not going to redraw #{v.name}"
+        @_views.push _.find(current_state._views, (i) -> i instanceof v)
+        return
+
+      if !v?
+        @log "null view in #{@name}: ", @views
+        throw new Error("Encountered an undefined view class in state #{@name}")
+
+      @begin_closed_group("creating view #{@name}::#{v.name}")
+      view = new v()
+      view.app = @app
+      view.state = @
+
+      # copy state data into view
+      view.set "current_user", @current_user
+      _.each @_data, (obj, key) ->
+        view.set key, obj
+
+      view.render()
+      @_views.push view
+      @end_group()
+
+    if @url? && (!@params? || @params.changeURL == true || window.location.hash)
+      # there was a previous state, update browser url
+      # does not fire when using back/forward buttons as params.changeURL will be false
+
+      if window.location.hash
+        # a little hack to clear out the hash no matter what
+        # may need to revisit this later
+        history.replaceState({}, document.title, window.location.pathname)
+
+      url = @create_url()
+      if url == false
+        @log "no url change due to missing param"
+      else
+        @log "updating url: ", url
+        @app.router.changeURL url
+
+      window.scroll(0, 0)
+    else
+      @log "no url change"
+
+    @activate()
+    @app.current_state = @
+    @app.trigger("state:activate", @)
+
   # This is called by Stark when this state becomes active (transitioning TO),
   # after all data has been loaded and views have been rendered.
   #
