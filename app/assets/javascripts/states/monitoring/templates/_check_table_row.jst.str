@@ -9,6 +9,13 @@
              });
              %>
 
+
+             <% if ((commands.get(check.get("command_id"))).location === "remote" || (commands.get(check.get("command_id"))).location === "any") { %>
+                Run check from host => <%= hosts.get(check.get("runhost_id")).name() %>
+             <%
+             };
+             %>
+
         </td>
         <td>
         <a class="edit btn btn-primary btn-large" role="button">Edit Check</a>
