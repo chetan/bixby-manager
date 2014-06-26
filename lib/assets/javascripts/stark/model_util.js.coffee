@@ -45,6 +45,10 @@ class Stark.ModelUtil
     else
       return false
 
-    @id = @[id] if set_id
+    if set_id
+      @id = @[id]
+      # need to set() as well due to a change in backbone 1.1.1 (isNew() now relies on has("id"))
+      # this is probably more correct anyway
+      @set {id: @id}
 
     return true
