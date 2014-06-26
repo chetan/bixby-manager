@@ -1,4 +1,6 @@
 
+<% this.value = this.value || null; %>
+
 <%= include("main/_text_input", {
       name: opt_key,
       label: Bixby.model.Command.opt_name(opt_key, opt_hash),
