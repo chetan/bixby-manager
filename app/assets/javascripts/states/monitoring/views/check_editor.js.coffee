@@ -40,17 +40,25 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       _.each command.get("options"), (opt_hash, opt_key) ->
         args[opt_key] = @$("input##{opt_key}").val()
 
-      # set runhost if exists
-      if @$("#runhost").length > 0
-        @check.set { agent_id: @$("#runhost").val() }
-        # this is a workaround because the .set below clears the change event, see here: http://stackoverflow.com/questions/5072435/backbone-js-not-registering-model-haschanged-event
-        if @check.hasChanged()
-          @check.save()
-
       @check.set {
           args: args
       }
 
+      # set runhost if exists
+      if @$("#runhost").length > 0
+
+        if @check.get("agent_id") != parseInt(@$("#runhost").val())
+          @check.set { agent_id: @$("#runhost").val() }
+          # this is a workaround because the .set below clears the change event, see here:
+          # http://stackoverflow.com/questions/5072435/backbone-js-not-registering-model-haschanged-event
+          if @check.hasChanged()
+            @check.save()
+            @hide_editor()
+            @parent.parent.redraw()
+        if @check.hasChanged()
+          @check.save()
+          @hide_editor()
+          @parent.parent.redraw()
 
       @hide_editor()
 
