@@ -46,10 +46,9 @@ class Stark.App
 
     # cleanup template namespace
     # removes /templates/ from the middle of the path string to make
-    # referencing in views a bit [c]leaner
+    # referencing in views a bit cleaner
     #
     # also removes templates/ from the start
-    t = @
     r = /\/templates\//
     s = /^templates\//
     _.each _.keys(JST), (k) ->
@@ -180,18 +179,17 @@ class Stark.App
     # load data into state, retrieve models which are missing
     needed = state.load_data(state_data)
     if needed? && needed.length > 0
-      app = @
-      Backbone.multi_fetch needed, {initial_load: true}, (err, results) ->
+      Backbone.multi_fetch needed, {initial_load: true}, (err, results) =>
         if err and err.status >= 400 and err.status < 500
           # session timeout
-          app.redir = [ state_name, state_data ]
+          @redir = [ state_name, state_data ]
           state.dispose() # trash state we were building
-          app.redir_to_login()
+          @redir_to_login()
           return
 
-        app.render_views(state)
-        app.end_group()
-        app.stop_timer(timer_name)
+        @render_views(state)
+        @end_group()
+        @stop_timer(timer_name)
 
     else
       @render_views(state)
