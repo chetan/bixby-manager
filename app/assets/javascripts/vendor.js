@@ -35,6 +35,8 @@
 // charting libs
 //= require "chart/dygraph"
 
+//= require "bootstrap_modal_patch"
+
 // not used currently
 // require "chart/d3.v2"
 // require "chart/cubism.v1"
