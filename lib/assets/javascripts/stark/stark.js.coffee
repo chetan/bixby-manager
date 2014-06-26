@@ -152,12 +152,9 @@ class Stark.App
     if @current_state instanceof target_state
       # TODO - verify params? models? some other way to make sure
       # its really the *same* state
+      # maybe just url since each state should have a unique url?
       @log "same state, should we cancel transition?"
       # return
-
-    # save a copy for possible redir
-    old_state_data = {}
-    _.extend old_state_data, state_data
 
     state_data or= {}
     if @data?
@@ -168,16 +165,13 @@ class Stark.App
       @bootstrap_data = @data
       @data = null
 
-    state = new @states[state_name]()
-    state.app = @
-    state.bind_app_events()
-    state.params = state_data.params if state_data.params?
-
     state_data.current_user = @current_user
     @log "got state_data", state_data
 
+    state = new @states[state_name](@, state_data)
+
     # load data into state, retrieve models which are missing
-    needed = state.load_data(state_data)
+    needed = state.missing_data
     if needed? && needed.length > 0
       Backbone.multi_fetch needed, {initial_load: true}, (err, results) =>
         if err and err.status >= 400 and err.status < 500

@@ -57,10 +57,16 @@ class Stark.State
   className: ->
     /(\w+)\(/.exec(this.constructor.toString())[1]
 
-  constructor: ->
+  constructor: (app, data) ->
     # internal attributes
     @_data  = {}
     @_views = []
+
+    return if !app?
+
+    @app = app
+    @missing_data = @load_data(data)
+    @bind_app_events()
 
   # Transition to another state
   #
@@ -74,7 +80,9 @@ class Stark.State
   # Copy state_data into the local scope
   # Return an array of any missing models so they can be loaded
   load_data: (data) ->
+    @params       = data.params
     @current_user = data.current_user
+
     needed = []
 
     # copy data into state scope
