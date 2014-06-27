@@ -7,6 +7,17 @@
     <form role="form">
 
       <div class="form-group">
+        <label for="host">Select host(s) to run on</label>
+
+        <select id="hosts" class="form-control" multiple="true">
+          <option></option>
+          <% hosts.each(function(h) { %>
+            <option value="<%= h.id %>"><%= h.name() %></option>
+          <% }); %>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label for="command">Select a command to execute</label>
         <select id="command" class="form-control" data-placeholder="List of commands">
           <option></option>
@@ -27,6 +38,7 @@
       <div class="form-group start_hidden detail">
       </div>
 
+      <label>Configure</label>
       <div class="form-group">
         <button id="args"   class="btn btn-default btn-xs toggle" type="button">Arguments <%i plus-circle %></button>
         <button id="stdin"  class="btn btn-default btn-xs toggle" type="button">STDIN <%i plus-circle %></button>
@@ -46,17 +58,6 @@
       <div class="form-group start_hidden env">
         <label for="env_input">ENV</label>
         <textarea id="env_input" rows="3" class="form-control"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="host">Select host(s) to run on</label>
-
-        <select id="hosts" class="form-control" multiple="true">
-          <option></option>
-          <% hosts.each(function(h) { %>
-            <option value="<%= h.id %>"><%= h.name() %></option>
-          <% }); %>
-        </select>
       </div>
 
       <div class="form-group">
