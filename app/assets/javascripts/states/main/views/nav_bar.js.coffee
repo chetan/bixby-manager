@@ -43,8 +43,8 @@ namespace "Bixby.view", (exports, top) ->
       "state:activate": (state) ->
         if state.tab? and state.tab != @current_tab
           $("ul.nav li.tab").removeClass("active")
-          if @current_tab = state.tab
-            $("ul.nav li.tab.#{@current_tab}").addClass("active")
+          @current_tab = state.tab
+          $("ul.nav li.tab.#{@current_tab}").addClass("active")
 
     impersonate: (user_id) ->
       return if !@true_user.can("impersonate_users")
