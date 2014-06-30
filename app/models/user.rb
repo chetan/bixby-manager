@@ -61,11 +61,11 @@ class User < ActiveRecord::Base
          :confirmable, :lockable, :timeoutable, :encryptable,
          :authentication_keys => [ :username ]
 
-  has_and_belongs_to_many :roles, :join_table => :users_roles
+  has_and_belongs_to_many :roles, -> { includes :role_permissions }, :join_table => :users_roles
   has_many :user_permissions, -> { includes :permissions }
   # has_many :permissions, :through => :user_permissions
 
-  belongs_to :org
+  belongs_to :org, -> { includes :tenant }
   multi_tenant :via => :org
 
   def self.find_for_authentication(tainted_conditions)

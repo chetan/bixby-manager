@@ -197,6 +197,9 @@ GEM
     bson (2.0.0)
     bson (2.0.0-java)
     builder (3.2.2)
+    bullet (4.11.3)
+      activesupport (>= 3.0.0)
+      uniform_notifier (>= 1.6.0)
     cane (2.6.1)
       parallel
     capistrano (2.15.5)
@@ -530,6 +533,7 @@ GEM
     uglifier (2.4.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    uniform_notifier (1.6.2)
     vegas (0.1.11)
       rack (>= 1.0.0)
     warden (1.2.3)
@@ -565,6 +569,7 @@ DEPENDENCIES
   bixby-common
   bootstrap-sass (~> 3.1.1)
   brakeman
+  bullet
   cane
   capistrano (~> 2.0)
   coffee-rails-source-maps

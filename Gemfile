@@ -137,6 +137,7 @@ group :development do
     gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20]
     gem "awesome_print", :github => "michaeldv/awesome_print" # to fix error with mongoid/bson
     gem "coffee-rails-source-maps"
+    gem "bullet"
 
     # rails debugging helpers
     gem "letter_opener"

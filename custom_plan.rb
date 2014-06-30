@@ -1,10 +1,11 @@
 require 'zeus/rails'
 
-module Mongoid
-  def self.running_with_passenger?
-    false
-  end
-end
+# disabled due to conflict with 'bullet' gem
+# module Mongoid
+#   def self.running_with_passenger?
+#     false
+#   end
+# end
 
 class CustomPlan < Zeus::Rails
 
