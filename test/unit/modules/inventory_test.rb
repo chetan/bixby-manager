@@ -31,11 +31,8 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
       (t >= now+10 || t <= now+11) && job.klass = Bixby::Inventory && job.method == :update_facts
     }
 
-    ip = "4.4.4.4"
-    http_req = mock_ip(ip)
-
     hostname = "foo.example.com"
-    ret = Bixby::Inventory.new(http_req).register_agent({
+    ret = Bixby::Inventory.new.register_agent({
       :uuid => "foo", :public_key => "bar",
       :hostname => hostname,
       :tenant => org.tenant.name,
@@ -63,7 +60,6 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     host = Host.where("hostname = ?", hostname).first
     assert host, "host created"
     assert_equal hostname, host.hostname, "hostname is set"
-    assert_equal ip, host.ip, "ip is set"
 
     assert_equal 3, host.tags.size
     assert_equal 3, host.tags.find_all{ |t| t.name =~ /new|foo|bar/ }.size
@@ -73,10 +69,9 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
 
   def test_validation_failure
     org = FactoryGirl.create(:org)
-    http_req = mock_ip("4.4.4.4")
 
     assert_throws(Bixby::API::Error) do
-      Bixby::Inventory.new(http_req).register_agent({
+      Bixby::Inventory.new.register_agent({
         :uuid => "foo",
         :tenant => org.tenant.name,
         :password => "test"
@@ -147,16 +142,6 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
 
     assert_api_requests
   end
-
-
-  private
-
-  def mock_ip(ip)
-    http_req = mock()
-    http_req.expects(:ip).returns(ip).once()
-    return http_req
-  end
-
 
 end
 end

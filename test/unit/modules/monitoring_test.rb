@@ -301,9 +301,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
       }
     end
 
-    http_req = mock()
-    http_req.expects(:ip).returns("4.4.4.4").once()
-    ret = Bixby::Inventory.new(http_req).register_agent({
+    ret = Bixby::Inventory.new.register_agent({
       :uuid => "foo", :public_key => "bar",
       :hostname => "foo.example.com",
       :tenant => org.tenant.name,
