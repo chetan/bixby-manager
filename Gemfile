@@ -207,7 +207,7 @@ group :test do
   gem "activerecord-jdbcsqlite3-adapter", "~> 1.3.0", :platforms => "jruby"
 
   # for testing mongo metrics driver
-  # gem 'mongoid', "~> 4.0"
+  gem 'mongoid', "~> 4.0"
 
   gem "resque"
   gem "resque-scheduler", :require => ["resque-scheduler"]

@@ -329,6 +329,11 @@ GEM
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mock_redis (0.13.2)
+    mongoid (4.0.0)
+      activemodel (~> 4.0)
+      moped (~> 2.0.0)
+      origin (~> 2.1)
+      tzinfo (>= 0.3.37)
     mono_logger (1.1.0)
     moped (2.0.0)
       bson (~> 2.2)
@@ -355,6 +360,7 @@ GEM
     oj (2.9.8)
     open4 (1.3.4)
     optionable (0.2.0)
+    origin (2.1.1)
     orm_adapter (0.5.0)
     parallel (1.0.0)
     pg (0.17.1)
@@ -595,6 +601,7 @@ DEPENDENCIES
   mixlib-shellout
   mocha
   mock_redis
+  mongoid (~> 4.0)
   multi_json
   mysql2
   newrelic-curb!
