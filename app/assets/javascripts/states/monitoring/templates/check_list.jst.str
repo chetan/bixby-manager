@@ -19,9 +19,7 @@
     </tr>
   </thead>
   <tbody>
-
-	<%= each_partial(checks, "check", _bvm.CheckTableRow) %>
-
+	 <%= each_partial(checks, "check", _bvm.CheckTableRow) %>
   </tbody>
 </table>
 

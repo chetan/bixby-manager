@@ -15,10 +15,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       # delete
       "click button.delete": (e) ->
         @hide_editor()
-        v = @
-        v.check.destroy()
-        v.hide_editor()
-        v.parent.parent.redraw()
+        @check.destroy()
+        @hide_editor()
+        @parent.parent.redraw()
 
       # save (on enter)
       "keyup input.alias": (e) ->
