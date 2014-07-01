@@ -87,7 +87,7 @@ gem "activemodel-globalid", :github => "chetan/activemodel-globalid", :branch =>
 
 # uncomment if you are using resque in production
 # gem "resque"
-# gem "resque-scheduler", :require => ["resque_scheduler"]
+# gem "resque-scheduler", :require => ["resque-scheduler"]
 
 gem "sidekiq", "~> 2.9"
 gem "slim", "~> 1.3.0"                        # for sidekiq web ui
