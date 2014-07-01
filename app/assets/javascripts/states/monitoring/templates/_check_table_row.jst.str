@@ -1,8 +1,7 @@
 <tr>
   <td><%= check.get("name")%></td>
   <td>
-    <%= check.args_str(commands.get(check.get("command_id"))) %>
-
+    <%= check.args_str(commands.get(check.get("command_id")), hosts.get(check.get("runhost_id"))) %>
   </td>
   <td width="160">
     <a class="edit btn btn-primary btn-large" role="button"> &nbsp Edit &nbsp </a>
