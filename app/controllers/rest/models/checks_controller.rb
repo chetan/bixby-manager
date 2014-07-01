@@ -40,4 +40,14 @@ class Rest::Models::ChecksController < ::Rest::ApiController
     restful check.destroyed?
   end
 
+  def update
+    check = Check.find(_id)
+    check.args = params[:args]
+
+    check.agent_id = params[:agent_id]
+    check.save
+
+    restful check
+  end
+
 end

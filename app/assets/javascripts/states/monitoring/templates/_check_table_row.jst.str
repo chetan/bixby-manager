@@ -1,0 +1,21 @@
+<tr>
+        <td><%= check.get("name")%></td>
+        <td>
+             <% _.each(commands.get(check.get("command_id")).get("options"), function(opt_hash, opt_key) { %>
+                <%? check.get("args")[opt_key] %>
+                       <%= opt_hash["name"] + " => " %><%= check.get("args")[opt_key] %><br/>
+                <%/%>
+             <%
+             });
+             %>
+
+        </td>
+        <td>
+        <a class="edit btn btn-primary btn-large" role="button">Edit Host</a>
+        </td>
+        <td>
+
+        <button type="button" id="delete_check" class="btn btn-danger btn-large" host_id="<%= host.get('id') %>" check_id="<%= check.get('id') %>">Delete Check</button>
+
+        </td>
+</tr>
