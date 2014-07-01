@@ -14,8 +14,7 @@
     <tr>
       <th>Name</th>
       <th>Arguments</th>
-      <th>Edit</th>
-      <th>Delete</th>
+      <th>Edit / Delete </th>
     </tr>
   </thead>
   <tbody>
