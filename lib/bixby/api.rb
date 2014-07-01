@@ -1,4 +1,6 @@
 
+require "bixby/api/json_response"
+require "bixby/api/command_response"
 require "bixby/api/agent_exception"
 require "bixby/api/redis_api_channel"
 require "bixby/api/agent_registry"

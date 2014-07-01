@@ -37,7 +37,7 @@ class Repo < ActiveRecord::Base
   end
 
   def self.for_org(id)
-    where(:org_id => [nil, id])
+    where(:org_id => [nil, id]).includes(:org)
   end
 
   def path

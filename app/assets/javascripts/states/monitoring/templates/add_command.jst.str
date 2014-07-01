@@ -14,7 +14,9 @@
       <div class="command_opts">
       </div>
 
-      <button type="button" id="submit_check" class="btn btn-primary">Configure Check(s)</button>
+      <div class="form-group">
+        <button type="button" id="submit_check" class="btn btn-primary">Configure Check(s)</button>
+      </div>
 
     </form>
 

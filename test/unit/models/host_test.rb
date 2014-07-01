@@ -143,7 +143,7 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
     assert_equal h.org, u.org
     assert_equal 2, Host.all.size
 
-    hosts = Host.all_for_user(u)
+    hosts = Host.for_user(u)
     assert_equal 1, hosts.size
     assert_equal 1, Host.for_user(u).size
     assert_equal h, hosts.first

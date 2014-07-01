@@ -42,6 +42,7 @@ gem 'bixby-common'
 # gem 'bixby-common', :path => "../common"
 
 gem 'curb', '~> 0.8'
+gem 'rubyntlm' # just to silence an annoying warning in httpi
 
 gem "semver2"
 
@@ -69,7 +70,7 @@ gem "git", "= 1.2.5"
 gem "sshkey"
 
 # rails plugins
-gem "acts-as-taggable-on"
+gem "acts-as-taggable-on", "~> 3.1.0"
 gem "acts_as_tree"      # replace with closure_tree (better perf)?
 gem "delete_paranoid", :github => "socialcast/delete_paranoid"
 
@@ -86,7 +87,7 @@ gem "activemodel-globalid", :github => "chetan/activemodel-globalid", :branch =>
 
 # uncomment if you are using resque in production
 # gem "resque"
-# gem "resque-scheduler", :require => ["resque_scheduler"]
+# gem "resque-scheduler", :require => ["resque-scheduler"]
 
 gem "sidekiq", "~> 2.9"
 gem "slim", "~> 1.3.0"                        # for sidekiq web ui
@@ -98,7 +99,7 @@ gem 'bixby-api_pool', :github => 'chetan/bixby-api_pool'
 
 # uncomment if using mongo for metrics storage
 # warning: you *really* shouldn't use this in production
-# gem 'mongoid', :github => "mongoid/mongoid" # use git/master for rails4 support
+# gem 'mongoid', "~> 4.0"
 
 
 group :assets do
@@ -137,6 +138,7 @@ group :development do
     gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20]
     gem "awesome_print", :github => "michaeldv/awesome_print" # to fix error with mongoid/bson
     gem "coffee-rails-source-maps"
+    gem "bullet"
 
     # rails debugging helpers
     gem "letter_opener"
@@ -205,9 +207,9 @@ group :test do
   gem "activerecord-jdbcsqlite3-adapter", "~> 1.3.0", :platforms => "jruby"
 
   # for testing mongo metrics driver
-  gem 'mongoid', :github => "mongoid/mongoid" # use git/master for rails4 support
+  gem 'mongoid', "~> 4.0"
 
   gem "resque"
-  gem "resque-scheduler", :require => ["resque_scheduler"]
+  gem "resque-scheduler", :require => ["resque-scheduler"]
 
 end

@@ -6,7 +6,7 @@ namespace "Bixby.view", (exports, top) ->
     el: "div.body"
 
     links:
-      "a#forgot": [ "forgot" ]
+      "a#forgot": "forgot"
 
     app_events:
       "state:activate": ->

@@ -25,7 +25,7 @@
 
 class Command < ActiveRecord::Base
 
-  belongs_to :repo
+  belongs_to :repo, -> { includes :org }
   belongs_to :bundle
   multi_tenant :via => :repo
 
@@ -43,7 +43,8 @@ class Command < ActiveRecord::Base
   #
   # @return [Command]
   def self.from_command_spec(spec)
-    repo = Repo.where(:name => spec.repo).first
+    repo = spec.repo =~ /^(\d+)_(.*)$/ ? $2 : spec.repo
+    repo = Repo.where(:name => repo).first
     bundle = Bundle.where(:repo_id => repo.id, :path => spec.bundle).first
     where(:repo_id => repo.id, :bundle_id => bundle.id, :command => spec.command).first
   end
@@ -63,7 +64,7 @@ class Command < ActiveRecord::Base
   end
 
   def self.for_repos(repos)
-    where(:repo_id => repos.map{|r| r.id})
+    where(:repo_id => repos.map{|r| r.id}).includes(:bundle, :repo)
   end
 
   def self.for_monitoring

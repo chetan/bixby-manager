@@ -52,6 +52,7 @@ Bixby::Application.routes.draw do
     resources :repos
     resources :commands do
       get "opts"
+      post "run"
     end
 
     resources :users do
@@ -110,6 +111,9 @@ Bixby::Application.routes.draw do
   get "/repository/new" => "repository#new"
   get "/repository/:id" => "repository#show"
 
+  get "/runbooks" => "runbooks/base#index"
+  namespace :runbooks do
+  end
 
   ##############################################################################
   # MISC

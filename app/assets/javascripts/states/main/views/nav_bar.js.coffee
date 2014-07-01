@@ -6,13 +6,14 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/nav_bar"
 
     links:
-      "a.navbar-brand": [ "inventory" ]
-      ".tab.inventory a": [ "inventory" ]
-      ".tab.monitoring a": [ "monitoring" ]
-      ".tab.repository a": [ "repository" ]
+      "a.navbar-brand":    "inventory"
+      ".tab.inventory  a": "inventory"
+      ".tab.monitoring a": "monitoring"
+      ".tab.runbooks   a": "runbooks"
+      ".tab.repository a": "repository"
 
       # user menu
-      "a#profile": [ "profile" ]
+      "a#profile":         "profile"
 
     events:
       "click a": (e) ->
@@ -42,8 +43,8 @@ namespace "Bixby.view", (exports, top) ->
       "state:activate": (state) ->
         if state.tab? and state.tab != @current_tab
           $("ul.nav li.tab").removeClass("active")
-          if @current_tab = state.tab
-            $("ul.nav li.tab.#{@current_tab}").addClass("active")
+          @current_tab = state.tab
+          $("ul.nav li.tab.#{@current_tab}").addClass("active")
 
     impersonate: (user_id) ->
       return if !@true_user.can("impersonate_users")

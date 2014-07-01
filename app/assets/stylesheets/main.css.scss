@@ -56,3 +56,23 @@ div.markdown {
 .lowercase {
   text-transform: lowercase;
 }
+
+pre.prettyjson {
+  .string { color: green; }
+  .number { color: darkorange; }
+  .boolean { color: blue; }
+  .null { color: magenta; }
+  .key { color: red; }
+}
+
+.start_hidden {
+  display: none;
+}
+
+// used by bootstrap_modal_patch.js
+.scrollbar-measure {
+  height: 100px;
+  overflow: scroll;
+  position: absolute;
+  top: -9999px;
+}

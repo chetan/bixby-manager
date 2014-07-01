@@ -7,6 +7,10 @@ Bixby::Application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
+  # cache_classes includes Rack::Lock which forces us into a single-threaded environment
+  # disable it so we can work properly with the agent in an async manner
+  config.middleware.delete "Rack::Lock"
+
   # Do not eager load code on boot.
   config.eager_load = false
 
@@ -58,4 +62,17 @@ Bixby::Application.configure do
 
   # Show the logging configuration on STDOUT
   config.show_log_configuration = true
+
+  # bullet config
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    # Bullet.growl = true
+    Bullet.rails_logger = true
+    Bullet.alert = false
+    Bullet.add_footer = false
+    # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
+  end
+
 end

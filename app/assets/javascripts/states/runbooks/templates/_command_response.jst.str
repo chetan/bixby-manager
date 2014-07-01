@@ -1,0 +1,15 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= host.name() %></h3>
+  </div>
+  <div class="panel-body">
+    <p>TIME: <%= moment(response.log.requested_at).format("HH:mm:ss L") %></p>
+    <p>ELAPSED TIME: <%= response.log.time_taken %>s</p>
+    <p>EXIT CODE: <%= response.status %> (<%= status_str() %>)</p>
+
+    <%= include("runbooks/_stdout", {label: "STDOUT", str: response.stdout}) %>
+    <%= include("runbooks/_stdout", {label: "STDERR", str: response.stderr}) %>
+
+  </div>
+</div>

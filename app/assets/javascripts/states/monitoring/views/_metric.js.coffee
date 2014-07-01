@@ -5,11 +5,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     className: "metric"
     template: "monitoring/_metric"
 
-    links: {
+    links:
       "div.metric a.metric": [ "mon_hosts_metric", (el) ->
           return { host: @host, check: @check, metric: @metric }
         ]
-    }
 
     after_render: ->
       @metric.graph = Bixby.monitoring.render_metric(@$el, @metric, {})

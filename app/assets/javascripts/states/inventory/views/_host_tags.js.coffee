@@ -8,6 +8,5 @@ namespace "Bixby.view.inventory", (exports, top) ->
     template: "inventory/_host_tag_link"
     tagName: "li"
 
-    links: {
+    links:
       "a": [ "inv_search", (el) -> { query: "tag:#{@tag}" } ]
-    }

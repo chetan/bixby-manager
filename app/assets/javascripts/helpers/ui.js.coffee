@@ -29,10 +29,20 @@ _.isScrolledIntoView = (el, partial) ->
 #
 # @return [String] icon html, e.g., <i class="fa fa-circle"></i>
 _.icon = (icon, clazz) ->
+  icon = icon.trim()
   c = "fa fa-#{icon}"
   if clazz?
     c += " " + clazz
   "<i class='#{c}'></i>"
+
+# Toggle a class on the given element, e.g., remove if present, else add
+_.toggleClass = (el, clazz) ->
+  btn = $(el)
+  if btn.hasClass(clazz)
+    btn.removeClass(clazz)
+  else
+    btn.addClass(clazz)
+
 
 # Add disabled class to given el
 _.disable = (el) ->
@@ -54,3 +64,26 @@ _.undim = (el) ->
   if !el.length?
     el = $(el)
   el.css({"background-color": el[0]._bg_color, "opacity": 1})
+
+# Convert the given JSON string into a pretty-printed <pre> block
+# via http://stackoverflow.com/a/7220510
+_.prettyJSON = (json) ->
+  obj = if _.isString(json)
+    JSON.parse(json)
+  else
+    json
+  json = JSON.stringify(obj, undefined, 2)
+  json = json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  json = json.replace /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) ->
+    cls = "number"
+    if /^"/.test(match)
+      if /:$/.test(match)
+        cls = "key"
+      else
+        cls = "string"
+    else if /true|false/.test(match)
+      cls = "boolean"
+    else cls = "null"  if /null/.test(match)
+    "<span class=\"" + cls + "\">" + match + "</span>"
+
+  return "<pre class='prettyjson'>" + json + "</pre>"

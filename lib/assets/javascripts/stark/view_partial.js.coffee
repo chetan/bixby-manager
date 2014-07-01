@@ -55,9 +55,9 @@ class Stark.Partial extends Stark.View
 
     # since html is being requested, setup a hook in the parent view
     # to make sure that any events will be correctly bound after loading
-    p = @
-    @add_render_hook ->
-      p.post_render()
+    @add_render_hook =>
+      @post_render()
+      @after_render()
 
     return @$el.html()
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140606235428) do
+ActiveRecord::Schema.define(version: 20140701153652) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -310,7 +310,8 @@ ActiveRecord::Schema.define(version: 20140606235428) do
   add_index "taggings", ["tag_id"], name: "fk_taggings_tags1", using: :btree
 
   create_table "tags", force: true do |t|
-    t.string "name"
+    t.string  "name"
+    t.integer "taggings_count", default: 0
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree

@@ -58,7 +58,7 @@ class UiController < ApplicationController
     return if !true_user || !true_user.can?("impersonate_users")
     MultiTenant.with(nil) {
       bootstrap true_user, :name => :true_user
-      bootstrap User.all, :type => User
+      bootstrap User.all.includes(:org, :roles, :user_permissions), :type => User
     }
   end
 

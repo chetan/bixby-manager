@@ -42,4 +42,20 @@ class Rest::Models::CommandsController < ::Rest::ApiController
     restful command
   end
 
+  def run
+    agents        = Agent.where(:host_id => params[:hosts])
+    command       = Command.find(_id(:command_id)).to_command_spec
+
+    command.args  = params[:args]   if !params[:args].blank?
+    command.stdin = params[:stdin]  if !params[:stdin].blank?
+    command.env   = params[:env]    if !params[:env].blank?
+
+    results = {}
+    agents.each do |agent|
+      results[agent.host_id] = Bixby::RemoteExec.new(request, nil, current_user).exec(agent, command)
+    end
+
+    restful results
+  end
+
 end

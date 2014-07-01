@@ -85,12 +85,9 @@ class Host < ActiveRecord::Base
   # @param [User] user
   #
   # @return [Array<Host>]
-  def self.all_for_user(user)
+  def self.for_user(user)
     return nil if user.nil?
     where(:org_id => user.org)
-  end
-  class << self
-    alias_method :for_user, :all_for_user
   end
 
   # Search for hosts matching the given terms

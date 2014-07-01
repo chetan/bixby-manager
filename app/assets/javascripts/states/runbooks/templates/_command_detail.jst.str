@@ -1,0 +1,66 @@
+
+<label>Details</label>
+
+<div class="panel panel-default">
+
+  <%? command.get("desc") %>
+    <div class="panel-body">
+      <p><%- command.get("desc") %></p>
+    </div>
+  <%/%>
+
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>Bundle</td>
+        <td><%= command.get("bundle").path %></td>
+      </tr>
+      <tr>
+        <td>Command</td>
+        <td><%= command.get("command") %></td>
+      </tr>
+
+      <%? !_.isEmpty(command.get("options")) %>
+        <tr class="active">
+          <td colspan="2">Options</td>
+        </tr>
+
+        <% _.each(command.get("options"), function(opt, name) { %>
+
+        <tr>
+          <td><%= name %></td>
+          <td>
+            <table class="table table-condensed">
+              <tbody>
+                <tr>
+                  <td>Name</td>
+                  <td><%= opt.name %></td>
+                </tr>
+                <tr>
+                  <td>Desc</td>
+                  <td><%= opt.desc %></td>
+                </tr>
+                <tr>
+                  <td>Type</td>
+                  <td><%= opt.type %></td>
+                </tr>
+                <tr>
+                  <td>Default</td>
+                  <td><%= opt.default %></td>
+                </tr>
+                <tr>
+                  <td>Required</td>
+                  <td><%= opt.required %></td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <% }); %>
+      <%/%>
+
+    </tbody>
+  </table>
+
+</div>

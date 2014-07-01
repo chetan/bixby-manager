@@ -46,10 +46,9 @@ class Stark.App
 
     # cleanup template namespace
     # removes /templates/ from the middle of the path string to make
-    # referencing in views a bit [c]leaner
+    # referencing in views a bit cleaner
     #
     # also removes templates/ from the start
-    t = @
     r = /\/templates\//
     s = /^templates\//
     _.each _.keys(JST), (k) ->
@@ -153,12 +152,9 @@ class Stark.App
     if @current_state instanceof target_state
       # TODO - verify params? models? some other way to make sure
       # its really the *same* state
+      # maybe just url since each state should have a unique url?
       @log "same state, should we cancel transition?"
       # return
-
-    # save a copy for possible redir
-    old_state_data = {}
-    _.extend old_state_data, state_data
 
     state_data or= {}
     if @data?
@@ -169,110 +165,61 @@ class Stark.App
       @bootstrap_data = @data
       @data = null
 
-    state = new @states[state_name]()
-    state.app = @
-    state.bind_app_events()
-    state.params = state_data.params if state_data.params?
-
     state_data.current_user = @current_user
     @log "got state_data", state_data
 
+    state = new @states[state_name](@, state_data)
+
     # load data into state, retrieve models which are missing
-    needed = state.load_data(state_data)
-    if needed? && needed.length > 0
-      app = @
-      Backbone.multi_fetch needed, {initial_load: true}, (err, results) ->
-        if err and err.status >= 400 and err.status < 500
-          # session timeout
-          app.redir = [ state_name, state_data ]
-          state.dispose() # trash state we were building
-          app.redir_to_login()
-          return
+    needed = state.missing_data
+    if !(needed? && needed.length > 0)
+      @change_state(state, timer_name)
+      return true
 
-        app.render_views(state)
-        app.end_group()
-        app.stop_timer(timer_name)
+    # load needed day before continuing
+    Backbone.multi_fetch needed, {initial_load: true}, (err, results) =>
+      if err and err.status >= 400 and err.status < 500
+        # session timeout
+        @redir = [ state_name, state_data ]
+        state.dispose() # trash state we were building
+        @redir_to_login()
+        return
 
-    else
-      @render_views(state)
-      @end_group()
-      @stop_timer(timer_name)
+      @change_state(state, timer_name)
 
     true
 
-  # Copy all data from state into the view
+  # Change to the given state
   #
   # @param [State] state
-  # @param [View] view
-  copy_data_from_state: (state, view) ->
-    _.each state._data, (obj, key) ->
-      view.set key, obj
-
-  # Render the State
-  #
-  # @param [State] state
-  render_views: (state) ->
-    @log "render_views "
+  change_state: (state, timer_name) ->
+    @log "change_state()"
 
     if @current_state?
       @trigger("state:deactivate", @current_state)
       @current_state.deactivate()
       @current_state.dispose(state)
 
-    if state.validate() != true
-      # short-circuit this state
-      @log "new state validation failed, canceling activation", state
-      @trigger("state:deactivate", state)
-      state.deactivate()
-      state.dispose(state)
-      return
-
-    # create views
-    _.eachR @, state.views, (v) ->
-
-      if @current_state? && _.include(@current_state.views, v) && v.prototype.reuse == true
-        @log "not going to redraw #{v.name}"
-        state._views.push _.find(@current_state._views, (i) -> i instanceof v)
+    try
+      if state.validate() != true
+        # short-circuit this state
+        @log "new state validation failed, canceling activation", state
+        @trigger("state:deactivate", state)
+        state.deactivate()
+        state.dispose(state)
         return
 
-      if !v?
-        @log "null view in #{state.name}: ", state.views
-        throw new Error("Encountered an undefined view class in state #{state.name}")
+      state.render()
 
-      @begin_closed_group("creating view #{state.name}::#{v.name}")
-      view = new v()
-      view.set "current_user", @current_user
-      @copy_data_from_state state, view
-      view.app = @
-      view.state = state
-      view.render()
-      state._views.push view
+    catch ex
+      # log and re-raise so it's seen at the top level in the console (not hidden in a group)
+      @log "caught exception"
+      @log ex
+      throw ex
+
+    finally
       @end_group()
-
-    if state.url? && (!state.params? || state.params.changeURL == true || window.location.hash)
-      # there was a previous state, update browser url
-      # does not fire when using back/forward buttons as params.changeURL will be false
-
-      if window.location.hash
-        # a little hack to clear out the hash no matter what
-        # may need to revisit this later
-        history.replaceState({}, document.title, window.location.pathname)
-
-      url = state.create_url()
-      if url == false
-        @log "no url change due to missing param"
-      else
-        @log "updating url: ", url
-        @router.changeURL url
-
-      window.scroll(0, 0)
-    else
-      @log "no url change"
-
-    state.activate()
-    @current_state = state
-    @trigger("state:activate", state)
-
+      @stop_timer(timer_name)
 
   # Method used by Server-side template to bootstrap any models
   # on the first hit. Can be called multiple times

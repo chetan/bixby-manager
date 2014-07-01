@@ -3,6 +3,7 @@
 //= require "jquery_patch"
 //= require "jquery.putcursoratend"
 //= require "jquery.appear"
+//= require "jquery.linedtextarea"
 
 //= require "underscore"
 //= require "underscore_patch"
@@ -33,6 +34,8 @@
 
 // charting libs
 //= require "chart/dygraph"
+
+//= require "bootstrap_modal_patch"
 
 // not used currently
 // require "chart/d3.v2"
