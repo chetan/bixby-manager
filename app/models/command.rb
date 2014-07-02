@@ -23,6 +23,8 @@
 #     * **`repo_id`**
 #
 
+require "rails_ext"
+
 class Command < ActiveRecord::Base
 
   belongs_to :repo, -> { includes :org }

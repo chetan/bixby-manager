@@ -30,6 +30,8 @@
 #     * **`command_id`**
 #
 
+require "rails_ext"
+
 class Check < ActiveRecord::Base
 
   belongs_to :host

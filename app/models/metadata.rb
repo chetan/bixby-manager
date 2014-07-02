@@ -14,6 +14,8 @@
 # **`source`**        | `integer`          | `default(1), not null`
 #
 
+require "bixby/util"
+
 class Metadata < ActiveRecord::Base
 
   module Type

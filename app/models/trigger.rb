@@ -25,6 +25,8 @@
 #     * **`metric_id`**
 #
 
+require "bixby/util"
+
 # status: OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT
 
 # Describes a threshold for some check or metric

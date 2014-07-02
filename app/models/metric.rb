@@ -27,6 +27,8 @@
 #     * **`tag_hash`**
 #
 
+require "bixby/util"
+
 class Metric < ActiveRecord::Base
 
   module Status

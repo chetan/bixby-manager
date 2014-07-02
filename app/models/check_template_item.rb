@@ -22,6 +22,8 @@
 #     * **`command_id`**
 #
 
+require "rails_ext"
+
 class CheckTemplateItem < ActiveRecord::Base
   belongs_to :check_template
   belongs_to :command

@@ -19,6 +19,8 @@
 #     * **`trigger_id`**
 #
 
+require "bixby/util"
+
 class Action < ActiveRecord::Base
 
   module Type

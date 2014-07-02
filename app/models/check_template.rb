@@ -21,6 +21,8 @@
 #     * **`org_id`**
 #
 
+require "bixby/util"
+
 class CheckTemplate < ActiveRecord::Base
 
   has_many :items, :class_name => "CheckTemplateItem", :dependent => :destroy

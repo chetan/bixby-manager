@@ -29,6 +29,7 @@
 #
 
 require "semver"
+require "bixby/util"
 
 class Agent < ActiveRecord::Base
 
