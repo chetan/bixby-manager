@@ -1,5 +1,5 @@
 
-class Rest::Models::HostsController < ::Rest::ApiController
+class Rest::Models::HostsController < ::Rest::BaseController
 
   def index
     query = params[:q] || params[:query]

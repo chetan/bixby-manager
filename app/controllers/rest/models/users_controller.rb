@@ -1,5 +1,5 @@
 
-class Rest::Models::UsersController < ::Rest::ApiController
+class Rest::Models::UsersController < ::Rest::BaseController
 
   def index
     users = User.where(:org_id => current_user.org_id)

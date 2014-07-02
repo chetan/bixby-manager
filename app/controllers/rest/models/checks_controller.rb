@@ -1,5 +1,5 @@
 
-class Rest::Models::ChecksController < ::Rest::ApiController
+class Rest::Models::ChecksController < ::Rest::BaseController
 
   def index
     host = Host.find(params[:host_id])

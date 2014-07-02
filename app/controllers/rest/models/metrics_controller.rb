@@ -1,5 +1,5 @@
 
-class Rest::Models::MetricsController < ::Rest::ApiController
+class Rest::Models::MetricsController < ::Rest::BaseController
 
   # List all metrics for the host
   # GET "/rest/hosts/3/metrics"

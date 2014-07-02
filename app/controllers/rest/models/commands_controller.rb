@@ -1,5 +1,5 @@
 
-class Rest::Models::CommandsController < ::Rest::ApiController
+class Rest::Models::CommandsController < Rest::BaseController
 
   def index
     type = params[:type]

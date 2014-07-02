@@ -1,5 +1,5 @@
 
-class Rest::Models::AgentsController < ::Rest::ApiController
+class Rest::Models::AgentsController < ::Rest::BaseController
 
   def index
     restful Agent.where(:host_id => Host.for_user(current_user))

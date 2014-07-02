@@ -1,5 +1,5 @@
 
-class Rest::Models::OnCallsController < ::Rest::ApiController
+class Rest::Models::OnCallsController < ::Rest::BaseController
 
   def index
     restful OnCall.where(:org_id => current_user.org_id)

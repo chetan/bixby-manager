@@ -1,5 +1,5 @@
 
-class Rest::Models::AnnotationsController < ::Rest::ApiController
+class Rest::Models::AnnotationsController < ::Rest::BaseController
 
   def index
     if params[:name] then

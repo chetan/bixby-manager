@@ -1,5 +1,5 @@
 
-class Rest::Models::CheckTemplatesController < ::Rest::ApiController
+class Rest::Models::CheckTemplatesController < ::Rest::BaseController
 
   def index
     restful CheckTemplate.where(:org_id => current_user.org_id)
