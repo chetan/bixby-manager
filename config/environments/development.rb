@@ -9,7 +9,10 @@ Bixby::Application.configure do
 
   # cache_classes includes Rack::Lock which forces us into a single-threaded environment
   # disable it so we can work properly with the agent in an async manner
-  config.middleware.delete "Rack::Lock"
+  #
+  # leaving this disabled all the time causes severe issues when multiple concurrent requests (ajax)
+  # are being executed. logging fails for some reason, and the occasional error is thrown
+  # config.middleware.delete "Rack::Lock"
 
   # Do not eager load code on boot.
   config.eager_load = false

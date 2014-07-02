@@ -11,4 +11,6 @@ if ::Rails.env == "development" then
       return ActiveSupport::Logger::SimpleFormatter.new
     end
   end
+
+  # ActiveSupport::Dependencies.log_activity = true
 end
