@@ -107,6 +107,7 @@ class ApplicationController < ActionController::Base
   # @param [Object] obj
   # @return [String]
   def to_api(obj)
+    logger.debug { "TO_API " + (obj.respond_to?(:first) ? obj.first.class.name : obj.class.name) }
     ApiView::Engine.render(obj, self).html_safe
   end
 
@@ -155,6 +156,8 @@ class ApplicationController < ActionController::Base
       name = type.to_s.underscore
 
     end
+
+    logger.debug { "BOOTSTRAP #{name} (#{type})" }
 
     @bootstrap << {
       :name  => name.to_s,
