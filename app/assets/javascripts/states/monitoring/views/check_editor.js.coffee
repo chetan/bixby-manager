@@ -20,10 +20,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         @parent.parent.redraw()
 
       # save (on enter)
-      "keyup input.alias": (e) ->
+      "keypress input#command_name, input#ps_command, input#ps_regex,
+      input#alert_when_command_not_found, input#host, input#port, input#interfaces": (e) ->
         if e.keyCode == 13
           e.preventDefault()
           @save_edits()
+          return false
 
     show: ->
       @$el.modal("show")
