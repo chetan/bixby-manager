@@ -45,9 +45,6 @@ test:
       hosts:
         - localhost:27017
       options:
-        consistency: :strong
-        # In the test environment we lower the retries and retry interval to
-        # low amounts for fast failures.
         max_retries: 1
         retry_interval: 0
 EOF
