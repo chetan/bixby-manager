@@ -69,7 +69,7 @@ class Command < ActiveRecord::Base
     where(:repo_id => repos.map{|r| r.id}).includes(:bundle, :repo)
   end
 
-  def self.for_monitoring
-    where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
+  def self.for_monitoring(user)
+    for_user(user).where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
   end
 end

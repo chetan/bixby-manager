@@ -6,7 +6,7 @@ class Rest::Models::CommandsController < Rest::BaseController
     repo_id = _id(:repo, true)
 
     if type == "monitoring" then
-      commands = Command.where("command LIKE 'monitoring/%' OR command LIKE 'nagios/%'")
+      commands = Command.for_monitoring(current_user)
     elsif repo_id
       commands = Command.where(:repo_id => repo_id)
     else
