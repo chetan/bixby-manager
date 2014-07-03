@@ -56,24 +56,15 @@
       </div>
 
 
-      <!-- OK, WARNING, CRITICAL, UNKNOWN, TIMEOUT -->
+      <!-- STATUS -->
       <div class="form-group">
         <label class="control-label" title="The selected statuses will cause this trigger to fire">Status</label>
-        <label class="checkbox inline">
-          <input type="checkbox" class="trigger_status" value="OK"> OK
-        </label>
-        <label class="checkbox inline">
-          <input type="checkbox" class="trigger_status" value="WARNING" checked="true"> WARNING
-        </label>
-        <label class="checkbox inline">
-          <input type="checkbox" class="trigger_status" value="CRITICAL"> CRITICAL
-        </label>
-        <label class="checkbox inline">
-          <input type="checkbox" class="trigger_status" value="UNKNOWN" checked="true"> UNKNOWN
-        </label>
-        <label class="checkbox inline">
-          <input type="checkbox" class="trigger_status" value="TIMEOUT" checked="true"> TIMEOUT
-        </label>
+
+        <%= include("main/_checkbox", {clazz: "trigger_status", name: "OK"}) %>
+        <%= include("main/_checkbox", {clazz: "trigger_status", name: "WARNING", checked: true}) %>
+        <%= include("main/_checkbox", {clazz: "trigger_status", name: "CRITICAL"}) %>
+        <%= include("main/_checkbox", {clazz: "trigger_status", name: "UNKNOWN", checked: true}) %>
+        <%= include("main/_checkbox", {clazz: "trigger_status", name: "TIMEOUT", checked: true}) %>
       </div>
 
 

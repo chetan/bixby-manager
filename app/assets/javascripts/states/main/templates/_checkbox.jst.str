@@ -1,0 +1,12 @@
+<%
+// this.name - required
+this.clazz   = this.clazz || "";
+this.value   = this.value || this.name;
+this.checked = this.checked || false;
+%>
+<div class="checkbox">
+  <label>
+    <input type="checkbox" class="<%= clazz %>" value="<%= value %>" <%? checked %>checked=true<%/%>>
+    <%= name %>
+  </label>
+</div>
