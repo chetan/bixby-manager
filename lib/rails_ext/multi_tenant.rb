@@ -5,12 +5,13 @@ require "active_model"
 
 require "request_store"
 
+require "rails_ext/multi_tenant/exception"
+require "rails_ext/multi_tenant/model"
+require "rails_ext/multi_tenant/controller"
+
 
 # Super simple multi-tenant access controls
 module MultiTenant
-
-  class AccessException < Exception
-  end
 
   class << self
 
@@ -67,107 +68,6 @@ module MultiTenant
     end
     alias_method :with, :with_tenant
 
-  end
-
-  # Included into ActiveRecord::Base, this is where security checks occur
-  module ModelExtensions
-    extend ActiveSupport::Concern
-    module ClassMethods
-
-      # Mark the model as being part of a multi-tenant system. Enforces
-      # the tenant security model.
-      def multi_tenant(opts={})
-
-        model = (opts.delete(:model) || :tenant).to_sym
-
-        if opts.include? :via then
-          define_method model do
-            via = self.send(opts[:via])
-            return nil if via.nil?
-            return via.send(model)
-          end
-
-        elsif respond_to? model or reflect_on_all_associations(:belongs_to).find{ |a| a.name == model } then
-          # just use the current accessor
-
-        else
-          raise "don't know how to locate #{model}"
-
-        end
-
-        self.after_find lambda { |rec|
-          return if rec.nil? or MultiTenant.current_tenant.nil?
-          curr_id = MultiTenant.current_tenant.id
-
-          multi_tenant_incr()
-
-          rec_tenant = rec.send(model)
-          if rec_tenant.nil? then
-            # if no tenant, then must be globally accessible
-            multi_tenant_decr()
-            return
-          end
-
-          other_id = rec_tenant.id
-          if curr_id != other_id then
-            # PANIC
-            multi_tenant_reset()
-            raise AccessException, "illegal access: tried to access tenant.id=#{other_id}; current_tenant.id=#{curr_id}"
-          end
-          multi_tenant_decr()
-        }
-
-      end # multi_tenant
-
-    end # ClassMethods
-
-    def multi_tenant_logger
-      Logging.logger[ActiveRecord::Base]
-    end
-
-    def multi_tenant_incr
-      return if !multi_tenant_logger.debug?
-      RequestStore[:multi_tenant_verify] ||= 0
-      if (RequestStore[:multi_tenant_verify] += 1) == 1 then
-        multi_tenant_logger.debug { "MULTI_TENANT CHECK {" }
-      end
-    end
-
-    def multi_tenant_reset
-      return if !multi_tenant_logger.debug?
-      RequestStore[:multi_tenant_verify] = 0
-    end
-
-    def multi_tenant_decr
-      return if !multi_tenant_logger.debug?
-      if (RequestStore[:multi_tenant_verify] -= 1) <= 0 then
-        multi_tenant_logger.debug { "} # MULTI_TENANT OK" }
-      end
-    end
-
-  end # ModelExtensions
-
-  # Included into ActionController::Base to allow easy access to the
-  # current_tenant
-  module ControllerExtensions
-    def multi_tenant
-      self.class_eval do
-        helper_method :current_tenant
-        after_filter :clear_current_tenant
-
-        private
-
-        # helper method to have the current_tenant available in the controller
-        def current_tenant
-          MultiTenant.current_tenant
-        end
-
-        # Clear current tenant after the request is completed
-        def clear_current_tenant
-          MultiTenant.current_tenant = nil
-        end
-      end
-    end
   end
 
 end
