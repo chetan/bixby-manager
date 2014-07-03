@@ -32,17 +32,6 @@ class Rest::BaseController < UiController
   # Handle any thrown exception and return a proper response
   def catch_exceptions
 
-    $stdout.puts "HI"
-    STDOUT.puts "HI"
-    STDOUT.puts "HI"
-    STDOUT.puts "HI"
-    STDOUT.puts "HI"
-    STDOUT.flush
-    logger.warn STDOUT.inspect
-    Logging.reopen
-    logger.warn logger.inspect
-    logger.warn logger.parent.appenders.inspect
-
     begin
       yield
     rescue Exception => ex
