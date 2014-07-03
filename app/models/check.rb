@@ -38,7 +38,8 @@ class Check < ActiveRecord::Base
   belongs_to :agent
   belongs_to :command
 
-  has_many :metrics
+  has_many :metrics, :inverse_of => :check
+  has_many :metric_infos, :through => :command
 
   acts_as_paranoid
   multi_tenant :via => :host
@@ -50,11 +51,6 @@ class Check < ActiveRecord::Base
   # @return [Org]
   def org
     self.host.org
-  end
-
-  # Get a list of MetricInfo that this check provides
-  def metric_infos
-    @metric_infos ||= MetricInfo.where(:command_id => self.command_id)
   end
 
 end

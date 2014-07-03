@@ -29,6 +29,8 @@ class Command < ActiveRecord::Base
 
   belongs_to :repo, -> { includes :org }
   belongs_to :bundle
+  has_many :metric_infos
+
   multi_tenant :via => :repo
 
   acts_as_paranoid

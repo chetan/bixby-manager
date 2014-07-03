@@ -38,7 +38,7 @@ module Bixby
         end
 
         # attach metric info
-        mi = ::MetricInfo.for(obj.check.command, hash[:key]).first
+        mi = obj.check.metric_infos.find{ |f| f.metric == hash[:key] }
         if not mi.blank? then
           hash[:name]  = mi.name
           hash[:desc]  = mi.desc

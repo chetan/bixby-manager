@@ -7,7 +7,7 @@ class Rest::Models::ChecksController < ::Rest::BaseController
     if params[:metric_id] then
       ret = Metric.find(params[:metric_id].to_i).check
     else
-      ret = Check.where(:host_id => host)
+      ret = Check.where(:host_id => host).includes(:command)
     end
 
     restful ret
