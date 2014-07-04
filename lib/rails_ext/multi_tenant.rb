@@ -28,6 +28,10 @@ module MultiTenant
       RequestStore.store[:current_tenant]
     end
 
+    def pending_verification
+      RequestStore[:multi_tenant_pending] ||= []
+    end
+
     # Sets the current_tenant within the given block. Useful for temporarily
     # changing tenants (for tests, god mode, etc).
     #

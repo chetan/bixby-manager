@@ -96,6 +96,9 @@ class UiController < ApplicationController
   end
 
   def bail_from_ex(ex)
+    # when catching MultiTenant::AccessException a response may already have been rendered
+    # in that case, we need to override the response by nilling it out then redirecting
+    self.response_body = nil
     logger.warn(ex_to_s(ex))
     redirect_to url_for(:inventory)
   end

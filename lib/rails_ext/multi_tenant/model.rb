@@ -1,10 +1,10 @@
 
-
 module MultiTenant
 
   # Included into ActiveRecord::Base, this is where security checks occur
   module ModelExtensions
     extend ActiveSupport::Concern
+
     module ClassMethods
 
       # Mark the model as being part of a multi-tenant system. Enforces
@@ -30,53 +30,12 @@ module MultiTenant
 
         self.after_find lambda { |rec|
           return if rec.nil? or MultiTenant.current_tenant.nil?
-          curr_id = MultiTenant.current_tenant.id
-
-          multi_tenant_incr()
-
-          rec_tenant = rec.send(model)
-          if rec_tenant.nil? then
-            # if no tenant, then must be globally accessible
-            multi_tenant_decr()
-            return
-          end
-
-          other_id = rec_tenant.id
-          if curr_id != other_id then
-            # PANIC
-            multi_tenant_reset()
-            raise AccessException, "illegal access: tried to access tenant.id=#{other_id}; current_tenant.id=#{curr_id}"
-          end
-          multi_tenant_decr()
+          MultiTenant.pending_verification << [ rec, model ]
         }
 
       end # multi_tenant
 
     end # ClassMethods
-
-    def multi_tenant_logger
-      Logging.logger[ActiveRecord::Base]
-    end
-
-    def multi_tenant_incr
-      return if !multi_tenant_logger.debug?
-      RequestStore[:multi_tenant_verify] ||= 0
-      if (RequestStore[:multi_tenant_verify] += 1) == 1 then
-        multi_tenant_logger.debug { "MULTI_TENANT CHECK {" }
-      end
-    end
-
-    def multi_tenant_reset
-      return if !multi_tenant_logger.debug?
-      RequestStore[:multi_tenant_verify] = 0
-    end
-
-    def multi_tenant_decr
-      return if !multi_tenant_logger.debug?
-      if (RequestStore[:multi_tenant_verify] -= 1) <= 0 then
-        multi_tenant_logger.debug { "} # MULTI_TENANT OK" }
-      end
-    end
 
   end # ModelExtensions
 

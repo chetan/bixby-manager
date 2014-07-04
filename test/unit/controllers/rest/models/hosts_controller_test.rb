@@ -9,19 +9,13 @@ class Rest::Models::Hosts < TestCase
 
   def setup
     super
-    @agent = FactoryGirl.create(:agent)
-    @host = Host.first
-    BIXBY_CONFIG[:crypto] = true
-    ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
-
     # Create a user and sign him in
     @user = FactoryGirl.create(:user)
-    @user.org_id = @host.org_id
-    @user.save!
     sign_in @user
   end
 
   def test_index
+    sign_with_agent
 
     # add another host to make sure we get both back
     h = FactoryGirl.create(:host)
@@ -41,6 +35,7 @@ class Rest::Models::Hosts < TestCase
   end
 
   def test_show
+    sign_with_agent
     get :show, :id => @host.id
 
     assert @response
@@ -51,7 +46,49 @@ class Rest::Models::Hosts < TestCase
     host_assertions(data, @host)
   end
 
+  def test_tenant_security
+
+    h = FactoryGirl.create(:host)
+    assert h.respond_to? :tenant
+    assert h.tenant
+    assert_equal h.org.tenant, h.tenant
+
+    h2 = FactoryGirl.create(:host)
+    refute_equal h.tenant, h2.tenant
+
+    # now try to load h2 and fail
+    change_tenant(h.tenant)
+    get :show, :id => h2.id
+    assert_response 302
+    assert @response.headers["Location"] =~ %r{/inventory$}
+
+    # doesn't throw
+    change_tenant(h.tenant)
+    get :show, :id => h.id
+    assert_response 200
+
+    change_tenant(h2.tenant)
+    get :show, :id => h2.id
+    assert_response 200
+  end
+
+
   private
+
+  def change_tenant(tenant)
+    @user.org_id = tenant.orgs.first.id
+    @user.save
+    @user = ::User.find(@user.id)
+    # couldn't get sign_in/sign_out to work so just stub it out
+    @controller.expects(:current_user).returns(@user).at_least_once
+  end
+
+  def sign_with_agent
+    @agent = FactoryGirl.create(:agent)
+    @host = Host.first
+    BIXBY_CONFIG[:crypto] = true
+    ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
+  end
 
   def host_assertions(host, expected)
     p host
