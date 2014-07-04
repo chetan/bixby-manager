@@ -41,6 +41,18 @@ class Rest::Models::Annotations < TestCase
     assert_equal "joe", detail["user"]
   end
 
+  def test_index_limit
+    50.times do
+      Bixby::Metrics.new(nil, nil, @user).add_annotation("foobar", [], nil, "baz")
+    end
+
+    get :index
+    assert @response
+    assert_response 200
+    data = MultiJson.load(@response.body)
+    assert_equal 20, data.size
+  end
+
 
   private
 

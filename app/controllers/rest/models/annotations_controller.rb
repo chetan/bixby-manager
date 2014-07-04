@@ -8,9 +8,9 @@ class Rest::Models::AnnotationsController < ::Rest::BaseController
     end
 
     annotations = if params[:name] then
-      Annotation.where(:org_id => current_user.org.id, :name => params[:name])
+      Annotation.where(:org_id => current_user.org.id, :name => params[:name]).limit(20)
     else
-      Annotation.where(:org_id => current_user.org.id)
+      Annotation.where(:org_id => current_user.org.id).limit(20)
     end
 
     if !detail then
