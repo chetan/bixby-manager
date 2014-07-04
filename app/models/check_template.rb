@@ -29,6 +29,8 @@ class CheckTemplate < ActiveRecord::Base
   belongs_to :org
   multi_tenant :via => :org
 
+  default_scope { includes(:items => {:command => :repo}) }
+
   acts_as_paranoid
 
   module Mode

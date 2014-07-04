@@ -68,7 +68,10 @@ class Command < ActiveRecord::Base
   end
 
   def self.for_repos(repos)
-    where(:repo_id => repos.map{|r| r.id}).includes(:bundle, :repo)
+    if repos.respond_to?(:map) then
+      repos = repos.map{|r| r.id}
+    end
+    where(:repo_id => repos).includes(:bundle, :repo)
   end
 
   def self.for_monitoring(user)

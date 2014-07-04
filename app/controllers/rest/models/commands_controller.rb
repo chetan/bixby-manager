@@ -6,13 +6,12 @@ class Rest::Models::CommandsController < Rest::BaseController
     repo_id = _id(:repo, true)
 
     if type == "monitoring" then
-      commands = Command.for_monitoring(current_user)
+      Command.for_monitoring(current_user)
     elsif repo_id
-      commands = Command.where(:repo_id => repo_id)
+      Command.for_repos(repo_id)
     else
-      commands = Command.all.for_user(current_user)
+      Command.all.for_user(current_user)
     end
-    restful commands
   end
 
   def opts
