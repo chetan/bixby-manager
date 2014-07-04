@@ -3,9 +3,15 @@ class Rest::BaseController < UiController
 
   skip_before_filter :bootstrap_current_user
   skip_before_filter :bootstrap_users
-  around_action :catch_exceptions
+  around_action :restful_response
 
   private
+
+  # Override method from ActionController::ImplicitRender which will always try to render a template
+  # when returning from a controller action. We handle it below in #restful_response instead.
+  def default_render(*args)
+    # no-op
+  end
 
   # Check for a valid user session or API authentication header
   #
@@ -30,10 +36,14 @@ class Rest::BaseController < UiController
   end
 
   # Handle any thrown exception and return a proper response
-  def catch_exceptions
+  def restful_response
 
     begin
-      yield
+      res = yield
+      if !performed? then
+        return restful(res)
+      end
+
     rescue Exception => ex
       if ex.kind_of? MissingParam then
         return render(:text => ex.message, :status => 400)
