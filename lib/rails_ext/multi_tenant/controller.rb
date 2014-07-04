@@ -26,7 +26,7 @@ module MultiTenant
               rec, model = pending
               curr_id = MultiTenant.current_tenant.id
 
-              multi_tenant_incr()
+              multi_tenant_incr(rec)
 
               rec_tenant = rec.send(model)
               if rec_tenant.nil? then
@@ -56,11 +56,11 @@ module MultiTenant
           Logging.logger[ActiveRecord::Base]
         end
 
-        def multi_tenant_incr
+        def multi_tenant_incr(rec)
           return if !multi_tenant_logger.debug?
           RequestStore[:multi_tenant_verify] ||= 0
           if (RequestStore[:multi_tenant_verify] += 1) == 1 then
-            multi_tenant_logger.debug { "MULTI_TENANT CHECK {" }
+            multi_tenant_logger.debug { "MULTI_TENANT CHECK (#{rec.class}) {" }
           end
         end
 
