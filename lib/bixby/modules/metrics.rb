@@ -300,7 +300,7 @@ class Metrics < API
 
   # Get Metrics for the given checks
   def get_for_checks(checks, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
-    metrics = Metric.includes(:check).where(:check_id => checks).references(:checks).includes(:tags)
+    metrics = Metric.includes(:tags, :check => [:host, :command, {:metric_infos => :command}]).where(:check_id => checks).references(:checks)
 
     reqs = metrics.map do |metric|
       create_query(metric, start_time, end_time, tags, agg, downsample)

@@ -3,7 +3,7 @@ class Monitoring::TriggersController < Monitoring::BaseController
 
   def new
     host = Host.find(_id(:host_id))
-    checks = Check.where(:host_id => host.id).includes(:command => :repo, :metric_infos => :command, :metrics => :tags)
+    checks = Check.where(:host_id => host.id).includes(:host, :metric_infos, :command => :repo, :metrics => :tags)
     metrics = checks.inject([]){ |m, c| m += c.metrics }
 
     bootstrap host, checks, metrics
