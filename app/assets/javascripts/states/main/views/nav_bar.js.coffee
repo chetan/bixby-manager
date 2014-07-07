@@ -10,7 +10,7 @@ namespace "Bixby.view", (exports, top) ->
       ".tab.inventory  a": "inventory"
       ".tab.monitoring a": "monitoring"
       ".tab.runbooks   a": "runbooks"
-      ".tab.repository a": "repository"
+      ".tab.runbooks a.repositories": "repository"
 
       # user menu
       "a#profile":         "profile"

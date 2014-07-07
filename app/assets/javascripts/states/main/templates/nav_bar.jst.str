@@ -19,8 +19,15 @@
       <ul class="nav navbar-nav">
         <li class="tab inventory"><a>Inventory</a></li>
         <li class="tab monitoring"><a>Monitoring</a></li>
-        <li class="tab runbooks"><a>Runbooks</a></li>
-        <li class="tab repository"><a>Repository</a></li>
+        <li class="tab runbooks dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Runbooks
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="repositories">Repositories</a></li>
+          </ul>
+        </li>
       </ul>
 
 
