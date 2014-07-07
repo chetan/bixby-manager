@@ -3,7 +3,7 @@ namespace "Bixby.view", (exports, top) ->
 
   class exports.RepoRow extends Stark.Partial
 
-    template: "repository/_repo_row"
+    template: "runbooks/_repository_row"
 
     bindings:
       "#name": "name"
