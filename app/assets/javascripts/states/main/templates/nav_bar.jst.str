@@ -33,51 +33,7 @@
             <img class="gravatar" src="<%= current_user.gravatar() %>" alt="gravatar"/>
           </a>
           <ul class="dropdown-menu">
-
-
-            <% /* ================================ */ %>
-            <% /* show user impersonation controls */ %>
-            <% /* ================================ */ %>
-
-            <% if (true_user.can("impersonate_users")) { %>
-
-            <li class="pretend">
-              <select name="users" id="pretend" class="" style="padding-left:5px; width:96%;" data-placeholder="Impersonate user">
-                <option></option>
-
-                <% // display each user, grouped by tenant %>
-                <%
-                var t = null;
-                _.each(users.sortBy("tenant"), function(user) {
-                  if (user.g("tenant") !== t) {
-                    if (t !== null) { %></optgroup><% }
-                    t = user.g("tenant");
-                    %><optgroup label="<%= t %>"><%
-                  }
-                %>
-                  <option value="<%= user.id %>"
-                    <% if (is_impersonating() && user.id === current_user.id) { %> selected="true" <% } %>
-                    <% if (!is_impersonating() && user.id === true_user.id) { %> disabled="true" <% } %>
-                    ><%= user.get_name() %><% if (user.id === true_user.id) { %> (you)<% } %></option>
-                <% }); %>
-
-                </optgroup>
-              </select>
-            </li>
-
-            <% if (true_user.id !== current_user.id) { %>
-              <li class="disabled real"><a>Real User: <%= true_user.get_name() %></a></li>
-              <li><a id="stop_impersonating"><%= _.icon("ban", "red") %> Stop Impersonating</a></li>
-            <% } %>
-
-            <li class="divider"></li>
-
-            <%   /* ============================== */ %>
-            <% } /* if can impersonate_users       */ %>
-            <%   /* ============================== */ %>
-
-
-
+            <%= include("main/_user_impersonation") %>
             <li><a id="profile"><%= _.icon("user") %> Profile</a></li>
             <li><a id="logout"><%= _.icon("sign-out") %> Logout</a></li>
 
