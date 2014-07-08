@@ -25,7 +25,8 @@
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a class="repositories">Repositories</a></li>
+            <li><a class="run">Run a Command</a></li>
+            <li><a class="repositories">Manage Repositories</a></li>
           </ul>
         </li>
       </ul>

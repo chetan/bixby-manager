@@ -9,7 +9,7 @@ namespace "Bixby.view", (exports, top) ->
       "a.navbar-brand":    "inventory"
       ".tab.inventory  a": "inventory"
       ".tab.monitoring a": "monitoring"
-      ".tab.runbooks   a": "runbooks"
+      ".tab.runbooks a.run": "runbooks"
       ".tab.runbooks a.repositories": "repository"
 
       # user menu
