@@ -1,8 +1,8 @@
 
-class Bixby.Runbooks extends Stark.View
+class Bixby.RunCommand extends Stark.View
 
   el: "#content"
-  template: "runbooks/runbooks"
+  template: "runbooks/run_command"
 
   events:
     "change select#command": (e) ->
