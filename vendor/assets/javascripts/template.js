@@ -70,7 +70,7 @@
 			},
 			'-': function (js) {
 				// output js if defined
-				return 'if (' + js + '){__out__+=' + js + '}';
+				return 'if (typeof(' + js + ') !== "undefined" && ' + js + '){__out__+=' + js + '}';
 			},
 			'?': function (js) {
 				// open if block around js w/ test for not-null value
