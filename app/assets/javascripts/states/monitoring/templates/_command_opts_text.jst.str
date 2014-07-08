@@ -5,7 +5,7 @@
       name: opt_key,
       label: Bixby.model.Command.opt_name(opt_key, opt_hash),
       placeholder: (opt_hash["default"] ? "Default: " + opt_hash["default"] : null),
-      help: (!opt_hash["required"] ? "[Optional] " : "") + opt_hash["desc"],
+      help: (!opt_hash["required"] ? "[Optional] " : "") + (opt_hash["desc"] ? opt_hash["desc"] : ""),
       icon: (opt_hash["required"] ? "asterisk" : null),
       value: value
       }) %>
