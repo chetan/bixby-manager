@@ -13,7 +13,7 @@ class Monitoring::ChecksController < Monitoring::BaseController
 
   def new
     bootstrap Host.find(params[:host_id]), Host.for_user(current_user)
-    bootstrap Command.for_monitoring(), :name => "commands", :model => "MonitoringCommandList"
+    bootstrap Command.for_monitoring(current_user), :name => "commands", :model => "MonitoringCommandList"
 
     if params[:command_id] then
       command = Command.find(params[:command_id])
