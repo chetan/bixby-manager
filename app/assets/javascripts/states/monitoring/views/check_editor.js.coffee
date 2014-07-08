@@ -20,8 +20,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         @parent.parent.redraw()
 
       # save (on enter)
-      "keypress input#command_name, input#ps_command, input#ps_regex,
-      input#alert_when_command_not_found, input#host, input#port, input#interfaces": (e) ->
+      "keypress input": (e) ->
         if e.keyCode == 13
           e.preventDefault()
           @save_edits()
