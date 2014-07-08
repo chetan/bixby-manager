@@ -19,29 +19,36 @@ namespace 'Bixby.model', (exports, top) ->
 
     # Return args as a comma-separated string of "key = value" pairs
     args_str: (command, host) ->
-     # if a command argument is provided then we get the nice formatted output...
+      # if a command argument is provided then we get the nice formatted output...
       args = @get("args")
       if ! args
         return ""
 
       args_array = _.map(args, (val, key) ->
-        s = if !command then key + " = " else command.get("options")[key]["name"] + " => "
-        key_or_name_val = if !command then key else command.get("options")[key]["name"]
-        if _.contains(["password", "pass", "pw"], key_or_name_val)
+        s = if command
+          command.get("options")[key]["name"]
+        else
+          key
+        s += " = "
+
+        if _.contains(["password", "pass", "pw"], key)
           s += "[hidden]"
         else
-          s += if !command then val else val + "<br/>"
+          s += val
+
         return s
       )
 
-      unless !command
-        unless !host
-          s = "Run check from host => "
-          s += host.name()
-          if (command.location == "remote" || command.location == "any")
-             args_array.push s
+      if command && host
+        s = "Run check from host: "
+        s += host.name()
+        if (command.location == "remote" || command.location == "any")
+           args_array.push s
 
-      if !command then args_array.join(", ") else args_array.join(" ")
+      if command
+        return args_array.join("<br/>")
+      else
+        return args_array.join(", ")
 
 
     # Get list of metrics of for this check (same check id)
