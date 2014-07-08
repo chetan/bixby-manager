@@ -15,16 +15,16 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       # delete
       "click button.delete": (e) ->
         @hide_editor()
-        v = @
-        v.check.destroy()
-        v.hide_editor()
-        v.parent.parent.redraw()
+        @check.destroy()
+        @hide_editor()
+        @parent.parent.redraw()
 
       # save (on enter)
-      "keyup input.alias": (e) ->
+      "keypress input": (e) ->
         if e.keyCode == 13
           e.preventDefault()
           @save_edits()
+          return false
 
     show: ->
       @$el.modal("show")
@@ -40,17 +40,14 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       _.each command.get("options"), (opt_hash, opt_key) ->
         args[opt_key] = @$("input##{opt_key}").val()
 
-      # set runhost if exists
-      if @$("#runhost").length > 0
-        @check.set { agent_id: @$("#runhost").val() }
-        # this is a workaround because the .set below clears the change event, see here: http://stackoverflow.com/questions/5072435/backbone-js-not-registering-model-haschanged-event
-        if @check.hasChanged()
-          @check.save()
-
       @check.set {
           args: args
       }
 
+      # set runhost if exists
+      if @$("#runhost").length > 0
+        if @check.get("runhost_id") != @$("#runhost").val()
+          @check.set { runhost_id: @$("#runhost").val() }
 
       @hide_editor()
 

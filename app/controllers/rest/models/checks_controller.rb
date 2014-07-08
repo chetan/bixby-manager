@@ -44,7 +44,9 @@ class Rest::Models::ChecksController < ::Rest::BaseController
     check = Check.find(_id)
     check.args = params[:args]
 
-    check.agent_id = params[:agent_id]
+    host = Host.find(params[:runhost_id])
+
+    check.agent_id = host.agent.id
     check.save
 
     restful check

@@ -5,7 +5,10 @@
     <select name="runhost" id="runhost">
 
       <% hosts.each(function(h) { %>
-      <option value="<%= h.id %>"><%= h.name() %><%? host %><%? host.id == h.id %> [this host]<%/%><%/%></option>
+      <option value="<%= h.id %>"
+        <%? check && h.id == check.get("runhost_id") %> selected=true <%/%>>
+        <%= h.name() %><%? host %><%? host.id == h.id %> [this host]<%/%><%/%>
+      </option>
       <% }); %>
 
     </select>
