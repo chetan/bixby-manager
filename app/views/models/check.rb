@@ -8,7 +8,7 @@ module Bixby
       def self.convert(obj)
         hash = attrs(obj, :all)
         hash[:name] = obj.command.name
-
+        hash[:runhost_id] = obj.agent.host_id
         return hash
       end
 

@@ -1,5 +1,5 @@
 
 <!-- display check arguments -->
 <% if (check.has_args()) { %>
-  <h5 class="args">ARGS: <%= check.args_str() %></h5>
+  <h5 class="args">ARGS: <br/><%= check.args_str(commands.get(check.get("command_id")), hosts.get(check.get("runhost_id"))) %></h5>
 <% } %>

@@ -14,14 +14,11 @@
     <tr>
       <th>Name</th>
       <th>Arguments</th>
-      <th>Edit</th>
-      <th>Delete</th>
+      <th>Edit / Delete </th>
     </tr>
   </thead>
   <tbody>
-
-	<%= each_partial(checks, "check", _bvm.CheckTableRow) %>
-
+	 <%= each_partial(checks, "check", _bvm.CheckTableRow) %>
   </tbody>
 </table>
 

@@ -18,19 +18,31 @@ namespace 'Bixby.model', (exports, top) ->
       @get("args")? && !_.isEmpty(@get("args"))
 
     # Return args as a comma-separated string of "key = value" pairs
-    args_str: ->
+    args_str: (command, host) ->
+     # if a command argument is provided then we get the nice formatted output...
       args = @get("args")
       if ! args
         return ""
 
-      _.map(args, (val, key) ->
-        s = key + " = "
-        if _.contains(["password", "pass", "pw"], key)
+      args_array = _.map(args, (val, key) ->
+        s = if !command then key + " = " else command.get("options")[key]["name"] + " => "
+        key_or_name_val = if !command then key else command.get("options")[key]["name"]
+        if _.contains(["password", "pass", "pw"], key_or_name_val)
           s += "[hidden]"
         else
-          s += val
+          s += if !command then val else val + "<br/>"
         return s
-      ).join(", ")
+      )
+
+      unless !command
+        unless !host
+          s = "Run check from host => "
+          s += host.name()
+          if (command.location == "remote" || command.location == "any")
+             args_array.push s
+
+      if !command then args_array.join(", ") else args_array.join(" ")
+
 
     # Get list of metrics of for this check (same check id)
     filter_metrics: (metrics) ->
