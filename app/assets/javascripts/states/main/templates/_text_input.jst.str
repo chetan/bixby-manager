@@ -2,12 +2,13 @@
 <%
 // set some defaults
 // only name is required
-this.label = this.label || _.split_cap(name);
-this.title = this.title || null;
-this.type  = this.type  || "text";
-this.value = this.value || null;
-this.help  = this.help  || null;
-this.icon  = this.icon  || null;
+this.label       = this.label || _.split_cap(name);
+this.placeholder = this.placeholder || null;
+this.title       = this.title || null;
+this.type        = this.type  || "text";
+this.value       = this.value || null;
+this.help        = this.help  || null;
+this.icon        = this.icon  || null;
 %>
 
 <div class="form-group has-feedback">
@@ -18,6 +19,7 @@ this.icon  = this.icon  || null;
     id="<%= name %>"
     <%? title %>title="<%= title %>"<%/%>
     <%? value %>value="<%- value %>"<%/%>
+    <%? placeholder %>placeholder="<%- placeholder %>"<%/%>
     >
   <div class="valid <%= name %>"></div>
 
