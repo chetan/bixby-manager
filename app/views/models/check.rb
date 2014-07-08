@@ -9,6 +9,8 @@ module Bixby
         hash = attrs(obj, :all)
         hash[:name] = obj.command.name
         hash[:runhost_id] = obj.agent.host_id
+        hash[:runhost] = obj.agent.host
+        hash[:command] = obj.command
         return hash
       end
 

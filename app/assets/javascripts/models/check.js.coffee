@@ -18,11 +18,14 @@ namespace 'Bixby.model', (exports, top) ->
       @get("args")? && !_.isEmpty(@get("args"))
 
     # Return args as a comma-separated string of "key = value" pairs
-    args_str: (command, host) ->
+    args_str: () ->
       # if a command argument is provided then we get the nice formatted output...
       args = @get("args")
       if ! args
         return ""
+
+      command = new _bm.Command(@get("command"))
+      host    = new _bm.Host(@get("runhost"))
 
       args_array = _.map(args, (val, key) ->
         s = if command
