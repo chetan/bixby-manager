@@ -1,7 +1,7 @@
 
 #= require_tree "./views"
 
-Bixby.app.add_states { tab: "repository", views: [ _bv.PageLayout ] },
+Bixby.app.add_states { tab: "runbooks", views: [ _bv.PageLayout ] },
 
   "repository":
     url:    "repository"
