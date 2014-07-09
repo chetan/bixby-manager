@@ -103,24 +103,24 @@ gem 'bixby-api_pool', :github => 'chetan/bixby-api_pool'
 
 
 group :assets do
-    # asset related gems
-    gem 'sprockets-rails'
-    gem 'sass'
-    gem 'sass-rails', '~> 4.0.2'
-    gem 'bootstrap-sass', '~> 3.1.1'
-    gem 'sprockets-jst-str'
-    gem 'coffee-script'
-    gem 'coffee-script-source'
-    gem 'haml_assets'
-    gem 'uglifier'
-    gem 'font-awesome-rails'
-    gem 'sprockets-font_compressor', :require => false
+  # asset related gems
+  gem 'sprockets-rails'
+  gem 'sass'
+  gem 'sass-rails', '~> 4.0.2'
+  gem 'bootstrap-sass', '~> 3.1.1'
+  gem 'sprockets-jst-str'
+  gem 'coffee-script'
+  gem 'coffee-script-source'
+  gem 'haml_assets'
+  gem 'uglifier'
+  gem 'font-awesome-rails'
+  gem 'sprockets-font_compressor', :require => false
 
-    # execjs prefers ruby racer (needed by uglifier and coffee-script)
-    # added due to sudden segfaulting with nodejs driver
-    gem 'execjs'
-    gem 'therubyracer', :platforms => [:mri, :rbx]
-    gem 'therubyrhino', :platforms => [:jruby]
+  # execjs prefers ruby racer (needed by uglifier and coffee-script)
+  # added due to sudden segfaulting with nodejs driver
+  gem 'execjs'
+  gem 'therubyracer', :platforms => [:mri, :rbx]
+  gem 'therubyrhino', :platforms => [:jruby]
 end
 
 group :assets, :development do
@@ -130,48 +130,49 @@ end
 
 group :development do
 
-    gem "mysql2", :platforms => [:mri, :rbx]
-    gem "activerecord-jdbcmysql-adapter", "~> 1.3.0", :platforms => :jruby
-    gem "mongoid", "~> 4.0"
+  gem "mysql2", :platforms => [:mri, :rbx]
+  gem "activerecord-jdbcmysql-adapter", "~> 1.3.0", :platforms => :jruby
+  gem "mongoid", "~> 4.0"
 
-    # debugging
-    gem "debugger",     :platforms => [:mri_19, :mri_20]
-    gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20]
-    gem "awesome_print", :github => "michaeldv/awesome_print" # to fix error with mongoid/bson
-    gem "coffee-rails-source-maps"
-    gem "bullet"
+  # debugging
+  gem "debugger",     :platforms => [:mri_19, :mri_20]
+  gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20]
+  gem "awesome_print", :github => "michaeldv/awesome_print" # to fix error with mongoid/bson
+  gem "coffee-rails-source-maps"
+  gem "bullet"
 
-    # rails debugging helpers
-    gem "letter_opener"
-    gem "better_errors"
-    gem "binding_of_caller", :platforms => [:mri_19, :mri_20, :rbx] # used by better_errors for advanced features
-    gem "xray", :require => "xray/thread_dump_signal_handler"
-    gem "quiet_assets"
+  # rails debugging helpers
+  gem "letter_opener"
+  gem "better_errors"
+  gem "binding_of_caller", :platforms => [:mri_19, :mri_20, :rbx] # used by better_errors for advanced features
+  gem "xray", :require => "xray/thread_dump_signal_handler"
+  gem "quiet_assets"
 
-    # newrelic - don't require any gems, loaded in initializers/newrelic.rb
-    gem 'newrelic_rpm', :require => false
-    gem 'newrelic-redis', :require => false
-    gem 'newrelic_moped', :require => false
-    gem 'newrelic-curb', :github => "red5studios/newrelic-curb", :require => false
-    gem 'newrelic-middleware', :require => false
+  # newrelic - don't require any gems, loaded in initializers/newrelic.rb
+  gem 'newrelic_rpm', :require => false
+  gem 'newrelic-redis', :require => false
+  gem 'newrelic_moped', :require => false
+  gem 'newrelic-curb', :github => "red5studios/newrelic-curb", :require => false
+  gem 'newrelic-middleware', :require => false
 
-    # docs
-    gem "yard"
-    gem "redcarpet", :platforms => [:mri, :rbx]
-    gem "annotate", ">= 2.5.0"
+  # docs
+  gem "yard"
+  gem "redcarpet", :platforms => [:mri, :rbx]
+  gem "annotate", ">= 2.5.0"
 
-    # utils
-    gem "pry"
-    gem "pry-rails"
-    gem "marco-polo"
-    gem "sextant" # displays routes at http://localhost:3000/rails/routes in dev mode
-    gem "highline"
-    gem "ruby-termios"
-    gem "terminal-table"
+  # utils
+  gem "pry"
+  gem "pry-rails"
+  gem "marco-polo"
+  gem "sextant" # displays routes at http://localhost:3000/rails/routes in dev mode
+  gem "highline"
+  gem "ruby-termios"
+  gem "terminal-table"
 
-    # deployment
-    gem "capistrano",      "~>2.0", :require => false
-    gem "rvm-capistrano",           :require => false
+  # deployment
+  gem "capistrano",      "~>2.0", :require => false
+  gem "rvm-capistrano",           :require => false
+
 end
 
 group :test do
