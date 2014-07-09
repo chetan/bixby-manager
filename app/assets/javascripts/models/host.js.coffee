@@ -2,6 +2,7 @@
 namespace 'Bixby.model', (exports, top) ->
 
   class exports.Host extends Stark.Model
+    @key: "host"
     urlRoot: "/rest/hosts"
     params: [ { name: "host", set_id: true } ]
 
@@ -47,6 +48,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.HostList extends Stark.Collection
     model: exports.Host
+    @key: "hosts"
     url: ->
       s = "/rest/hosts"
       if @query

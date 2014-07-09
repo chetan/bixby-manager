@@ -2,6 +2,7 @@
 namespace 'Bixby.model', (exports, top) ->
 
   class exports.CheckTemplate extends Stark.Model
+    @key: "check_template"
     urlRoot: ->
       "/rest/check_templates"
 
@@ -21,4 +22,5 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.CheckTemplateList extends Stark.Collection
     model: exports.CheckTemplate
+    @key: "check_templates"
     url: -> "/rest/check_templates"

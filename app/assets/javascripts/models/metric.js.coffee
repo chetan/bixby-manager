@@ -3,6 +3,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.Metric extends Stark.Model
 
+    @key: "metric"
     params: [ { name: "metric", set_id: true }, "host" ]
 
     # List all metrics for the given check
@@ -80,6 +81,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.MetricList extends Stark.Collection
     model: exports.Metric
+    @key: "metrics"
     url: -> "/rest/hosts/#{@host_id}/metrics"
     params: [ "host" ]
 

@@ -3,6 +3,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.Trigger extends Stark.Model
 
+    @key: "trigger"
     urlRoot: ->
       "/rest/hosts/#{@host_id || @host.id}/triggers"
 
@@ -43,5 +44,6 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.TriggerList extends Stark.Collection
     model: exports.Trigger
+    @key: "triggers"
     url: -> "/rest/hosts/#{@host_id || @host.id}/triggers"
     params: [ "host" ]

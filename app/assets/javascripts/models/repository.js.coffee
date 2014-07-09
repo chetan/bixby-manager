@@ -2,6 +2,7 @@
 namespace 'Bixby.model', (exports, top) ->
 
   class exports.Repo extends Stark.Model
+    @key: "repo"
     urlRoot: "/rest/repos"
     params: [ { name: "repo", set_id: true } ]
 
@@ -25,6 +26,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.RepoList extends Stark.Collection
     model: exports.Repo
+    @key: "repos"
     url: "/rest/repos"
 
     comparator: (repo) ->

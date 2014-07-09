@@ -2,6 +2,7 @@
 namespace 'Bixby.model', (exports, top) ->
 
   class exports.Command extends Stark.Model
+    @key: "command"
     Backprop.create_strings @, "repo", "name", "desc", "location", "bundle", "command"
     Backprop.create @, "options"
 
@@ -63,6 +64,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.CommandList extends Stark.Collection
     model: exports.Command
+    @key: "commands"
     params: [ "repo" ]
     url: ->
       s = "/rest/commands"

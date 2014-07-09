@@ -2,6 +2,7 @@
 namespace 'Bixby.model', (exports, top) ->
 
   class exports.User extends Stark.Model
+    @key: "user"
     urlRoot: "/rest/users"
     Backprop.create_strings @, "name", "username", "email", "phone", "org", "tenant"
 
@@ -37,6 +38,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.UserList extends Stark.Collection
     model: exports.User
+    @key: "users"
     url: "/rest/users"
 
     comparator: (user) ->

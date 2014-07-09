@@ -3,6 +3,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.Check extends Stark.Model
 
+    @key: "check"
     urlRoot: ->
       s = "/rest/hosts/#{@host_id || @host.id}/checks"
 
@@ -64,6 +65,7 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.CheckList extends Stark.Collection
     model: exports.Check
+    @key: "checks"
     url: -> "/rest/hosts/#{@host_id || @host.id}/checks"
     params: [ "host" ]
 

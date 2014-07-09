@@ -90,7 +90,7 @@ class Stark.State
       @[key] = @_data[key] = obj
 
     # check for missing models
-    _.eachR @, @models, (model, key) ->
+    _.eachR @, @resolve_models(), (model, key) ->
       if _.isObject(model) && !@[key]
         # create new model to be fetched
         @[key] = @_data[key] = new model(data)
@@ -218,3 +218,17 @@ class Stark.State
   unbind_app_events: ->
     _.eachR @, @app_events, (cb, key) ->
       @app.unsubscribe(key, cb, @)
+
+  # Handle array form of @models
+  resolve_models: ->
+
+    if _.isArray(@models)
+      ret = {}
+      _.each @models, (model) ->
+        ret[model.key] = model
+
+      return ret
+
+    if _.isObject(@models)
+      return @models
+
