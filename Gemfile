@@ -132,6 +132,7 @@ group :development do
 
     gem "mysql2", :platforms => [:mri, :rbx]
     gem "activerecord-jdbcmysql-adapter", "~> 1.3.0", :platforms => :jruby
+    gem "mongoid", "~> 4.0"
 
     # debugging
     gem "debugger",     :platforms => [:mri_19, :mri_20]
@@ -205,9 +206,6 @@ group :test do
   # for using sqlite3 as db backend
   gem "sqlite3", :platforms => [:mri, :rbx]
   gem "activerecord-jdbcsqlite3-adapter", "~> 1.3.0", :platforms => "jruby"
-
-  # for testing mongo metrics driver
-  gem 'mongoid', "~> 4.0"
 
   gem "resque"
   gem "resque-scheduler", :require => ["resque-scheduler"]
