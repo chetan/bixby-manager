@@ -25,7 +25,7 @@ class Stark.Model extends Backbone.Model
 
   bound_views: null
 
-  @ajax_methods = {
+  @ajax_methods: {
     POST:   "create"
     PUT:    "update"
     PATCH:  "patch"
@@ -46,7 +46,7 @@ class Stark.Model extends Backbone.Model
   #
   # @return [String]
   className: ->
-    /(\w+)\(/.exec(this.constructor.toString())[1]
+    return @constructor.name || /(\w+)\(/.exec(this.constructor.toString())[1]
 
   ajax: (method, options) ->
     _.extend options, {

@@ -34,7 +34,7 @@ class Stark.Collection extends Backbone.Collection
   #
   # @return [String]
   className: ->
-    /(\w+)\(/.exec(this.constructor.toString())[1]
+    return @constructor.name || /(\w+)\(/.exec(this.constructor.toString())[1]
 
   # See Backbone.Collection#reset
   #
