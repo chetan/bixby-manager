@@ -34,6 +34,9 @@ module Bixby
                 if col =~ /_(key|token)$/ || col =~ /_?password$/ then
                   val = val.blank?() ? val : val[0,3] + "...[snip]"
                 elsif %w{string text}.include? col_type(rows, col) then
+                  if val.kind_of? Hash then
+                    val = MultiJson.dump(val)
+                  end
                   val = val.blank?() || val.length < 35 ? val : val[0,30] + "...[snip]"
                 end
               end
