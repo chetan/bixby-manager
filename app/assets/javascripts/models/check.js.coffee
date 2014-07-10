@@ -30,7 +30,12 @@ namespace 'Bixby.model', (exports, top) ->
 
       args_array = _.map(args, (val, key) ->
         s = if command
-          command.get("options")[key]["name"]
+          opts = command.get("options")
+          if opts && opts[key] && opts[key]["name"]
+            opts[key]["name"]
+          else
+            key
+
         else
           key
         s += " = "
