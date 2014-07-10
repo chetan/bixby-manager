@@ -11,7 +11,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "click #delete_check": (e) ->
         v = @
         @check.destroy success: (model, response) ->
-          # v.parent.redraw()
         v.transition "mon_view_host", {host: @host}
     }
 
