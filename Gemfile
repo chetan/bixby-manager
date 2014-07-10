@@ -132,7 +132,6 @@ group :development do
 
   gem "mysql2", :platforms => [:mri, :rbx]
   gem "activerecord-jdbcmysql-adapter", "~> 1.3.0", :platforms => :jruby
-  gem "mongoid", "~> 4.0"
 
   # debugging
   gem "debugger",     :platforms => [:mri_19, :mri_20]
@@ -173,6 +172,10 @@ group :development do
   gem "capistrano",      "~>2.0", :require => false
   gem "rvm-capistrano",           :require => false
 
+end
+
+group :development, :test do
+  gem "mongoid", "~> 4.0"
 end
 
 group :test do
