@@ -4,7 +4,7 @@ if Module.const_defined? :Sidekiq then
 
   Sidekiq::Logging.logger = Logging.logger[Sidekiq]
 
-  if Rails.env == "development" then
+  if Rails.env == "development" && Sidekiq.server? then
     # quiet sidekiq logs in dev mode
     Logging.logger.root.level = :info
   end
