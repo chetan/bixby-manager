@@ -58,20 +58,20 @@ module MultiTenant
 
         def multi_tenant_incr(rec)
           return if !multi_tenant_logger.debug?
-          RequestStore[:multi_tenant_verify] ||= 0
-          if (RequestStore[:multi_tenant_verify] += 1) == 1 then
+          RequestStore.store[:multi_tenant_verify] ||= 0
+          if (RequestStore.store[:multi_tenant_verify] += 1) == 1 then
             multi_tenant_logger.debug { "MULTI_TENANT CHECK (#{rec.class}) {" }
           end
         end
 
         def multi_tenant_reset
           return if !multi_tenant_logger.debug?
-          RequestStore[:multi_tenant_verify] = 0
+          RequestStore.store[:multi_tenant_verify] = 0
         end
 
         def multi_tenant_decr
           return if !multi_tenant_logger.debug?
-          if (RequestStore[:multi_tenant_verify] -= 1) <= 0 then
+          if (RequestStore.store[:multi_tenant_verify] -= 1) <= 0 then
             multi_tenant_logger.debug { "} # MULTI_TENANT OK" }
           end
         end
