@@ -76,14 +76,15 @@ Bixby::Application.configure do
   config.show_log_configuration = true
 
   # bullet config
+  require "rails_ext/bullet"
   config.after_initialize do
     Bullet.enable = true
     Bullet.bullet_logger = true
-    Bullet.console = true
-    # Bullet.growl = true
     Bullet.rails_logger = true
-    Bullet.alert = false
-    Bullet.add_footer = false
+    # Bullet.console = true
+    # Bullet.growl = true
+    # Bullet.alert = false
+    # Bullet.add_footer = false
     # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
   end
 
