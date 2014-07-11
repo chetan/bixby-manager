@@ -8,7 +8,8 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     events:
       "click a.edit": ->
-        @host_editor.show()
+        host_editor = @partial(exports.HostEditor, { host: @host })
+        host_editor.show()
 
       "click button.refresh-facts": (e) ->
         e.preventDefault()
@@ -26,8 +27,3 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     links:
       "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
-
-    render: ->
-      super
-      @host_editor = @partial(exports.HostEditor, { host: @host })
-      @
