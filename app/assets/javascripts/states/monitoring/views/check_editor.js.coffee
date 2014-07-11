@@ -28,9 +28,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     show: ->
       @$el.modal("show")
+      @$("select, input, textarea").first().focus()
 
     hide_editor: ->
       @$el.modal("hide")
+      @dispose()
 
     save_edits: ->
       args = {}
@@ -54,9 +56,3 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     after_render: ->
       @$el.modal({ show: false })
-      @$el.on "hidden.bs.modal", _.bindR @, -> @redraw()
-
-    dispose: ->
-      @$el.off "hidden"
-      @$el.off "shown"
-      super()
