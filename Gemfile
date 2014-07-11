@@ -167,6 +167,7 @@ group :development do
   gem "highline"
   gem "ruby-termios"
   gem "terminal-table"
+  gem "listen", "~> 2.0"
 
   # deployment
   gem "capistrano",      "~>2.0", :require => false

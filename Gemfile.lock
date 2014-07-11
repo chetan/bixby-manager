@@ -592,6 +592,7 @@ DEPENDENCIES
   immigrant
   json
   letter_opener
+  listen (~> 2.0)
   logging
   logging-rails!
   lograge

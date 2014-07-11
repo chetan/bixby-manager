@@ -2,17 +2,26 @@
 Bixby::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  # In the development environment your application's code is reloaded on
-  # every request. This slows down response time but is perfect for development
-  # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
-
   # cache_classes includes Rack::Lock which forces us into a single-threaded environment
   # disable it so we can work properly with the agent in an async manner
   #
-  # leaving this disabled all the time causes severe issues when multiple concurrent requests (ajax)
+  # leaving this disabled all the time may cause severe issues when multiple concurrent requests (ajax)
   # are being executed. logging fails for some reason, and the occasional error is thrown
-  # config.middleware.delete "Rack::Lock"
+  #
+  # as a workaround for the above issue, we introduced rails_ext/multithreaded_reloader
+  #
+  # in case of issues with cached/old code, try restarting the rails server or set the following
+  # flag to false
+  if true then
+    # Enable multithreaded class reloading (reloads both app/* and lib/*)
+    config.cache_classes = true
+    config.middleware.delete "Rack::Lock"
+    config.middleware.insert_before "ActionDispatch::Callbacks", "MultithreadedReloader"
+    require "rails_ext/multithreaded_reloader"
+  else
+    # Enable standard rails class reloading (only reloads app/*)
+    config.cache_classes = false
+  end
 
   # Do not eager load code on boot.
   config.eager_load = false
