@@ -134,8 +134,8 @@ group :development do
   gem "activerecord-jdbcmysql-adapter", "~> 1.3.0", :platforms => :jruby
 
   # debugging
-  gem "debugger",     :platforms => [:mri_19, :mri_20]
-  gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20]
+  gem "debugger",     :platforms => [:mri_19, :mri_20, :mri_21]
+  gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20, :mri_21]
   gem "awesome_print", :github => "michaeldv/awesome_print" # to fix error with mongoid/bson
   gem "coffee-rails-source-maps"
   gem "bullet"
@@ -143,7 +143,7 @@ group :development do
   # rails debugging helpers
   gem "letter_opener"
   gem "better_errors"
-  gem "binding_of_caller", :platforms => [:mri_19, :mri_20, :rbx] # used by better_errors for advanced features
+  gem "binding_of_caller", :platforms => [:mri_19, :mri_20, :mri_21, :rbx] # used by better_errors for advanced features
   gem "xray", :require => "xray/thread_dump_signal_handler"
   gem "quiet_assets"
 
@@ -198,12 +198,12 @@ group :test do
 
   # coverage
   gem "coveralls",            :require => false
-  gem "simplecov",            :platforms => [:mri_19, :mri_20], :require => false
-  gem "simplecov-html",       :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-html.git", :require => false
-  gem "simplecov-console",    :platforms => [:mri_19, :mri_20], :git => "https://github.com/chetan/simplecov-console.git", :require => false
+  gem "simplecov",            :platforms => [:mri_19, :mri_20, :mri_21], :require => false
+  gem "simplecov-html",       :platforms => [:mri_19, :mri_20, :mri_21], :git => "https://github.com/chetan/simplecov-html.git", :require => false
+  gem "simplecov-console",    :platforms => [:mri_19, :mri_20, :mri_21], :git => "https://github.com/chetan/simplecov-console.git", :require => false
 
   # quality
-  gem "cane", :platforms => [:mri_19, :mri_20], :require => false
+  gem "cane", :platforms => [:mri_19, :mri_20, :mri_21], :require => false
   gem "brakeman", :require => false
 
   # gems used for dev/test env
