@@ -2,10 +2,11 @@
 class Monitoring::ChecksController < Monitoring::BaseController
 
   def index
-    host = Host.find(_id(:host_id))
+    host   = Host.find(_id(:host_id))
     checks = Check.where(:host_id => host)
+    hosts  = Host.for_user(current_user)
 
-    bootstrap host, checks
+    bootstrap host, checks, hosts
   end
 
   def show

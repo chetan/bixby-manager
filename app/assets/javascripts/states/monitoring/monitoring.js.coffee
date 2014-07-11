@@ -47,7 +47,7 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
         @hosts = new _bm.HostList
         Backbone.multi_fetch(@hosts)
 
-  # Edit checks
+  # Check table - edit/delete
   "mon_hosts_check_table":
     url:  "monitoring/hosts/:host_id/checks"
 
@@ -55,8 +55,6 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
     models:
       host:     _bm.Host
       checks:   _bm.CheckList
-      # TODO remove
-      commands: _bm.MonitoringCommandList
       hosts:    _bm.HostList
 
 

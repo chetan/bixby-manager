@@ -15,6 +15,12 @@ namespace 'Bixby.model', (exports, top) ->
         s += "?metric_id=" + @metric_id
       return s
 
+    command: ->
+      new _bm.Command(@get("command"))
+
+    runhost: ->
+      new _bm.Host(@get("runhost"))
+
     has_args: ->
       @get("args")? && !_.isEmpty(@get("args"))
 
@@ -25,8 +31,8 @@ namespace 'Bixby.model', (exports, top) ->
       if ! args
         return ""
 
-      command = new _bm.Command(@get("command"))
-      host    = new _bm.Host(@get("runhost"))
+      command = @command()
+      host    = @runhost()
 
       args_array = _.map(args, (val, key) ->
         s = if command

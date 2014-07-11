@@ -33,11 +33,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       @$el.modal("hide")
 
     save_edits: ->
-      command = @commands.get(@check.get("command_id"))
-
       args = {}
-
-      _.each command.get("options"), (opt_hash, opt_key) ->
+      _.each @check.command().get("options"), (opt_hash, opt_key) ->
         args[opt_key] = @$("input##{opt_key}").val()
 
       @check.set {
