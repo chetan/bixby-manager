@@ -1,0 +1,4 @@
+
+<button type="button" class="btn btn-primary add_check">Add Check</button>
+<button type="button" class="btn btn-primary add_trigger <%? checks.length == 0 %>disabled<%/%>">Add Trigger</button>
+<button type="button" class="btn btn-primary edit_checks <%? checks.length == 0 %>disabled<%/%>">Edit Checks</button>

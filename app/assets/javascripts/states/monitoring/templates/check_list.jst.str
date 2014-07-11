@@ -2,9 +2,7 @@
 <h3>Metrics for <%= host.name() %></h3>
 
 <p class="top hidden">
-  <button type="button" class="btn btn-primary edit_checks">Edit Checks</button>
-  <button type="button" class="btn btn-primary add_check">Add Check</button>
-  <button type="button" class="btn btn-primary add_trigger">Add Trigger</button>
+  <%= include("monitoring/_check_list_actions") %>
 </p>
 
 <% if (checks.length == 0) { %>
@@ -19,7 +17,5 @@
 
 <br />
 <p class="bottom">
-  <button type="button" class="btn btn-primary edit_checks">Edit Checks</button>
-  <button type="button" class="btn btn-primary add_check" host_id="<%= host.get('id') %>">Add Check</button>
-  <button type="button" class="btn btn-primary add_trigger" host_id="<%= host.get('id') %>">Add Trigger</button>
+  <%= include("monitoring/_check_list_actions") %>
 </p>
