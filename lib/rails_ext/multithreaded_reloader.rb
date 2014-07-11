@@ -14,10 +14,7 @@ class MultithreadedReloader
   def call(env)
       # reload_all
     start_listener if !@started
-    @mutex.synchronize {
-      # don't want any code reloading while our action is being called
-      return @app.call(env)
-    }
+    return @app.call(env)
   end
 
   def start_listener
@@ -32,7 +29,11 @@ class MultithreadedReloader
     paths.each do |path|
       # not sure why i need to create a listener for each path..
       listener = Listen.to(path) do |mod, add, del|
-        reload(mod + add)
+        begin
+          reload(mod + add)
+        rescue Exception => ex
+          Logging.logger[self].error "Caught while reloading: #{ex.message}"
+        end
       end
       listener.start
       @listeners << listener
@@ -43,8 +44,9 @@ class MultithreadedReloader
   # Reload only the given files which are presumed to have changed
   def reload(files)
     @mutex.synchronize {
+      files = files.map { |f| File.expand_path(f) }.grep(/\.rb$/)
+      return if files.empty?
       Logging.logger[self].debug "reloading changed file(s): " + files.inspect
-      files = files.map { |f| File.expand_path(f) }
       $".delete_if { |f| files.include? f }
       files.each { |f| require f }
     }
