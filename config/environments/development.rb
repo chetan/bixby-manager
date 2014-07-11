@@ -12,16 +12,14 @@ Bixby::Application.configure do
   #
   # in case of issues with cached/old code, try restarting the rails server or set the following
   # flag to false
-  if true then
+  if true && !Sidekiq.server?() && (ENV["IS_RAILS_SERVER"] == "1" || $0 =~ /^zeus s/) then
     # Enable multithreaded class reloading (reloads both app/* and lib/*)
-    config.cache_classes = true
     config.middleware.delete "Rack::Lock"
-    config.middleware.insert_before "ActionDispatch::Callbacks", "MultithreadedReloader"
+    config.middleware.delete "ActionDispatch::Reloader"
     require "rails_ext/multithreaded_reloader"
-  else
-    # Enable standard rails class reloading (only reloads app/*)
-    config.cache_classes = false
+    config.middleware.insert_before "ActionDispatch::Callbacks", "MultithreadedReloader"
   end
+  config.cache_classes = false # still set this false because sprockets-rails uses this var too
 
   # Do not eager load code on boot.
   config.eager_load = false

@@ -30,6 +30,7 @@ class CustomPlan < Zeus::Rails
   end
 
   def server
+    ENV["IS_RAILS_SERVER"] = "1"
     require 'rails/commands/server'
     server = ::Rails::Server.new
     Dir.chdir(::Rails.application.root)
@@ -38,6 +39,7 @@ class CustomPlan < Zeus::Rails
   end
 
   def console
+    ENV["IS_RAILS_SERVER"] = nil
     require 'rails/commands/console'
     bixby_bootstrap()
     if defined?(Pry) && IRB == Pry

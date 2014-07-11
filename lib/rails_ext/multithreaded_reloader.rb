@@ -23,6 +23,8 @@ class MultithreadedReloader
   def start_listener
     return if @started
 
+    ActionView::Resolver.caching = false
+
     paths = PATHS.map { |d| Rails.root.join(d).to_s }
     Logging.logger[self].warn "Starting MultiThreaded Reload Listener"
     Logging.logger[self].warn "watching paths: " + paths.inspect
