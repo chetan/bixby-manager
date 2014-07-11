@@ -5,6 +5,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     template: "monitoring/check_list"
 
     links:
+      ".edit_checks": [ "mon_hosts_check_table", (el) -> return { host: @host, checks: @checks } ]
       ".add_check":   [ "mon_hosts_checks_new", (el) -> return { host: @host } ]
       ".add_trigger": [ "mon_hosts_triggers_new", (el) ->
         return { host: @host, metrics: @metrics, checks: @checks }

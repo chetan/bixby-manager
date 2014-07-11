@@ -2,24 +2,10 @@
 <h3>Metrics for <%= host.name() %></h3>
 
 <p class="top hidden">
+  <button type="button" class="btn btn-primary edit_checks">Edit Checks</button>
   <button type="button" class="btn btn-primary add_check">Add Check</button>
   <button type="button" class="btn btn-primary add_trigger">Add Trigger</button>
 </p>
-
-<h3>Checks</h3>
-
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Arguments</th>
-      <th>Edit / Delete </th>
-    </tr>
-  </thead>
-  <tbody>
-   <%= each_partial(checks, "check", _bvm.CheckTableRow) %>
-  </tbody>
-</table>
 
 <% if (checks.length == 0) { %>
 
@@ -33,6 +19,7 @@
 
 <br />
 <p class="bottom">
+  <button type="button" class="btn btn-primary edit_checks">Edit Checks</button>
   <button type="button" class="btn btn-primary add_check" host_id="<%= host.get('id') %>">Add Check</button>
   <button type="button" class="btn btn-primary add_trigger" host_id="<%= host.get('id') %>">Add Trigger</button>
 </p>
