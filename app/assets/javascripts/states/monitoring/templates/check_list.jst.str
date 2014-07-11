@@ -1,10 +1,9 @@
 
 <h3>Metrics for <%= host.name() %></h3>
 
-<p>
-  <!-- TODO: this is duped at bottom of page. only show when that is not visible -->
-  <button type="button" class="btn btn-primary add_check" host_id="<%= host.get('id') %>">Add Check</button>
-  <button type="button" class="btn btn-primary add_trigger" host_id="<%= host.get('id') %>">Add Trigger</button>
+<p class="top hidden">
+  <button type="button" class="btn btn-primary add_check">Add Check</button>
+  <button type="button" class="btn btn-primary add_trigger">Add Trigger</button>
 </p>
 
 <h3>Checks</h3>
@@ -18,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-	 <%= each_partial(checks, "check", _bvm.CheckTableRow) %>
+   <%= each_partial(checks, "check", _bvm.CheckTableRow) %>
   </tbody>
 </table>
 
@@ -33,7 +32,7 @@
 %>
 
 <br />
-<p>
+<p class="bottom">
   <button type="button" class="btn btn-primary add_check" host_id="<%= host.get('id') %>">Add Check</button>
   <button type="button" class="btn btn-primary add_trigger" host_id="<%= host.get('id') %>">Add Trigger</button>
 </p>
