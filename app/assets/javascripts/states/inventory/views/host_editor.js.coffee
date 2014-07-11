@@ -16,20 +16,19 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
       # delete
       "click button.delete": (e) ->
+        @deleting = true # set a flag so we don't dispose yet
         @hide_editor()
-        v = @
-        c = new Bixby.view.Confirm({
-          title: "Delete?",
+        c = @create_partial Bixby.view.Confirm,
           message: "Are you sure you want to delete this host?",
           show_cb: null,
-          hidden_cb: (confirmed) ->
+          hidden_cb: (confirmed) =>
+            @deleting = false
             if confirmed
-              v.host.destroy()
-              v.hide_editor()
-              v.transition "inventory"
+              @host.destroy()
+              @hide_editor()
+              @transition "inventory"
             else
-              v.$el.modal("show")
-          })
+              @$el.modal("show")
         c.render()
 
       # save (on enter)
@@ -72,8 +71,9 @@ namespace "Bixby.view.inventory", (exports, top) ->
             tags.trigger("change")
 
       @$el.modal({ show: false })
-      @$el.on "shown.bs.modal", _.bindR @, -> @$("input.alias").putCursorAtEnd()
-      @$el.on "hidden.bs.modal", _.bindR @, -> @redraw()
+      @$el.on "shown.bs.modal", => @$("input.alias").putCursorAtEnd()
+      @$el.on "hidden.bs.modal", =>
+        @dispose() if !@deleting
 
     dispose: ->
       @$el.off "hidden"
