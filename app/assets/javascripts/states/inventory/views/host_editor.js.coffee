@@ -16,16 +16,12 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
       # delete
       "click button.delete": (e) ->
-        @deleting = true # set a flag so we don't dispose yet
         @hide_editor()
         c = @create_partial Bixby.view.Confirm,
           message: "Are you sure you want to delete this host?",
-          show_cb: null,
           hidden_cb: (confirmed) =>
-            @deleting = false
             if confirmed
               @host.destroy()
-              @hide_editor()
               @transition "inventory"
             else
               @$el.modal("show")
@@ -72,10 +68,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
       @$el.modal({ show: false })
       @$el.on "shown.bs.modal", => @$("input.alias").putCursorAtEnd()
-      @$el.on "hidden.bs.modal", =>
-        @dispose() if !@deleting
 
     dispose: ->
-      @$el.off "hidden"
       @$el.off "shown"
       super()
