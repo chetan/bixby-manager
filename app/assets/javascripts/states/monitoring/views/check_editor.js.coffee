@@ -15,9 +15,15 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       # delete
       "click button.delete": (e) ->
         @hide_editor()
-        @check.destroy()
-        @hide_editor()
-        @parent.parent.redraw()
+        c = @create_partial Bixby.view.Confirm,
+          message: "Are you sure you want to delete '#{@check.name}'?",
+          hidden_cb: (confirmed) =>
+            if confirmed
+              @check.destroy()
+              @state.redraw()
+            else
+              @$el.modal("show")
+        c.render()
 
       # save (on enter)
       "keypress input": (e) ->
@@ -32,7 +38,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     hide_editor: ->
       @$el.modal("hide")
-      @dispose()
 
     save_edits: ->
       args = {}

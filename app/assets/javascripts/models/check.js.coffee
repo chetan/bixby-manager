@@ -4,6 +4,8 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.Check extends Stark.Model
 
     @key: "check"
+    Backprop.create_strings @, "name"
+
     urlRoot: ->
       s = "/rest/hosts/#{@host_id || @host.id}/checks"
 

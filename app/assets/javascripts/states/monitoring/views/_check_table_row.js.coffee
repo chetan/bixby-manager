@@ -6,9 +6,13 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     events:
       "click #delete_check": (e) ->
-        v = @
-        @check.destroy success: (model, response) ->
-          v.parent.redraw()
+        c = @create_partial Bixby.view.Confirm,
+          message: "Are you sure you want to delete '#{@check.name}'?",
+          hidden_cb: (confirmed) =>
+            if confirmed
+              @check.destroy()
+              @state.redraw()
+        c.render()
 
       "click a.edit": ->
         check_editor = @partial(exports.CheckEditor, { check: @check, host: @host, hosts: @hosts })
