@@ -161,13 +161,13 @@
      * Easier way to create a list of String properties
      */
     Backprop.create_strings = function(proto, names) {
-        if (arguments.length === 2) {
+        if (arguments.length === 2 && _.isArray(names)) {
             // support for array form
             // Backprop.create_strings @, ["attr1", "attr2"]
             for (var n in names) {
                 Backprop.create(proto, n, {coerce: String});
             }
-        } else if (arguments.length > 2) {
+        } else {
             // support for varargs form
             // Backprop.create_strings @, "attr1", "attr2"
             for (var i = 1; i < arguments.length; i++) {
