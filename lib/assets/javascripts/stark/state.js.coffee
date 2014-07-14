@@ -185,6 +185,16 @@ class Stark.State
     @app.current_state = @
     @app.trigger("state:activate", @)
 
+
+  # Redraw the current state
+  redraw: ->
+    @dispose(@)
+    @render()
+
+  # Redraw the current state
+  refresh: ->
+    @redraw()
+
   # This is called by Stark when this state becomes active (transitioning TO),
   # after all data has been loaded and views have been rendered.
   #
