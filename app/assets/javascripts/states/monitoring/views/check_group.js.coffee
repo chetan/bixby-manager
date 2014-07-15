@@ -5,14 +5,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/check_group"
 
-    events: {
+    events:
       "click button.return_host": (e) ->
         @transition "mon_view_host", {host: @host}
       "click #delete_check": (e) ->
-        v = @
-        @check.destroy success: (model, response) ->
-          v.transition "mon_view_host", {host: v.host}
-    }
+        @check.destroy success: (model, response) =>
+          @transition "mon_view_host", {host: @host}
 
     after_render: ->
       super()
