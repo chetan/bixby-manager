@@ -4,6 +4,7 @@
 
     <br/>
     <button type="button" class="btn btn-default btn-sm return_host"><%= _.icon("reply") %> Return to Host</button>
+    <a class="edit btn btn-primary btn-large <%? !check.command().has_options() %>disabled<%/%>" role="button"> &nbsp; Edit &nbsp; </a>
     <button type="button" id="delete_check" class="btn btn-danger btn-large">Delete Check</button>
     <%= include_partial(Bixby.view.monitoring.Check) %>
 

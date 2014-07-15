@@ -57,7 +57,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       if @check.hasChanged()
         @check.save()
-        @parent.parent.redraw()
+        @state.redraw()
 
     after_render: ->
       @$el.modal({ show: false })
