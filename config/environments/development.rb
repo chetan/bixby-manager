@@ -17,12 +17,12 @@ Bixby::Application.configure do
     config.middleware.delete "Rack::Lock"
     config.middleware.delete "ActionDispatch::Reloader"
     require "rails_ext/multithreaded_reloader"
-    config.middleware.insert_before "ActionDispatch::Callbacks", "MultithreadedReloader"
+    config.middleware.insert_before "ActionDispatch::Callbacks", "MultithreadedReloader::Middleware"
+    config.eager_load = true # load all app code on boot to avoid later races on controllers
+  else
+    config.eager_load = false
   end
   config.cache_classes = false # still set this false because sprockets-rails uses this var too
-
-  # Do not eager load code on boot.
-  config.eager_load = false
 
   # disable caching in dev
   config.cache_store = :null_store
