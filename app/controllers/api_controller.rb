@@ -1,8 +1,4 @@
 
-require 'bixby/modules/provisioning'
-require 'bixby/modules/inventory'
-require 'bixby/file_download'
-
 class ApiController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
