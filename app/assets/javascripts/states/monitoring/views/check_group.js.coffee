@@ -18,7 +18,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
               @transition "mon_view_host", {host: @host}
         c.render()
       "click a.edit": ->
-        check_editor = @partial(exports.CheckEditor, { check: @check, host: @host, hosts: @hosts })
+        check_editor = @partial(exports.CheckEditor, { check: @check, host: @host, hosts: @hosts, check_group_view: true })
         check_editor.show() # TODO load options here
 
     after_render: ->

@@ -20,10 +20,14 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           hidden_cb: (confirmed) =>
             if confirmed
               @check.destroy()
-              @state.redraw()
+              if @check_group_view == true
+                @transition "mon_view_host", {host: @host}
+              else
+                @state.redraw()
             else
               @$el.modal("show")
         c.render()
+
 
       # save (on enter)
       "keypress input": (e) ->
