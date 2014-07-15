@@ -9,6 +9,8 @@
 
       <div class="tags">
         <%= include_partial(Bixby.view.inventory.HostTags, {host: host}) %>
+        <a class="edit btn btn-default btn-xs" role="button"><%= _.icon("edit") %> Edit</a>
+        <a class="monitoring btn btn-default btn-xs" role="button"><%= _.icon("bar-chart-o") %> Monitoring</a>
       </div>
 
     </div>
@@ -25,16 +27,6 @@
           </div>
         </div>
       <%/%>
-
-  <br/>
-  <div class="row">
-    <div class="actions col-xs-12">
-      <a class="edit btn btn-primary btn-sm" role="button">Edit Host</a>
-      <a class="monitoring btn btn-primary btn-sm" role="button">Monitoring</a>
-    </div>
-  </div>
-
-  <br/>
 
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-8">

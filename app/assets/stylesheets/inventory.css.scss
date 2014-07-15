@@ -40,6 +40,9 @@ div.host {
     }
     div.tags {
       margin-bottom: 10px;
+      ul.tags {
+        display: inline;
+      }
     }
   }
 

@@ -7,14 +7,10 @@
     </div>
 
     <div class="modal-body">
-
       <form role="form">
-
         <div class="form-group">
 
-          <% var check_cmd_id = check.get("command_id"); %>
-          <% var cmd = commands.get(check_cmd_id); %>
-
+          <% var cmd = check.command(); %>
           <% if (cmd.location === "remote" || cmd.location === "any") { %>
             <%= include("monitoring/_command_opts_agent", {command: cmd, host: host, hosts: hosts }) %>
           <% } %>
@@ -39,10 +35,7 @@
           %>
 
         </div>
-
-
       </form>
-
     </div>
 
     <div class="modal-footer">

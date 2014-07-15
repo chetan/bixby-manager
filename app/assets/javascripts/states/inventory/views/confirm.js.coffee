@@ -9,7 +9,7 @@ namespace "Bixby.view", (exports, top) ->
     className: "modal confirm"
     template: "inventory/_confirm"
 
-    events: {
+    events:
       "click button.proceed": (e) ->
         @confirmed = true
         @hide()
@@ -18,18 +18,16 @@ namespace "Bixby.view", (exports, top) ->
         @confirmed = false
         @hide()
 
-    }
-
     after_render: ->
       v = @
 
-      if v.options.shown_cb
+      if @shown_cb
         @$el.on "shown.bs.modal", ->
-          v.options.shown_cb.call(v, v.confirmed)
+          v.shown_cb.call(v, v.confirmed)
 
-      if v.options.hidden_cb
-        @$el.on "hidden.bs.modal", ->
-          v.options.hidden_cb.call(v, v.confirmed)
+      if @hidden_cb
+        @$el.on "hidden.bs.modal", =>
+          v.hidden_cb.call(v, v.confirmed)
 
       @$el.modal("show")
 

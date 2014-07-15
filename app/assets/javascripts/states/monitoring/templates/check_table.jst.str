@@ -1,0 +1,19 @@
+
+<h3>Checks</h3>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Arguments</th>
+      <th>Edit / Delete </th>
+    </tr>
+  </thead>
+  <tbody>
+   <%= each_partial(checks, "check", _bvm.CheckTableRow) %>
+  </tbody>
+</table>
+
+<p>
+  <a class="btn btn-default btn-sm return_host"><%= _.icon("reply") %> Return to Host</a>
+</p>

@@ -18,7 +18,7 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
     url:  "monitoring/hosts/:host_id"
 
     views:      [ _bvm.CheckList ]
-    models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList, commands: _bm.MonitoringCommandList, hosts: _bm.HostList }
+    models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
 
   # Check group
   "mon_hosts_check":
@@ -46,6 +46,17 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
       if !@hosts?
         @hosts = new _bm.HostList
         Backbone.multi_fetch(@hosts)
+
+  # Check table - edit/delete
+  "mon_hosts_check_table":
+    url:  "monitoring/hosts/:host_id/checks"
+
+    views:  B.CheckTable
+    models:
+      host:     _bm.Host
+      checks:   _bm.CheckList
+      hosts:    _bm.HostList
+
 
   # Configure check options
   "mon_hosts_checks_new_opts":
