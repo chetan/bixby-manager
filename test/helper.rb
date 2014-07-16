@@ -53,6 +53,7 @@ def bootstrap_tests
 
   require "setup/base"
   require "setup/base_controller"
+  require "setup/test_request"
   require "setup/stub_api"
 
   # Configure celluloid logger for tests
