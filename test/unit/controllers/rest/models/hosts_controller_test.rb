@@ -75,21 +75,6 @@ class Rest::Models::Hosts < TestCase
 
   private
 
-  def change_tenant(tenant)
-    @user.org_id = tenant.orgs.first.id
-    @user.save
-    @user = ::User.find(@user.id)
-    # couldn't get sign_in/sign_out to work so just stub it out
-    @controller.expects(:current_user).returns(@user).at_least_once
-  end
-
-  def sign_with_agent
-    @agent = FactoryGirl.create(:agent)
-    @host = Host.first
-    BIXBY_CONFIG[:crypto] = true
-    ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
-  end
-
   def host_assertions(host, expected)
     p host
     assert_equal expected.id, host["id"]

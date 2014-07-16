@@ -19,7 +19,8 @@ module Bixby
       MultiTenant.current_tenant = nil
     end
 
-    def get(action, *args)
+    # Patch process method to always add json format
+    def process(action, verb, *args)
       if args then
         if args.last.kind_of?(Hash) then
           args.last[:format] = "json"
@@ -29,7 +30,24 @@ module Bixby
       else
         args = [ {:format => "json"} ]
       end
-      super(action, *args)
+      ret = super(action, verb, *args)
+      puts @response.body
+      ret
+    end
+
+    def change_tenant(tenant)
+      @user.org_id = tenant.orgs.first.id
+      @user.save
+      @user = ::User.find(@user.id)
+      # couldn't get sign_in/sign_out to work so just stub it out
+      @controller.expects(:current_user).returns(@user).at_least_once
+    end
+
+    def sign_with_agent
+      @agent = FactoryGirl.create(:agent)
+      @host = Host.first
+      BIXBY_CONFIG[:crypto] = true
+      ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
     end
 
   end
