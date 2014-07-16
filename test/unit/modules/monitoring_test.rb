@@ -26,44 +26,6 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert Bixby.const_defined? :Monitoring
   end
 
-  def test_add_check
-    agent = FactoryGirl.create(:agent)
-
-    ret = Bixby::Monitoring.new.add_check(agent.host.id, @check.command, nil)
-    assert_kind_of Check, ret
-
-  end
-
-  def test_add_check_with_empty_args
-
-    agent = FactoryGirl.create(:agent)
-    ret = Bixby::Monitoring.new.add_check(agent.host, @check.command, {:foo => "bar", :baz => "", :test => nil})
-
-    assert ret
-    assert_kind_of Check, ret
-
-    ap ret.args
-    assert ret.args
-
-    assert_includes ret.args, "foo"
-    assert_equal "bar", ret.args["foo"]
-
-    refute_includes ret.args, "baz"
-    refute_includes ret.args, "test"
-  end
-
-  def test_add_check_with_diff_agent
-
-    agent = FactoryGirl.create(:agent)
-    agent2 = FactoryGirl.create(:agent)
-
-    ret = Bixby::Monitoring.new.add_check(agent.host.id, @check.command, nil, agent2)
-    assert_kind_of Check, ret
-    assert_equal agent.host.id, ret.host_id
-    assert_equal agent2.id, ret.agent_id
-
-  end
-
   def test_add_check_on_register_any
     common_add_check_on_register("any", "dev,foo", 1)
   end
