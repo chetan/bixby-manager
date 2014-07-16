@@ -6,7 +6,7 @@ install:
   - "travis_retry ~/wad"
 before_script:
   - "./script/ci_setup.sh"
-script: "bundle exec micron test/"
+script: "bundle exec micron test/unit/"
 after_script:
   - "bundle exec rake coverage"
   - "bundle exec rake coveralls"
