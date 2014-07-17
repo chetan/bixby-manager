@@ -1,4 +1,9 @@
 
+# temp workaround for load order issues
+# ApplicationController now gets loaded at various different points in the process
+# (due to addition of devise_google_authenticator gem)
+require "rails_ext/multi_tenant"
+
 class ApplicationController < ActionController::Base
 
   protect_from_forgery

@@ -61,6 +61,7 @@ gem "request_store"
 gem "scrypt"
 gem "devise"
 gem "devise-encryptable"
+gem 'devise_google_authenticator', '0.3.14'
 gem "pretender"
 gem "api-auth", :github => "chetan/api_auth", :branch => "bixby"
 gem "mixlib-shellout"
