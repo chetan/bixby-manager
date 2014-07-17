@@ -45,6 +45,7 @@ module Bixby
           end
         end
         Pry::Helpers::BaseHelpers.stagger_output(table.to_s)
+        nil
       end
 
       module Relation
@@ -71,15 +72,19 @@ module Bixby
                 t <<  [ c.name, type.join(", "), c.sql_type ]
               }
             end
-            puts table
+
+            out = [] << table.to_s
 
             assoc = self.reflections.values.map do |ref|
               "#{ref.name} (#{ref.macro})"
             end
 
-            puts
-            puts "Associations: #{assoc.join(', ')}"
-            puts
+            out << ""
+            out << "Associations: #{assoc.join(', ')}"
+            out << ""
+
+            Pry::Helpers::BaseHelpers.stagger_output(out.join("\n"))
+            nil
 
           end
         end
@@ -107,5 +112,14 @@ module ActiveRecord
   class Base
     include Bixby::RailsExt::ConsoleTable::Base::InstanceMethods
     extend Bixby::RailsExt::ConsoleTable::Base::ClassMethods
+  end
+end
+
+class Pry::Pager
+  class PageTracker
+    def page?
+      # monkey patch to page if output is too wide
+      @row >= @rows || @col > @cols
+    end
   end
 end
