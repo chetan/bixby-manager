@@ -3,6 +3,7 @@ Bixby::Application.routes.draw do
   # put 'users/password' => "users#reset_password"
   devise_scope :user do
     get  "/login"  => "sessions#new"
+    post "/login/checkga" => "sessions#update"
     post "/login"  => "sessions#create"
     post "/logout" => "sessions#destroy"
     post "/users/password" => "passwords#create"

@@ -49,6 +49,10 @@ namespace "Bixby.view", (exports, top) ->
         success: (data, textStatus, jqXHR) ->
           ret = JSON.parse(data)
 
+          if ret.tmpid
+            alert ret.tmpid
+            return view.app.transition "checkga", {tmpid: ret.tmpid}
+
           # update csrf token
           $("meta[name='csrf-token']").attr('content', ret.csrf)
 
