@@ -44,7 +44,10 @@ module Bixby
             }
           end
         end
+
+        Pry::Pager::PageTracker.wide_pages = true
         Pry::Helpers::BaseHelpers.stagger_output(table.to_s)
+        Pry::Pager::PageTracker.wide_pages = false
         nil
       end
 
@@ -83,7 +86,9 @@ module Bixby
             out << "Associations: #{assoc.join(', ')}"
             out << ""
 
+            Pry::Pager::PageTracker.wide_pages = true
             Pry::Helpers::BaseHelpers.stagger_output(out.join("\n"))
+            Pry::Pager::PageTracker.wide_pages = false
             nil
 
           end
@@ -117,9 +122,14 @@ end
 
 class Pry::Pager
   class PageTracker
+
+    class << self
+      attr_accessor :wide_pages
+    end
+
     def page?
       # monkey patch to page if output is too wide
-      @row >= @rows || @col > @cols
+      @row >= @rows || (PageTracker.wide_pages && @col > @cols)
     end
   end
 end
