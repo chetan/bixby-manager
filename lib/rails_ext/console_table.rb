@@ -44,7 +44,7 @@ module Bixby
             }
           end
         end
-        puts table
+        Pry::Helpers::BaseHelpers.stagger_output(table.to_s)
       end
 
       module Relation
