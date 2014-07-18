@@ -11,6 +11,28 @@ _.val = (el) ->
   else
     return el.val()
 
+# Execute the given callback only when unique inputs are seen
+#
+# This is useful when binding a keyup event on an input to avoid firing multiple
+# times on the same input value. Debouncing alone does not fix multiple fires here.
+#
+# @example
+#
+# "keyup input": _.debounceR 200, (e) ->
+#   span = @$("div.valid.username")
+#   _.unique_val e.target, (u) =>
+#
+#
+# @param [Element] el
+# @param [Function] cb
+_.unique_val = (el, cb) ->
+  el = $(el)
+  last = el.data("last_input")
+  val = _.val(el)
+  if last != val
+    el.data("last_input", val)
+    cb.call(this, val)
+
 # Select the text in the given input control when clicked
 #
 # Usage:

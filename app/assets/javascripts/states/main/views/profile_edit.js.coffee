@@ -5,46 +5,46 @@ namespace "Bixby.view", (exports, top) ->
     el: "div#content"
     template: "main/profile_edit"
 
-    events: {
+    events:
       "focusout input#email": (e) ->
         _.mailcheck(e.target)
 
-      "keyup input#username": _.debounceR 200, (e) ->
-        v = @
-        span = @$("div.valid.username")
-        u = @$(e.target).val()
-        if u && u != @current_user.username
-          # check if its valid/not taken
-          new Bixby.model.User().is_valid_username u, (data, status, xhr) ->
-            if data.valid == true
-              _.pass span, _.icon("ok")
-              v.enable_save()
-            else
-              _.fail span, data.error
-              v.disable_save()
-
-        else
-          _.pass span
-          v.enable_save()
-
-      "keyup input#password": (e) -> @validate_password(e)
-      "keyup input#password_confirmation": (e) -> @validate_password(e)
+      "keyup input#username": (e) -> @validate_username(e)
+      "keyup input#password,input#password_confirmation": (e) -> @validate_password(e)
 
       "click button.submit": (e) ->
         e.preventDefault()
         return if @$(e.target).hasClass("disabled")
 
         attr = @get_attributes("name", "username", "email", "phone", "password", "password_confirmation")
-        v = @
-        @current_user.save attr, { success: (model, res) -> v.transition("profile") } # TODO handle error
+        @current_user.save attr,
+          success: (model, res) => @transition("profile")
 
-    }
+      "click button.cancel": (e) ->
+        @transition("profile")
 
     enable_save: ->
       _.enable @$("button.submit")
 
     disable_save: ->
       _.disable @$("button.submit")
+
+    validate_username: _.debounceR 200, (e) ->
+      span = @$("div.valid.username")
+      _.unique_val e.target, (u) =>
+        if u && u != @current_user.username
+          # check if its valid/not taken
+          new Bixby.model.User().is_valid_username u, (data, status, xhr) =>
+            if data.valid == true
+              _.pass span, _.icon("ok")
+              @enable_save()
+            else
+              _.fail span, data.error
+              @disable_save()
+
+        else
+          _.pass span
+          @enable_save()
 
     validate_password: _.debounceR 100, (e) ->
       div1 = "div.valid.password"
