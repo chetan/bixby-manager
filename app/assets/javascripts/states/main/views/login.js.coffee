@@ -50,7 +50,6 @@ namespace "Bixby.view", (exports, top) ->
           ret = JSON.parse(data)
 
           if ret.tmpid
-            alert ret.tmpid
             return view.app.transition "checkga", {tmpid: ret.tmpid}
 
           # update csrf token
