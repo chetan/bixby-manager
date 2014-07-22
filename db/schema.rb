@@ -364,14 +364,14 @@ ActiveRecord::Schema.define(version: 20140717153940) do
   add_index "user_permissions", ["user_id"], name: "user_permissions_user_id_fk", using: :btree
 
   create_table "users", force: true do |t|
-    t.integer  "org_id",                               null: false
-    t.string   "username",                             null: false
+    t.integer  "org_id",                                 null: false
+    t.string   "username",                               null: false
     t.string   "encrypted_password"
     t.string   "name"
     t.string   "email"
     t.string   "phone"
-    t.integer  "sign_in_count",          default: 0,   null: false
-    t.integer  "failed_attempts",        default: 0,   null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
+    t.integer  "failed_attempts",        default: 0,     null: false
     t.datetime "last_request_at"
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -391,7 +391,7 @@ ActiveRecord::Schema.define(version: 20140717153940) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "gauth_secret"
-    t.string   "gauth_enabled",          default: "f"
+    t.boolean  "gauth_enabled",          default: false
     t.string   "gauth_tmp"
     t.datetime "gauth_tmp_datetime"
   end
