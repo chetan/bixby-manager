@@ -7,6 +7,12 @@ class DeviseGoogleAuthenticatorAddToUsers < ActiveRecord::Migration
       t.datetime  :gauth_tmp_datetime
     end
 
+    User.reset_column_information
+    User.where(:gauth_secret => nil).each do |user|
+     user.send(:assign_auth_secret)
+     user.save
+    end
+
   end
 
   def self.down
