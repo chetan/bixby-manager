@@ -1,6 +1,10 @@
-<h1> "Please enter your Google Authenticator token:" </h1>
+<div class="container">
+ <div class="row">
+  <div class="col-xs-offset-1 col-xs-10 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4">
+    <h1>BIXBY</h1>
 
       <form role="form">
+        <i> Please enter your Google Authenticator token: </i>
 
         <%= include("main/_text_input", {name: "gauth_token", label: "Token"}) %>
 
@@ -9,3 +13,6 @@
         </div>
 
       </form>
+  </div>
+ </div>
+</div>
