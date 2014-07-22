@@ -4,29 +4,25 @@ class SessionsController < Devise::SessionsController
   prepend_before_filter :require_no_authentication, :only => [ :update ]
 
   def create
-    # resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
-    # sign_in_and_redirect(resource_name, resource)
 
+    resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
+    # resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#new")
 
-        resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#new")
+    if resource.respond_to?(:get_qr) and resource.gauth_enabled? and resource.require_token?(cookies.signed[:gauth]) #Therefore we can quiz for a QR
+      tmpid = resource.assign_tmp #assign a temporary key and fetch it
+      warden.logout #log the user out
 
-        if resource.respond_to?(:get_qr) and resource.gauth_enabled? and resource.require_token?(cookies.signed[:gauth]) #Therefore we can quiz for a QR
-          tmpid = resource.assign_tmp #assign a temporary key and fetch it
-          warden.logout #log the user out
+      #we head back into the checkga controller with the temporary id
+      #Because the model used for google auth may not always be the same, and may be a sub-model, the eval will evaluate the appropriate path name
+      #This change addresses https://github.com/AsteriskLabs/devise_google_authenticator/issues/7
+      # respond_with resource, :location => eval("#{resource.class.name.singularize.underscore}_checkga_path(id:'#{tmpid}')")
 
-          #we head back into the checkga controller with the temporary id
-          #Because the model used for google auth may not always be the same, and may be a sub-model, the eval will evaluate the appropriate path name
-          #This change addresses https://github.com/AsteriskLabs/devise_google_authenticator/issues/7
-          # respond_with resource, :location => eval("#{resource.class.name.singularize.underscore}_checkga_path(id:'#{tmpid}')")
+      ret = { :tmpid => tmpid }
+      restful ret
 
-          ret = { :tmpid => tmpid }
-          restful ret
-
-        else #It's not using, or not enabled for Google 2FA, OR is remembering token and therefore not asking for the moment - carry on, nothing to see here.
-          set_flash_message(:notice, :signed_in) if is_flashing_format?
-          sign_in(resource_name, resource)
-          respond_with resource, :location => after_sign_in_path_for(resource)
-        end
+    else #It's not using, or not enabled for Google 2FA, OR is remembering token and therefore not asking for the moment - carry on, nothing to see here.
+      sign_in_and_redirect(resource_name, resource)
+    end
 
   end
 
