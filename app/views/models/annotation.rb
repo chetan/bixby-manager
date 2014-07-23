@@ -4,13 +4,14 @@ module Bixby
     class Annotation < ::ApiView::Base
 
       for_model ::Annotation
+      attributes :name, :detail, :created_at
 
-      def self.convert(obj)
-        hash = attrs(obj, :name, :detail, :created_at)
-        hash[:tags] = obj.tags
-        return hash
+      def convert
+        super
+        self[:tags] = obj.tags
+        self
       end
 
-    end # Check
-  end # ApiView
-end # Bixby
+    end
+  end
+end

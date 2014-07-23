@@ -1,20 +1,17 @@
 
 module Bixby
   module ApiView
-
     class Command < ::ApiView::Base
 
       for_model ::Command
+      attributes :id, :name, :desc, :location, :bundle, :command, :options
 
-      def self.convert(obj)
-
-        hash = attrs(obj, :id, :name, :desc, :location, :bundle, :command, :options)
-        hash[:repo] = obj.repo.name
-
-        return hash
+      def convert
+        super
+        self[:repo] = obj.repo.name
+        self
       end
 
-    end # Command
-
-  end # ApiView
-end # Bixby
+    end
+  end
+end

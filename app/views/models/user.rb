@@ -1,22 +1,19 @@
 
 module Bixby
   module ApiView
-
     class User < ::ApiView::Base
 
       for_model ::User
+      attributes :id, :username, :name, :email, :phone, :gauth_enabled, :gauth_secret
 
-      def self.convert(obj)
-
-        hash = attrs(obj, :id, :username, :name, :email, :phone, :gauth_enabled, :gauth_secret)
-        hash[:org] = obj.org.name
-        hash[:tenant] = obj.org.tenant.name
-        hash[:permissions] = render(obj.permissions)
-
-        return hash
+      def convert
+        super
+        self[:org]         = obj.org.name
+        self[:tenant]      = obj.org.tenant.name
+        self[:permissions] = render(obj.permissions)
+        self
       end
 
-    end # User
-
-  end # ApiView
-end # Bixby
+    end
+  end
+end

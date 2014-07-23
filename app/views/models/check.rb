@@ -4,16 +4,17 @@ module Bixby
     class Check < ::ApiView::Base
 
       for_model ::Check
+      attributes :all
 
-      def self.convert(obj)
-        hash = attrs(obj, :all)
-        hash[:name] = obj.command.name
-        hash[:runhost_id] = obj.agent.host_id
-        hash[:runhost] = obj.agent.host
-        hash[:command] = obj.command
-        return hash
+      def convert
+        super
+        self[:name]       = obj.command.name
+        self[:runhost_id] = obj.agent.host_id
+        self[:runhost]    = obj.agent.host
+        self[:command]    = obj.command
+        self
       end
 
-    end # Check
-  end # ApiView
-end # Bixby
+    end
+  end
+end
