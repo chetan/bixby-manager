@@ -8,7 +8,7 @@ module Bixby
 
       def self.convert(obj)
 
-        hash = attrs(obj, :id, :username, :name, :email, :phone, :gauth_enabled)
+        hash = attrs(obj, :id, :username, :name, :email, :phone, :gauth_enabled, :gauth_secret)
         hash[:org] = obj.org.name
         hash[:tenant] = obj.org.tenant.name
         hash[:permissions] = render(obj.permissions)

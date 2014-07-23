@@ -26,6 +26,14 @@ namespace 'Bixby.model', (exports, top) ->
         email = $.trim(@get("email"))
         return url + md5(email) + "?d=mm"
 
+
+    otp_qr_code: ->
+      otp_auth_user = @username + "@" + "bixby"
+      data = "otpauth://totp/" + otp_auth_user + "?secret=" + @get("gauth_secret")
+      qr_image_url = "https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=" + encodeURI(data)
+
+      return qr_image_url
+
     is_valid_username: (username, callback) ->
       $.ajax @urlRoot + "/valid?username=" + username, {
         dataType: "json"
