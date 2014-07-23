@@ -44,7 +44,11 @@ module Bixby
             }
           end
         end
-        puts table
+
+        Pry::Pager::PageTracker.wide_pages = true
+        Pry::Helpers::BaseHelpers.stagger_output(table.to_s)
+        Pry::Pager::PageTracker.wide_pages = false
+        nil
       end
 
       module Relation
@@ -71,15 +75,21 @@ module Bixby
                 t <<  [ c.name, type.join(", "), c.sql_type ]
               }
             end
-            puts table
+
+            out = [] << table.to_s
 
             assoc = self.reflections.values.map do |ref|
               "#{ref.name} (#{ref.macro})"
             end
 
-            puts
-            puts "Associations: #{assoc.join(', ')}"
-            puts
+            out << ""
+            out << "Associations: #{assoc.join(', ')}"
+            out << ""
+
+            Pry::Pager::PageTracker.wide_pages = true
+            Pry::Helpers::BaseHelpers.stagger_output(out.join("\n"))
+            Pry::Pager::PageTracker.wide_pages = false
+            nil
 
           end
         end
@@ -107,5 +117,19 @@ module ActiveRecord
   class Base
     include Bixby::RailsExt::ConsoleTable::Base::InstanceMethods
     extend Bixby::RailsExt::ConsoleTable::Base::ClassMethods
+  end
+end
+
+class Pry::Pager
+  class PageTracker
+
+    class << self
+      attr_accessor :wide_pages
+    end
+
+    def page?
+      # monkey patch to page if output is too wide
+      @row >= @rows || (PageTracker.wide_pages && @col > @cols)
+    end
   end
 end

@@ -76,3 +76,8 @@ pre.prettyjson {
   position: absolute;
   top: -9999px;
 }
+
+.fa.form-control-feedback {
+  // .fa overrides the line-height so we need to fix it here
+  line-height: 34px !important;
+}

@@ -8,9 +8,6 @@ input.install {
   background-color: white;
 }
 
-div.host_list {
-}
-
 ul.tags {
   padding: 0;
   margin: 0;
@@ -31,7 +28,7 @@ div.host {
       line-height: inherit;
     }
     h3 {
-      margin-bottom: 0;
+      margin-bottom: 5px;
       ul.tags {
         display: inline;
         font-size: 14px;
@@ -64,6 +61,14 @@ div.host {
     max-height: 400px;
   }
 
+}
+
+div.host_list {
+  div.host {
+    h3 {
+      margin-bottom: 0;
+    }
+  }
 }
 
 div.popover {
