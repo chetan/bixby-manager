@@ -64,6 +64,22 @@ class Rest::Models::UsersController < ::Rest::BaseController
     restful user
   end
 
+  def enable_2fa
+    user = User.find(params['user_id'])
+    user.gauth_enabled = true
+    user.save
+
+    restful user
+  end
+
+  def disable_2fa
+    user = User.find(params['user_id'])
+    user.gauth_enabled = false
+    user.save
+
+    restful user
+  end
+
   def destroy
     # TODO
   end
