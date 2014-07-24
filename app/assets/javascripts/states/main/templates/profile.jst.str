@@ -27,7 +27,5 @@
       <button type="button" class="btn btn-xs btn-info btn-edit">Edit</button>
     </p>
 
-    <img src="<%= current_user.otp_qr_code() %>" alt='Google Authenticator QRCode' />
-
   </div>
 </div>
