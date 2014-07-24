@@ -60,6 +60,7 @@ Bixby::Application.routes.draw do
       collection do
         get "valid"
         get "impersonate"
+        post "confirm_password"
       end
     end
 
@@ -86,6 +87,7 @@ Bixby::Application.routes.draw do
 
   get 'profile' => "ui#default"
   get 'profile/edit' => "ui#default"
+  get 'profile/enable_2fa' => "ui#default"
 
   get "/inventory" => "inventory/hosts#index"
   namespace :inventory do

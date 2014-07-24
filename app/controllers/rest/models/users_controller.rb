@@ -48,6 +48,15 @@ class Rest::Models::UsersController < ::Rest::BaseController
     restful u
   end
 
+  def confirm_password
+    user = User.find(_id)
+    pw   = SCrypt::Password.new(user.encrypted_password)
+    pass = params[:password]
+
+    ret  = (pw == sprintf("%s%s%s", pass, user.password_salt, Devise.pepper))
+    restful ret
+  end
+
   def update
     user = User.find(_id)
     attrs = pick(:name, :username, :email, :phone, :password, :password_confirmation)

@@ -14,7 +14,7 @@ this.icon        = this.icon  || null;
 <div class="form-group has-feedback">
   <label class="control-label" for="<%= name %>" <%? title %>title="<%= title %>"<%/%>><%= label %></label>
   <input
-    class="form-control"
+    class="form-control <%= name %>"
     type="<%= (type || 'text') %>"
     id="<%= name %>"
     <%? title %>title="<%= title %>"<%/%>

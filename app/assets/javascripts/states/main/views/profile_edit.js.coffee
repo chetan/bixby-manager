@@ -23,6 +23,15 @@ namespace "Bixby.view", (exports, top) ->
       "click button.cancel": (e) ->
         @transition("profile")
 
+      "click button.2fa": (e) ->
+        c = @create_partial Bixby.view.ConfirmPassword,
+          cb: (confirmed) =>
+            if confirmed
+              @transition("profile_qr", {password_confirmed: true})
+            else
+              alert("Fail") # TODO better error message
+        c.render()
+
     enable_save: ->
       _.enable @$("button.submit")
 
