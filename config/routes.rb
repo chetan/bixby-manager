@@ -63,6 +63,7 @@ Bixby::Application.routes.draw do
         post "confirm_password"
         post "enable_2fa"
         post "disable_2fa"
+        post "assign_2fa_secret"
       end
     end
 

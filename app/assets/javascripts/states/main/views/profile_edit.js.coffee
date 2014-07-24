@@ -27,7 +27,15 @@ namespace "Bixby.view", (exports, top) ->
         c = @create_partial Bixby.view.ConfirmPassword,
           cb: (confirmed) =>
             if confirmed
-              @transition("profile_qr", {password_confirmed: true})
+              view = @
+              $.ajax "/rest/users/assign_2fa_secret",
+                type: "POST",
+                data: _.csrf({user_id: @current_user.id}),
+                success: (data, textStatus, jqXHR) ->
+                  view.current_user.set { gauth_secret: data }
+                  view.transition("profile_qr", {password_confirmed: true})
+                error: (xhr, status, error) ->
+                  alert "Something went wrong! Try again please."
             else
               alert("Fail") # TODO better error message
         c.render()
@@ -41,7 +49,11 @@ namespace "Bixby.view", (exports, top) ->
                 type: "POST",
                 data: _.csrf({user_id: @current_user.id}),
                 success: (data, textStatus, jqXHR) ->
-                  view.current_user.set { gauth_enabled: false }
+                  view.current_user.set {
+                    gauth_enabled: false
+                    gauth_secret: undefined
+                  }
+
                   alert "You have disabled 2-Factor authentication!"
                   view.transition("profile")
 

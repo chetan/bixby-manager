@@ -4,7 +4,7 @@ module Bixby
     class User < ::ApiView::Base
 
       for_model ::User
-      attributes :id, :username, :name, :email, :phone, :gauth_enabled, :gauth_secret
+      attributes :id, :username, :name, :email, :phone, :gauth_enabled
 
       def convert
         super

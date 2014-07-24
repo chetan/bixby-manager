@@ -12,6 +12,7 @@ namespace "Bixby.view", (exports, top) ->
           data: _.csrf({user_id: @current_user.id}),
           success: (data, textStatus, jqXHR) ->
             view.current_user.set { gauth_enabled: true }
+
             alert "You have enabled 2-Factor authentication!"
             view.transition("profile")
       "click button.cancel": (e) ->
@@ -19,3 +20,4 @@ namespace "Bixby.view", (exports, top) ->
 
     after_render: ->
       @$("div.qrcode").qrcode({width: 150, height: 150, text: @current_user.otp()})
+      @current_user.set { gauth_secret: undefined }
