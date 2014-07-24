@@ -17,6 +17,13 @@ namespace "Bixby.view", (exports, top) ->
         @$el.modal("hide")
         @cb.call(@, false)
 
+      "keypress input": (e) ->
+        if e.keyCode == 13
+          pw = _.val(@$("input.password"))
+          @current_user.confirm_password pw, (confirmed) =>
+            @$el.modal("hide")
+            @cb.call(@, confirmed)
+
     after_render: ->
       @$el.modal("show")
       @$("input#password").focus()
