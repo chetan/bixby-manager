@@ -61,6 +61,7 @@ Bixby::Application.routes.draw do
         get "valid"
         get "impersonate"
         post "confirm_password"
+        post "confirm_token"
         post "enable_2fa"
         post "disable_2fa"
         post "assign_2fa_secret"

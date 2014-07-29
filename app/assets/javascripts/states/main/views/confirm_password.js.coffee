@@ -10,8 +10,15 @@ namespace "Bixby.view", (exports, top) ->
       "click button.confirm": (e) ->
         pw = _.val(@$("input.password"))
         @current_user.confirm_password pw, (confirmed) =>
-          @$el.modal("hide")
-          @cb.call(@, confirmed)
+          if @confirm_token == true
+            tk = _.val(@$("input.token"))
+            @current_user.confirm_token tk, (confirmed) =>
+              console.log "Return token is: ", confirmed
+              @cb.call(@, confirmed)
+              @$el.modal("hide")
+          else
+            @cb.call(@, confirmed)
+            @$el.modal("hide")
 
       "click button.cancel": (e) ->
         @$el.modal("hide")
@@ -21,8 +28,15 @@ namespace "Bixby.view", (exports, top) ->
         if e.keyCode == 13
           pw = _.val(@$("input.password"))
           @current_user.confirm_password pw, (confirmed) =>
-            @$el.modal("hide")
-            @cb.call(@, confirmed)
+            if @confirm_token == true
+              tk = _.val(@$("input.token"))
+              @current_user.confirm_token tk, (confirmed) =>
+                console.log "Return token is: ", confirmed
+                @cb.call(@, confirmed)
+                @$el.modal("hide")
+            else
+              @cb.call(@, confirmed)
+              @$el.modal("hide")
 
     after_render: ->
       @$el.modal("show")

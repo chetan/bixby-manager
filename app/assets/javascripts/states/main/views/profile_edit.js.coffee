@@ -42,6 +42,7 @@ namespace "Bixby.view", (exports, top) ->
 
       "click button.disable_2fa": (e) ->
         c = @create_partial Bixby.view.ConfirmPassword,
+          confirm_token: true
           cb: (confirmed) =>
             if confirmed
               view = @

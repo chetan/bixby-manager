@@ -57,6 +57,16 @@ class Rest::Models::UsersController < ::Rest::BaseController
     restful ret
   end
 
+  def confirm_token
+    user = User.find(_id)
+    token = params[:token]
+
+    # Some logic
+
+    ret = true
+    restful ret
+  end
+
   def update
     user = User.find(_id)
     attrs = pick(:name, :username, :email, :phone, :password, :password_confirmation)

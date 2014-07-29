@@ -43,6 +43,14 @@ namespace 'Bixby.model', (exports, top) ->
         success: (data, textStatus, jqXHR) ->
           callback.call(@, data)
 
+    confirm_token: (tk, callback) ->
+      $.ajax @urlRoot + "/confirm_token",
+        type: "POST"
+        dataType: "json"
+        data: _.csrf({ id: @id, token: tk })
+        success: (data, textStatus, jqXHR) ->
+          callback.call(@, data)
+
     can: (permission) ->
       # TODO implement resource checks as well
       !! _.find @get("permissions"), (p) -> !p.resource? && p.name == permission
