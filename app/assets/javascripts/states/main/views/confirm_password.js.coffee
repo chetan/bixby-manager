@@ -19,11 +19,11 @@ namespace "Bixby.view", (exports, top) ->
           @confirm()
 
     confirm: ->
+      pw = _.val(@$("input.password"))
       @current_user.confirm_password pw, (confirmed) =>
-        if @confirm_token == true
+        if confirmed == true && @confirm_token == true
           tk = _.val(@$("input.token"))
           @current_user.confirm_token tk, (confirmed) =>
-            console.log "Return token is: ", confirmed
             @cb.call(@, confirmed)
             @$el.modal("hide")
         else
