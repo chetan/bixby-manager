@@ -4,7 +4,7 @@ namespace "Bixby.view", (exports, top) ->
 
     tagName:   "div"
     className: "modal confirm"
-    template:  "main/confirm_password"
+    template:  "main/confirm_identity"
 
     events:
       "click button.confirm": (e) ->
