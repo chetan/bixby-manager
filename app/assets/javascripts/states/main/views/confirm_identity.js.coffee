@@ -5,6 +5,8 @@ namespace "Bixby.view", (exports, top) ->
     tagName:   "div"
     className: "modal confirm"
     template:  "main/confirm_identity"
+    confirm_password: true
+    confirm_token: false
 
     events:
       "click button.confirm": (e) ->
@@ -19,16 +21,23 @@ namespace "Bixby.view", (exports, top) ->
           @confirm()
 
     confirm: ->
-      pw = _.val(@$("input.password"))
-      @current_user.confirm_password pw, (confirmed) =>
-        if confirmed == true && @confirm_token == true
+      if @confirm_password == true
+        pw = _.val(@$("input.password"))
+        @current_user.confirm_password pw, (confirmed) =>
+          if confirmed == true && @confirm_token == true
+            @confirm_token_optional()
+          else
+            @cb.call(@, confirmed)
+            @$el.modal("hide")
+
+      if (@confirm_token == true && @confirm_password == false)
+        @confirm_token_optional()
+
+    confirm_token_optional: ->
           tk = _.val(@$("input.token"))
           @current_user.confirm_token tk, (confirmed) =>
             @cb.call(@, confirmed)
             @$el.modal("hide")
-        else
-          @cb.call(@, confirmed)
-          @$el.modal("hide")
 
     after_render: ->
       @$el.modal("show")

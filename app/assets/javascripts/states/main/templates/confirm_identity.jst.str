@@ -4,8 +4,10 @@
 
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Please re-enter your password <%? confirm_token %>& token<%/%></h4>
+        <h4 class="modal-title">Please re-enter your <%? confirm_password %>password <%/%><%? confirm_password && confirm_token %> &<%/%><%? confirm_token %> token<%/%></h4>
       </div>
+
+<%? confirm_password == true %>
 
     <div class="modal-body container-fluid">
       <div class="row-fluid">
@@ -13,7 +15,9 @@
       </div>
     </div>
 
- <%? confirm_token %>
+<%/%>
+
+ <%? confirm_token == true %>
 
     <div class="modal-body container-fluid">
       <div class="row-fluid">
