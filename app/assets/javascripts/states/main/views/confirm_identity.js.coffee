@@ -7,6 +7,7 @@ namespace "Bixby.view", (exports, top) ->
     template:  "main/confirm_identity"
     confirm_password: true
     confirm_token: false
+    reason_for_prompt: "As a precaution, users must verify their identity before they are allowed to perform potentially dangerous actions"
 
     events:
       "click button.confirm": (e) ->
