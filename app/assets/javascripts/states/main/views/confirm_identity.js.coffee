@@ -1,6 +1,6 @@
 namespace "Bixby.view", (exports, top) ->
 
-  class exports.ConfirmPassword extends Stark.View
+  class exports.ConfirmIdentity extends Stark.View
 
     tagName:   "div"
     className: "modal confirm"

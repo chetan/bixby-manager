@@ -9,13 +9,21 @@ namespace "Bixby.view", (exports, top) ->
       "a.navbar-brand":    "inventory"
       ".tab.inventory  a": "inventory"
       ".tab.monitoring a": "monitoring"
-      ".tab.runbooks a.run": "runbooks"
+      # ".tab.runbooks a.run": "runbooks"
       ".tab.runbooks a.repositories": "repository"
 
       # user menu
       "a#profile":         "profile"
 
     events:
+      "click a.run": (e) ->
+        c = @create_partial Bixby.view.ConfirmIdentity,
+          cb: (confirmed) =>
+            if confirmed
+              # @transition("runbooks", {password_confirmed: true})
+              @transition("runbooks", {password_confirmed: true})
+        c.render()
+
       "click a": (e) ->
         # hide the navbar-toggle on click (only visible on xs or sm screens)
         e = $(e.target)

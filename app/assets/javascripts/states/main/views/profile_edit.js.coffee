@@ -24,7 +24,7 @@ namespace "Bixby.view", (exports, top) ->
         @transition("profile")
 
       "click button.2fa": (e) ->
-        c = @create_partial Bixby.view.ConfirmPassword,
+        c = @create_partial Bixby.view.ConfirmIdentity,
           cb: (confirmed) =>
             if confirmed
               view = @
@@ -41,7 +41,7 @@ namespace "Bixby.view", (exports, top) ->
         c.render()
 
       "click button.disable_2fa": (e) ->
-        c = @create_partial Bixby.view.ConfirmPassword,
+        c = @create_partial Bixby.view.ConfirmIdentity,
           confirm_token: true
           cb: (confirmed) =>
             if confirmed
