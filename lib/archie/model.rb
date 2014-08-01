@@ -14,10 +14,7 @@ module Archie
     end
 
     def valid_password?(pass)
-      puts self.password_salt
-      puts Archie::Config.pepper
-      pw  = SCrypt::Password.new(self.encrypted_password)
-      ret = (pw == sprintf("%s%s%s", pass, self.password_salt, Archie::Config.pepper))
+      SCrypt::Password.new(self.encrypted_password) == sprintf("%s%s%s", pass, self.password_salt, Archie::Config.pepper)
     end
 
     def password=(new_password)
