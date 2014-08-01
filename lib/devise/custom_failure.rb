@@ -1,7 +1,7 @@
 
 module Devise
 
-  class CustomFailure < FailureApp
+  class CustomFailure < Archie::FailureApp
 
     protected
 

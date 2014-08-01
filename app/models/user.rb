@@ -4,35 +4,40 @@
 #
 # ### Columns
 #
-# Name                          | Type               | Attributes
-# ----------------------------- | ------------------ | ---------------------------
-# **`id`**                      | `integer`          | `not null, primary key`
-# **`org_id`**                  | `integer`          | `not null`
-# **`username`**                | `string(255)`      | `not null`
-# **`encrypted_password`**      | `string(255)`      |
-# **`name`**                    | `string(255)`      |
-# **`email`**                   | `string(255)`      |
-# **`phone`**                   | `string(255)`      |
-# **`sign_in_count`**           | `integer`          | `default(0), not null`
-# **`failed_attempts`**         | `integer`          | `default(0), not null`
-# **`last_request_at`**         | `datetime`         |
-# **`current_sign_in_at`**      | `datetime`         |
-# **`last_sign_in_at`**         | `datetime`         |
-# **`current_sign_in_ip`**      | `string(255)`      |
-# **`last_sign_in_ip`**         | `string(255)`      |
-# **`password_salt`**           | `string(255)`      |
-# **`confirmation_token`**      | `string(255)`      |
-# **`confirmed_at`**            | `datetime`         |
-# **`confirmation_sent_at`**    | `datetime`         |
-# **`unconfirmed_email`**       | `string(255)`      |
-# **`reset_password_token`**    | `string(255)`      |
-# **`reset_password_sent_at`**  | `datetime`         |
-# **`remember_token`**          | `string(255)`      |
-# **`remember_created_at`**     | `datetime`         |
-# **`unlock_token`**            | `string(255)`      |
-# **`locked_at`**               | `datetime`         |
-# **`created_at`**              | `datetime`         |
-# **`updated_at`**              | `datetime`         |
+# Name                             | Type               | Attributes
+# -------------------------------- | ------------------ | ---------------------------
+# **`id`**                         | `integer`          | `not null, primary key`
+# **`org_id`**                     | `integer`          | `not null`
+# **`username`**                   | `string(255)`      | `not null`
+# **`encrypted_password`**         | `string(255)`      |
+# **`name`**                       | `string(255)`      |
+# **`email`**                      | `string(255)`      |
+# **`phone`**                      | `string(255)`      |
+# **`sign_in_count`**              | `integer`          | `default(0), not null`
+# **`failed_attempts`**            | `integer`          | `default(0), not null`
+# **`last_request_at`**            | `datetime`         |
+# **`current_sign_in_at`**         | `datetime`         |
+# **`last_sign_in_at`**            | `datetime`         |
+# **`current_sign_in_ip`**         | `string(255)`      |
+# **`last_sign_in_ip`**            | `string(255)`      |
+# **`password_salt`**              | `string(255)`      |
+# **`confirmation_token`**         | `string(255)`      |
+# **`confirmed_at`**               | `datetime`         |
+# **`confirmation_sent_at`**       | `datetime`         |
+# **`unconfirmed_email`**          | `string(255)`      |
+# **`reset_password_token`**       | `string(255)`      |
+# **`reset_password_sent_at`**     | `datetime`         |
+# **`remember_token`**             | `string(255)`      |
+# **`remember_created_at`**        | `datetime`         |
+# **`unlock_token`**               | `string(255)`      |
+# **`locked_at`**                  | `datetime`         |
+# **`created_at`**                 | `datetime`         |
+# **`updated_at`**                 | `datetime`         |
+# **`encrypted_otp_secret`**       | `string(255)`      |
+# **`encrypted_otp_secret_iv`**    | `string(255)`      |
+# **`encrypted_otp_secret_salt`**  | `string(255)`      |
+# **`otp_required_for_login`**     | `boolean`          |
+# **`otp_tmp_id`**                 | `string(255)`      |
 #
 # ### Indexes
 #
@@ -51,16 +56,9 @@
 # temp workaround for load order issues
 # user model now gets loaded at various different points in the process
 require "rails_ext/multi_tenant"
-require "devise"
-require "devise/orm/active_record"
 
 class User < ActiveRecord::Base
 	attr_accessor :gauth_token
-
-  devise :google_authenticatable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :lockable, :timeoutable, :encryptable,
-         :authentication_keys => [ :username ]
 
   has_and_belongs_to_many :roles, -> { includes :role_permissions }, :join_table => :users_roles
   has_many :user_permissions, -> { includes :permissions }

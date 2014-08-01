@@ -1,7 +1,8 @@
 
-class SessionsController < Devise::SessionsController
+class SessionsController < ApplicationController # Devise::SessionsController
 
-  prepend_before_filter :require_no_authentication, :only => [ :update ]
+  def new
+  end
 
   def create
 
