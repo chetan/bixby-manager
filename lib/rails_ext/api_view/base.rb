@@ -1,52 +1,101 @@
 
 module ApiView
 
-  class Base
+  class Base < ::Hash
 
     class << self
 
+      # Attach to the given model
+      #
+      # @param [Class] model
       def for_model(model)
+        @model = model
         ApiView.add_model(model, self)
       end
 
-      def attrs(obj, *attrs)
-        return {} if attrs.blank?
-        if attrs.size == 1 and attrs.first == :all then
-          return obj.serializable_hash
+      def parent_attributes
+        parent = self.superclass
+        return [] if parent.name == "ApiView::Base"
+        return parent.instance_variable_get(:@attributes)
+      end
+
+      # Include the given attributes in the output
+      #
+      # @param [Array<Symbol>] attrs
+      #
+      # Two special options are also allowed:
+      #
+      # attributes :except => :foobar
+      # will include *all* attributes *except* `foobar`
+      #
+      # attributes :all
+      # will include all of the objects attributes
+      def attributes(*attrs)
+
+        @attributes ||= []
+
+        if attrs.last.kind_of? Hash then
+          # handle the form
+          # attributes :except => :foobar
+          if attrs.last[:except] then
+            e = attrs.last[:except]
+            skip = (e.kind_of?(Array) ? e : [e]).map{ |s| s.to_s }
+            attrs = @model.attribute_names.reject{ |s| skip.include?(s.to_s) }
+          end
+
+        elsif attrs.include? :all then
+          # handle the form
+          # attributes :all
+          attrs = @model.attribute_names
+
         end
 
-        ret = {}
-        attrs.each do |a|
-          ret[a.to_sym] = obj.send(a.to_sym)
+        @attributes = (@attributes + attrs).flatten
+        parent_attributes.reverse.each do |a|
+          @attributes.unshift(a) if not @attributes.include? a
         end
-        return ret
-      end
 
-      def attrs_except(obj, *attrs)
-        return obj.serializable_hash({ :except => attrs })
-      end
+        # create a method which reads each attribute from the model object and
+        # copies it into the hash, then returns the hash itself
+        # e.g.,
+        # def collect_attributes
+        #   self.store(:foo, @object.foo)
+        #   ...
+        #   self
+        # end
+        code = ["def collect_attributes()"]
+        @attributes.each do |a|
+          code << "self.store(:#{a}, @object.#{a})"
+        end
+        code << "end"
+        class_eval(code.join("\n"))
 
-      def render(obj)
-        Engine.convert(obj)
       end
+      alias_method :attrs, :attributes
 
     end
 
+    attr_reader :object
+    alias_method :obj, :object
+
+    def initialize(object)
+      super(nil)
+      @object = object
+    end
+
+    def collect_attributes
+      # no-op by default
+    end
+
+    def convert
+      collect_attributes()
+      self
+    end
+
+    def render(obj, options=nil)
+      Engine.convert(obj, options)
+    end
 
   end
-
-  class Default < Base
-    def self.convert(obj)
-      if obj.respond_to? :to_api then
-        obj.to_api
-      elsif obj.respond_to? :to_hash then
-        obj.to_hash
-      elsif obj.respond_to? :serializable_hash then
-        obj.serializable_hash
-      else
-        obj
-      end
-    end
-  end # Default
 
 end

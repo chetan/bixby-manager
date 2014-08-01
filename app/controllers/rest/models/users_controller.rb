@@ -48,10 +48,56 @@ class Rest::Models::UsersController < ::Rest::BaseController
     restful u
   end
 
+  def confirm_password
+    user = User.find(_id)
+    pw   = SCrypt::Password.new(user.encrypted_password)
+    pass = params[:password]
+
+    ret  = (pw == sprintf("%s%s%s", pass, user.password_salt, Devise.pepper))
+    restful ret
+  end
+
+  def confirm_token
+    user = User.find(_id)
+    token = params[:token]
+
+    # Some logic
+
+    ret = true
+    restful ret
+  end
+
   def update
     user = User.find(_id)
     attrs = pick(:name, :username, :email, :phone, :password, :password_confirmation)
     user.update_attributes(attrs)
+    restful user
+  end
+
+  def assign_2fa_secret
+    user = User.find(params['user_id'])
+    user.send(:assign_auth_secret)
+    user.save
+
+    restful user.gauth_secret
+  end
+
+  def enable_2fa
+    user = User.find(params['user_id'])
+    user.gauth_enabled = true
+
+    user.save
+
+    restful user
+  end
+
+  def disable_2fa
+    user = User.find(params['user_id'])
+    user.gauth_enabled = false
+
+    user.gauth_secret = nil
+    user.save
+
     restful user
   end
 

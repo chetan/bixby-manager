@@ -23,6 +23,45 @@ namespace "Bixby.view", (exports, top) ->
       "click button.cancel": (e) ->
         @transition("profile")
 
+      "click button.2fa": (e) ->
+        c = @create_partial Bixby.view.ConfirmIdentity,
+          cb: (confirmed) =>
+            if confirmed
+              view = @
+              $.ajax "/rest/users/assign_2fa_secret",
+                type: "POST",
+                data: _.csrf({user_id: @current_user.id}),
+                success: (data, textStatus, jqXHR) ->
+                  view.current_user.set { gauth_secret: data }
+                  view.transition("profile_qr", {password_confirmed: true})
+                error: (xhr, status, error) ->
+                  alert "Something went wrong! Try again please."
+            else
+              alert("Fail") # TODO better error message
+        c.render()
+
+      "click button.disable_2fa": (e) ->
+        c = @create_partial Bixby.view.ConfirmIdentity,
+          confirm_token: true
+          cb: (confirmed) =>
+            if confirmed
+              view = @
+              $.ajax "/rest/users/disable_2fa",
+                type: "POST",
+                data: _.csrf({user_id: @current_user.id}),
+                success: (data, textStatus, jqXHR) ->
+                  view.current_user.set {
+                    gauth_enabled: false
+                    gauth_secret: undefined
+                  }
+
+                  alert "You have disabled 2-Factor authentication!"
+                  view.transition("profile")
+
+            else
+              alert("Fail") # TODO better error message
+        c.render()
+
     enable_save: ->
       _.enable @$("button.submit")
 

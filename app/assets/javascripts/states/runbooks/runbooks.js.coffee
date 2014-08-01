@@ -8,3 +8,6 @@ Bixby.app.add_states { tab: "runbooks", views: [ _bv.PageLayout ] },
 
     views:  B.RunCommand
     models: [ B.m.HostList, B.m.CommandList ]
+
+    validate: ->
+      return @password_confirmed == true

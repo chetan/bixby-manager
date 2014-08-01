@@ -1,21 +1,18 @@
 
 module Bixby
   module ApiView
-
     class CheckTemplate < ::ApiView::Base
 
       for_model ::CheckTemplate
+      attributes :id, :name, :tags
 
-      def self.convert(obj)
-
-        hash = attrs(obj, :id, :name, :tags)
-        hash[:mode] = ::CheckTemplate::Mode[obj.mode]
-        hash[:items] = render(obj.items)
-
-        return hash
+      def convert
+        super
+        self[:mode]  = ::CheckTemplate::Mode[obj.mode]
+        self[:items] = render(obj.items)
+        self
       end
 
-    end # CheckTemplate
-
-  end # ApiView
-end # Bixby
+    end
+  end
+end

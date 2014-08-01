@@ -1,20 +1,17 @@
 
 module Bixby
   module ApiView
-
     class Metadata < ::ApiView::Base
 
       for_model ::Metadata
+      attributes :key, :value
 
-      def self.convert(obj)
-
-        hash = attrs(obj, :key, :value)
-        hash[:source] = obj.source_name()
-
-        return hash
+      def convert
+        super
+        self[:source] = obj.source_name()
+        self
       end
 
-    end # Metadata
-
-  end # ApiView
-end # Bixby
+    end
+  end
+end

@@ -1,29 +1,26 @@
 
 module Bixby
   module ApiView
-
     class Metric < ::ApiView::Base
 
       for_model ::Metric
+      attributes :id, :check_id, :key, :name, :last_value, :status, :updated_at, :metadata
 
-      def self.convert(obj)
-
-        # get basic attrs
-        hash = attrs(obj, :id, :check_id, :key, :name, :last_value, :status,
-          :updated_at, :metadata)
+      def convert
+        super
 
         # attach data
         if obj.data.blank? then
-          hash[:data] = obj.data
+          self[:data] = obj.data
         else
-          hash[:data] = obj.data.map { |d| { :x => d[:time].to_i, :y => d[:val] } }
+          self[:data] = obj.data.map { |d| { :x => d[:time].to_i, :y => d[:val] } }
         end
 
         # attach query, if we have one
         if obj.query.blank? then
-          hash[:query] = {}
+          self[:query] = {}
         else
-          hash[:query] = {
+          self[:query] = {
             :start      => obj.query[:start].to_i,
             :end        => obj.query[:end].to_i,
             :tags       => obj.query[:tags],
@@ -32,26 +29,25 @@ module Bixby
         end
 
         # attach tags
-        hash[:tags] = {}
+        self[:tags] = {}
         obj.tags.each do |t|
-          hash[:tags][t.key] = t.value
+          self[:tags][t.key] = t.value
         end
 
         # attach metric info
-        mi = obj.check.metric_infos.find{ |f| f.metric == hash[:key] }
+        mi = obj.check.metric_infos.find{ |f| f.metric == self[:key] }
         if not mi.blank? then
-          hash[:name]  = mi.name
-          hash[:desc]  = mi.desc
-          hash[:label] = mi.label
-          hash[:unit]  = mi.unit
-          hash[:range] = mi.range
-          hash[:platforms] = mi.platforms
+          self[:name]  = mi.name
+          self[:desc]  = mi.desc
+          self[:label] = mi.label
+          self[:unit]  = mi.unit
+          self[:range] = mi.range
+          self[:platforms] = mi.platforms
         end
 
-        return hash
+        self
       end
 
-    end # Metric
-
-  end # ApiView
-end # Bixby
+    end
+  end
+end

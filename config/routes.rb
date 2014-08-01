@@ -3,6 +3,7 @@ Bixby::Application.routes.draw do
   # put 'users/password' => "users#reset_password"
   devise_scope :user do
     get  "/login"  => "sessions#new"
+    post "/login/checkga" => "sessions#update"
     post "/login"  => "sessions#create"
     post "/logout" => "sessions#destroy"
     post "/users/password" => "passwords#create"
@@ -59,6 +60,11 @@ Bixby::Application.routes.draw do
       collection do
         get "valid"
         get "impersonate"
+        post "confirm_password"
+        post "confirm_token"
+        post "enable_2fa"
+        post "disable_2fa"
+        post "assign_2fa_secret"
       end
     end
 
@@ -85,6 +91,7 @@ Bixby::Application.routes.draw do
 
   get 'profile' => "ui#default"
   get 'profile/edit' => "ui#default"
+  get 'profile/enable_2fa' => "ui#default"
 
   get "/inventory" => "inventory/hosts#index"
   namespace :inventory do

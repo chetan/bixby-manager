@@ -1,25 +1,25 @@
 
 module Bixby
   module ApiView
-
     class Repo < ::ApiView::Base
 
       for_model ::Repo
+      attrs :id, :name, :uri, :branch, :created_at, :updated_at
 
-      def self.convert(obj)
+      def convert
+        super
 
-        hash = attrs(obj, :id, :name, :uri, :branch, :created_at, :updated_at)
-        hash[:org] = obj.org.blank? ? nil : obj.org.name
-        hash[:tenant] = obj.org.blank? ? nil : obj.org.tenant.name
+        self[:org]    = obj.org.blank? ? nil : obj.org.name
+        self[:tenant] = obj.org.blank? ? nil : obj.org.tenant.name
 
         # add public_key
         if not obj.public_key.blank? then
-          hash[:public_key] = obj.ssh_public_key
+          self[:public_key] = obj.ssh_public_key
         end
 
-        return hash
+        self
       end
-    end # Repo
 
-  end # ApiView
-end # Bixby
+    end
+  end
+end

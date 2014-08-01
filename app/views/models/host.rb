@@ -1,22 +1,20 @@
 
 module Bixby
   module ApiView
-
     class Host < ::ApiView::Base
 
       for_model ::Host
+      attributes :id, :ip, :hostname, :alias, :desc
 
-      def self.convert(obj)
+      def convert
+        super
 
-        hash = attrs(obj, :id, :ip, :hostname, :alias, :desc)
-        hash[:org] = obj.org.name
-        hash[:tags] = obj.tag_list.join(",")
-        hash[:metadata] = render(obj.metadata)
-
-        return hash
+        self[:org]      = obj.org.name
+        self[:tags]     = obj.tag_list.join(",")
+        self[:metadata] = render(obj.metadata)
+        self
       end
 
-    end # Host
-
-  end # ApiView
-end # Bixby
+    end
+  end
+end

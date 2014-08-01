@@ -14,6 +14,10 @@ Bixby.app.add_states
         return false
       return true
 
+  "checkga":
+    url:   "checkga"
+    views: [ _bv.CheckGa ]
+
   "forgot":
     url:   "forgot_password"
     views: [ _bv.ForgotPassword ]
@@ -31,3 +35,12 @@ Bixby.app.add_states
     tab:   "user"
     url:   "profile/edit"
     views: [ _bv.PageLayout, _bv.ProfileEdit ]
+
+  "profile_qr":
+    tab:   "user"
+    url:   "profile/enable_2fa"
+    views: [ _bv.PageLayout, _bv.ProfileQR ]
+
+    validate: ->
+      @transition "profile"
+      return @password_confirmed == true

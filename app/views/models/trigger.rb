@@ -1,21 +1,18 @@
 
 module Bixby
   module ApiView
-
     class Trigger < ::ApiView::Base
 
       for_model ::Trigger
+      attrs :all
 
-      def self.convert(obj)
-
-        hash = attrs(obj, :all)
-        hash[:metric] = obj.metric
-        hash[:check] = obj.check
-
-        return hash
+      def convert
+        super
+        self[:metric] = obj.metric
+        self[:check]  = obj.check
+        self
       end
 
-    end # Trigger
-
-  end # ApiView
-end # Bixby
+    end
+  end
+end

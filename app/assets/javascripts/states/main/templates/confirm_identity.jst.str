@@ -1,0 +1,37 @@
+
+<div class="modal-dialog">
+  <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Please re-enter your <%? confirm_password %>password <%/%><%? confirm_password && confirm_token %> &<%/%><%? confirm_token %> token<%/%></h4>
+
+      </div>
+
+    <div class="modal-body container-fluid">
+      <%? confirm_password == true %>
+        <div class="row-fluid">
+          <%= include("main/_text_input", {name: "password", type: "password"}) %>
+        </div>
+      <%/%>
+
+      <%? confirm_token == true %>
+        <div class="row-fluid">
+          <%= include("main/_text_input", {name: "token", type: "token", label: "Token"}) %>
+        </div>
+      <%/%>
+
+      <div class="row-fluid">
+        <i class="text-danger"><%= reason_for_prompt %></i>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="controls">
+        <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary confirm">Confirm</button>
+      </div>
+    </div>
+
+  </div>
+</div>

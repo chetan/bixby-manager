@@ -20,7 +20,7 @@ module ApiView
       # @return [String]
       def render(obj, scope, options={})
 
-        ret = convert(obj)
+        ret = convert(obj, options)
 
         if ret.kind_of? String then
           return ret # already converted (by default converter, for ex)
@@ -36,7 +36,7 @@ module ApiView
       #
       # @param [Object] obj
       # @return [Object]
-      def convert(obj)
+      def convert(obj, options=nil)
 
         if BASIC_TYPES_LOOKUP.include? obj.class then
           return obj # already converted
@@ -48,10 +48,15 @@ module ApiView
           return ret
 
         elsif obj.respond_to?(:map) then
-          return obj.map { |o| convert(o) }
+          if options.blank? or !options[:cache_array] then
+            converter = ApiView.converter_for(obj.first.class, options)
+            return obj.map { |o| converter.new(o).convert }
+          else
+            return obj.map { |o| convert(o, options) }
+          end
 
         else
-          return ApiView.converter_for(obj.class).convert(obj)
+          return ApiView.converter_for(obj.class, options).new(obj).convert
         end
 
       end

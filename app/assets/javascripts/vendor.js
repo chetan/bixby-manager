@@ -4,6 +4,7 @@
 //= require "jquery.putcursoratend"
 //= require "jquery.appear"
 //= require "jquery.linedtextarea"
+//= require "jquery.qrcode.min"
 
 //= require "underscore"
 //= require "underscore_patch"
