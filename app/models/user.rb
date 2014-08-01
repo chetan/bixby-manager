@@ -56,9 +56,11 @@
 # temp workaround for load order issues
 # user model now gets loaded at various different points in the process
 require "rails_ext/multi_tenant"
+require "archie/model"
 
 class User < ActiveRecord::Base
-	attr_accessor :gauth_token
+
+  include Archie::Model
 
   has_and_belongs_to_many :roles, -> { includes :role_permissions }, :join_table => :users_roles
   has_many :user_permissions, -> { includes :permissions }

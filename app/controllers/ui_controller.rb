@@ -6,7 +6,6 @@ class UiController < ApplicationController
   impersonates :user
 
   before_filter :authenticate_user!
-  # before_filter :login_required?
   before_filter :set_current_tenant
   before_filter :bootstrap_current_user
   before_filter :bootstrap_users
@@ -21,7 +20,7 @@ class UiController < ApplicationController
   # user_signed_in?
   # current_user
   # user_session
-  alias_method :current_user_session, :user_session
+  # alias_method :current_user_session, :user_session
 
   # Helpers from pretender:
   #
@@ -62,39 +61,6 @@ class UiController < ApplicationController
     }
   end
 
-  # Check for a valid user session
-  #
-  # @return [Boolean] true if the request is not authenticated (user must login)
-  def login_required?
-
-    # check for user session
-    if current_user and user_signed_in? then
-      bootstrap current_user, :name => :current_user
-      return false
-    end
-
-    # don't redirect when trying to login
-    return false if params["controller"] == "sessions" && (params["action"] == "index" || params["action"] == "create")
-
-    # render a response directly
-    if request.xhr? or request.format != "text/html" then
-      # return an error response instead
-      return render :text => "not logged in", :status => 401
-    end
-
-    u = URI.parse(request.url)
-    s = u.path
-    s += "?" + u.query if u.query
-    session[:return_to] = s
-
-    qp = params.clone
-    qp.delete(:controller)
-    qp.delete(:action)
-    path = params[:i].blank? ? login_index_path : login_index_path(qp)
-
-    redirect_to path
-  end
-
   def bail_from_ex(ex)
     # when catching MultiTenant::AccessException a response may already have been rendered
     # in that case, we need to override the response by nilling it out then redirecting
@@ -105,6 +71,11 @@ class UiController < ApplicationController
 
   def ex_to_s(ex)
     params[:action] + "(#{params.inspect}) failed with #{ex.class}: #{ex.message}"
+  end
+
+  def authenticate_user!(opts={})
+    return if is_logged_in?
+    redirect_to "/login"
   end
 
 end

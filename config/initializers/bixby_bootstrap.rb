@@ -73,9 +73,10 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   # rescan plugins
   Bixby::Repository.rescan_plugins << Bixby::Metrics::RescanPlugin
 
-  # devise
-  Devise.secret_key = BIXBY_CONFIG[:devise_secret_token]
-  Devise.pepper = BIXBY_CONFIG[:devise_pepper]
+  # archie
+  require "archie"
+  Archie::Config.secret_key = BIXBY_CONFIG[:devise_secret_token]
+  Archie::Config.pepper = BIXBY_CONFIG[:devise_pepper]
 
   # set default url_for options in action mailer (required by devise)
   uri = URI(Bixby.manager_uri)
@@ -84,10 +85,10 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
     :protocol => uri.scheme
   }
 
-  Devise.mailer_sender = BIXBY_CONFIG[:mailer_from]
-  Rails.application.config.action_mailer.default_options = {
-    :from => BIXBY_CONFIG[:mailer_from]
-  }
+  # Devise.mailer_sender = BIXBY_CONFIG[:mailer_from]
+  # Rails.application.config.action_mailer.default_options = {
+  #   :from => BIXBY_CONFIG[:mailer_from]
+  # }
 
 
   # Start EventMachine/pubsub server

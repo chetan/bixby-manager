@@ -6,8 +6,8 @@ Bixby::Application.routes.draw do
   # put 'users/password' => "users#reset_password"
 
   get  "/login"          => "sessions#new"
-  post "/login/checkga"  => "sessions#update"
   post "/login"          => "sessions#create"
+  post "/login/checkga"  => "sessions#checkga"
   post "/logout"         => "sessions#destroy"
 
   post "/users/password" => "passwords#create"

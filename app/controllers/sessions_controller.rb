@@ -1,13 +1,31 @@
 
-class SessionsController < ApplicationController # Devise::SessionsController
-
-  def new
-  end
+class SessionsController < ApplicationController
 
   def create
 
-    resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
-    # resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#new")
+    user = authenticate(params[:user][:username], params[:user][:password])
+    if user.blank? then
+      return failure()
+    end
+
+    ret = { :user => user, :csrf => form_authenticity_token }
+    ret[:redir] = URI.parse(session.delete(:return_to)).path if session.include? :return_to
+
+    if user.can?("impersonate_users")
+      MultiTenant.with(nil){
+        ret[:users] = User.all
+      }
+    end
+    return restful(ret)
+
+
+
+
+
+
+
+
+
 
     if resource.respond_to?(:get_qr) and resource.gauth_enabled? and resource.require_token?(cookies.signed[:gauth]) #Therefore we can quiz for a QR
       tmpid = resource.assign_tmp #assign a temporary key and fetch it
@@ -25,25 +43,6 @@ class SessionsController < ApplicationController # Devise::SessionsController
       sign_in_and_redirect(resource_name, resource)
     end
 
-  end
-
-  def sign_in_and_redirect(resource_or_scope, resource=nil)
-    scope = Devise::Mapping.find_scope!(resource_or_scope)
-    resource ||= resource_or_scope
-    sign_in(scope, resource) unless warden.user(scope) == resource
-
-    # return the user object and a new csrf token
-    ret = { :user => current_user, :csrf => form_authenticity_token }
-    ret[:redir] = URI.parse(session.delete(:return_to)).path if session.include? :return_to
-
-    if current_user.can?("impersonate_users")
-      MultiTenant.with(nil){
-        ret[:users] = User.all
-        restful ret
-      }
-    else
-      restful ret
-    end
   end
 
   def update
@@ -90,7 +89,8 @@ class SessionsController < ApplicationController # Devise::SessionsController
 
   def destroy
     session[:impersonated_user_id] = nil # stop_impersonating_user() - method not avail here
-    super
+    log_user_out()
+    return render :json => {:success => true}, :status => 200
   end
 
   def failure
