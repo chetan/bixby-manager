@@ -50,7 +50,7 @@ class Rest::Models::UsersController < ::Rest::BaseController
 
   def confirm_password
     user = User.find(_id)
-    restful user.valid_password?(pass)
+    restful user.valid_password?(params[:password])
   end
 
   def update
