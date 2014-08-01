@@ -18,7 +18,7 @@ module Archie
     end
 
     def password=(new_password)
-      self.password_salt = self.class.password_salt if new_password.present?
+      self.password_salt = self.class.generate_password_salt if new_password.present?
       @password = new_password
       self.encrypted_password = password_digest(@password) if @password.present?
     end
@@ -40,7 +40,7 @@ module Archie
     end
 
     module ClassMethods
-      def password_salt
+      def generate_password_salt
         SecureRandom.urlsafe_base64(15).tr('lIO0', 'sxyz') # borrowed from devise
       end
     end
