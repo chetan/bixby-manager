@@ -11,7 +11,7 @@ class Rest::Models::Hosts < TestCase
     super
     # Create a user and sign him in
     @user = FactoryGirl.create(:user)
-    sign_in @user
+    # sign_in @user
   end
 
   def test_index

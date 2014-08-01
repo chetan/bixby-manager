@@ -27,8 +27,7 @@ class Bixby::Test::Modules::User < Bixby::Test::TestCase
     u = User.where(:username => "jdoe").first
     assert u
     refute u.phone
-    assert Devise::Encryptable::Encryptors::Scrypt.compare(
-      u.encrypted_password, "secret123", nil, u.password_salt, Devise.pepper)
+    assert u.valid_password?("secret123")
     assert_equal o, u.org
   end
 
