@@ -8,10 +8,10 @@
 # ----------------- | ------------------ | ---------------------------
 # **`id`**          | `integer`          | `not null, primary key`
 # **`repo_id`**     | `integer`          |
+# **`bundle_id`**   | `integer`          | `not null`
 # **`name`**        | `string(255)`      |
 # **`desc`**        | `string(255)`      |
 # **`location`**    | `string(255)`      |
-# **`bundle`**      | `string(255)`      |
 # **`command`**     | `string(255)`      |
 # **`options`**     | `text`             |
 # **`updated_at`**  | `datetime`         |
@@ -19,6 +19,8 @@
 #
 # ### Indexes
 #
+# * `commands_bundle_id_fk`:
+#     * **`bundle_id`**
 # * `fk_commands_repos1`:
 #     * **`repo_id`**
 #

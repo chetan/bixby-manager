@@ -58,13 +58,13 @@ gem "oj",           :platforms => [:mri, :rbx]
 gem "json",         :platforms => [:mri, :rbx, :jruby]
 
 gem "request_store"
+gem "mixlib-shellout"
+
+# auth/security
 gem "scrypt"
-gem "devise"
-gem "devise-encryptable"
-gem 'devise_google_authenticator', '0.3.14'
+gem "rotp", "~> 2.0"
 gem "pretender"
 gem "api-auth", :github => "chetan/api_auth", :branch => "bixby"
-gem "mixlib-shellout"
 
 # repository module
 gem "git", "= 1.2.5"

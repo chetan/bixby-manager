@@ -2,8 +2,6 @@
 module Bixby
   class Test::Controllers::TestCase < ::ActionController::TestCase
 
-    include Devise::TestHelpers
-
     def setup
       super
       # common req options

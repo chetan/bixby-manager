@@ -1,10 +1,12 @@
 
 # temp workaround for load order issues
 # ApplicationController now gets loaded at various different points in the process
-# (due to addition of devise_google_authenticator gem)
 require "rails_ext/multi_tenant"
+require "archie/controller"
 
 class ApplicationController < ActionController::Base
+
+  include Archie::Controller
 
   protect_from_forgery
   respond_to :html, :json
