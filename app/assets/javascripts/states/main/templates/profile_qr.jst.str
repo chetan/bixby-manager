@@ -19,13 +19,11 @@
 
       <div class="form-group">
         <div class="qrcode"></div>
-        <i> Be sure to scan the above QR Code <u> before </u> enabling 2-Factor authentication. </i>
+        <i> Be sure to scan the above QR Code <u>before</u> enabling 2-Factor authentication. </i>
       </div>
 
       <div class="form-group">
-        <%? current_user.get("gauth_enabled") == false %>
         <button type="button" class="btn btn-primary 2fa">Enable 2-Factor</button>
-      <%/%>
         <button type="button" class="btn btn-default cancel">Cancel</button>
       </div>
 

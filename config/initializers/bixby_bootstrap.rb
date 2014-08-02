@@ -75,8 +75,11 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
 
   # archie
   require "archie"
-  Archie::Config.secret_key = BIXBY_CONFIG[:devise_secret_token]
-  Archie::Config.pepper = BIXBY_CONFIG[:devise_pepper]
+  Archie::Config.secret_key = BIXBY_CONFIG[:archie_secret_key]
+  Archie::Config.pepper     = BIXBY_CONFIG[:archie_pepper]
+  # set OTP encryption key
+  Archie::Config.otp_secret_encryption_key     = BIXBY_CONFIG[:otp_secret_encryption_key]
+  User.encrypted_attributes[:otp_secret][:key] = Archie::Config.otp_secret_encryption_key
 
   # set default url_for options in action mailer (required by devise)
   uri = URI(Bixby.manager_uri)

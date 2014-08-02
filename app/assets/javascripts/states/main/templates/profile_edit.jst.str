@@ -36,11 +36,11 @@
         <button type="button" class="btn btn-primary submit">Save</button>
         <button type="button" class="btn btn-default cancel">Cancel</button>
 
-        <%? current_user.get("gauth_enabled") == false %>
+        <%? !current_user.get("otp_required_for_login") %>
           <button type="button" class="btn btn-warning pull-right 2fa"><%i lock %> Enable 2-Factor</button>
         <%/%>
 
-        <%? current_user.get("gauth_enabled") == true %>
+        <%? current_user.get("otp_required_for_login") %>
           <button type="button" class="btn btn-danger pull-right disable_2fa"><%i unlock %> Disable 2-Factor</button>
         <%/%>
 

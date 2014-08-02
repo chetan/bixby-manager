@@ -71,6 +71,7 @@ gem "git", "= 1.2.5"
 gem "sshkey"
 
 # rails plugins
+gem "attr_encrypted" # used in auth/otp
 gem "acts-as-taggable-on", "~> 3.1.0"
 gem "acts_as_tree"      # replace with closure_tree (better perf)?
 gem "delete_paranoid", :github => "socialcast/delete_paranoid"

@@ -1,4 +1,6 @@
 
+require "archie/model/otp"
+
 module Archie
   module Model
 

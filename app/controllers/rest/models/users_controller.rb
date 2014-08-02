@@ -72,16 +72,15 @@ class Rest::Models::UsersController < ::Rest::BaseController
 
   def assign_2fa_secret
     user = User.find(params['user_id'])
-    user.send(:assign_auth_secret)
+    user.otp_secret = User.generate_otp_secret
     user.save
 
-    restful user.gauth_secret
+    restful user.otp_secret
   end
 
   def enable_2fa
     user = User.find(params['user_id'])
-    user.gauth_enabled = true
-
+    user.otp_required_for_login = true
     user.save
 
     restful user
@@ -89,9 +88,8 @@ class Rest::Models::UsersController < ::Rest::BaseController
 
   def disable_2fa
     user = User.find(params['user_id'])
-    user.gauth_enabled = false
-
-    user.gauth_secret = nil
+    user.otp_required_for_login = false
+    user.otp_secret = nil
     user.save
 
     restful user

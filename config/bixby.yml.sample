@@ -1,8 +1,9 @@
 
 development:
   secret_token: "secret"
-  devise_secret_token: "secret"
-  devise_pepper: "secret"
+  archie_secret_key: "secret"
+  archie_pepper: "secret"
+  otp_secret_encryption_key: "secret"
   default_tenant: "pixelcop"
   default_tenant_pw: "test"
   manager:
@@ -21,8 +22,9 @@ development:
 
 test:
   secret_token: "secret"
-  devise_secret_token: "secret"
-  devise_pepper: "secret"
+  archie_secret_key: "secret"
+  archie_pepper: "secret"
+  otp_secret_encryption_key: "secret"
   default_tenant: "pixelcop"
   default_tenant_pw: "test"
   manager:
@@ -40,13 +42,10 @@ test:
 
 
 production:
-  # Your secret key for verifying the integrity of signed cookies.
-  # If you change this key, all old signed cookies will become invalid!
-  # Make sure the secret is at least 30 characters and all random,
-  # no regular words or you'll be exposed to dictionary attacks.
-  secret_token: ""
-  devise_secret_token: ""
-  devise_pepper: ""
+  secret_token: "secret"
+  archie_secret_key: "secret"
+  archie_pepper: "secret"
+  otp_secret_encryption_key: "secret"
   # used to seed db with an initial tenant
   default_tenant: "pixelcop"
   default_tenant_pw: "test"

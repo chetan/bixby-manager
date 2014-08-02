@@ -61,6 +61,7 @@ require "archie/model"
 class User < ActiveRecord::Base
 
   include Archie::Model
+  include Archie::Model::OTP
 
   has_and_belongs_to_many :roles, -> { includes :role_permissions }, :join_table => :users_roles
   has_many :user_permissions, -> { includes :permissions }
