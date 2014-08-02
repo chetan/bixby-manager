@@ -15,12 +15,10 @@ class UiController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, :with => :bail_from_ex
   rescue_from MultiTenant::AccessException, :with => :bail_from_ex
 
-  # Helpers from Devise:
+  # Helpers from Archie:
   #
-  # user_signed_in?
+  # is_logged_in?
   # current_user
-  # user_session
-  # alias_method :current_user_session, :user_session
 
   # Helpers from pretender:
   #

@@ -1,5 +1,5 @@
 
-class PasswordsController < UiController # Devise::PasswordsController
+class PasswordsController < UiController
 
   # POST /resource/password
   def create
