@@ -51,8 +51,8 @@ namespace "Bixby.view", (exports, top) ->
                 data: _.csrf({user_id: @current_user.id}),
                 success: (data, textStatus, jqXHR) ->
                   view.current_user.set {
-                    gauth_enabled: false
-                    gauth_secret: undefined
+                    otp_required_for_login: false
+                    otp_secret: null
                   }
 
                   alert "You have disabled 2-Factor authentication!"

@@ -11,7 +11,10 @@ namespace "Bixby.view", (exports, top) ->
           type: "POST",
           data: _.csrf({user_id: @current_user.id}),
           success: (data, textStatus, jqXHR) ->
-            view.current_user.set { gauth_enabled: true }
+            view.current_user.set {
+              otp_required_for_login: true
+              otp_secret: null
+            }
 
             alert "You have enabled 2-Factor authentication!"
             view.transition("profile")
