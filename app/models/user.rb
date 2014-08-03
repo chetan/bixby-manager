@@ -71,11 +71,6 @@ class User < ActiveRecord::Base
   belongs_to :org, -> { includes :tenant }
   multi_tenant :via => :org
 
-  def self.find_for_authentication(tainted_conditions)
-    opts = devise_parameter_filter.filter(tainted_conditions)
-    find_by_username_or_email(opts[:username])
-  end
-
   def self.find_by_username_or_email(login)
     if login.include? "@" then
       where("email = ? OR username = ?", login, login).first

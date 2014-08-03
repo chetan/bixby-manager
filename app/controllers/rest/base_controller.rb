@@ -31,7 +31,7 @@ class Rest::BaseController < UiController
       return false
     end
 
-    # authenticate a request from a browser session (via devise)
+    # authenticate a request from a browser session
     super
   end
 
