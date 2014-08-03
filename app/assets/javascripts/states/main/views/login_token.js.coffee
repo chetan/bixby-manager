@@ -1,8 +1,8 @@
 namespace "Bixby.view", (exports, top) ->
 
-  class exports.CheckGa extends Stark.View
+  class exports.LoginToken extends Stark.View
 
-    template: "main/check_ga"
+    template: "main/login_token"
     el: "div.body"
 
 
@@ -11,12 +11,12 @@ namespace "Bixby.view", (exports, top) ->
         @check()
 
     check: ->
-      gauth_token = @$("#gauth_token").val()
+      token = @$("#token").val()
 
       view = @
-      $.ajax "/login/checkga",
+      $.ajax "/login/verify_token",
         type: "POST",
-        data: _.csrf({user: {tmpid: @tmpid, gauth_token: gauth_token}}),
+        data: _.csrf({user: {token: token}}),
         success: (data, textStatus, jqXHR) ->
           ret = JSON.parse(data)
 

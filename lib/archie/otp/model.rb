@@ -2,8 +2,8 @@
 require "archie/config"
 
 module Archie
-  module Model
-    module OTP
+  module OTP
+    module Model
 
       extend ActiveSupport::Concern
 

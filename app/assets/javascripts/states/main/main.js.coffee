@@ -14,9 +14,9 @@ Bixby.app.add_states
         return false
       return true
 
-  "checkga":
-    url:   "checkga"
-    views: [ _bv.CheckGa ]
+  "login_token":
+    url:   "/login/token"
+    views: [ _bv.LoginToken ]
 
   "forgot":
     url:   "forgot_password"

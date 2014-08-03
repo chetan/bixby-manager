@@ -3,10 +3,12 @@
 # ApplicationController now gets loaded at various different points in the process
 require "rails_ext/multi_tenant"
 require "archie/controller"
+require "archie/otp"
 
 class ApplicationController < ActionController::Base
 
   include Archie::Controller
+  include Archie::OTP::Controller
 
   protect_from_forgery
   respond_to :html, :json

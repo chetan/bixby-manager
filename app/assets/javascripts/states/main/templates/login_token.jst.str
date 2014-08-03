@@ -6,7 +6,7 @@
       <form role="form">
         <i> Please enter your Google Authenticator token: </i>
 
-        <%= include("main/_text_input", {name: "gauth_token", label: "Token"}) %>
+        <%= include("main/_text_input", {name: "token", label: "Token"}) %>
 
         <div class="form-group">
           <button type="button" class="btn btn-primary check_token">Check Token</button>

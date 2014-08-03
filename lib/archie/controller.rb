@@ -2,6 +2,10 @@
 module Archie
   module Controller
 
+    AUTH_ERROR   = 0
+    AUTH_SUCCESS = 1
+    AUTH_OK      = 1
+
     def is_logged_in?
       !session[:current_user].blank?
     end
@@ -11,9 +15,9 @@ module Archie
       user = User.find_by_username_or_email(username)
       if !user.blank? && user.valid_password?(password) then
         log_user_in(user)
-        return user
+        return AUTH_SUCCESS
       end
-      return nil
+      return AUTH_ERROR
     end
 
     def log_user_out
@@ -26,6 +30,7 @@ module Archie
 
     def log_user_in(user)
       session[:current_user] = user.id
+      @current_user = user
 
       # recycle session id
       opts = env[Rack::Session::Abstract::ENV_SESSION_OPTIONS_KEY]
@@ -44,6 +49,7 @@ end
 # Required by pretender
 module ActionController
   class Base
+
     def current_user
       return @current_user if @current_user or session[:current_user].blank?
       begin
@@ -54,5 +60,6 @@ module ActionController
         # TODO invalidate session and return to login
       end
     end
+
   end
 end
