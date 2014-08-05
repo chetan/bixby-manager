@@ -1,7 +1,6 @@
 
 # TODO
 class MonitoringMailer < ActionMailer::Base
-  default :from => "bixby@fw2.net"
 
   def alert(metric, alert, user)
     @user = user
