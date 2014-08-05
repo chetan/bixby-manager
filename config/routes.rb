@@ -61,7 +61,7 @@ Bixby::Application.routes.draw do
         post "disable_2fa"
         post "assign_2fa_secret"
         post "forgot_password"
-        post "reset_password"
+        put "reset_password"
       end
     end
 

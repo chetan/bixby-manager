@@ -100,7 +100,7 @@ class Rest::Models::UsersController < ::Rest::BaseController
   def forgot_password
     user = User.find_by_username_or_email(params[:username])
     if user.blank? then
-      return render :json => {:success => false, :error => "Unknown username or email address"}, :status => 400
+      return render :json => {:success => false, :error => "unknown username or email address"}, :status => 400
     end
 
     # set token
@@ -113,6 +113,22 @@ class Rest::Models::UsersController < ::Rest::BaseController
   end
 
   def reset_password
+    user = User.where(:reset_password_token => params[:user][:token]).first
+    if user.blank? then
+      return render :json => {:success => false, :error => "invalid token"}, :status => 400
+    end
+
+    p user
+    if user.reset_password_sent_at < (Time.new-3600*3) then
+      # older than 3 hours
+      return render :json => {:success => false, :error => "token expired"}, :status => 400
+    end
+
+    user.password              = params[:user][:password]
+    user.password_confirmation = params[:user][:password_confirmation]
+    user.save
+
+    return render :json => {:succes => true}
   end
 
 end

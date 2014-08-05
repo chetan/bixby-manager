@@ -9,10 +9,6 @@ class ResetPasswordPreview < ActionMailer::Preview
 
     ret = Archie::Mail.forgot_password(user)
 
-    user.reset_password_token   = nil
-    user.reset_password_sent_at = nil
-    user.save
-
     return ret
   end
 

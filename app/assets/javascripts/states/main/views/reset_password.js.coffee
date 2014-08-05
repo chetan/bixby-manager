@@ -18,12 +18,12 @@ namespace "Bixby.view", (exports, top) ->
         @reset_password()
 
     reset_password: ->
-      token = _.param("reset_password_token")
+      token = _.param("token")
       pass = @$("#password").val()
       pass2 = @$("#password_confirmation").val()
-      $.ajax "/users/password",
+      $.ajax "/rest/users/reset_password",
         type: "PUT",
-        data: _.csrf({user: {password: pass, password_confirmation: pass2, reset_password_token: token}}),
+        data: _.csrf({user: {password: pass, password_confirmation: pass2, token: token}}),
         error: (jqXHR, status, err) ->
           if ret = JSON.parse(jqXHR.responseText)
             errors = ret.errors

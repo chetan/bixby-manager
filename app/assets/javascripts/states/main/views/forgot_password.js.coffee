@@ -25,7 +25,7 @@ namespace "Bixby.view", (exports, top) ->
         data: _.csrf({username: user}),
         error: (jqXHR, status, err) ->
           data = JSON.parse(jqXHR.responseText)
-          if data.error.match(/Unknown username/)
+          if data.error.match(/unknown username/)
             _.fail("div.valid.username", "bad username or email")
           else
             _.fail("div.valid.username", "error submitting reset request")
