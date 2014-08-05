@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       return restful({ :token_required => true, :csrf => form_authenticity_token })
 
     when AUTH_SUCCESS
-
+      return success()
     end
 
   end
