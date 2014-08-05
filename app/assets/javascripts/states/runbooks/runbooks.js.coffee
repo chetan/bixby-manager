@@ -10,4 +10,4 @@ Bixby.app.add_states { tab: "runbooks", views: [ _bv.PageLayout ] },
     models: [ B.m.HostList, B.m.CommandList ]
 
     validate: ->
-      return @password_confirmed == true
+      return !@current_user.get("otp_required_for_login") || @password_confirmed == true
