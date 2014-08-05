@@ -7,9 +7,7 @@ class ResetPasswordPreview < ActionMailer::Preview
     user.reset_password_sent_at = Time.new
     user.save
 
-    ret = Archie::Mail.forgot_password(user)
-
-    return ret
+    Archie::Mail.forgot_password(user)
   end
 
 end
