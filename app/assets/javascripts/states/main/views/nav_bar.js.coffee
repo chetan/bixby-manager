@@ -17,13 +17,17 @@ namespace "Bixby.view", (exports, top) ->
 
     events:
       "click a.run": (e) ->
+        if !@current_user.get("otp_required_for_login")
+          return @transition("runbooks")
+
         c = @create_partial Bixby.view.ConfirmIdentity,
           confirm_password: false,
           confirm_token: true
           cb: (confirmed) =>
             if confirmed
-              # @transition("runbooks", {password_confirmed: true})
               @transition("runbooks", {password_confirmed: true})
+            else
+              alert("fail")
         c.render()
 
       "click a": (e) ->
