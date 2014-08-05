@@ -23,7 +23,7 @@ Bixby.app.add_states
     views: [ _bv.ForgotPassword ]
 
   "reset_password":
-    url: "users/password/edit"
+    url: "reset_password"
     views: [ _bv.ResetPassword ]
 
   "profile":

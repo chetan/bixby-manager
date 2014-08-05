@@ -20,11 +20,12 @@ namespace "Bixby.view", (exports, top) ->
         _.fail("div.valid.username", "username or email is required")
         return
 
-      $.ajax "/users/password",
+      $.ajax "/rest/users/forgot_password",
         type: "POST",
         data: _.csrf({username: user}),
         error: (jqXHR, status, err) ->
-          if jqXHR.responseText == "not found"
+          data = JSON.parse(jqXHR.responseText)
+          if data.error.match(/Unknown username/)
             _.fail("div.valid.username", "bad username or email")
           else
             _.fail("div.valid.username", "error submitting reset request")

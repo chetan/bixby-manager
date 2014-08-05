@@ -3,15 +3,11 @@ Bixby::Application.routes.draw do
   # Default route
   root "inventory/hosts#index"
 
-  # put 'users/password' => "users#reset_password"
-
+  # LOGIN/SESSIONS
   get  "/login"              => "sessions#new"
   post "/login"              => "sessions#create"
   post "/login/verify_token" => "sessions#verify_token"
   post "/logout"             => "sessions#destroy"
-
-  post "/users/password" => "passwords#create"
-  put  "/users/password" => "passwords#update"
 
   # API Controller endpoint
   post '/api' => 'api#handle'
@@ -64,6 +60,8 @@ Bixby::Application.routes.draw do
         post "enable_2fa"
         post "disable_2fa"
         post "assign_2fa_secret"
+        post "forgot_password"
+        post "reset_password"
       end
     end
 
@@ -85,6 +83,7 @@ Bixby::Application.routes.draw do
   # get 'login' => 'sessions#new', :as => :login
 
   get 'forgot_password' => "application#default_route"
+  get 'reset_password'  => "application#default_route"
 
   get 'getting_started' => "inventory/hosts#index"
 

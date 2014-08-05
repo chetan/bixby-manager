@@ -1,6 +1,8 @@
 
 class Rest::Models::UsersController < ::Rest::BaseController
 
+  skip_before_filter :authenticate_user!, :only => [ :forgot_password, :reset_password ]
+
   def index
     users = User.where(:org_id => current_user.org_id)
     restful users
@@ -95,7 +97,22 @@ class Rest::Models::UsersController < ::Rest::BaseController
     restful user
   end
 
-  def destroy
-    # TODO
+  def forgot_password
+    user = User.find_by_username_or_email(params[:username])
+    if user.blank? then
+      return render :json => {:success => false, :error => "Unknown username or email address"}, :status => 400
+    end
+
+    # set token
+    user.reset_password_token   = Archie.generate_token
+    user.reset_password_sent_at = Time.new
+    user.save
+
+    Archie::Mail.forgot_password(user)
+    head 204
   end
+
+  def reset_password
+  end
+
 end

@@ -88,11 +88,9 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
     :protocol => uri.scheme
   }
 
-  # Devise.mailer_sender = BIXBY_CONFIG[:mailer_from]
-  # Rails.application.config.action_mailer.default_options = {
-  #   :from => BIXBY_CONFIG[:mailer_from]
-  # }
-
+  Rails.application.config.action_mailer.default_options = {
+    :from => BIXBY_CONFIG[:mailer_from]
+  }
 
   # Start EventMachine/pubsub server
   if ENV["BIXBY_SKIP_EM"] != "1" then
