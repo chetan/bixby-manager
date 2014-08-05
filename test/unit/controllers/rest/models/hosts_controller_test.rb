@@ -11,7 +11,6 @@ class Rest::Models::Hosts < TestCase
     super
     # Create a user and sign him in
     @user = FactoryGirl.create(:user)
-    # sign_in @user
   end
 
   def test_index
@@ -47,6 +46,8 @@ class Rest::Models::Hosts < TestCase
   end
 
   def test_tenant_security
+
+    sign_in @user
 
     h = FactoryGirl.create(:host)
     assert h.respond_to? :tenant
