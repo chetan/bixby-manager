@@ -41,6 +41,11 @@ module Bixby
       @controller.expects(:current_user).returns(@user).at_least_once
     end
 
+    def sign_in(user)
+      session[:current_user] = user.id
+      @current_user = user
+    end
+
     def sign_with_agent
       @agent = FactoryGirl.create(:agent)
       @host = Host.first
