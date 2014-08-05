@@ -7,6 +7,11 @@ namespace "Bixby.view", (exports, top) ->
 
 
     events:
+      "keypress input": (e) ->
+        if e.keyCode == 13
+          e.preventDefault()
+          @check()
+
       "click button.check_token": (e) ->
         @check()
 
