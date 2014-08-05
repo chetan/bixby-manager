@@ -62,6 +62,7 @@ Bixby::Application.routes.draw do
         post "assign_2fa_secret"
         post "forgot_password"
         put "reset_password"
+        post "accept_invite"
       end
     end
 
@@ -84,11 +85,12 @@ Bixby::Application.routes.draw do
 
   get 'forgot_password' => "application#default_route"
   get 'reset_password'  => "application#default_route"
+  get 'accept_invite'   => "application#default_route"
 
   get 'getting_started' => "inventory/hosts#index"
 
-  get 'profile' => "ui#default"
-  get 'profile/edit' => "ui#default"
+  get 'profile'            => "ui#default"
+  get 'profile/edit'       => "ui#default"
   get 'profile/enable_2fa' => "ui#default"
 
   get "/inventory" => "inventory/hosts#index"

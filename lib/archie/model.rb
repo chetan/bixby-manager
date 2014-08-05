@@ -39,7 +39,7 @@ module Archie
     # Passwords are always required if it's a new record, or if the password
     # or confirmation are being set somewhere.
     def password_required?
-      !persisted? || !password.nil? || !password_confirmation.nil?
+      (!persisted? || !password.nil? || !password_confirmation.nil?) && invite_token.nil?
     end
 
     def password_digest(password)

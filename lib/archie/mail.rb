@@ -5,14 +5,21 @@ module Archie
     def forgot_password(user)
       @user  = user
       @token = user.reset_password_token
-      send_mail()
+      send_mail("Bixby password reset instructions")
+    end
+
+    def invite_user(user, invited_by=nil)
+      @user = user
+      @token = user.invite_token
+      @invited_by = invited_by
+      send_mail("Welcome to Bixby!")
     end
 
 
     private
 
-    def send_mail
-      mail(:template_path => "archie", :to => @user.email, :subject => "Bixby password reset instructions")
+    def send_mail(subject)
+      mail(:template_path => "archie", :to => @user.email, :subject => subject)
     end
 
   end

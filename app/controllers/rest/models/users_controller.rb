@@ -1,7 +1,8 @@
 
 class Rest::Models::UsersController < ::Rest::BaseController
 
-  skip_before_filter :authenticate_user!, :only => [ :forgot_password, :reset_password ]
+  skip_before_filter :authenticate_user!, :only => [ :forgot_password, :reset_password,
+                                                     :accept_invite ]
 
   def index
     users = User.where(:org_id => current_user.org_id)
@@ -118,12 +119,31 @@ class Rest::Models::UsersController < ::Rest::BaseController
       return render :json => {:success => false, :error => "invalid token"}, :status => 400
     end
 
-    p user
     if user.reset_password_sent_at < (Time.new-3600*3) then
       # older than 3 hours
       return render :json => {:success => false, :error => "token expired"}, :status => 400
     end
 
+    user.password              = params[:user][:password]
+    user.password_confirmation = params[:user][:password_confirmation]
+    user.save
+
+    return render :json => {:succes => true}
+  end
+
+  def accept_invite
+    user = User.where(:invite_token => params[:user][:token]).first
+    if user.blank? then
+      return render :json => {:success => false, :error => "invalid token"}, :status => 400
+    end
+
+    if user.invite_sent_at < (Time.new-86400*2) then
+      # older than 2 days
+      return render :json => {:success => false, :error => "token expired"}, :status => 400
+    end
+
+    user.name                  = params[:user][:name]
+    user.username              = params[:user][:username]
     user.password              = params[:user][:password]
     user.password_confirmation = params[:user][:password_confirmation]
     user.save

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724173519) do
+ActiveRecord::Schema.define(version: 20140805043922) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -395,6 +395,11 @@ ActiveRecord::Schema.define(version: 20140724173519) do
     t.string   "encrypted_otp_secret_salt"
     t.boolean  "otp_required_for_login"
     t.string   "otp_tmp_id"
+    t.string   "invite_token"
+    t.datetime "invite_created_at"
+    t.datetime "invite_sent_at"
+    t.datetime "invite_accepted_at"
+    t.integer  "invited_by_id"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

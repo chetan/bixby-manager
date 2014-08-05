@@ -38,6 +38,11 @@
 # **`encrypted_otp_secret_salt`**  | `string(255)`      |
 # **`otp_required_for_login`**     | `boolean`          |
 # **`otp_tmp_id`**                 | `string(255)`      |
+# **`invite_token`**               | `string(255)`      |
+# **`invite_created_at`**          | `datetime`         |
+# **`invite_sent_at`**             | `datetime`         |
+# **`invite_accepted_at`**         | `datetime`         |
+# **`invited_by_id`**              | `integer`          |
 #
 # ### Indexes
 #

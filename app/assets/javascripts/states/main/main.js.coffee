@@ -26,6 +26,10 @@ Bixby.app.add_states
     url: "reset_password"
     views: [ _bv.ResetPassword ]
 
+  "accept_invite":
+    url: "accept_invite"
+    views: [ _bv.AcceptInvite ]
+
   "profile":
     tab:   "user"
     url:   "profile"
