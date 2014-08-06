@@ -18,6 +18,11 @@ echo "$yaml" > config/secrets.yml
 # bixby.yml
 read -d '' yaml <<-EOF
 test:
+  secret_token: "secret"
+  archie_secret_key: "secret"
+  archie_pepper: "secret"
+  otp_secret_encryption_key: "secret"
+  mailer_from: "test@example.com"
   default_tenant: "pixelcop"
   default_tenant_pw: "test"
   redis: "localhost:6379"
