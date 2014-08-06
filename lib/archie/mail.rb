@@ -19,7 +19,10 @@ module Archie
     private
 
     def send_mail(subject)
-      mail(:template_path => "archie", :to => @user.email, :subject => subject)
+      mail(:template_path => "archie",
+           :from => BIXBY_CONFIG[:mailer_from],
+           :to => @user.email,
+           :subject => subject)
     end
 
   end

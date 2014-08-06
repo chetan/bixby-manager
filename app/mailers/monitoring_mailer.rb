@@ -7,6 +7,8 @@ class MonitoringMailer < ActionMailer::Base
     @alert = alert
     @metric = metric
 
-    mail(:to => user.email, :subject => "got a problem, boss")
+    mail(:from => BIXBY_CONFIG[:mailer_from],
+         :to => user.email,
+         :subject => "got a problem, boss")
   end
 end
