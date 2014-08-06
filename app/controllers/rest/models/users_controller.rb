@@ -146,6 +146,7 @@ class Rest::Models::UsersController < ::Rest::BaseController
     user.username              = params[:user][:username]
     user.password              = params[:user][:password]
     user.password_confirmation = params[:user][:password_confirmation]
+    user.invite_accepted_at    = Time.new
     user.save
 
     return render :json => {:succes => true}
