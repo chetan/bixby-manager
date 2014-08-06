@@ -81,12 +81,14 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   Archie::Config.otp_secret_encryption_key     = BIXBY_CONFIG[:otp_secret_encryption_key]
   User.encrypted_attributes[:otp_secret][:key] = Archie::Config.otp_secret_encryption_key
 
-  # set default url_for options in action mailer (required by devise)
+  # set default url_for options
   uri = URI(Bixby.manager_uri)
-  Rails.application.config.action_mailer.default_url_options = {
+  url_opts = {
     :host     => uri.host + (uri.port == uri.default_port ? "" : ":#{uri.port}"),
     :protocol => uri.scheme
   }
+  Rails.application.config.action_mailer.default_url_options = url_opts.dup
+  Rails.application.routes.default_url_options               = url_opts.dup
 
   Rails.application.config.action_mailer.default_options = {
     :from => BIXBY_CONFIG[:mailer_from]
