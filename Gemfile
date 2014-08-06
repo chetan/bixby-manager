@@ -136,8 +136,8 @@ group :development do
   gem "activerecord-jdbcmysql-adapter", "~> 1.3.0", :platforms => :jruby
 
   # debugging
-  gem "debugger",     :platforms => [:mri_19, :mri_20, :mri_21]
-  gem "debugger-pry", :require => "debugger/pry", :platforms => [:mri_19, :mri_20, :mri_21]
+  gem "byebug",     :platforms => [:mri_20, :mri_21]
+  gem "pry-byebug", :platforms => [:mri_20, :mri_21]
   gem "awesome_print", :github => "michaeldv/awesome_print" # to fix error with mongoid/bson
   gem "coffee-rails-source-maps"
   gem "bullet"
