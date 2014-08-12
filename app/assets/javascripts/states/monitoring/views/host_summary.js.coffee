@@ -1,7 +1,7 @@
 namespace "Bixby.view.monitoring", (exports, top) ->
 
   class exports.HostSummary extends Stark.View
-    el: "div#content"
+    el: "div.monitoring_content"
     template: "monitoring/host_summary"
 
     links:
