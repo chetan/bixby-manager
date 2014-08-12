@@ -50,6 +50,9 @@ class Monitoring < API
   # @raise [CommandException]
   def update_check_config(agent)
 
+    # schedule metric ranges to get updated in 5 minutes
+    Bixby::Monitoring.defer(300).update_metric_ranges
+
     agent = get_model(agent, Agent)
 
     # create a list of commands which need to be provisioned
@@ -186,6 +189,7 @@ class Monitoring < API
     a
   end
 
+  # Set an upper bound on metrics based on the max/total reported by another metric
   def update_metric_ranges
     metrics = Metric.where(:range => nil)
     metrics.each do |m|
