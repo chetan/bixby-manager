@@ -1,5 +1,7 @@
 
 namespace :stark do
+
+  desc "Create a new Stark View"
   task :view do
 
     state_dir = File.join(::Rails.root, "app/assets/javascripts/states")
