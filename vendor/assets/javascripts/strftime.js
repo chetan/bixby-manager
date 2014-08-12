@@ -1,6 +1,6 @@
 //
 // strftime
-// github.com/samsonjs/strftime
+// https://github.com/samsonjs/strftime
 // @_sjs
 //
 // Copyright 2010 - 2013 Sami Samhuri <sami@samhuri.net>
@@ -8,6 +8,7 @@
 // MIT License
 // http://sjs.mit-license.org
 //
+// Version 0.8.2 @ c4c5c8d7b577d4b9f4faf541cc89921d6d09e916
 
 ;(function() {
 
@@ -46,7 +47,7 @@
   // locale is optional
   namespace.strftimeTZ = strftime.strftimeTZ = strftimeTZ;
   function strftimeTZ(fmt, d, locale, timezone) {
-    if (typeof locale == 'number' && timezone == null) {
+    if ((typeof locale == 'number' || typeof locale == 'string') && timezone == null) {
       timezone = locale;
       locale = undefined;
     }
@@ -88,12 +89,27 @@
     // Hang on to this Unix timestamp because we might mess with it directly below.
     var timestamp = d.getTime();
 
-    if (options.utc || typeof options.timezone == 'number') {
+    var tz = options.timezone;
+    var tzType = typeof tz;
+
+    if (options.utc || tzType == 'number' || tzType == 'string') {
       d = dateToUTC(d);
     }
 
-    if (typeof options.timezone == 'number') {
-      d = new Date(d.getTime() + (options.timezone * 60000));
+    if (tz) {
+      // ISO 8601 format timezone string, [-+]HHMM
+      //
+      // Convert to the number of minutes and it'll be applied to the date below.
+      if (tzType == 'string') {
+        var sign = tz[0] == '-' ? -1 : 1;
+        var hours = parseInt(tz.slice(1, 3), 10);
+        var mins = parseInt(tz.slice(3, 5), 10);
+        tz = sign * ((60 * hours) + mins);
+      }
+
+      if (tzType) {
+        d = new Date(d.getTime() + (tz * 60000));
+      }
     }
 
     // Most of the specifiers supported by C's strftime, and some from Ruby.
@@ -149,7 +165,7 @@
         case 'd': return pad(d.getDate(), padding);
 
         // '01'
-        case 'e': return d.getDate();
+        case 'e': return pad(d.getDate(), padding == null ? ' ' : padding);
 
         // '1970-01-01'
         case 'F': return _strftime(locale.formats.F || '%Y-%m-%d', d, locale);
@@ -222,7 +238,7 @@
           var day = d.getDay();
           return day == 0 ? 7 : day; // 1 - 7, Monday is first day of the week
 
-        // '1-Jan-1970'
+        // ' 1-Jan-1970'
         case 'v': return _strftime(locale.formats.v || '%e-%b-%Y', d, locale);
 
         // '00'
@@ -245,8 +261,8 @@
             return "GMT";
           }
           else {
-            var tz = d.toString().match(/\((\w+)\)/);
-            return tz && tz[1] || '';
+            var tzString = d.toString().match(/\(([\w\s]+)\)/);
+            return tzString && tzString[1] || '';
           }
 
         // '+0000'
@@ -255,8 +271,8 @@
             return "+0000";
           }
           else {
-            var off = typeof options.timezone == 'number' ? options.timezone : -d.getTimezoneOffset();
-            return (off < 0 ? '-' : '+') + pad(Math.abs(off / 60)) + pad(off % 60);
+            var off = typeof tz == 'number' ? tz : -d.getTimezoneOffset();
+            return (off < 0 ? '-' : '+') + pad(Math.floor(Math.abs(off) / 60)) + pad(Math.abs(off) % 60);
           }
 
         default: return c;
