@@ -186,8 +186,37 @@ class Monitoring < API
     a
   end
 
+  def update_metric_ranges
+    metrics = Metric.where(:range => nil)
+    metrics.each do |m|
+      case m.key
+      when "fs.disk.used", "fs.disk.free"
+        update_metric_range(m, "fs.disk.size")
+      when "fs.inode.used", "fs.inode.free"
+        update_metric_range(m, "fs.inode.total")
+      when "mem.used", "mem.free"
+        update_metric_range(m, "mem.total")
+      when "fs.files.count"
+        update_metric_range(m, "fs.files.max")
+      else
+        m.range = ""
+        m.save
+      end
+    end
+
+    true
+  end
+
 
   private
+
+  def update_metric_range(metric, max_key)
+    size = Metric.where(:key => max_key, :tag_hash => metric.tag_hash,
+                        :check_id => metric.check_id).first.last_value.to_s
+
+    metric.range = "0..#{size}"
+    metric.save
+  end
 
   # Create a CommandSpec for the given Check
   #
