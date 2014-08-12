@@ -5,6 +5,6 @@
   </td>
   <td width="160">
     <a class="edit btn btn-primary btn-large <%? !check.command().has_options() %>disabled<%/%>" role="button"> &nbsp; Edit &nbsp; </a>
-    <button style="float: right" type="button" id="delete_check" class="btn btn-danger btn-large" host_id="<%= host.get('id') %>" check_id="<%= check.get('id') %>">Delete</button>
+    <button style="float: right" type="button" id="delete_check" class="btn btn-danger btn-large">Delete</button>
   </td>
 </tr>

@@ -1,13 +1,9 @@
 
-<div class="metric col-xs-12 col-sm-6 col-md-4 col-lg-4" metric_id="<%= metric.id %>">
+<div class="metric col-xs-12 col-sm-6 col-md-4 col-lg-4">
   <div class="box">
 
     <h5 class="title">
-      <a class="metric"
-         check_id="<%= check.id %>"
-         metric_id="<%= metric.id %>"
-         host_id="<%= check.get('host_id') %>"
-         ><%= metric.display_name() %></a>
+      <a class="metric"><%= metric.display_name() %></a>
     </h5>
 
     <div class="graph_container">

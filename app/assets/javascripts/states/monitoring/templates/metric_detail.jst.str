@@ -4,7 +4,7 @@
 <button type="button" class="btn btn-default btn-sm return_host"><%= _.icon("reply") %> Return to Host</button>
 <button class="btn btn-default btn-sm" id="create_trigger" type="button">Create Trigger</button>
 
-<div class="check" metric_id="<%= metric.id %>">
+<div class="check">
 
   <h4><a class="check"><%= check.get("name") %></a></h4>
   <h5><%= metric.display_name() %></h5>
@@ -48,14 +48,7 @@
     </div>
   </div>
 
-  <div class="metric detail" metric_id="<%= metric.id %>">
-    <h5 class="title">
-      <a class="metric"
-         check_id="<%= check.id %>"
-         metric_id="<%= metric.id %>"
-         host_id="<%= check.get('host_id') %>"
-         ></a>
-    </h5>
+  <div class="metric detail">
     <div class="graph_container">
       <div class="graph"></div>
     </div>

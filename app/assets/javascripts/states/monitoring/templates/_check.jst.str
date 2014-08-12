@@ -1,6 +1,6 @@
 
 <div class="row">
-  <div class="check col-md-12" check_id="<%= check.id %>">
+  <div class="check col-md-12">
 
     <h4><a class="check"><%= check.get("name") %></a></h4>
     <%= include("monitoring/_check_args", {check: check}) %>
