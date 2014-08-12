@@ -20,6 +20,13 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
     views:      [ _bvm.HostSummary ]
     models:     { host: _bm.Host, metrics: _bm.HostSummaryMetricList }
 
+  # All host metrics
+  "mon_view_host_all":
+    url:  "monitoring/hosts/:host_id/metrics"
+
+    views:      [ _bvm.CheckList ]
+    models:     { host: _bm.Host, metrics: _bm.MetricList, checks: _bm.CheckList }
+
   # Check group
   "mon_hosts_check":
     url:  "monitoring/hosts/:host_id/checks/:check_id"

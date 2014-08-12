@@ -1,6 +1,15 @@
 
 class Monitoring::MetricsController < Monitoring::BaseController
 
+  def index
+    host = Host.find(_id(:host_id))
+    metrics = Metric.metrics_for_host(host)
+
+    bootstrap host
+    bootstrap host.checks, :type => Check
+    bootstrap metrics, :type => Metric
+  end
+
   def show
     metric = Metric.find(_id)
 

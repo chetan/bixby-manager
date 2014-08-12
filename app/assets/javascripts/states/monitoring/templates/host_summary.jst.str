@@ -3,6 +3,7 @@
 
 <p class="top hidden">
   <%= include("monitoring/_check_list_actions") %>
+  <button type="button" class="btn btn-primary all_metrics">View All Metrics</button>
 </p>
 
 <div class="row">
@@ -27,4 +28,5 @@
 <br />
 <p class="bottom">
   <%= include("monitoring/_check_list_actions") %>
+  <button type="button" class="btn btn-primary all_metrics">View All Metrics</button>
 </p>

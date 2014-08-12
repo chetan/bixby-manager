@@ -10,6 +10,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       ".add_trigger": [ "mon_hosts_triggers_new", (el) ->
         return { host: @host, metrics: @metrics, checks: @checks }
         ]
+      ".all_metrics":   [ "mon_view_host_all", (el) -> return { host: @host } ]
 
     # Display the metrics for the given keys
     display_metrics: (keys...) ->
