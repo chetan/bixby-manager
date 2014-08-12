@@ -3,7 +3,7 @@
   <div class="box">
 
     <h5 class="title">
-      <a class="metric"><%= metric.display_name() %></a>
+      <a class="metric"><%= (metric_label || metric.display_name()) %></a>
     </h5>
 
     <div class="graph_container">

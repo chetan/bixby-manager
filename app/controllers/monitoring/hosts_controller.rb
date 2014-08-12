@@ -6,13 +6,15 @@ class Monitoring::HostsController < Monitoring::BaseController
   end
 
   def show
-
-    # TODO error if no id
     host = Host.find(_id)
-    checks = Check.where(:host_id => host)
-    metrics = Metric.metrics_for_host(host)
 
-    bootstrap host, checks
+    # by default, only load a subset of metrics
+    keys = %w{ cpu.loadavg.5m cpu.usage.system cpu.usage.user mem.usage fs.disk.usage }
+    metrics = Metric.metrics_for_host(host) do |m|
+      !keys.include?(m.key)
+    end
+
+    bootstrap host
     bootstrap metrics, :type => Metric
   end
 

@@ -5,6 +5,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     className: "metric"
     template: "monitoring/_metric"
 
+    metric_label: null # set this to use a custom label
+
     links:
       "div.metric a.metric": [ "mon_hosts_metric", (el) ->
           return { host: @host, check: @check, metric: @metric }
