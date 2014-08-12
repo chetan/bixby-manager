@@ -41,7 +41,7 @@ module Bixby
           self[:desc]  = mi.desc
           self[:label] = mi.label
           self[:unit]  = mi.unit
-          self[:range] = obj.range || mi.range # use the range attached directly to the metric if avail
+          self[:range] = (obj.range.blank? ? mi.range : obj.range) # use the range attached directly to the metric if avail
           self[:platforms] = mi.platforms
         end
 
