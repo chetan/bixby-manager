@@ -12,6 +12,12 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   format_value = (val) ->
     _.add_commas(_.str.sprintf("%0.2f", val))
 
+  format_footer = (date, val, unit_label) ->
+    date = new Date(date) if !_.isDate(date)
+    date = strftime("%Y/%m/%d %H:%M:%S", date)
+    val = format_value(val)
+    _.str.sprintf("%s%s @ %s", val, unit_label, date)
+
   vals = metric.tuples()
   if !vals || vals.length == 0
     return
@@ -25,8 +31,10 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
       unit_label = "%"
     else
       unit_label = " " + unit
-  last_val = format_value(vals[vals.length-1][1])
-  footer_text = _.str.sprintf("Last Value: %s%s", last_val, unit_label)
+
+  last_date   = vals[vals.length-1][0]
+  last_val    = vals[vals.length-1][1]
+  footer_text = format_footer(last_date, last_val, unit_label)
   footer.text(footer_text)
 
   # draw graph
@@ -119,13 +127,9 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   g._bixby_touch_enabled = false # default to disabled
 
   # set callbacks - have to do this after initial graph created
-  xOptView = g.optionsViewForAxis_('x')
-  xvf = xOptView('valueFormatter')
   opts = {
     highlightCallback: (e, x, pts, row) ->
-      val = format_value(pts[0].yval)
-      date = xvf(x, xOptView, "", g)
-      footer.text(_.str.sprintf("%s, val = %s%s", date, val, unit_label))
+      footer.text(format_footer(x, pts[0].yval, unit_label))
 
     unhighlightCallback: (e) ->
       footer.text(footer_text)
