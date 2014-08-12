@@ -9,6 +9,9 @@ Bixby.monitoring ||= {}
 # zoom_callback: fires after zoom is complete (data is loaded)
 Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
 
+  format_value = (val) ->
+    _.add_commas(_.str.sprintf("%0.2f", val))
+
   vals = metric.tuples()
   if !vals || vals.length == 0
     return
@@ -22,8 +25,8 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
       unit_label = "%"
     else
       unit_label = " " + unit
-  last_val = vals[vals.length-1][1]
-  footer_text = _.str.sprintf("Last Value: %0.2f%s", last_val, unit_label)
+  last_val = format_value(vals[vals.length-1][1])
+  footer_text = _.str.sprintf("Last Value: %s%s", last_val, unit_label)
   footer.text(footer_text)
 
   # draw graph
@@ -120,8 +123,9 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   xvf = xOptView('valueFormatter')
   opts = {
     highlightCallback: (e, x, pts, row) ->
-      date = xvf(x, xOptView, "", g) + ", " + _.str.sprintf("val = %0.2f%s", pts[0].yval, unit_label)
-      footer.text(date)
+      val = format_value(pts[0].yval)
+      date = xvf(x, xOptView, "", g)
+      footer.text(_.str.sprintf("%s, val = %s%s", date, val, unit_label))
 
     unhighlightCallback: (e) ->
       footer.text(footer_text)
