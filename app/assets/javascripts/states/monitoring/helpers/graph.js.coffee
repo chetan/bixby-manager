@@ -66,12 +66,12 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   # Fix the y-axis value range
   opts.includeZero = true # always incldue zero on y-axis
   opts.yRangePad = 1 # just enough padding to show the top-most line
-  range = metric.get("range")
+  range = metric.get_range()
   if unit == "%" && (!range? || range == "0..100")
     # use percentage range, unless overriden in range var
     opts.valueRange = [ 0, 100 ]
 
-  else if metric.get("range") && (matches = metric.get("range").match(/^(.*?)\.\.(.*?)$/))
+  else if range && (matches = range.match(/^(.*?)\.\.(.*?)$/))
     # use y-axis range as given in metric info
     opts.valueRange = [ parseFloat(matches[1]), parseFloat(matches[2]) ]
 

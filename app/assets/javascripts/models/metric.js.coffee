@@ -63,6 +63,23 @@ namespace 'Bixby.model', (exports, top) ->
 
       return s
 
+    # Get the range attribute for this metric
+    get_range: ->
+      if !@get("key").match(/^cpu.loadavg/)
+        return @get("range")
+
+      # custom range only for loadavg
+      # if all values < 1, returns "0..1", else null
+      larger = false
+      _.each @get("data"), (p) ->
+        if p.y > 1
+          larger = true
+          return
+      if larger
+        return null
+      else
+        return "0..1"
+
     # get only the metric attributes (the actual data elements)
     # { key, tags, vals: [ {time, val}, ... ]}
     metrics: ->
