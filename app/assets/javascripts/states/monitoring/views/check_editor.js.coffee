@@ -19,6 +19,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           message: "Are you sure you want to delete '#{@check.name}'?",
           hidden_cb: (confirmed) =>
             if confirmed
+              @host.update_check_config()
               @check.destroy()
               if @check_group_view == true
                 @transition "mon_view_host", {host: @host}
@@ -49,7 +50,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         args[opt_key] = @$("input##{opt_key}").val()
 
       @check.set {
-          args: args
+        args: args
       }
 
       # set runhost if exists
@@ -61,6 +62,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       if @check.hasChanged()
         @check.save()
+        @host.update_check_config()
         @state.redraw()
 
     after_render: ->
