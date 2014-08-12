@@ -23,6 +23,9 @@ module Archie
       def validate_token(token)
         if current_user.valid_otp?(token) then
           session.delete(:require_token)
+          # track now that token has been verified
+          current_user.update_tracked_fields!(request.remote_ip)
+          current_user.save
           return true
         end
         return false

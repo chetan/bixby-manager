@@ -29,6 +29,14 @@ module Archie
     end
 
     def log_user_in(user)
+
+      # update tokens
+      if !user.otp_required_for_login then
+        user.update_tracked_fields!(request.remote_ip)
+        user.save
+      end
+
+      # store in session
       session[:current_user] = user.id
       @current_user = user
 
