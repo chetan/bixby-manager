@@ -10,6 +10,7 @@
 # **`check_id`**     | `integer`          | `not null`
 # **`name`**         | `string(255)`      |
 # **`key`**          | `string(255)`      | `not null`
+# **`range`**        | `string(255)`      |
 # **`tag_hash`**     | `string(32)`       | `not null`
 # **`status`**       | `integer`          |
 # **`last_value`**   | `decimal(20, 2)`   |

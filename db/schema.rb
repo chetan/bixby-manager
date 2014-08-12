@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140805043922) do
+ActiveRecord::Schema.define(version: 20140812133656) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -209,6 +209,7 @@ ActiveRecord::Schema.define(version: 20140805043922) do
     t.integer  "check_id",                                        null: false
     t.string   "name"
     t.string   "key",                                             null: false
+    t.string   "range"
     t.string   "tag_hash",    limit: 32,                          null: false
     t.integer  "status",      limit: 2
     t.decimal  "last_value",             precision: 20, scale: 2
