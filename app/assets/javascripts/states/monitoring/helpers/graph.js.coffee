@@ -60,9 +60,10 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
     opts.valueRange = [ 0, 100 ]
     opts.yRangePad = 1
 
-  else if metric.get("range") && (matches = metric.get("range").match(/\.\./))
+  else if metric.get("range") && (matches = metric.get("range").match(/^(.*?)\.\.(.*?)$/))
     # use y-axis range as given in metric info
-    opts.valueRange = [ matches[1], matches[2] ]
+    opts.valueRange = [ parseFloat(matches[1]), parseFloat(matches[2]) ]
+    opts.yRangePad = 1
 
   ####
   # custom zoom/pan handling
