@@ -4,6 +4,7 @@ development:
   archie_secret_key: "secret"
   archie_pepper: "secret"
   otp_secret_encryption_key: "secret"
+  mailer_from: "Bixby Support <support@example.com>"
   default_tenant: "pixelcop"
   default_tenant_pw: "test"
   manager:
@@ -25,6 +26,7 @@ test:
   archie_secret_key: "secret"
   archie_pepper: "secret"
   otp_secret_encryption_key: "secret"
+  mailer_from: "Bixby Support <support@example.com>"
   default_tenant: "pixelcop"
   default_tenant_pw: "test"
   manager:
@@ -46,6 +48,7 @@ production:
   archie_secret_key: "secret"
   archie_pepper: "secret"
   otp_secret_encryption_key: "secret"
+  mailer_from: "Bixby Support <support@example.com>"
   # used to seed db with an initial tenant
   default_tenant: "pixelcop"
   default_tenant_pw: "test"
