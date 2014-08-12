@@ -88,7 +88,7 @@ class Metrics < API
   # @param [Hash] tags        Tags to filter by, only check-related filters by default
   # @param [String] agg
   # @param [String] downsample   Whether or not to downsample values (default=nil)
-  def get_for_host(host, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
+  def get_for_host(host, start_time, end_time, tags = {}, agg = "sum", downsample = nil, &block)
 
     host = get_model(host, Host)
 
@@ -97,7 +97,7 @@ class Metrics < API
     # tags[:org_id]    = @org_id
     # tags[:tenant_id] = @tenant_id
 
-    get_for_checks(Check.where(:host_id => host.id), start_time, end_time, tags, agg, downsample)
+    get_for_checks(Check.where(:host_id => host.id), start_time, end_time, tags, agg, downsample, &block)
   end
 
   # Get the metrics for the given Check
@@ -299,8 +299,13 @@ class Metrics < API
   private
 
   # Get Metrics for the given checks
-  def get_for_checks(checks, start_time, end_time, tags = {}, agg = "sum", downsample = nil)
+  def get_for_checks(checks, start_time, end_time, tags = {}, agg = "sum", downsample = nil, &block)
     metrics = Metric.includes(:tags, :check => [:host, :command, {:metric_infos => :command}]).where(:check_id => checks).references(:checks)
+
+    if block then
+      # if a block was given, then use it to filter the list of metrics to fetch
+      metrics.to_a.reject!(&block)
+    end
 
     reqs = metrics.map do |metric|
       create_query(metric, start_time, end_time, tags, agg, downsample)

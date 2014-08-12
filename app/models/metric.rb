@@ -101,11 +101,11 @@ class Metric < ActiveRecord::Base
   end
 
   # Retrieve metrics for the given host
-  def self.metrics_for_host(host, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
+  def self.metrics_for_host(host, time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil, &block)
     time_start, time_end, tags, agg = default_args(time_start, time_end, tags, agg)
     downsample ||= "1h-avg"
 
-    metrics = Bixby::Metrics.new.get_for_host(host, time_start, time_end, tags, agg, downsample)
+    metrics = Bixby::Metrics.new.get_for_host(host, time_start, time_end, tags, agg, downsample, &block)
     # remove metrics which don't have enough/any data
     # metrics.reject!{ |m| !m.updated_at.nil? && m.updated_at < 2.weeks.ago }
     fetch_more_granular(metrics, time_start, time_end, tags, agg)
@@ -123,10 +123,10 @@ class Metric < ActiveRecord::Base
 
   # Load data for this metric
   def load_data!(time_start=nil, time_end=nil, tags = {}, agg = "sum", downsample = nil)
-    metrics = self.metrics(time_start, time_end, tags, agg, downsample).first
-    if metrics then
-      self.data     = metrics[:vals]
-      self.metadata = metrics[:tags]
+    metric_data = metrics(time_start, time_end, tags, agg, downsample).first
+    if metric_data then
+      self.data     = metric_data[:vals]
+      self.metadata = metric_data[:tags]
     end
     self.query = { :start => time_start, :end => time_end, :tags => tags, :downsample => downsample }
   end
