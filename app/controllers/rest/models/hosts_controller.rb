@@ -40,7 +40,8 @@ class Rest::Models::HostsController < ::Rest::BaseController
 
   def update_check_config
     host = Host.find(_id)
-    restful Bixby::Monitoring.new.update_check_config(host.agent)
+    Bixby::Monitoring.defer.update_check_config(host.agent) # run in background
+    restful true
   end
 
   def tags
