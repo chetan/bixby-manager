@@ -41,7 +41,10 @@ Bixby::Application.routes.draw do
       resources :checks do
         get "metrics" => "metrics#index_for_check"
       end
+
+      get "metrics/summary" => "metrics#summary"
       resources :metrics
+
       resources :triggers
     end
 

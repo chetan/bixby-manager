@@ -24,4 +24,15 @@ class Rest::Models::MetricsController < ::Rest::BaseController
     restful metric
   end
 
+  # GET host summary metrics
+  def summary
+    host = Host.find(_id(:host_id))
+    keys = %w{ cpu.loadavg.5m cpu.usage.system cpu.usage.user mem.usage fs.disk.usage }
+    metrics = Metric.metrics_for_host(host) do |m|
+      !keys.include?(m.key)
+    end
+
+    restful metrics
+  end
+
 end
