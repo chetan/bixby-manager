@@ -3,21 +3,21 @@ class SessionsController < ApplicationController
 
   def new
     if is_logged_in? then
-      return redirect_to url_for(:inventory)
+      return redirect_to default_url
     end
   end
 
   def create
 
-    case authenticate(params[:user][:username], params[:user][:password])
+    case authenticate(params[:username], params[:password])
     when AUTH_ERROR
-      return error()
+      redirect_to "/login/fail"
 
     when AUTH_TOKEN_REQUIRED
-      return restful({ :token_required => true, :csrf => form_authenticity_token })
+      return redirect_to "/login/verify_token"
 
     when AUTH_SUCCESS
-      return success()
+      redirect_to(session.delete(:return_to) || default_url)
     end
 
   end
@@ -25,14 +25,14 @@ class SessionsController < ApplicationController
   def verify_token
     token = params[:user][:token]
     if current_user.blank? then
-      return error()
+      return token_error()
     end
 
     if validate_token(token) then
-      return success()
+      return token_success()
     end
 
-    return error()
+    return token_error()
   end
 
   def destroy
@@ -44,7 +44,11 @@ class SessionsController < ApplicationController
 
   private
 
-  def success
+  def default_url
+    url_for(:inventory)
+  end
+
+  def token_success
     data = { :user => current_user, :csrf => form_authenticity_token }
     data[:redir] = session.delete(:return_to) if session.include? :return_to
 
@@ -56,7 +60,7 @@ class SessionsController < ApplicationController
     return restful(data)
   end
 
-  def error
+  def token_error
     return render :json => {:success => false, :errors => ["Login failed"]}, :status => 401
   end
 

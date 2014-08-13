@@ -28,9 +28,11 @@ namespace "Bixby.view", (exports, top) ->
         _.mailcheck(e.target)
 
       "submit form#login_form": (e) ->
-        # trap the form submit and cancel it so we can do our ajax login
-        @login()
-        return false
+        return @login()
+
+    # Check whether or not to show an error message - if we are at the URL /login/fail
+    show_error: ->
+      return window.location.pathname.match(/login\/fail(\?.*)?$/)
 
     login: ->
       user = @$("#username").val()
@@ -38,38 +40,10 @@ namespace "Bixby.view", (exports, top) ->
 
       if user.length == 0 || (user.length < 6 && user.indexOf("@") >= 0)
         @$("#username").putCursorAtEnd().parent().addClass("has-error")
-        return
+        return false
 
       if pass.length == 0
         @$("#password").putCursorAtEnd().parent().addClass("has-error")
-        return
+        return false
 
-      $.ajax "/login",
-        type: "POST",
-        data: _.csrf({user: {username: user, password: pass}}),
-        success: (data, textStatus, jqXHR) ->
-          ret = JSON.parse(data)
-
-          if ret.token_required
-            $("meta[name='csrf-token']").attr('content', ret.csrf)
-            return Bixby.app.transition "login_token"
-
-          # update csrf token
-          $("meta[name='csrf-token']").attr('content', ret.csrf)
-
-          Bixby.app.bootstrap_data.users = new Bixby.model.UserList().reset(ret.users)
-          Bixby.app.current_user = new Bixby.model.User(ret.user)
-
-          if ret.redir && Bixby.app.router.route(ret.redir) == true
-            return
-
-          if Bixby.app.redir
-            r = Bixby.app.redir
-            Bixby.app.redir = null
-            return Bixby.app.transition r[0], r[1]
-
-          # send to default route
-          Bixby.app.router.route(Bixby.app.default_route)
-
-        error: (jqXHR, textStatus, errorThrown) ->
-          alert("Invalid username or password")
+      return true

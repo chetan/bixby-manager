@@ -9,6 +9,7 @@ this.type        = this.type  || "text";
 this.value       = this.value || null;
 this.help        = this.help  || null;
 this.icon        = this.icon  || null;
+this.autocomplete= this.autocomplete || false;
 %>
 
 <div class="form-group has-feedback">
@@ -21,6 +22,7 @@ this.icon        = this.icon  || null;
     <%? title %>title="<%= title %>"<%/%>
     <%? value %>value="<%- value %>"<%/%>
     <%? placeholder %>placeholder="<%- placeholder %>"<%/%>
+    <%? autocomplete %>autocomplete="on"<%/%>
     >
   <div class="valid <%= name %>"></div>
 

@@ -5,11 +5,20 @@
 
       <h1>BIXBY</h1>
 
+      <%? show_error() %>
+        <div class="alert alert-danger">
+          <div class="text-center">
+            <%= _.icon("exclamation-triangle") %>
+            <strong>Login failed: invalid username or password</strong>
+          </div>
+        </div>
+      <%/%>
 
       <form role="form" autocomplete="on" id="login_form" method="POST" action="/login">
 
-        <%= include("main/_text_input", {name: "username", label: "USERNAME OR EMAIL"}) %>
-        <%= include("main/_text_input", {name: "password", type: "password", label: "PASSWORD"}) %>
+        <input type="hidden" name="<%= _.csrf_param() %>" value="<%= _.csrf_token() %>">
+        <%= include("main/_text_input", {name: "username", label: "USERNAME OR EMAIL", autocomplete: true}) %>
+        <%= include("main/_text_input", {name: "password", type: "password", label: "PASSWORD", autocomplete: true}) %>
 
         <div class="text-right">
           <a id="forgot" class="uppercase">forgot password</a>

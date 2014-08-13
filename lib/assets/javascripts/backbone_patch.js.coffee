@@ -10,8 +10,14 @@ Backbone._sync = Backbone.sync
 # Add CSRF params to the given hash
 _.csrf = (hash) ->
   hash ||= {}
-  hash[$("meta[name='csrf-param']").attr('content')] = $("meta[name='csrf-token']").attr('content')
+  hash[_.csrf_param()] = _.csrf_token()
   hash
+
+_.csrf_param = ->
+  $("meta[name='csrf-param']").attr('content')
+
+_.csrf_token = ->
+  $("meta[name='csrf-token']").attr('content')
 
 # define a new sync method which handles Rails CSRF
 Backbone.sync = (method, model, options) ->
