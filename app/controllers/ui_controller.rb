@@ -73,6 +73,7 @@ class UiController < ApplicationController
 
   def authenticate_user!(opts={})
     return if is_logged_in?
+    session[:return_to] = request.original_fullpath
     redirect_to "/login"
   end
 

@@ -40,7 +40,7 @@ class SessionsController < ApplicationController
 
   def success
     data = { :user => current_user, :csrf => form_authenticity_token }
-    data[:redir] = URI.parse(session.delete(:return_to)).path if session.include? :return_to
+    data[:redir] = session.delete(:return_to) if session.include? :return_to
 
     if current_user.can?("impersonate_users")
       MultiTenant.with(nil) {
