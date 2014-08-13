@@ -3,8 +3,7 @@ class SessionsController < ApplicationController
 
   def create
 
-    ret = authenticate(params[:user][:username], params[:user][:password])
-    case ret
+    case authenticate(params[:user][:username], params[:user][:password])
     when AUTH_ERROR
       return error()
 
