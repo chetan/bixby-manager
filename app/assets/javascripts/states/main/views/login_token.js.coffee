@@ -4,7 +4,7 @@ namespace "Bixby.view", (exports, top) ->
 
     template: "main/login_token"
     el: "div.body"
-
+    focus: "input.token"
 
     events:
       "keypress input": (e) ->

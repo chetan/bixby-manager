@@ -45,6 +45,9 @@ class Stark.View extends Backbone.View
   #
   links: null
 
+  # A selector for an input element which should receive focus on render
+  focus: null
+
   # List of events to subscribe to at the @app level
   app_events: null
 
@@ -182,6 +185,7 @@ class Stark.View extends Backbone.View
     @bind_models()
     _.eachR @, @after_render_hooks, (hook) ->
       hook.call(@)
+    @set_focus()
     @after_render()
 
   # Process @links hash and attach events
@@ -294,6 +298,10 @@ class Stark.View extends Backbone.View
     else if _.isArray(m)
       for mm in m
         @unbind_model(mm)
+
+  set_focus: ->
+    return if !@focus
+    @$(@focus).focus()
 
   # Bind to view with stickit and enable validation if model has any configured
   stickit: (model) ->
