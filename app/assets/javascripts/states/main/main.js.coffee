@@ -15,7 +15,7 @@ Bixby.app.add_states
       return true
 
   "login_token":
-    url:   "/login/token"
+    url:   "/login"
     views: [ _bv.LoginToken ]
 
   "forgot":
