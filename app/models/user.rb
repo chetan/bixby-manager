@@ -77,6 +77,7 @@ class User < ActiveRecord::Base
   multi_tenant :via => :org
 
   def self.find_by_username_or_email(login)
+    return nil if login.blank?
     if login.include? "@" then
       where("email = ? OR username = ?", login, login).first
     else
