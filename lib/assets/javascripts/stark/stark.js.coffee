@@ -107,6 +107,9 @@ class Stark.App
     @states[s.name] = state
     state.prototype.app = @
     if s.url?
+      if matches = s.url.match(/^\/+(.*)$/)
+        # strip any leading slashes so we can route correctly
+        s.url = matches[1]
       state.prototype.route = @router.match(s.url, s.name)
 
   # bound to app:route event which is triggered by Route.handler method
