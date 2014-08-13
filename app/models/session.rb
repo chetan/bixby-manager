@@ -20,9 +20,9 @@
 #     * **`updated_at`**
 #
 
-class Session < ActiveRecord::Base
-  def self.sweep!(time = 2.weeks)
+class Session < ActiveRecord::SessionStore::Session
+  def self.sweep!(time = 35.days)
     raise "time must be of type Fixnum" if not time.kind_of? Fixnum
-    delete_all ["updated_at < ?", time.ago]
+    where("updated_at < ?", time.ago).delete_all
   end
 end
