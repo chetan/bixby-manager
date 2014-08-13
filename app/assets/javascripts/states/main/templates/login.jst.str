@@ -14,7 +14,7 @@
         </div>
       <%/%>
 
-      <form role="form" autocomplete="on" id="login_form" method="POST" action="/login">
+      <form role="form" autocomplete="on" id="login_form" method="POST" action="/login" name="login">
 
         <input type="hidden" name="<%= _.csrf_param() %>" value="<%= _.csrf_token() %>">
         <%= include("main/_text_input", {name: "username", label: "USERNAME OR EMAIL", autocomplete: true}) %>
