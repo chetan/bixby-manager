@@ -1,6 +1,12 @@
 
 class SessionsController < ApplicationController
 
+  def new
+    if is_logged_in? then
+      return redirect_to url_for(:inventory)
+    end
+  end
+
   def create
 
     case authenticate(params[:user][:username], params[:user][:password])
