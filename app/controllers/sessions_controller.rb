@@ -2,6 +2,7 @@
 class SessionsController < ApplicationController
 
   def new
+    logger.warn session.to_hash.inspect
     if is_logged_in? then
       return redirect_to default_url
     end

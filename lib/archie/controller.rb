@@ -37,6 +37,7 @@ module Archie
       end
 
       # store in session
+      # reset_session
       session[:current_user] = user.id
       @current_user = user
 
