@@ -17,6 +17,7 @@ this.icon        = this.icon  || null;
     class="form-control <%= name %>"
     type="<%= (type || 'text') %>"
     id="<%= name %>"
+    name="<%= name %>"
     <%? title %>title="<%= title %>"<%/%>
     <%? value %>value="<%- value %>"<%/%>
     <%? placeholder %>placeholder="<%- placeholder %>"<%/%>

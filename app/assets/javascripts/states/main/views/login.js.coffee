@@ -22,13 +22,15 @@ namespace "Bixby.view", (exports, top) ->
 
         if e.keyCode == 13
           e.preventDefault()
-          @login()
+          @$("form#login_form").submit()
 
       "focusout #username": (e) ->
         _.mailcheck(e.target)
 
-      "click button.login": (e) ->
+      "submit form#login_form": (e) ->
+        # trap the form submit and cancel it so we can do our ajax login
         @login()
+        return false
 
     login: ->
       user = @$("#username").val()
