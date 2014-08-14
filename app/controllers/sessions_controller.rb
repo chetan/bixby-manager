@@ -29,15 +29,15 @@ class SessionsController < ApplicationController
   end
 
   def verify_token
-    if current_user.blank? then
+    case validate_token(params[:user][:token])
+    when AUTH_SUCCESS
+      return token_success()
+    when AUTH_ERROR
+      return render :json => {:success => false, :error => "Login failed"}, :status => 401
+    when AUTH_INVALID_SESSION
+      log_user_out()
       return render :json => {:success => false, :error => "Invalid session"}, :status => 401
     end
-
-    if validate_token(params[:user][:token]) then
-      return token_success()
-    end
-
-    return render :json => {:success => false, :error => "Login failed"}, :status => 401
   end
 
   def destroy

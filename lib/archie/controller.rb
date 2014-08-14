@@ -4,9 +4,10 @@ module Archie
 
     extend ActiveSupport::Concern
 
-    AUTH_ERROR   = 0
-    AUTH_SUCCESS = 1
-    AUTH_OK      = 1
+    AUTH_INVALID_SESSION = -1
+    AUTH_ERROR           = 0
+    AUTH_SUCCESS         = 1
+    AUTH_OK              = 1
 
     def is_logged_in?
       !session[:current_user].blank?
@@ -80,7 +81,8 @@ module ActionController
         @current_user = User.find(id)
       rescue Exception => ex
         logger.warn "Failed to load logged in user with id '#{id}': #{ex.message}"
-        # TODO invalidate session and return to login
+        log_user_out
+        return redirect_to "/"
       end
     end
 
