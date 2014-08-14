@@ -179,7 +179,7 @@ class Stark.App
       @change_state(state, timer_name)
       return true
 
-    # load needed day before continuing
+    # load needed data before continuing
     Backbone.multi_fetch needed, {initial_load: true}, (err, results) =>
       if err and err.status >= 400 and err.status < 500
         # session timeout
