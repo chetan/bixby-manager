@@ -207,7 +207,7 @@ class Stark.View extends Backbone.View
       _.eachR @, @$(sel), (el) -> # loop over each matching link
 
         if !_.isArray(link)
-          link = [link] # handle simle string values
+          link = [link] # handle simple string values
 
         state = link[0]
         data = null
