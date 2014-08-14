@@ -131,9 +131,7 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   g._bixby_touch_enabled = false # default to disabled
 
   # add a hidden point which we can use to draw a tooltip
-  $(div).append("<div class='tooltip_anchor invisible' style='position:absolute;width:10px;height:10px;border:1px solid black;'></div>")
-  tooltip_anchor = $(div).find("div.tooltip_anchor")
-  tooltip_anchor.tooltip({trigger: "manual", container: div, placement: "left"})
+  tooltip_anchor = Bixby.monitoring.create_tooltip(div)
 
   # set callbacks - have to do this after initial graph created
   opts = {
@@ -181,6 +179,18 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
 
   return g
 
+# Create the tooltip
+Bixby.monitoring.create_tooltip = (div) ->
+  $(div).append("<div class='tooltip_anchor invisible' style='position:absolute;width:10px;height:10px;border:1px solid black;'></div>")
+  tooltip_anchor = $(div).find("div.tooltip_anchor")
+  tooltip_anchor.tooltip({trigger: "manual", container: div, placement: "left"})
+
+  $(div).find("div.graph").mouseout (e) ->
+    tooltip_anchor.tooltip("hide")
+
+  return tooltip_anchor
+
+# Show the tooltip - called from the graph highlightCallback
 Bixby.monitoring.show_tooltip = (g, div, el, pts, text) ->
   if g._bixby_dragging
     el.tooltip("hide")
