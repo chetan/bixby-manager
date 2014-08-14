@@ -1,10 +1,12 @@
 
 class SessionsController < ApplicationController
 
-  def new
+  def new(set_cookie=true)
     if is_logged_in? then
       return redirect_to default_url
     end
+    set_csrf_cookie if set_cookie
+    render :index
   end
 
   def create
@@ -20,6 +22,10 @@ class SessionsController < ApplicationController
       redirect_to(session.delete(:return_to) || default_url)
     end
 
+  end
+
+  def verify_token_form
+    new(false)
   end
 
   def verify_token
@@ -62,6 +68,11 @@ class SessionsController < ApplicationController
 
   def token_error
     return render :json => {:success => false, :errors => ["Login failed"]}, :status => 401
+  end
+
+  # Override to also look for the csrf stored in an encrypted cookie
+  def verified_request?
+    super || validate_csrf_cookie
   end
 
 end

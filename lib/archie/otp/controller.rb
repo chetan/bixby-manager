@@ -5,9 +5,9 @@ module Archie
   module OTP
     module Controller
 
-      AUTH_TOKEN_REQUIRED = 3
-
       extend ActiveSupport::Concern
+
+      AUTH_TOKEN_REQUIRED = 3
 
       def authenticate(username, password)
         # do normal auth then check if token is enabled

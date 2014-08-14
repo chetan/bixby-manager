@@ -66,6 +66,10 @@ module Bixby
     # disable Rack::Cache middleware
     config.action_dispatch.rack_cache = nil
 
+    # use our custom session middleware
+    require "archie/session_middleware"
+    config.middleware.swap "ActionDispatch::Session::ActiveRecordStore", "Archie::SessionMiddleware"
+
     # avoid errors due to mongoid inclusion in stack
     config.generators do |g|
       g.orm :active_record

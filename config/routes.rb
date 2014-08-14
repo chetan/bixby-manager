@@ -7,7 +7,8 @@ Bixby::Application.routes.draw do
   get  "/login"              => "sessions#new"
   post "/login"              => "sessions#create"
   get  "/login/fail"         => "sessions#new"
-  get  "/login/verify_token" => "sessions#new"
+
+  get  "/login/verify_token" => "sessions#verify_token_form"
   post "/login/verify_token" => "sessions#verify_token"
   post "/logout"             => "sessions#destroy"
 

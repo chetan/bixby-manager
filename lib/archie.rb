@@ -1,5 +1,6 @@
 
 require "archie/config"
+require "archie/session_middleware"
 require "archie/model"
 require "archie/controller"
 require "archie/otp"

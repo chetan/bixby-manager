@@ -2,6 +2,8 @@
 module Archie
   module Controller
 
+    extend ActiveSupport::Concern
+
     AUTH_ERROR   = 0
     AUTH_SUCCESS = 1
     AUTH_OK      = 1
@@ -21,6 +23,7 @@ module Archie
     end
 
     def log_user_out
+      session[:logout] = true
       session.delete(:current_user)
       opts = env[Rack::Session::Abstract::ENV_SESSION_OPTIONS_KEY]
       opts[:drop] = true if opts
@@ -49,6 +52,18 @@ module Archie
       form_authenticity_token
 
       true
+    end
+
+    def set_csrf_cookie
+      cookies.encrypted[:csrf] = form_authenticity_token
+    end
+
+    def validate_csrf_cookie
+      csrf = cookies.encrypted[:csrf]
+      cookies.delete(:csrf)
+
+      csrf == params[request_forgery_protection_token] ||
+        csrf == request.headers['X-CSRF-Token']
     end
 
   end
