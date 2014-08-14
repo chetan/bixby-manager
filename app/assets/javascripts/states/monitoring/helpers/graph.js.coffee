@@ -187,7 +187,7 @@ Bixby.monitoring.show_tooltip = (g, div, el, pts, text) ->
     return
 
   if el.data('bs.tooltip').options.title != text
-    d = $(div).position()
+    d = $(div).find(".graph").position()
     tx = d.left + pts[0].canvasx - 5 + "px"
     ty = d.top + pts[0].canvasy - 5 + "px"
 
