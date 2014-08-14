@@ -85,6 +85,8 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
     if event.button && event.button == 2
       return
 
+    g._bixby_dragging = true
+
     context.initializeMouseDown(event, g, context)
 
     if event.altKey || event.shiftKey || g._bixby_mode == "pan"
@@ -96,6 +98,7 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
 
   # override mouseup to load more data as we pan in either direction
   opts.interactionModel.mouseup = (event, g, context) ->
+    g._bixby_dragging = false
     if context.isZooming
       Dygraph.endZoom(event, g, context)
 
@@ -121,15 +124,23 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   # draw
   el = $(div).find(".graph")[0]
   g = new Dygraph(el, vals, opts)
+  g._bixby_dragging = false # used to denote that we are in the middle of a click-drag operation
   g._bixby_metric = metric
   g._bixby_el = el
   g._bixby_mode = "zoom"
   g._bixby_touch_enabled = false # default to disabled
 
+  # add a hidden point which we can use to draw a tooltip
+  $(div).append("<div class='tooltip_anchor invisible' style='position:absolute;width:10px;height:10px;border:1px solid black;'></div>")
+  tooltip_anchor = $(div).find("div.tooltip_anchor")
+  tooltip_anchor.tooltip({trigger: "manual", container: div, placement: "left"})
+
   # set callbacks - have to do this after initial graph created
   opts = {
-    highlightCallback: (e, x, pts, row) ->
-      footer.text(format_footer(x, pts[0].yval, unit_label))
+    highlightCallback: (e, x, pts, row, seriesName) ->
+      text = format_footer(x, pts[0].yval, unit_label)
+      footer.text(text)
+      Bixby.monitoring.show_tooltip(g, div, tooltip_anchor, pts, text)
 
     unhighlightCallback: (e) ->
       footer.text(footer_text)
@@ -169,6 +180,30 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   g.updateOptions(opts, true) # don't redraw here
 
   return g
+
+Bixby.monitoring.show_tooltip = (g, div, el, pts, text) ->
+  if g._bixby_dragging
+    el.tooltip("hide")
+    return
+
+  if el.data('bs.tooltip').options.title != text
+    d = $(div).position()
+    tx = d.left + pts[0].canvasx - 5 + "px"
+    ty = d.top + pts[0].canvasy - 5 + "px"
+
+    # bootstrap tooltip needs a little help with placement
+    w = $(div).width()
+    el.data('bs.tooltip').options.placement =
+      if pts[0].canvasx < 200
+        "right"
+      else if w-pts[0].canvasx < 200
+        "left"
+      else
+        "top"
+
+    el.css({left: tx, top: ty})
+    el.data('bs.tooltip').options.title = text
+    el.tooltip("show")
 
 Bixby.monitoring.load_more_data = (g) ->
   # check if we need more data
