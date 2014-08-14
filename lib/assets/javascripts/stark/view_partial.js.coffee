@@ -57,7 +57,6 @@ class Stark.Partial extends Stark.View
     # to make sure that any events will be correctly bound after loading
     @add_render_hook =>
       @post_render()
-      @after_render()
 
     return @$el.html()
 
