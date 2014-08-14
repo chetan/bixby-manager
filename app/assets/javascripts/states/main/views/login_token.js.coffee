@@ -17,8 +17,6 @@ namespace "Bixby.view", (exports, top) ->
 
     check: ->
       token = @$("#token").val()
-
-      view = @
       $.ajax "/login/verify_token",
         type: "POST",
         data: _.csrf({user: {token: token}}),
@@ -29,15 +27,22 @@ namespace "Bixby.view", (exports, top) ->
           $("meta[name='csrf-token']").attr('content', ret.csrf)
 
           Bixby.app.bootstrap_data.users = new Bixby.model.UserList().reset(ret.users)
-          view.app.current_user = new Bixby.model.User(ret.user)
+          Bixby.app.current_user = new Bixby.model.User(ret.user)
 
-          if ret.redir && view.app.router.route(ret.redir) == true
+          if ret.redir && Bixby.app.router.route(ret.redir) == true
             return
 
-          if view.app.redir
-            r = view.app.redir
-            view.app.redir = null
-            return view.app.transition r[0], r[1]
+          if Bixby.app.redir
+            r = Bixby.app.redir
+            Bixby.app.redir = null
+            return Bixby.app.transition r[0], r[1]
 
           # send to default route
-          view.app.router.route(view.app.default_route)
+          Bixby.app.router.route(Bixby.app.default_route)
+
+        error: (xhr, textStatus, errorThrown) ->
+          data = JSON.parse(xhr.responseText)
+          if data.error.match(/Login failed/)
+            alert("Invalid token. Try again")
+          else if data.error.match(/Invalid session/)
+            Bixby.app.transition("login_fail", {reason: "Session timed out. Please login again"})

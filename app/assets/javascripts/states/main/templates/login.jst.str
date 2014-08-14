@@ -9,7 +9,7 @@
         <div class="alert alert-danger">
           <div class="text-center">
             <%= _.icon("exclamation-triangle") %>
-            <strong>Login failed: invalid username or password</strong>
+            <strong><%= error_message() %></strong>
           </div>
         </div>
       <%/%>

@@ -29,16 +29,15 @@ class SessionsController < ApplicationController
   end
 
   def verify_token
-    token = params[:user][:token]
     if current_user.blank? then
-      return token_error()
+      return render :json => {:success => false, :error => "Invalid session"}, :status => 401
     end
 
-    if validate_token(token) then
+    if validate_token(params[:user][:token]) then
       return token_success()
     end
 
-    return token_error()
+    return render :json => {:success => false, :error => "Login failed"}, :status => 401
   end
 
   def destroy
@@ -64,10 +63,6 @@ class SessionsController < ApplicationController
       }
     end
     return restful(data)
-  end
-
-  def token_error
-    return render :json => {:success => false, :errors => ["Login failed"]}, :status => 401
   end
 
   # Override to also look for the csrf stored in an encrypted cookie

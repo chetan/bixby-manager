@@ -30,9 +30,12 @@ namespace "Bixby.view", (exports, top) ->
       "submit form#login_form": (e) ->
         return @login()
 
-    # Check whether or not to show an error message - if we are at the URL /login/fail
+    # Check whether or not to show an error message
     show_error: ->
-      return window.location.pathname.match(/login\/fail(\?.*)?$/)
+      return @state.name == "login_fail"
+
+    error_message: ->
+      @reason || "Login failed: invalid username or password"
 
     login: ->
       user = @$("#username").val()
