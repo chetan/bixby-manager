@@ -7,21 +7,34 @@ class Rest::Models::AnnotationsController < ::Rest::BaseController
       return render :json => "invalid detail query", :status => 400
     end
 
-    annotations = if params[:name] then
-      Annotation.where(:org_id => current_user.org.id, :name => params[:name]).limit(20)
-    else
-      Annotation.where(:org_id => current_user.org.id).limit(20)
+    opts = {:org_id => current_user.org.id}
+
+    # add name
+    name = params[:name]
+    name.strip! if name
+    if !name.blank? then
+      opts[:name] = name
     end
+
+    # add detail filter
+    extra = nil
+    if detail then
+      # include the filter value in a like query for some simple filtering
+      # good for now but want to fix later
+      k, v = detail.split("=")
+      k.strip!
+      v.strip!
+      extra = "detail like '%#{v}%'"
+    end
+
+    # always limit to 20 (for now) most recent annotations
+    annotations = Annotation.where(opts).where(extra).order(:created_at => :desc).limit(20)
 
     if !detail then
       return annotations
     end
 
     # assume we have json in the annotation detail field and filter it further
-    k, v = params[:detail].split("=")
-    k.strip!
-    v.strip!
-
     matches = []
     annotations.each do |a|
       next if a.detail.blank?
