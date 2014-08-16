@@ -9,13 +9,11 @@ class Inventory::HostsController < UiController
       hosts = Host.for_user(current_user)
     end
     bootstrap hosts
-    restful hosts
   end
 
   def show
     host = Host.find(_id)
     bootstrap host
-    restful host
   end
 
 end
