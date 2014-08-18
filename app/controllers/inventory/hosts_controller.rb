@@ -12,8 +12,7 @@ class Inventory::HostsController < UiController
   end
 
   def show
-    host = Host.find(_id)
-    bootstrap host
+    bootstrap Host.find(_id)
   end
 
 end
