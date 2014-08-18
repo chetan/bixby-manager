@@ -3,9 +3,17 @@
 
 Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] },
 
+  "monitoring_overview":
+    url:    "monitoring"
+
+    views:  [ _bvm.MonitoringOverview ]
+    models:
+      hosts:   _bm.HostList
+      metrics: _bm.SummaryMetricList
+
   # Monitoring home
   "monitoring":
-    url:    "monitoring"
+    url:    "monitoring/home"
 
     views:  [ _bvm.Monitoring ]
     models:

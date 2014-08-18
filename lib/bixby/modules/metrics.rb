@@ -295,12 +295,11 @@ class Metrics < API
     return metric
   end
 
-
-  private
-
   # Get Metrics for the given checks
   def get_for_checks(checks, start_time, end_time, tags = {}, agg = "sum", downsample = nil, &block)
-    metrics = Metric.includes(:tags, :check => [:host, :command, {:metric_infos => :command}]).where(:check_id => checks).references(:checks)
+    metrics = Metric.includes(:tags, :check => [:host, :command, {:metric_infos => :command}]).
+                      where(:check_id => checks).
+                      references(:checks)
 
     if block then
       # if a block was given, then use it to filter the list of metrics to fetch
@@ -322,6 +321,10 @@ class Metrics < API
 
     return metrics.map { |m| m }
   end
+
+
+
+  private
 
   # Process raw results
   #

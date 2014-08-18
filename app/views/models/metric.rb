@@ -9,6 +9,9 @@ module Bixby
       def convert
         super
 
+        # attach host id
+        self[:host_id] = obj.check.host_id
+
         # attach data
         if obj.data.blank? then
           self[:data] = obj.data

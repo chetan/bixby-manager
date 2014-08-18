@@ -73,6 +73,7 @@ Bixby::Application.routes.draw do
     end
 
     resources :checks
+    resources :metrics
     resources :on_calls
     resources :triggers
     resources :actions

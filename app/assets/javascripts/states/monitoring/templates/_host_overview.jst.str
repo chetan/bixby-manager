@@ -1,0 +1,13 @@
+
+<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+  <div class="panel panel-default">
+    <div class="panel-heading text-center">
+      <h3 class="panel-title"><a><%= host.name() %></a></h3>
+    </div>
+    <table class="table">
+      <tbody>
+        <% display_metrics(); %>
+      </tbody>
+    </table>
+  </div>
+</div>

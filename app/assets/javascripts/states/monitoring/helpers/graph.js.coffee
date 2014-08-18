@@ -1,6 +1,54 @@
 
 Bixby.monitoring ||= {}
 
+Bixby.monitoring.render_sparkline = (div, metric, opts) ->
+  vals = metric.tuples()
+  if !vals || vals.length == 0
+    return
+
+  opts ||= {}
+  opts = _.extend({
+    width: 150
+    height: 35
+
+    axes:
+      x:
+        drawAxis: false
+        drawGrid: false
+      y:
+        drawAxis: false
+        drawGrid: false
+
+    stackedGraph:      true
+    strokeWidth:       0
+    strokeBorderWidth: 0
+    colors:            [ "#468CC8"]
+    fillAlpha:         1.0
+
+    legend: "never"
+    labels: [ "Date/Time", "v" ]
+    showLabelsOnHighlight: false
+    drawHighlightPointCallback: ->
+      # noop
+
+  }, opts)
+
+  Bixby.monitoring.add_mouse_handlers(opts)
+  Bixby.monitoring.add_touch_handlers(opts)
+
+  ####
+  # draw
+  el = $(div).find(".graph")[0]
+  g = new Dygraph(el, vals, opts)
+  g._bixby_dragging = false # used to denote that we are in the middle of a click-drag operation
+  g._bixby_metric = metric
+  g._bixby_el = el
+  g._bixby_mode = "pan"
+  g._bixby_touch_enabled = false # default to disabled
+
+  return g
+
+
 # Render the given metric into the given selector
 #
 # div: parent div container for the metric, e.g., <div class="metric">
@@ -75,50 +123,8 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
     # use y-axis range as given in metric info
     opts.valueRange = [ parseFloat(matches[1]), parseFloat(matches[2]) ]
 
-  ####
-  # custom zoom/pan handling
-  opts.interactionModel = _.clone(Dygraph.Interaction.defaultModel)
-
-  # override mousedown to allow toggling pan mode
-  opts.interactionModel.mousedown = (event, g, context) ->
-    # Right-click should not initiate a zoom.
-    if event.button && event.button == 2
-      return
-
-    g._bixby_dragging = true
-
-    context.initializeMouseDown(event, g, context)
-
-    if event.altKey || event.shiftKey || g._bixby_mode == "pan"
-      if g._bixby_pan_start?
-        g._bixby_pan_start()
-      Dygraph.startPan(event, g, context)
-    else
-      Dygraph.startZoom(event, g, context)
-
-  # override mouseup to load more data as we pan in either direction
-  opts.interactionModel.mouseup = (event, g, context) ->
-    g._bixby_dragging = false
-    if context.isZooming
-      Dygraph.endZoom(event, g, context)
-
-    else if context.isPanning
-      Dygraph.endPan(event, g, context)
-      if g._bixby_pan_complete?
-        g._bixby_pan_complete()
-
-
-  ####
-  # override touch events to make them optional
-  opts.interactionModel.touchstart = (event, g, context) ->
-    Dygraph.Interaction.startTouch(event, g, context) if g._bixby_touch_enabled
-
-  opts.interactionModeltouchmove = (event, g, context) ->
-    Dygraph.Interaction.moveTouch(event, g, context) if g._bixby_touch_enabled
-
-  opts.interactionModeltouchend = (event, g, context) ->
-    Dygraph.Interaction.endTouch(event, g, context) if g._bixby_touch_enabled
-
+  Bixby.monitoring.add_mouse_handlers(opts)
+  Bixby.monitoring.add_touch_handlers(opts)
 
   ####
   # draw
@@ -178,6 +184,54 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   g.updateOptions(opts, true) # don't redraw here
 
   return g
+
+# Add mouseup/mousedown handlers for custom zoom/pan control
+#
+# We want to be able to programatically toggle between zoom & pan modes
+Bixby.monitoring.add_mouse_handlers = (opts) ->  ####
+  # custom zoom/pan handling
+  opts.interactionModel = _.clone(Dygraph.Interaction.defaultModel)
+
+  # override mousedown to allow toggling pan mode
+  opts.interactionModel.mousedown = (event, g, context) ->
+    # Right-click should not initiate a zoom.
+    if event.button && event.button == 2
+      return
+
+    g._bixby_dragging = true
+
+    context.initializeMouseDown(event, g, context)
+
+    if event.altKey || event.shiftKey || g._bixby_mode == "pan"
+      if g._bixby_pan_start?
+        g._bixby_pan_start()
+      Dygraph.startPan(event, g, context)
+    else
+      Dygraph.startZoom(event, g, context)
+
+  # override mouseup to load more data as we pan in either direction
+  opts.interactionModel.mouseup = (event, g, context) ->
+    g._bixby_dragging = false
+    if context.isZooming
+      Dygraph.endZoom(event, g, context)
+
+    else if context.isPanning
+      Dygraph.endPan(event, g, context)
+      if g._bixby_pan_complete?
+        g._bixby_pan_complete()
+
+
+# Override touch events to make them optional
+Bixby.monitoring.add_touch_handlers = (opts) ->
+  opts.interactionModel.touchstart = (event, g, context) ->
+    Dygraph.Interaction.startTouch(event, g, context) if g._bixby_touch_enabled
+
+  opts.interactionModeltouchmove = (event, g, context) ->
+    Dygraph.Interaction.moveTouch(event, g, context) if g._bixby_touch_enabled
+
+  opts.interactionModeltouchend = (event, g, context) ->
+    Dygraph.Interaction.endTouch(event, g, context) if g._bixby_touch_enabled
+
 
 # Create the tooltip
 Bixby.monitoring.create_tooltip = (div) ->

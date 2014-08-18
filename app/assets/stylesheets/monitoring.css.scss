@@ -30,3 +30,17 @@ div.check_editor {
 div.metric div.tooltip {
   pointer-events: none;
 }
+
+// sparklines
+td.metric_label {
+  text-align: right;
+  vertical-align: middle;
+}
+div.sparkline {
+  div.graph_container {
+    div.graph {
+      width: 100px;
+      height: 1.42857;
+    }
+  }
+}

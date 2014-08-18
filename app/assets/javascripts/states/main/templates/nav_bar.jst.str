@@ -17,8 +17,24 @@
 
       <!-- MAIN NAV -->
       <ul class="nav navbar-nav">
+
+        <!-- inventory -->
         <li class="tab inventory"><a>Inventory</a></li>
-        <li class="tab monitoring"><a>Monitoring</a></li>
+
+        <!-- monitoring -->
+        <li class="tab monitoring dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Monitoring
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="overview">Overview</a></li>
+            <li><a class="check_templates">Check Templates</a></li>
+            <li><a class="schedules">On Call Schedules</a></li>
+          </ul>
+        </li>
+
+        <!-- runbooks -->
         <li class="tab runbooks dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             Runbooks

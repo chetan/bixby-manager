@@ -105,11 +105,8 @@ namespace 'Bixby.model', (exports, top) ->
     comparator: (metric) ->
       metric.display_name()
 
-  class exports.HostSummaryMetricList extends Stark.Collection
-    model: exports.Metric
-    @key: "metrics"
+  class exports.HostSummaryMetricList extends exports.MetricList
     url: -> "/rest/hosts/#{@host_id}/metrics/summary"
-    params: [ "host" ]
 
-    comparator: (metric) ->
-      metric.display_name()
+  class exports.SummaryMetricList extends exports.MetricList
+    url: -> "/rest/metrics/summary"

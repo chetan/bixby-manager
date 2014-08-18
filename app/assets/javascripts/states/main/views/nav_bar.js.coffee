@@ -8,8 +8,12 @@ namespace "Bixby.view", (exports, top) ->
     links:
       "a.navbar-brand":    "inventory"
       ".tab.inventory  a": "inventory"
-      ".tab.monitoring a": "monitoring"
-      # ".tab.runbooks a.run": "runbooks"
+
+      ".tab.monitoring a.overview": "monitoring_overview"
+      ".tab.monitoring a.check_templates": "monitoring"
+      ".tab.monitoring a.schedules": "monitoring"
+
+      # ".tab.runbooks a.run": "runbooks" # TODO still need to create a link here..
       ".tab.runbooks a.repositories": "repository"
 
       # user menu
