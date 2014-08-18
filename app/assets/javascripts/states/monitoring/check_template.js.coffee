@@ -3,6 +3,14 @@
 
 Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] },
 
+  # Check templates home
+  "mon_check_templates":
+    url:    "monitoring/check_templates"
+
+    views:  [ _bvm.CheckTemplateIndex ]
+    models:
+      check_templates: _bm.CheckTemplateList
+
   "mon_check_template_view":
     url:  "monitoring/check_templates/:check_template_id"
 

@@ -10,8 +10,8 @@ namespace "Bixby.view", (exports, top) ->
       ".tab.inventory  a": "inventory"
 
       ".tab.monitoring a.overview": "monitoring_overview"
-      ".tab.monitoring a.check_templates": "monitoring"
-      ".tab.monitoring a.schedules": "monitoring"
+      ".tab.monitoring a.check_templates": "mon_check_templates"
+      ".tab.monitoring a.schedules": "mon_oncalls"
 
       # ".tab.runbooks a.run": "runbooks" # TODO still need to create a link here..
       ".tab.runbooks a.repositories": "repository"

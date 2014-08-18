@@ -14,19 +14,6 @@ class Monitoring::BaseController < UiController
 
     bootstrap hosts
     bootstrap metrics, :type => Metric
-
-
-
-    return
-
-    bootstrap CheckTemplate.where(:org_id => current_user.org_id).includes(:items => {:command => :repo}), :type => CheckTemplate
-
-    oncalls = OnCall.where(:org_id => current_user.org_id)
-    bootstrap oncalls, :type => OnCall
-
-    users = User.where(:org_id => current_user.org_id)
-    bootstrap users, :type => User
-
   end
 
 end

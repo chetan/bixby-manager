@@ -1,12 +1,10 @@
-
 namespace "Bixby.view.monitoring", (exports, top) ->
 
-  class exports.Monitoring extends Stark.View
+  class exports.OnCallIndex extends Stark.View
     el: "div.monitoring_content"
-    template: "monitoring/home"
+    template: "monitoring/on_call_index"
 
     links:
-      ".create_check_template": "mon_check_template_new"
       ".create_schedule_link":  "mon_oncalls_new"
 
     handoff: (oncall) ->

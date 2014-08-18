@@ -11,16 +11,6 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
       hosts:   _bm.HostList
       metrics: _bm.SummaryMetricList
 
-  # Monitoring home
-  "monitoring":
-    url:    "monitoring/home"
-
-    views:  [ _bvm.Monitoring ]
-    models:
-      check_templates: _bm.CheckTemplateList
-      on_calls: _bm.OnCallList
-      users:   _bm.UserList
-
   # Host summary
   "mon_view_host":
     url:  "monitoring/hosts/:host_id"
