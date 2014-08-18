@@ -32,13 +32,13 @@ class StarkViewTask
 
       File.open(view_file, 'w') do |f|
         f.puts <<-EOF
-  namespace "Bixby.view", (exports, top) ->
+namespace "Bixby.view", (exports, top) ->
 
-    class exports.#{view} extends Stark.#{clazz}
-      #{el}
-      template: "#{state}/#{file_base}"
+  class exports.#{view} extends Stark.#{clazz}
+    #{el}
+    template: "#{state}/#{file_base}"
 
-      events: {}
+    events: {}
   EOF
       end
 
