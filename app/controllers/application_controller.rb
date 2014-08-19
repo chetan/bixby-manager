@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
   # @param [Hash] options             Options hash
   # @option options [String] :type    The name of the Backbone.js Model class to map to
   # @option options [String] :name    The key name to bootstrap asA
+  # @option options [Class] :use      ApiView view class to render with
   #
   # Note: passing a type will force the object to be bootstrapped even if
   #       nil or an empty array is passed in (i.e., when the finder comes up empty)
@@ -100,13 +101,14 @@ class ApplicationController < ActionController::Base
   # ApiView::Engine to generate the response
   #
   # @param [Object] obj
-  def restful(obj)
+  # @param [Hash] opts           optional options for ApiView render call
+  def restful(obj, opts=nil)
     if request.xhr? then
-      return render :text => to_api(obj), :as => :json
+      return render :text => to_api(obj, opts), :as => :json
     end
     respond_to do |format|
       format.html
-      format.any(:xml, :json) { render :text => to_api(obj) }
+      format.any(:xml, :json) { render :text => to_api(obj, opts) }
     end
   end
 
