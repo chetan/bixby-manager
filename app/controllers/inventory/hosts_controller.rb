@@ -12,7 +12,7 @@ class Inventory::HostsController < UiController
   end
 
   def show
-    bootstrap Host.find(_id)
+    bootstrap Host.find(_id), :use => Bixby::ApiView::HostWithMetadata
   end
 
 end

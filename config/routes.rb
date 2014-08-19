@@ -38,6 +38,7 @@ Bixby::Application.routes.draw do
         get "tags" => "hosts#tags"
       end
 
+      get "metadata" => "hosts#metadata"
       get "update_facts" => "hosts#update_facts"
       get "update_check_config" => "hosts#update_check_config"
 

@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
   respond_to :html, :json
-  before_filter :init_bootstrap
   multi_tenant
 
   # Placeholder route for simply returning bootstrap html
@@ -115,17 +114,13 @@ class ApplicationController < ActionController::Base
   #
   # @param [Object] obj
   # @return [String]
-  def to_api(obj)
+  def to_api(obj, opts=nil)
     logger.debug { "TO_API " + (obj.respond_to?(:first) ? obj.first.class.name : obj.class.name) }
-    ApiView::Engine.render(obj, self).html_safe
+    ApiView::Engine.render(obj, self, opts).html_safe
   end
 
 
   private
-
-  def init_bootstrap
-    @bootstrap = []
-  end
 
   # bootstrap the given object into
   # automatically sets the hash and model names based on the type of object passed
@@ -134,6 +129,7 @@ class ApplicationController < ActionController::Base
 
     type = opts.delete(:type) || opts.delete(:model)
     name = opts.delete(:name)
+    api_opts = opts[:use] ? { :use => opts.delete(:use) } : nil
 
     if type.nil? then
 
@@ -168,10 +164,11 @@ class ApplicationController < ActionController::Base
 
     logger.debug { "BOOTSTRAP #{name} (#{type})" }
 
+    @bootstrap ||= []
     @bootstrap << {
       :name  => name.to_s,
       :model => type.to_s,
-      :data  => to_api(obj)
+      :data  => to_api(obj, api_opts)
     }
   end
 

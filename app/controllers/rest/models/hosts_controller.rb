@@ -48,4 +48,8 @@ class Rest::Models::HostsController < ::Rest::BaseController
     restful Host.all_tags(current_user)
   end
 
+  def metadata
+    restful Host.find(_id).metadata
+  end
+
 end

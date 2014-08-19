@@ -18,7 +18,7 @@ module ApiView
       # @option options [String] :format    Request a particular format ("json" or "xml")
       #
       # @return [String]
-      def render(obj, scope, options={})
+      def render(obj, scope, options=nil)
 
         ret = convert(obj, options)
 
@@ -27,7 +27,7 @@ module ApiView
         end
 
         # TODO cache_results { self.send("to_" + format.to_s) }
-        format = options[:format] || self.request_format(scope)
+        format = (options && options[:format]) || self.request_format(scope)
         self.send("to_" + format.to_s, ret)
       end
 

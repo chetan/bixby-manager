@@ -41,6 +41,11 @@ namespace 'Bixby.model', (exports, top) ->
     update_facts: (callback) ->
       $.getJSON @url() + "/update_facts", callback
 
+    get_metadata: (callback) ->
+      return if @_metadata_loaded?
+      $.getJSON @url() + "/metadata", callback
+      @_metadata_loaded = true
+
     # Monitoring#update_check_config
     update_check_config: (callback) ->
       $.getJSON @url() + "/update_check_config", callback

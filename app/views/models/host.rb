@@ -11,7 +11,6 @@ module Bixby
 
         self[:org]      = obj.org.name
         self[:tags]     = obj.tag_list.join(",")
-        self[:metadata] = render(obj.metadata)
         self
       end
 
