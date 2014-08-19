@@ -73,7 +73,10 @@ Bixby::Application.routes.draw do
     end
 
     resources :checks
+
+    get "metrics/summary" => "metrics#summary"
     resources :metrics
+
     resources :on_calls
     resources :triggers
     resources :actions
