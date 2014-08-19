@@ -9,7 +9,6 @@ class Rest::Models::Hosts < TestCase
 
   def setup
     super
-    # Create a user and sign him in
     @user = FactoryGirl.create(:user)
   end
 
@@ -73,6 +72,23 @@ class Rest::Models::Hosts < TestCase
     assert_response 200
   end
 
+  def test_metadata
+    h = FactoryGirl.create(:host)
+    sign_in @user
+    h.org = @user.org
+    h.save
+    h.add_metadata("uptime", "34 days")
+    h.add_metadata("kernel", "darwin")
+
+    get :metadata, :id => h.id
+    assert_response 200
+    data = MultiJson.load(response.body)
+    assert data
+    refute_empty data
+    assert_equal "uptime", data.first["key"]
+    assert_equal "darwin", data.last["value"]
+  end
+
 
   private
 
@@ -82,7 +98,7 @@ class Rest::Models::Hosts < TestCase
     assert_equal expected.ip, host["ip"]
     assert_equal expected.org.name, host["org"]
     assert_empty host["tags"]
-    assert_empty host["metadata"]
+    refute host["metadata"]
   end
 
 end

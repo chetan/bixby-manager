@@ -15,9 +15,12 @@ class Bixby::Test::Views::Models::Host < Bixby::Test::TestCase
     assert h
     assert_includes h, "org"
     assert_includes h, "tags"
-    assert_includes h, "metadata"
+    refute_includes h, "metadata"
 
     assert_equal "db,prod", h["tags"]
+
+    json = ApiView::Engine.render(host, nil, :use => Bixby::ApiView::HostWithMetadata)
+    h = MultiJson.load(json)
     assert_equal 2, h["metadata"].size
     m = h["metadata"].first
     assert_includes m.keys, "key"
