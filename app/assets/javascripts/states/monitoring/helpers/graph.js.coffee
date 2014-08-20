@@ -45,27 +45,69 @@ Bixby.monitoring.render_sparkline = (div, metric, opts) ->
   g._bixby_el = el
   g._bixby_mode = "pan"
   g._bixby_touch_enabled = false # default to disabled
+  $(el).data({graph: g}) # store graph reference
 
-  xline = $(el).parents("div.wrapper").find("div.line.xline")
+  $(el).append("<span class='value'>")
 
   opts =
     highlightCallback: (e, x, pts, row, seriesName) ->
-      h = $(el).parents("table.metrics").height()
-      x = $(el).position().left
-      xline.css({
-        height: h-9+"px"
-        top:    "9px"
-        left:   x + pts[0].canvasx + "px"
-      })
-      xline.show()
+      Bixby.monitoring.handle_sparkline_hover(el, pts[0].canvasx, pts[0].yval)
 
     unhighlightCallback: (e) ->
-      xline.hide()
+      $(el).parents("div.wrapper").find("div.line.xline").hide()
+      $(el).find("span.value").hide()
 
   g.updateOptions(opts, true)
 
   return g
 
+Bixby.monitoring.handle_sparkline_hover = (el, pX, yVal) ->
+  xline = $(el).parents("div.wrapper").find("div.line.xline")
+
+  h = $(el).parents("table.metrics").height()
+  x = $(el).position().left + pX
+  xline.css({
+    height: h-9+"px"
+    top:    "9px"
+    left:   x + "px"
+  })
+  xline.show()
+
+  # show value text
+  # calc offset
+  wrapper = $(el).offsetParent()
+  oX = wrapper.offset().left
+  vr = wrapper.width()-x-oX
+  # console.log "x=", x, "vr=", vr
+
+  # show for ever graph
+  $("div.graph").each (i, el) ->
+    gg = $(el).data("graph")
+    yVal = Bixby.monitoring.find_value_near_x(gg, pX)
+    yVal = Bixby.monitoring.format_value(yVal) if yVal != "n/a"
+    $(el).find("span.value").text(yVal).css({right: vr+"px" }).show()
+
+Bixby.monitoring.find_value_near_x = (g, pX) ->
+  xVal = g.toDataXCoord(pX)
+  found_pair = null
+  d = null
+  _.each g.rawData_, (data) ->
+    if data[0] == xVal
+      found_pair = data
+      return
+
+    dx = Math.abs(data[0]-xVal)
+    if !d || dx < d
+      d = dx
+      found_pair = data
+
+  if found_pair
+    return found_pair[1]
+  else
+    return "n/a"
+
+Bixby.monitoring.format_value = (val) ->
+  _.add_commas(_.str.sprintf("%0.2f", val))
 
 # Render the given metric into the given selector
 #
@@ -75,13 +117,10 @@ Bixby.monitoring.render_sparkline = (div, metric, opts) ->
 # zoom_callback: fires after zoom is complete (data is loaded)
 Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
 
-  format_value = (val) ->
-    _.add_commas(_.str.sprintf("%0.2f", val))
-
   format_footer = (date, val, unit_label) ->
     date = new Date(date) if !_.isDate(date)
     date = strftime("%Y/%m/%d %H:%M:%S", date)
-    val = format_value(val)
+    val = Bixby.monitoring.format_value(val)
     _.str.sprintf("%s%s @ %s", val, unit_label, date)
 
   vals = metric.tuples()

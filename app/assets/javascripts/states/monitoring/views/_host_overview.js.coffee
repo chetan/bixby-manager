@@ -10,32 +10,27 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     events:
       "mousemove td.sparkline": (e) ->
         return if !$(e.target).hasClass("sparkline")
-        xline = @$("div.line.xline")
-        h = @$("table.metrics").height()
-        oX = @$("div.graph").offsetParent().offset().left
-        x = e.clientX - oX
 
+        x = e.clientX - @$("div.graph").first().offset().left
+
+        # don't draw the line outside of actual graph boundaries
+        oX = @$("div.graph").offsetParent().offset().left
         gX = @$("div.graph").offset().left
         gW = @metrics[0].graph.getArea().w
-        lowerBound = gX - oX
-        upperBound = lowerBound + gW
-        if x < gX
-          x = lowerBound
-        else if x > upperBound + 10
-          xline.hide()
+        upperBound = gW
+        if x < 0
+          x = 0
+        else if x > upperBound + 15
+          @$("div.line.xline").hide()
           return
         else if x > upperBound
           x = upperBound
 
-        xline.css({
-          height: h-9+"px"
-          top:    "9px"
-          left:   x + "px"
-        })
-        xline.show()
+        Bixby.monitoring.handle_sparkline_hover(@$("div.graph").first(), x)
 
       "mouseout td.sparkline": (e) ->
         @$("div.line.xline").hide()
+        @$("span.value").hide()
 
 
     # Display the metrics for the given keys
