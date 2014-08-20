@@ -46,6 +46,24 @@ Bixby.monitoring.render_sparkline = (div, metric, opts) ->
   g._bixby_mode = "pan"
   g._bixby_touch_enabled = false # default to disabled
 
+  xline = $(el).parents("div.wrapper").find("div.line.xline")
+
+  opts =
+    highlightCallback: (e, x, pts, row, seriesName) ->
+      h = $(el).parents("table.metrics").height()
+      x = $(el).position().left
+      xline.css({
+        height: h-9+"px"
+        top:    "9px"
+        left:   x + pts[0].canvasx + "px"
+      })
+      xline.show()
+
+    unhighlightCallback: (e) ->
+      xline.hide()
+
+  g.updateOptions(opts, true)
+
   return g
 
 

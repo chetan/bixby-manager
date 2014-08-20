@@ -1,9 +1,11 @@
 <tr class="sparkline">
   <td class="metric_label"><a><%= metric_label %></a></td>
-  <td>
-    <div class="sparkline">
-      <div class="graph_container">
-        <div class="graph"></div>
+  <td class="sparkline">
+    <div class="sparkline_bg">
+      <div class="sparkline">
+        <div class="graph_container">
+          <div class="graph"></div>
+        </div>
       </div>
     </div>
   </td>

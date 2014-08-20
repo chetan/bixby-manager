@@ -10,3 +10,4 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     after_render: ->
       @metric.graph = Bixby.monitoring.render_sparkline(@$("div.sparkline").first(), @metric, {})
       return if !@metric.graph
+      @$(".sparkline_bg").width(@metric.graph.getArea().w)

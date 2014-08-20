@@ -4,10 +4,13 @@
     <div class="panel-heading text-center">
       <h3 class="panel-title"><a><%= host.name() %></a></h3>
     </div>
-    <table class="table">
-      <tbody>
-        <% display_metrics(); %>
-      </tbody>
-    </table>
+    <div class="wrapper">
+      <table class="table metrics">
+        <tbody>
+          <% display_metrics(); %>
+        </tbody>
+      </table>
+      <div class="line xline"></div>
+    </div>
   </div>
 </div>

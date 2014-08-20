@@ -7,7 +7,36 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     links:
       "h3 a": [ "mon_view_host", (el) -> { host: @host, metrics: (new _bm.HostSummaryMetricList()).reset(@metrics) } ]
 
-    events: {}
+    events:
+      "mousemove td.sparkline": (e) ->
+        return if !$(e.target).hasClass("sparkline")
+        xline = @$("div.line.xline")
+        h = @$("table.metrics").height()
+        oX = @$("div.graph").offsetParent().offset().left
+        x = e.clientX - oX
+
+        gX = @$("div.graph").offset().left
+        gW = @metrics[0].graph.getArea().w
+        lowerBound = gX - oX
+        upperBound = lowerBound + gW
+        if x < gX
+          x = lowerBound
+        else if x > upperBound + 10
+          xline.hide()
+          return
+        else if x > upperBound
+          x = upperBound
+
+        xline.css({
+          height: h-9+"px"
+          top:    "9px"
+          left:   x + "px"
+        })
+        xline.show()
+
+      "mouseout td.sparkline": (e) ->
+        @$("div.line.xline").hide()
+
 
     # Display the metrics for the given keys
     display_metrics: ->
