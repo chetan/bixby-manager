@@ -43,7 +43,7 @@ class Agent < ActiveRecord::Base
 
   # validations
   validates_presence_of :port, :uuid, :public_key
-  validates_uniqueness_of :uuid, :public_key
+  validates_uniqueness_of :uuid, :public_key, :if => lambda { |a| a.new_record? }
 
 
   # Lookup an Agent by UUID
