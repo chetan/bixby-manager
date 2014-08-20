@@ -33,7 +33,7 @@ class Stark.Collection extends Backbone.Collection
   # Get the classname for this instance
   #
   # @return [String]
-  className: ->
+  getClassName: ->
     return @constructor.name || /(\w+)\(/.exec(this.constructor.toString())[1]
 
   # See Backbone.Collection#reset

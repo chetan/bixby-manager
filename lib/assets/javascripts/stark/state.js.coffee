@@ -54,7 +54,7 @@ class Stark.State
   # Get the classname for this instance
   #
   # @return [String]
-  className: ->
+  getClassName: ->
     /(\w+)\(/.exec(this.constructor.toString())[1]
 
   constructor: (app, data) ->

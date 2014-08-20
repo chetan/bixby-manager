@@ -45,7 +45,7 @@ class Stark.Model extends Backbone.Model
   # Get the classname for this instance
   #
   # @return [String]
-  className: ->
+  getClassName: ->
     return @constructor.name || /(\w+)\(/.exec(this.constructor.toString())[1]
 
   ajax: (method, options) ->
