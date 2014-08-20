@@ -77,15 +77,18 @@ Bixby.monitoring.handle_sparkline_hover = (el, pX, yVal) ->
   # calc offset
   wrapper = $(el).offsetParent()
   oX = wrapper.offset().left
-  vr = wrapper.width()-x-oX
-  # console.log "x=", x, "vr=", vr
+  if pX > 50
+    vr = wrapper.width()-x-oX
+    opts = { right: vr+"px", left: "auto" }
+  else
+    opts = { left: pX+"px", right: "auto" }
 
   # show for ever graph
   $("div.graph").each (i, el) ->
     gg = $(el).data("graph")
     yVal = Bixby.monitoring.find_value_near_x(gg, pX)
     yVal = Bixby.monitoring.format_value(yVal) if yVal != "n/a"
-    $(el).find("span.value").text(yVal).css({right: vr+"px" }).show()
+    $(el).find("span.value").text(yVal).css(opts).show()
 
 Bixby.monitoring.find_value_near_x = (g, pX) ->
   xVal = g.toDataXCoord(pX)
