@@ -4,13 +4,21 @@
 <div class="row">
   <div class="col-xs-12">
 
-    <div class="row">
-    <% hosts.each(function(host) { %>
+    <% hosts.each(function(host, i) { %>
+
+      <%? i == 0 || (_.is_lg() && i % 4 == 0) || (_.is_md() && i % 3 == 0) || (_.is_sm() && i % 2 == 0) || _.is_xs() %>
+        <%? i > 0 %>
+          </div>
+        <%/%>
+        <div class="row">
+      <%/%>
+
       <%= include_partial(_bvm.HostOverview,
             { host: host, metrics: metrics.where({host_id: host.id}) }) %>
+
+
     <% }); %>
+
     </div>
-
-
   </div>
 </div>

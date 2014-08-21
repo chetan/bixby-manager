@@ -87,3 +87,15 @@ _.prettyJSON = (json) ->
     "<span class=\"" + cls + "\">" + match + "</span>"
 
   return "<pre class='prettyjson'>" + json + "</pre>"
+
+_.is_xs = ->
+  $(window).width() < 768
+
+_.is_sm = ->
+  $(window).width() >= 768 && $(window).width() < 992
+
+_.is_md = ->
+  $(window).width() >= 992 && $(window).width() < 1200
+
+_.is_lg = ->
+  $(window).width() >= 1200

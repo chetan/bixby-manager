@@ -4,5 +4,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/monitoring_overview"
 
-    # events: {}
-
+    after_render: ->
+      $(window).resize _.debounceR 500, =>
+        @redraw()
