@@ -21,7 +21,7 @@ class Stark.Partial extends Stark.View
   # Reference to parent view
   parent: null
 
-  # Whether or not to wrap with a span
+  # Whether or not to wrap with a div
   wrap: true
 
   initialize: (args) ->
