@@ -82,18 +82,7 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   # opts.width = gc.width()
   opts.height = gc.height()
 
-  # Fix the y-axis value range
-  opts.includeZero = true # always incldue zero on y-axis
-  opts.yRangePad = 1 # just enough padding to show the top-most line
-  range = metric.get_range()
-  if unit == "%" && (!range? || range == "0..100")
-    # use percentage range, unless overriden in range var
-    opts.valueRange = [ 0, 100 ]
-
-  else if range && (matches = range.match(/^(.*?)\.\.(.*?)$/))
-    # use y-axis range as given in metric info
-    opts.valueRange = [ parseFloat(matches[1]), parseFloat(matches[2]) ]
-
+  Bixby.monitoring.set_y_ranges(opts, metric)
   Bixby.monitoring.add_mouse_handlers(opts)
   Bixby.monitoring.add_touch_handlers(opts)
 
@@ -155,6 +144,21 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   g.updateOptions(opts, true) # don't redraw here
 
   return g
+
+# Fix the y-axis value range
+Bixby.monitoring.set_y_ranges = (opts, metric) ->
+  opts.includeZero = true # always incldue zero on y-axis
+  opts.yRangePad = 1 # just enough padding to show the top-most line
+
+  unit  = metric.get("unit")
+  range = metric.get_range()
+  if unit == "%" && (!range? || range == "0..100")
+    # use percentage range, unless overriden in range var
+    opts.valueRange = [ 0, 100 ]
+
+  else if range && (matches = range.match(/^(.*?)\.\.(.*?)$/))
+    # use y-axis range as given in metric info
+    opts.valueRange = [ parseFloat(matches[1]), parseFloat(matches[2]) ]
 
 # Add mouseup/mousedown handlers for custom zoom/pan control
 #

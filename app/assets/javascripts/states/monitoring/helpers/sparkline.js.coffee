@@ -33,6 +33,7 @@ Bixby.monitoring.render_sparkline = (div, metric, opts) ->
 
   }, opts)
 
+  Bixby.monitoring.set_y_ranges(opts, metric)
   Bixby.monitoring.add_mouse_handlers(opts)
   Bixby.monitoring.add_touch_handlers(opts)
 
