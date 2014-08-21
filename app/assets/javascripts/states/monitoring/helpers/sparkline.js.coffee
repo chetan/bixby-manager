@@ -76,8 +76,8 @@ Bixby.monitoring.handle_sparkline_hover = (el, pX, yVal) ->
   # show value text
   # calc offset
   opts = if pX > 50
-    vr = $(el).offsetParent().width()-x-15
-    { right: vr+"px", left: "auto" }
+    r = $(el).width() - pX
+    { right: r+"px", left: "auto" }
   else
     { left: pX+"px", right: "auto" }
 

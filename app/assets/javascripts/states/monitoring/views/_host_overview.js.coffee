@@ -26,7 +26,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         else if x > upperBound
           x = upperBound
 
-        Bixby.monitoring.handle_sparkline_hover(@$("div.graph").first(), x)
+        Bixby.monitoring.handle_sparkline_hover(@$("div.graph")[0], x)
 
       "mouseout td.sparkline": (e) ->
         @$("div.line.xline").hide()
