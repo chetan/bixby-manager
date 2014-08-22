@@ -43,6 +43,10 @@
           </label>
         </div>
 
+        <div class="btn-group">
+          <a class="btn btn-default fullscreen"><%= _.icon("arrows-alt") %></a>
+        </div>
+
       </div>
 
     </div>

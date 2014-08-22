@@ -39,6 +39,14 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
     views:      [ _bvm.MetricDetail ]
     models:     { host: _bm.Host, check: _bm.Check, metric: _bm.Metric }
 
+  # Metric fullscreen
+  "metric_fullscreen":
+    url:  "monitoring/hosts/:host_id/metrics/:metric_id/fullscreen"
+
+    views:      [ _bvm.MetricFullscreen ]
+    models:     { host: _bm.Host, check: _bm.Check, metric: _bm.Metric }
+
+
   # Add check
   "mon_hosts_checks_new":
     url:  "monitoring/hosts/:host_id/checks/new"

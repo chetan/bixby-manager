@@ -78,10 +78,6 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
     legend: "never"
   }, opts)
 
-  gc = $(div).find(".graph_container")
-  # opts.width = gc.width()
-  opts.height = gc.height()
-
   Bixby.monitoring.set_y_ranges(opts, metric)
   Bixby.monitoring.add_mouse_handlers(opts)
   Bixby.monitoring.add_touch_handlers(opts)

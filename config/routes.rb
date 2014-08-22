@@ -120,7 +120,10 @@ Bixby::Application.routes.draw do
       resources :triggers do
         resources :actions
       end
-      resources :metrics
+
+      resources :metrics do
+        get "fullscreen" => "metrics#show"
+      end
 
     end
   end

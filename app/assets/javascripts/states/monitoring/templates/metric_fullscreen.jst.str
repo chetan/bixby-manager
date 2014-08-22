@@ -1,0 +1,8 @@
+
+<div class="fullscreen">
+  <div class="metric">
+    <div class="graph_container">
+      <div class="graph"></div>
+    </div>
+  </div>
+</div>

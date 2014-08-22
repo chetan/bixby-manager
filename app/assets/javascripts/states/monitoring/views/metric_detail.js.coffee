@@ -5,9 +5,8 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     template: "monitoring/metric_detail"
 
     links:
-      "a.check": [ "mon_hosts_check", (el) ->
-        { host: @host, check: @check }
-      ]
+      "a.check":      [ "mon_hosts_check", -> { host: @host, check: @check } ]
+      "a.fullscreen": [ "metric_fullscreen", -> { host: @host, check: @check, metric: @metric } ]
 
     events:
       "click button#create_trigger": (e) ->
