@@ -15,11 +15,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "click button.return_host": (e) ->
         @transition "mon_view_host", {host: @host}
 
-      "click label#zoom": (e) ->
+      "click label.zoom": (e) ->
         @graph._bixby_mode = "zoom"
         @$("div.graph").addClass("zoom").removeClass("pan")
 
-      "click label#pan": (e) ->
+      "click label.pan": (e) ->
         @graph._bixby_mode = "pan"
         @$("div.graph").addClass("pan").removeClass("zoom")
 

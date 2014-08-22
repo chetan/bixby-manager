@@ -35,16 +35,16 @@
         </div>
 
         <div class="btn-group" data-toggle="buttons">
-          <label class="btn btn-default active" id="zoom">
+          <label class="btn btn-default active zoom" title="Switch to zoom mode">
             <input type="radio"> <%= _.icon("search-plus") %>
           </label>
-          <label class="btn btn-default" id="pan">
+          <label class="btn btn-default pan" title="Switch to pan mode">
             <input type="radio"><%= _.icon("clock-o") %>
           </label>
         </div>
 
-        <div class="btn-group">
-          <a class="btn btn-default fullscreen"><%= _.icon("arrows-alt") %></a>
+        <div class="btn-group pull-right">
+          <a class="btn btn-default fullscreen" title="View fullscreen"><%= _.icon("arrows-alt") %></a>
         </div>
 
       </div>
