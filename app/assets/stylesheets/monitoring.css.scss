@@ -107,6 +107,14 @@ div.fullscreen {
   @extend .fullscreen_div;
   background: none repeat scroll 0 0 white;
 
+  button.return {
+    position: absolute;
+    top:      5px;
+    left:     61px;
+    opacity:  0.7;
+    z-index:  9999999;
+  }
+
   div.metric {
     margin: 5px 0 5px 0;
     float:  none;

@@ -1,6 +1,7 @@
 
 <div class="fullscreen">
   <div class="metric">
+    <button type="button" class="btn btn-sm btn-info return"><%= _.icon("reply") %> Return</button>
     <div class="graph_container">
       <div class="graph"></div>
     </div>
