@@ -25,7 +25,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
           @redraw()
 
     links:
-      "div.actions a.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
+      "a.btn.monitoring": [ "mon_view_host", (el) -> { host: @host } ]
 
     after_render: ->
       @host.get_metadata (data, status, jqXHR) =>
