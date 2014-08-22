@@ -80,6 +80,23 @@ namespace 'Bixby.model', (exports, top) ->
       else
         return "0..1"
 
+    # Get a formatted value as a string for display
+    # e.g., "10.53% @ 2014/08/22 14:19:42"
+    format_value: (val, date) ->
+      unit_label = ""
+      unit = @get("unit")
+      if unit?
+        if unit == "%"
+          unit_label = "%"
+        else
+          unit_label = " " + unit
+
+      date = new Date(date) if !_.isDate(date)
+      date = strftime("%Y/%m/%d %H:%M:%S", date)
+      val = Bixby.monitoring.format_value(val)
+
+      return _.str.sprintf("%s%s @ %s", val, unit_label, date)
+
     # get only the metric attributes (the actual data elements)
     # { key, tags, vals: [ {time, val}, ... ]}
     metrics: ->

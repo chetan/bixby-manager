@@ -30,30 +30,15 @@ Bixby.monitoring.format_value = (val) ->
 # opts: extra opts for graph [optional]
 # zoom_callback: fires after zoom is complete (data is loaded)
 Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
-
-  format_footer = (date, val, unit_label) ->
-    date = new Date(date) if !_.isDate(date)
-    date = strftime("%Y/%m/%d %H:%M:%S", date)
-    val = Bixby.monitoring.format_value(val)
-    _.str.sprintf("%s%s @ %s", val, unit_label, date)
-
   vals = metric.tuples()
   if !vals || vals.length == 0
     return
 
-  # draw footer: "Last Value: 20.32%" or "Last Value: 3541 GB"
-  footer = $(div).find(".footer")
-  unit = metric.get("unit")
-  unit_label = ""
-  if unit?
-    if unit == "%"
-      unit_label = "%"
-    else
-      unit_label = " " + unit
-
+  # set initial footer text
   last_date   = vals[vals.length-1][0]
   last_val    = vals[vals.length-1][1]
-  footer_text = format_footer(last_date, last_val, unit_label)
+  footer      = $(div).find(".footer")
+  footer_text = metric.format_value(last_val, last_date) # referenced later in unhighlightCallback
   footer.text(footer_text)
 
   # draw graph
@@ -98,7 +83,7 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
   # set callbacks - have to do this after initial graph created
   opts = {
     highlightCallback: (e, x, pts, row, seriesName) ->
-      text = format_footer(x, pts[0].yval, unit_label)
+      text = metric.format_value(pts[0].yval, x)
       footer.text(text)
       Bixby.monitoring.show_tooltip(g, div, tooltip_anchor, pts, text)
 
@@ -138,7 +123,6 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
 
   }
   g.updateOptions(opts, true) # don't redraw here
-
   return g
 
 # Fix the y-axis value range
