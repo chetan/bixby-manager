@@ -34,7 +34,7 @@
 //= require "select2"
 
 // charting libs
-//= require "chart/dygraph"
+//= require "dygraph"
 
 //= require "bootstrap_modal_patch"
 
