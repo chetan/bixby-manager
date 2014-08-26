@@ -41,8 +41,8 @@ gem 'haml'
 gem 'bixby-common'
 # gem 'bixby-common', :path => "../common"
 
+gem 'httpi', :github => "chetan/httpi", :branch => "curb_nosignal" # fix curl-related segfault
 gem 'curb', '~> 0.8'
-gem 'rubyntlm' # just to silence an annoying warning in httpi
 
 gem "semver2"
 

@@ -31,6 +31,14 @@ GIT
       rake
 
 GIT
+  remote: git://github.com/chetan/httpi.git
+  revision: 0489fa98abb1d2c45fa92b87000e0514cad51442
+  branch: curb_nosignal
+  specs:
+    httpi (2.2.5)
+      rack
+
+GIT
   remote: git://github.com/chetan/micron.git
   revision: 0c1e9c0b9d9e052805f43485fe3454cbd25913c5
   specs:
@@ -273,8 +281,6 @@ GEM
     hiredis (0.5.2-java)
     hitimes (1.2.1)
     hitimes (1.2.1-java)
-    httpi (2.2.4)
-      rack
     i18n (0.6.11)
     immigrant (0.1.8)
       activerecord (>= 3.0)
@@ -432,7 +438,6 @@ GEM
       sexp_processor (~> 4.0)
     ruby_parser (3.5.0)
       sexp_processor (~> 4.1)
-    rubyntlm (0.4.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     rvm-capistrano (1.5.3)
@@ -576,6 +581,7 @@ DEPENDENCIES
   haml_assets
   highline
   hiredis
+  httpi!
   immigrant
   json
   letter_opener
@@ -620,7 +626,6 @@ DEPENDENCIES
   resque-scheduler
   rotp (~> 2.0)
   ruby-termios
-  rubyntlm
   rvm-capistrano
   sass
   sass-rails (~> 4.0.2)
