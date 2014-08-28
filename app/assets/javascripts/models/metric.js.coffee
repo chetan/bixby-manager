@@ -63,6 +63,28 @@ namespace 'Bixby.model', (exports, top) ->
 
       return s
 
+    # Create a condensed metric label with relevant tags included
+    custom_display_name: (add_br) ->
+      br = if add_br
+        "<br>"
+      else
+        ""
+      key = @get("key")
+      label = if key.match(/^cpu.usage/)
+        "CPU " + @display_name()
+      else if key.match(/^cpu.loadavg/)
+        "CPU Load " + br + @display_name()
+      else if key == "mem.usage"
+        "Memory " + @display_name()
+      else if key == "fs.disk.usage"
+        "Disk Usage (%) on " + br +  @get("tags").mount
+      else if key.match(/^net.[rt]x.bytes/)
+        @display_name() + " on " + @get("tags").interface
+      else
+        @display_name()
+
+      return label
+
     # Get the range attribute for this metric
     get_range: ->
       if !@get("key").match(/^cpu.loadavg/)

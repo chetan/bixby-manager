@@ -28,6 +28,16 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="check col-md-12">
+    <h4>Network</h4>
+    <div class="row">
+      <%
+        display_metrics("net.rx.bytes", "net.tx.bytes");
+      %>
+    </div>
+  </div>
+</div>
 
 <br />
 <p class="bottom">
