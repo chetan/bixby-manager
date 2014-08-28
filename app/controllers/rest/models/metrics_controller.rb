@@ -27,12 +27,11 @@ class Rest::Models::MetricsController < ::Rest::BaseController
   # GET host summary metrics
   def summary
 
-    keys = %w{ cpu.loadavg.5m cpu.usage.system cpu.usage.user mem.usage fs.disk.usage }
     begin
       # pull summary metrics for this host
       host = Host.find(_id(:host_id))
       metrics = Metric.metrics_for_host(host) do |m|
-        !keys.include?(m.key)
+        !Metric::OVERVIEW.include?(m.key)
       end
 
     rescue MissingParam => ex
@@ -40,7 +39,7 @@ class Rest::Models::MetricsController < ::Rest::BaseController
       hosts = Host.for_user(current_user)
       checks = Check.where(:host_id => hosts)
       metrics = Bixby::Metrics.new.get_for_checks(checks, Time.new-86400, Time.new, {}, "sum", "1h-avg") do |m|
-        !keys.include?(m.key)
+        !Metric::OVERVIEW.include?(m.key)
       end
     end
 

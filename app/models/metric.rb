@@ -32,6 +32,15 @@ require "bixby/util"
 
 class Metric < ActiveRecord::Base
 
+  # Metric keys for CPU, Memory, Disk, & Network
+  # Used for getting an overview of a host
+  OVERVIEW = %w{
+    cpu.loadavg.5m cpu.usage.system cpu.usage.user
+    mem.usage
+    fs.disk.usage
+    net.rx.bytes net.rx.packets net.tx.bytes net.tx.packets
+  }
+
   module Status
     UNKNOWN  = 0
     OK       = 1
