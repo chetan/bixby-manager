@@ -27,14 +27,14 @@ class Rest::Models::MetricsController < ::Rest::BaseController
   # GET host summary metrics
   def summary
 
-    begin
+    if params[:host_id]
       # pull summary metrics for this host
       host = Host.find(_id(:host_id))
       metrics = Metric.metrics_for_host(host) do |m|
         !Metric::OVERVIEW.include?(m.key)
       end
 
-    rescue MissingParam => ex
+    else
       # pull summary metrics for all hosts
       hosts = Host.for_user(current_user)
       checks = Check.where(:host_id => hosts)
