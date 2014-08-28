@@ -38,7 +38,7 @@ class Metric < ActiveRecord::Base
     cpu.loadavg.5m cpu.usage.system cpu.usage.user
     mem.usage
     fs.disk.usage
-    net.rx.bytes net.rx.packets net.tx.bytes net.tx.packets
+    net.rx.bytes net.tx.bytes
   }
 
   module Status
