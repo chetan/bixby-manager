@@ -71,11 +71,13 @@ div.host_list {
   }
 }
 
-div.popover {
-  width: 600px;
-  max-width: 600px;
-  textarea {
-    cursor: default !important;
+div.inventory {
+  div.popover {
+    width: 600px;
+    max-width: 600px;
+    textarea {
+      cursor: default !important;
+    }
   }
 }
 

@@ -16,7 +16,7 @@ namespace "Bixby.view.inventory", (exports, top) ->
         if dc.length > 40
           el.addClass("has-popover")
           el.attr("data-content", "<textarea class='form-control' disabled='true' rows='7'>#{dc}</textarea>")
-          el.popover({html: true, container: "body", placement: "right"})
+          el.popover({html: true, container: "div.inventory", placement: "right"})
 
           # hide any other open popovers
           el.on "show.bs.popover", (e) ->
