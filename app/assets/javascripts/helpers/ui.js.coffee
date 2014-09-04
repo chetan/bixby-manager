@@ -88,6 +88,7 @@ _.prettyJSON = (json) ->
 
   return "<pre class='prettyjson'>" + json + "</pre>"
 
+# Responsive helpers
 _.is_xs = ->
   $(window).width() < 768
 
