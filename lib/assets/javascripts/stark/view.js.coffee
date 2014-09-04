@@ -15,6 +15,9 @@ class Stark.View extends Backbone.View
   # [internal] Reference to the current Stark::State instance
   state: null
 
+  # Object containing helper functions to attach to views
+  @helpers: {}
+
   # File name of the template rendered by this view
   template: null
 
@@ -87,6 +90,10 @@ class Stark.View extends Backbone.View
       for v in _.values(args)
         if v instanceof Stark.Model
           @_data.push(v)
+
+    # mixin view helpers
+    if Stark.View.helpers
+      _.extend @, Stark.View.helpers
 
     # _.bindAll @, _.functions(@) # don't think this is even needed
     return @
@@ -476,18 +483,3 @@ class Stark.View extends Backbone.View
         ret[name] = _.val(@$("##{name}")) || _.val(@$(".#{name}"))
 
     return ret
-
-  # Process a given string containing Markdown syntax
-  #
-  # @param [String] str
-  # @param [Boolean] wrap       wrap the result in a div.markdown (defaults to true)
-  #
-  # @return [String] str converted to html
-  markdown: (str, wrap) ->
-    if !wrap?
-      wrap = true
-    @_converter ||= new Markdown.Converter()
-    html = @_converter.makeHtml(str)
-    if wrap
-      html = '<div class="markdown">' + html + '</div>'
-    return html
