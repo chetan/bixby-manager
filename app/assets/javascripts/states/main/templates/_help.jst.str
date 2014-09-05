@@ -1,0 +1,6 @@
+
+<span class="help">
+  <a tabindex="0" data-toggle="popover" data-trigger="focus" data-container="body">
+    <%= _.icon("question-circle", "fa-border") %>
+  </a>
+</span>

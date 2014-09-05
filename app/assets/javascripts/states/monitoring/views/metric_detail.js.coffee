@@ -68,6 +68,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         if $(el).attr("data-level") == level
           view.$("div.zoom_level button .text").text( $(el).text() )
 
+    # Create help popover
+    display_help: ->
+      if help = @check.command().help()
+        " " + @help(help)
+      else
+        ""
 
     dispose: ->
       super()

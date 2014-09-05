@@ -11,7 +11,7 @@ module Bixby
         self[:name]       = obj.command.name
         self[:runhost_id] = obj.agent.host_id
         self[:runhost]    = obj.agent.host
-        self[:command]    = obj.command
+        self[:command]    = render(obj.command)
         self
       end
 

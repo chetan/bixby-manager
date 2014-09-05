@@ -12,8 +12,16 @@ _.extend Stark.View.helpers,
   markdown: (str, wrap) ->
     if !wrap?
       wrap = true
-    @_converter ||= new Markdown.Converter()
-    html = @_converter.makeHtml(str)
+    converter = new Markdown.Converter()
+    html = converter.makeHtml(str)
     if wrap
       html = '<div class="markdown">' + html + '</div>'
     return html
+
+  help: (body) ->
+    opts = if _.isObject(body)
+      body
+    else
+      { body: body }
+
+    return @include_partial(Bixby.view.Help, opts)

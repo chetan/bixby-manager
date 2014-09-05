@@ -9,6 +9,11 @@ module Bixby
       def convert
         super
         self[:repo] = obj.repo.name
+
+        manifest = obj.to_command_spec.manifest
+        self[:help]     = manifest["help"]
+        self[:help_url] = manifest["help_url"]
+
         self
       end
 

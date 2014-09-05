@@ -54,6 +54,26 @@ namespace 'Bixby.model', (exports, top) ->
         error: (xhr, status, err) =>
           @log "error: ", err
 
+    # Retrieve help text for this command
+    help: ->
+      s = ""
+
+      if @get("help")
+        s = @get("help")
+
+      if url = @get("help_url")
+        if matches = url.match(/https?:\/\/.*?\.wikipedia\.org\/wiki.*?\/(.*)$/)
+          # add a cleaner link to the help text
+          # https://en.wikipedia.org/wiki/Load_%28computing%29
+          # becomes
+          # [Load (computing) <icon external-link>](https://... "Read about 'Load (computing)' on Wikipedia")
+          title = decodeURI(matches[1]).replace("_", " ")
+          url = "[#{title} #{_.icon("external-link")}](#{url} \"Read about '#{title}' on Wikipedia\")"
+        else
+          url += " " + _.icon("external-link")
+        s += "\n\nSee also: " + url
+
+      return s
 
     # Get option name for display. Shows default value if present.
     # e.g., Foo Option
