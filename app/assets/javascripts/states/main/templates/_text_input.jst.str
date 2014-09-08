@@ -7,7 +7,7 @@ this.placeholder = this.placeholder || null;
 this.title       = this.title || null;
 this.type        = this.type  || "text";
 this.value       = this.value || null;
-this.help        = this.help  || null;
+this.help        = (this.help && _.isString(this.help)) ? this.help : null;
 this.icon        = this.icon  || null;
 this.autocomplete= this.autocomplete || false;
 %>
