@@ -10,6 +10,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           message: "Are you sure you want to delete '#{@check.name}'?",
           hidden_cb: (confirmed) =>
             if confirmed
+              @host.update_check_config()
               @check.destroy()
               @state.redraw()
         c.render()
