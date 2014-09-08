@@ -46,6 +46,11 @@
         </li>
       </ul>
 
+      <!-- HELP -->
+      <a tabindex="0" data-toggle="popover" data-trigger="focus" data-container="body"
+        data-placement="bottom" class="help btn navbar-btn">
+          <%= _.icon("question-circle", "fa-2x") %>
+      </a>
 
       <!-- USER -->
       <ul class="user nav navbar-nav navbar-right">

@@ -59,6 +59,7 @@ namespace "Bixby.view", (exports, top) ->
 
     app_events:
       "state:activate": (state) ->
+        @update_help(state)
         if state.tab? and state.tab != @current_tab
           $("ul.nav li.tab").removeClass("active")
           @current_tab = state.tab
@@ -88,6 +89,16 @@ namespace "Bixby.view", (exports, top) ->
         @users ||= Bixby.app.bootstrap_data.users
       super
 
+    # Update the help popover/button
+    update_help: (new_state) ->
+      return if !Bixby.app.current_state
+      el = @$("a.help").popover("destroy")
+      if text = Bixby.app.current_state.help
+        el.attr("title", "").popover({ title: null, content: @markdown(text), html: true })
+        el.attr("title", "Help").removeClass("disabled")
+      else
+        el.addClass("disabled").attr("title", "No help available on this screen")
+
     after_render: ->
       @$("select#pretend").select2({
         allowClear: true
@@ -97,3 +108,7 @@ namespace "Bixby.view", (exports, top) ->
           $.prototype.select2.defaults.matcher(term, text) ||
             $.prototype.select2.defaults.matcher(term, optgroup)
         })
+
+    dispose: ->
+      super
+      @$("a.help").popover("destroy")
