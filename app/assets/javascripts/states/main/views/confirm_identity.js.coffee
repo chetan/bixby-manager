@@ -42,4 +42,7 @@ namespace "Bixby.view", (exports, top) ->
 
     after_render: ->
       @$el.modal("show")
-      @$("input#password").focus()
+      if @$("input#password").length
+        @$("input#password").focus()
+      else
+        @$("input#token").focus()
