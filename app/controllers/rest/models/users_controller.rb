@@ -58,12 +58,7 @@ class Rest::Models::UsersController < ::Rest::BaseController
 
   def confirm_token
     user = User.find(_id)
-    token = params[:token]
-
-    # Some logic
-
-    ret = true
-    restful ret
+    restful user.valid_otp?(params[:token])
   end
 
   def update
