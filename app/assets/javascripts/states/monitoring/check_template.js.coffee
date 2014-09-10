@@ -1,11 +1,15 @@
 
 #= require_tree "./views"
 
+help =
+  check_templates: "Check templates allow you to easily apply a set of checks to hosts matching specific criteria (e.g., all hosts tagged 'mysql'). The templates are applied when the host is first added to Bixby."
+
 Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] },
 
   # Check templates home
   "mon_check_templates":
     url:    "monitoring/check_templates"
+    help:   help.check_templates
 
     views:  [ _bvm.CheckTemplateIndex ]
     models:
@@ -13,6 +17,7 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
 
   "mon_check_template_view":
     url:  "monitoring/check_templates/:check_template_id"
+    help:   help.check_templates
 
     views: _bvm.CheckTemplateView
     models:
@@ -20,6 +25,7 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
 
   "mon_check_template_new":
     url:  "monitoring/check_templates/new"
+    help:   help.check_templates
 
     views: _bvm.CheckTemplateNew
     models:

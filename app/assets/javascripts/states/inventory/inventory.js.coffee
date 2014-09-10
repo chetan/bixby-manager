@@ -5,6 +5,7 @@ Bixby.app.add_states { tab: "inventory", views: [_bv.PageLayout, _vi.Layout] },
 
   "getting_started":
     url:  "getting_started"
+    help: "Welcome to Bixby! Before you can do anything useful, you need to add at least one host. Run the command below on a server to get it into Bixby."
 
     views:      _vi.GettingStarted
     models:     { hosts: Bixby.model.HostList } # needed for validation
@@ -17,6 +18,7 @@ Bixby.app.add_states { tab: "inventory", views: [_bv.PageLayout, _vi.Layout] },
 
   "inventory":
     url:  "inventory"
+    help: "A list of servers and related information. Click on a server for more information or on a tag to filter the list."
 
     views:      _vi.HostTable
     models:     { hosts: Bixby.model.HostList }
@@ -29,6 +31,7 @@ Bixby.app.add_states { tab: "inventory", views: [_bv.PageLayout, _vi.Layout] },
 
   "inv_view_host":
     url:  "inventory/hosts/:host_id"
+    help: "Detailed host information. Click `Edit` to modify details such as its name and tags."
 
     views:      _vi.Host
     models:     { host: Bixby.model.Host }
