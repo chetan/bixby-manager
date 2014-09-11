@@ -150,6 +150,13 @@ Bixby.monitoring.add_mouse_handlers = (opts) ->  ####
   # custom zoom/pan handling
   opts.interactionModel = _.clone(Dygraph.Interaction.defaultModel)
 
+  opts.interactionModel.mousemove = (event, g, context) ->
+    if context.isZooming
+      Dygraph.moveZoom(event, g, context);
+    else if context.isPanning
+      context.is2DPan = false # override so we can always disable vertical (y-axis) panning
+      Dygraph.movePan(event, g, context);
+
   # override mousedown to allow toggling pan mode
   opts.interactionModel.mousedown = (event, g, context) ->
     # Right-click should not initiate a zoom.
@@ -182,13 +189,24 @@ Bixby.monitoring.add_mouse_handlers = (opts) ->  ####
 # Override touch events to make them optional
 Bixby.monitoring.add_touch_handlers = (opts) ->
   opts.interactionModel.touchstart = (event, g, context) ->
-    Dygraph.Interaction.startTouch(event, g, context) if g._bixby_touch_enabled
+    return if !g._bixby_touch_enabled
+    Dygraph.Interaction.startTouch(event, g, context)
+    if context.initialTouches.length == 1 && g._bixby_pan_start?
+      g._bixby_pan_start()
 
-  opts.interactionModeltouchmove = (event, g, context) ->
-    Dygraph.Interaction.moveTouch(event, g, context) if g._bixby_touch_enabled
+  opts.interactionModel.touchmove = (event, g, context) ->
+    return if !g._bixby_touch_enabled
+    if context.initialTouches.length == 1
+      # only 1 touch point, so we *should* be panning
+      context.touchDirections.y = false
+    Dygraph.Interaction.moveTouch(event, g, context)
 
-  opts.interactionModeltouchend = (event, g, context) ->
-    Dygraph.Interaction.endTouch(event, g, context) if g._bixby_touch_enabled
+  opts.interactionModel.touchend = (event, g, context) ->
+    return if !g._bixby_touch_enabled
+    Dygraph.Interaction.endTouch(event, g, context)
+    if context.initialTouches.length == 1
+      if g._bixby_pan_complete?
+        g._bixby_pan_complete()
 
 Bixby.monitoring.load_more_data = (g) ->
   # check if we need more data
