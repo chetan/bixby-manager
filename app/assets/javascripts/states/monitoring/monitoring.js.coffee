@@ -40,7 +40,7 @@ Bixby.app.add_states { tab: "monitoring", views: [_bv.PageLayout, _bvm.Layout] }
   # Metric detail
   "mon_hosts_metric":
     url:  "monitoring/hosts/:host_id/metrics/:metric_id"
-    help: "Detailed metric analysis. Drill down to a specific time period or zoom out for a larger view."
+    help: "Detailed metric analysis. Drill down to a specific time period or zoom out for a larger view.\n\nClick and drag to zoom in or pan the graph."
 
     views:      [ _bvm.MetricDetail ]
     models:     { host: _bm.Host, check: _bm.Check, metric: _bm.Metric }
