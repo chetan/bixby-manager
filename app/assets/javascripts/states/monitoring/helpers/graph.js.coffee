@@ -186,27 +186,24 @@ Bixby.monitoring.add_mouse_handlers = (opts) ->  ####
         g._bixby_pan_complete()
 
 
-# Override touch events to make them optional
+# Override touch events to make them optional and implement custom pan events
 Bixby.monitoring.add_touch_handlers = (opts) ->
   opts.interactionModel.touchstart = (event, g, context) ->
     return if !g._bixby_touch_enabled
     Dygraph.Interaction.startTouch(event, g, context)
-    if context.initialTouches.length == 1 && g._bixby_pan_start?
+    if g._bixby_pan_start?
       g._bixby_pan_start()
 
   opts.interactionModel.touchmove = (event, g, context) ->
     return if !g._bixby_touch_enabled
-    if context.initialTouches.length == 1
-      # only 1 touch point, so we *should* be panning
-      context.touchDirections.y = false
+    context.touchDirections.y = false
     Dygraph.Interaction.moveTouch(event, g, context)
 
   opts.interactionModel.touchend = (event, g, context) ->
     return if !g._bixby_touch_enabled
     Dygraph.Interaction.endTouch(event, g, context)
-    if context.initialTouches.length == 1
-      if g._bixby_pan_complete?
-        g._bixby_pan_complete()
+    if g._bixby_pan_complete?
+      g._bixby_pan_complete()
 
 Bixby.monitoring.load_more_data = (g) ->
   # check if we need more data
