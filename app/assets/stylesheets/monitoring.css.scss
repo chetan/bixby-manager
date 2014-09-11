@@ -47,6 +47,7 @@ div.sparkline {
 }
 
 div.monitoring {
+
   div.host_overview {
     div.wrapper {
       position: relative;
@@ -59,24 +60,34 @@ div.monitoring {
         background: #f5f5f5;
 
         div.sparkline {
-          .value {
-            position: absolute;
-            right: 0;
-            top: 0;
-            margin: 0 6px 0 6px;
-            line-height: 30px;
-            font-family: "Helvetica Neue",Helvetica,sans-serif;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-            white-space: nowrap;
-            display: none;
-            pointer-events: none;
+          div.graph_container {
+            position: static;
+            span.value {
+              line-height: 30px;
+            }
           }
         }
       }
     }
   }
 
+  div.graph_container {
+    position: relative;
+    top: 0;
+    left: 0;
 
+    .value {
+      position: absolute;
+      right: 0;
+      top: 0;
+      margin: 0 6px 0 6px;
+      font-family: "Helvetica Neue",Helvetica,sans-serif;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+      white-space: nowrap;
+      display: none;
+      pointer-events: none;
+    }
+  }
 
   .line {
     top: 0;
@@ -91,6 +102,7 @@ div.monitoring {
   }
 }
 
+// Fullscreen graphs
 .fullscreen_div {
   display:    block;
   box-sizing: border-box;

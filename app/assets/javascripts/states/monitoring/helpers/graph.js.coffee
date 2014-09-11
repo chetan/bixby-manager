@@ -69,23 +69,23 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
 
   ####
   # draw
-  el = $(div).find(".graph")[0]
-  g = new Dygraph(el, vals, opts)
+  el = $(div).find(".graph")
+  g = new Dygraph(el[0], vals, opts)
   g._bixby_dragging = false # used to denote that we are in the middle of a click-drag operation
   g._bixby_metric = metric
-  g._bixby_el = el
+  g._bixby_el = el[0]
   g._bixby_mode = "zoom"
   g._bixby_touch_enabled = false # default to disabled
 
-  # add a hidden point which we can use to draw a tooltip
-  tooltip_anchor = Bixby.monitoring.create_tooltip(div)
+  gc = el.parents("div.graph_container")
+  Bixby.monitoring.create_tooltip(gc)
 
   # set callbacks - have to do this after initial graph created
   opts = {
     highlightCallback: (e, x, pts, row, seriesName) ->
       text = metric.format_value(pts[0].yval, x)
       footer.text(text)
-      Bixby.monitoring.show_tooltip(g, div, tooltip_anchor, pts, text)
+      Bixby.monitoring.show_tooltip(g, el, gc, pts[0].canvasx, e.pageY, text)
 
     unhighlightCallback: (e) ->
       footer.text(footer_text)
@@ -93,6 +93,9 @@ Bixby.monitoring.render_metric = (div, metric, opts, zoom_callback) ->
     # allow zooming in for more granular data (don't downsample)
     zoomCallback: (minX, maxX, yRanges) ->
       return if g._bixby_mode == "pan"
+
+      # always hide tooltip on zoom-complete
+      Bixby.monitoring.hide_tooltip(gc)
 
       if g._bixby_is_granular
         # already showing granular data, see if zoom was reset and show less granular data
@@ -187,42 +190,53 @@ Bixby.monitoring.add_touch_handlers = (opts) ->
   opts.interactionModeltouchend = (event, g, context) ->
     Dygraph.Interaction.endTouch(event, g, context) if g._bixby_touch_enabled
 
+Bixby.monitoring.create_tooltip = (gc) ->
+  gc.append('<div class="tooltip in value"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>')
+  gc.append('<div class="line xline"></div>')
+  gc.mouseout (e) ->
+    Bixby.monitoring.hide_tooltip(gc)
 
-# Create the tooltip
-Bixby.monitoring.create_tooltip = (div) ->
-  $(div).append("<div class='tooltip_anchor invisible' style='position:absolute;width:10px;height:10px;border:1px solid black;'></div>")
-  tooltip_anchor = $(div).find("div.tooltip_anchor")
-  tooltip_anchor.tooltip({trigger: "manual", container: div, placement: "left"})
+Bixby.monitoring.hide_tooltip = (gc) ->
+  gc.find("div.line.xline").hide()
+  gc.find("div.value.tooltip").hide()
 
-  $(div).find("div.graph").mouseout (e) ->
-    tooltip_anchor.tooltip("hide")
+# Position x-value crosshair & draw value tooltip
+Bixby.monitoring.show_tooltip = (g, el, gc, pX, pageY, text) ->
+  xline = gc.find("div.line.xline")
+  dVal = gc.find("div.value.tooltip")
 
-  return tooltip_anchor
-
-# Show the tooltip - called from the graph highlightCallback
-Bixby.monitoring.show_tooltip = (g, div, el, pts, text) ->
+  # only show x-line is NOT dragging (but still show the tooltip)
+  x = el.position().left + pX
   if g._bixby_dragging
-    el.tooltip("hide")
-    return
+    xline.hide()
+    if g._bixby_mode == "pan"
+      dVal.hide()
+      return # show nothing when panning
+  else
+    h = el.height()
+    xline.css({
+      height: h-20+"px" # remove 20px for the x-axis legend
+      left:   x + "px"
+    })
+    xline.show()
 
-  if el.data('bs.tooltip').options.title != text
-    d = $(div).find(".graph").position()
-    tx = d.left + pts[0].canvasx - 5 + "px"
-    ty = d.top + pts[0].canvasy - 5 + "px"
+  # tooltip placement
+  opts = if pX > 300
+    # show tooltip to the left of line
+    dVal.addClass("left").removeClass("right")
+    r = el.width() - x
+    { right: r+"px", left: "auto" }
+  else
+    # right of line
+    dVal.addClass("right").removeClass("left")
+    { left: x+"px", right: "auto" }
 
-    # bootstrap tooltip needs a little help with placement
-    w = $(div).width()
-    el.data('bs.tooltip').options.placement =
-      if pts[0].canvasx < 200
-        "right"
-      else if w-pts[0].canvasx < 200
-        "left"
-      else
-        "top"
+  # position near mousepointer
+  pY = pageY-el.offset().top
+  opts.top = pY + "px"
 
-    el.css({left: tx, top: ty})
-    el.data('bs.tooltip').options.title = text
-    el.tooltip("show")
+  dVal.find(".tooltip-inner").text(text)
+  dVal.css(opts).show()
 
 Bixby.monitoring.load_more_data = (g) ->
   # check if we need more data

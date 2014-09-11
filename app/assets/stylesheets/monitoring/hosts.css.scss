@@ -34,7 +34,6 @@ div.metric {
     padding-left: 10px;
 
     .graph_container {
-      padding-top: 10px;
       .y_axis {
         float: left;
         left: -10px;
@@ -81,7 +80,6 @@ div.metric.detail {
   margin: 0;
   padding: 0;
   .graph_container {
-    padding-top: 0;
     .graph {
       overflow: hidden;
       height: 400px;
