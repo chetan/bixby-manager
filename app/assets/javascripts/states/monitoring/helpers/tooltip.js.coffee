@@ -51,7 +51,7 @@ Bixby.monitoring.show_tooltip = (g, el, gc, pX, pageY, text) ->
   else
     # right of line
     dVal.addClass("right").removeClass("left")
-    { left: x+"px", right: "auto" }
+    { left: x+6+"px", right: "auto" } # extra 6px pad so the mouse cursor doesn't cover it
 
   # position near mousepointer
   pY = pageY-el.offset().top
