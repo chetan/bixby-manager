@@ -4,6 +4,12 @@ Bixby.monitoring ||= {}
 Bixby.monitoring.Graph = class
 
   @find_value_near_x: (g, pX) ->
+    if pair = @find_nearest_coord(g, pX)
+      return pair[1]
+    else
+      return "n/a"
+
+  @find_nearest_coord: (g, pX) ->
     xVal = g.toDataXCoord(pX)
     found_pair = null
     d = null
@@ -17,10 +23,13 @@ Bixby.monitoring.Graph = class
         d = dx
         found_pair = data
 
-    if found_pair
-      return found_pair[1]
-    else
-      return "n/a"
+    return found_pair
+
+  find_value_near_x: (pX) ->
+    Bixby.monitoring.Graph.find_value_near_x(@dygraph, pX)
+
+  find_nearest_coord: (pX) ->
+    Bixby.monitoring.Graph.find_nearest_coord(@dygraph, pX)
 
   @format_value: (val) ->
     _.add_commas(_.str.sprintf("%0.2f", val))
@@ -35,6 +44,10 @@ Bixby.monitoring.Graph = class
     vals = metric.tuples()
     if !vals || vals.length == 0
       return
+
+    # locate our container elements
+    @el = el = $(div).find(".graph")
+    @gc = el.parents("div.graph_container")
 
     # set initial footer text
     last_date   = vals[vals.length-1][0]
@@ -71,12 +84,10 @@ Bixby.monitoring.Graph = class
 
     ####
     # draw
-    @el = el = $(div).find(".graph")
-    @gc = el.parents("div.graph_container")
-    g = new Dygraph(el[0], vals, opts)
+    @dygraph = g = new Dygraph(el[0], vals, opts)
 
     # TODO move variables into Graph class?
-    g._bixby_metric = metric
+    @metric = g._bixby_metric = metric
     g._bixby_el = el[0]
 
     g._bixby_dragging = false # used to denote that we are in the middle of a click-drag operation
@@ -133,7 +144,6 @@ Bixby.monitoring.Graph = class
             g.updateOptions({ file: new_met.tuples() })
 
     g.updateOptions(opts, true) # don't redraw here
-    @dygraph = g
     return g
 
   # Fix the y-axis value range

@@ -5,6 +5,7 @@
 //= require "jquery.appear"
 //= require "jquery.linedtextarea"
 //= require "jquery.qrcode.min"
+//= require "jquery.mobile"
 
 //= require "underscore"
 //= require "underscore_patch"
