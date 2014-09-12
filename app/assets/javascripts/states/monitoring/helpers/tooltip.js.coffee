@@ -2,32 +2,27 @@
 _.extend Bixby.monitoring.Graph.prototype,
 
   # Add DOM elements for drawing an x-value crosshair and tooltip
-  #
-  # @param [jQuery] gc       div.graph_container jQuery object
-  create_tooltip: (gc) ->
-    gc.append('<div class="tooltip in value"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>')
-    gc.append('<div class="line xline"></div>')
-    gc.mouseout (e) =>
-      @hide_tooltip(gc)
+  create_tooltip: ->
+    @gc.append('<div class="tooltip in value"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>')
+    @gc.append('<div class="line xline"></div>')
+    @gc.mouseout (e) =>
+      @hide_tooltip()
 
   # Hide the x-value crosshair and tooltip
-  #
-  # @param [jQuery] gc       div.graph_container jQuery object
-  hide_tooltip: (gc) ->
-    gc.find("div.line.xline").hide()
-    gc.find("div.value.tooltip").hide()
+  hide_tooltip: ->
+    @gc.find("div.line.xline").hide()
+    @gc.find("div.value.tooltip").hide()
 
   # Position x-value crosshair & draw value tooltip
   #
   # @param [Dygraph] g
   # @param [jQuery] el       div.graph element
-  # @param [jQuery] gc       div.graph_container jQuery object
   # @param [Number] pX
   # @param [Number] pageY
   # @param [String] text     tooltip text to display
-  show_tooltip: (g, el, gc, pX, pageY, text) ->
-    xline = gc.find("div.line.xline")
-    dVal = gc.find("div.value.tooltip")
+  show_tooltip: (g, el, pX, pageY, text) ->
+    xline = @gc.find("div.line.xline")
+    dVal = @gc.find("div.value.tooltip")
 
     # only show x-line is NOT dragging (but still show the tooltip)
     x = el.position().left + pX

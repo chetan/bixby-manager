@@ -43,7 +43,7 @@ Bixby.monitoring.Graph = class
     footer_text = metric.format_value(last_val, last_date) # referenced later in unhighlightCallback
     footer.text(footer_text)
 
-    # draw graph
+    # dygraph options
     opts ||= {}
     opts = _.extend({
       labels: [ "Date/Time", "v" ]
@@ -71,7 +71,8 @@ Bixby.monitoring.Graph = class
 
     ####
     # draw
-    el = $(div).find(".graph")
+    @el = el = $(div).find(".graph")
+    @gc = el.parents("div.graph_container")
     g = new Dygraph(el[0], vals, opts)
 
     # TODO move variables into Graph class?
@@ -82,15 +83,14 @@ Bixby.monitoring.Graph = class
     g._bixby_touch_enabled = false # default to disabled
     g._bixby_show_spinner = false # when true, a spinner will be displayed while loading data
 
-    gc = el.parents("div.graph_container")
-    @create_tooltip(gc)
+    @create_tooltip()
 
     # set callbacks - have to do this after initial graph created
     opts =
       highlightCallback: (e, x, pts, row, seriesName) =>
         text = metric.format_value(pts[0].yval, x)
         footer.text(text)
-        @show_tooltip(g, el, gc, pts[0].canvasx, e.pageY, text)
+        @show_tooltip(g, el, pts[0].canvasx, e.pageY, text)
 
       unhighlightCallback: (e) =>
         footer.text(footer_text)
@@ -100,7 +100,7 @@ Bixby.monitoring.Graph = class
         return if g._bixby_mode == "pan"
 
         # always hide tooltip on zoom-complete
-        @hide_tooltip(gc)
+        @hide_tooltip()
 
         if g._bixby_is_granular
           # already showing granular data, see if zoom was reset and show less granular data
