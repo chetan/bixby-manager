@@ -31,6 +31,7 @@ _.extend Bixby.monitoring.Graph.prototype,
     # show tooltip w/ value on tap event
     return if !(use_touch && @el.tap?)
     @el.tap (e) =>
+      e.preventDefault()
       pX = e.pageX - @el.offset().left
       coord = @find_nearest_coord(pX)
       text = @metric.format_value(coord.point[1], coord.point[0])
