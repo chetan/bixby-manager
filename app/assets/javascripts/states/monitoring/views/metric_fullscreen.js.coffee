@@ -8,6 +8,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       "button.return": [ "mon_hosts_metric", -> { host: @host, check: @check, metric: @metric } ]
 
     after_render: ->
-      if @graph = Bixby.monitoring.render_metric(@$("div.metric"), @metric)
-        @sync_helper = new Bixby.monitoring.PanSyncHelper(@graph)
-        @graph._bixby_touch_enabled = true # enable touch events in detailed view
+      @bixby_graph = new Bixby.monitoring.Graph()
+      if @graph = @bixby_graph.render(@$("div.metric"), @metric)
+        @sync_helper = new Bixby.monitoring.PanSyncHelper(@bixby_graph)
+        @graph._bixby_touch_enabled = true
