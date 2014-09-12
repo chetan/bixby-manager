@@ -13,14 +13,14 @@ class Rest::Models::MetricsController < ::Rest::BaseController
   # List all metrics for the check
   def index_for_check
     downsample = params[:downsample] || "1h-avg"
-    restful Metric.metrics_for_check(_id(:check_id), _id(:time_start, true), _id(:time_end, true), {}, "sum", downsample)
+    restful Metric.metrics_for_check(_id(:check_id), _id(:start, true), _id(:end, true), {}, "sum", downsample)
   end
 
   # GET "/rest/hosts/:host_id/metrics/:id"
   def show
     metric = Metric.find(_id)
     downsample = params[:downsample] || "5m-avg"
-    metric.load_data!(_id(:time_start, true), _id(:time_end, true), {}, "sum", downsample)
+    metric.load_data!(_id(:start, true), _id(:end, true), {}, "sum", downsample)
 
     restful metric
   end
