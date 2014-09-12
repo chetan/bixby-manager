@@ -45,7 +45,6 @@ class Bixby.monitoring.Sparkline extends Bixby.monitoring.Graph
     g._bixby_metric = metric
     g._bixby_el = el[0]
     g._bixby_mode = "pan"
-    g._bixby_touch_enabled = false # default to disabled
     el.data({graph: g}) # store graph reference
 
     el.append("<span class='value'>")

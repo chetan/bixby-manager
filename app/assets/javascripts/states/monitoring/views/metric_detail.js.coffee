@@ -105,9 +105,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
 
       @bixby_graph = new Bixby.monitoring.Graph()
+      @bixby_graph.touch_enabled = true
       if @graph = @bixby_graph.render(@$("div.metric"), @metric, {}, zoom_callback)
         @sync_helper = new Bixby.monitoring.PanSyncHelper(@bixby_graph)
-        @graph._bixby_touch_enabled = true # enable touch events in detailed view
 
       if @level
         # make sure we show the entire date range

@@ -84,7 +84,6 @@ Bixby.monitoring.Graph = class
     g._bixby_is_panning = false # flag to denote an active pan operation
     g._bixby_is_zooming = false
 
-    g._bixby_touch_enabled = false # default to disabled
     g._bixby_show_spinner = false # when true, a spinner will be displayed while loading data
 
     @create_tooltip()

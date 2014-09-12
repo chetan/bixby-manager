@@ -9,6 +9,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     after_render: ->
       @bixby_graph = new Bixby.monitoring.Graph()
+      @bixby_graph.touch_enabled = true
       if @graph = @bixby_graph.render(@$("div.metric"), @metric)
         @sync_helper = new Bixby.monitoring.PanSyncHelper(@bixby_graph)
-        @graph._bixby_touch_enabled = true
