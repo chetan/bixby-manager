@@ -33,5 +33,5 @@ _.extend Bixby.monitoring.Graph.prototype,
     @el.tap (e) =>
       pX = e.pageX - @el.offset().left
       coord = @find_nearest_coord(pX)
-      text = @metric.format_value(coord[1], coord[0])
+      text = @metric.format_value(coord.point[1], coord.point[0])
       @show_tooltip(@dygraph, @el, pX, e.pageY, text)

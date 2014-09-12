@@ -4,8 +4,8 @@ Bixby.monitoring ||= {}
 Bixby.monitoring.Graph = class
 
   @find_value_near_x: (g, pX) ->
-    if pair = @find_nearest_coord(g, pX)
-      return pair[1]
+    if coord = @find_nearest_coord(g, pX)
+      return coord.point[1]
     else
       return "n/a"
 
@@ -15,22 +15,22 @@ Bixby.monitoring.Graph = class
       # use builtin method
       i = g.findClosestRow(pX)
       if i >= 0
-        return g.rawData_[i]
+        return {point: g.rawData_[i], idx: i}
       return null
 
     # use our own approximation
     xVal = g.toDataXCoord(pX)
     found_pair = null
     d = null
-    _.each g.rawData_, (data) ->
-      if data[0] == xVal
-        found_pair = data
+    _.each g.rawData_, (row, i) ->
+      if row[0] == xVal
+        found_pair = {point: row, idx: i}
         return
 
-      dx = Math.abs(data[0]-xVal)
+      dx = Math.abs(row[0]-xVal)
       if !d || dx < d
         d = dx
-        found_pair = data
+        found_pair = {point: row, idx: i}
 
     return found_pair
 
