@@ -1,6 +1,4 @@
 
-//= require "modernizr"
-
 //= require "jquery"
 //= require "jquery_patch"
 //= require "jquery.putcursoratend"
