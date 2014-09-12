@@ -73,6 +73,8 @@ Bixby.monitoring.Graph = class
     # draw
     el = $(div).find(".graph")
     g = new Dygraph(el[0], vals, opts)
+
+    # TODO move variables into Graph class?
     g._bixby_dragging = false # used to denote that we are in the middle of a click-drag operation
     g._bixby_metric = metric
     g._bixby_el = el[0]
@@ -217,13 +219,12 @@ Bixby.monitoring.Graph = class
 
     g = @dygraph
     metric = g._bixby_metric
-    query = metric.get("query")
     new_met = new Bixby.model.Metric({
       id: metric.id
       host_id: metric.get("metadata").host_id
       start: parseInt(startX / 1000)
       end: parseInt(endX / 1000)
-      downsample: query.downsample || "5m-avg"
+      downsample: metric.get("query").downsample || "5m-avg"
     })
     Backbone.multi_fetch [ new_met ], (err, results) =>
       # don't replace data... add on to existing data and sort by timestamp
