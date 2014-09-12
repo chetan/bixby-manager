@@ -6,17 +6,6 @@ namespace 'Bixby.model', (exports, top) ->
     @key: "metric"
     params: [ { name: "metric", set_id: true }, "host" ]
 
-    # List all metrics for the given check
-    #
-    # @param [Integer] host_id
-    # @param [Integer] check_id
-    #
-    # NOTE: not currently used. probably needs a callback to fetch
-    @list_for_check: (host_id, check_id) ->
-      metrics = new exports.MetricList()
-      metrics.url = "/rest/hosts/#{host_id}/checks/#{check_id}/metrics"
-      metrics.fetch() # TODO callback?
-
     urlRoot: ->
       host_id = @host_id || @get("host_id")
       "/rest/hosts/#{host_id}/metrics"
@@ -143,6 +132,10 @@ namespace 'Bixby.model', (exports, top) ->
 
     comparator: (metric) ->
       metric.display_name()
+
+  class exports.CheckMetricList extends exports.MetricList
+    params: [ { name: "metric", set_id: true }, "host", "check" ]
+    url: -> "/rest/hosts/#{@host_id}/checks/#{@check_id}/metrics"
 
   class exports.HostSummaryMetricList extends exports.MetricList
     url: -> "/rest/hosts/#{@host_id}/metrics/summary"
