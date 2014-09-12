@@ -16,7 +16,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         # don't draw the line outside of actual graph boundaries
         oX = @$("div.graph").offsetParent().offset().left
         gX = @$("div.graph").offset().left
-        gW = @metrics[0].graph.getArea().w
+        gW = @metrics[0].graph.dygraph.getArea().w
         upperBound = gW
         if x < 0
           x = 0
@@ -26,7 +26,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         else if x > upperBound
           x = upperBound
 
-        Bixby.monitoring.handle_sparkline_hover(@$("div.graph")[0], x)
+        @metrics[0].graph.show_tooltip(@$("div.graph"), x)
 
       "mouseout td.sparkline": (e) ->
         @$("div.line.xline").hide()

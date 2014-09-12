@@ -3,7 +3,7 @@ Bixby.monitoring ||= {}
 
 Bixby.monitoring.Graph = class
 
-  find_value_near_x: (g, pX) ->
+  @find_value_near_x: (g, pX) ->
     xVal = g.toDataXCoord(pX)
     found_pair = null
     d = null
