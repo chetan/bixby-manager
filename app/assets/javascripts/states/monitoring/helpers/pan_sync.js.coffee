@@ -18,7 +18,7 @@ class Bixby.monitoring.PanSyncHelper
   # @param [Hash] context               for holding special state flags
   setup_document_handlers: (graphs, context) ->
     $(document).on "mouseup", (e) ->
-      return if !context._last_click? || e.target.tagName.toUpperCase() == "CANVAS"
+      return if !context._last_click? || (e.target.tagName && e.target.tagName.toUpperCase() == "CANVAS")
       g = context._last_click
       g._bixby_pan_complete() if g?
 
