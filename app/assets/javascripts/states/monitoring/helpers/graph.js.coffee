@@ -10,6 +10,15 @@ Bixby.monitoring.Graph = class
       return "n/a"
 
   @find_nearest_coord: (g, pX) ->
+
+    if g.findClosestRow?
+      # use builtin method
+      i = g.findClosestRow(pX)
+      if i >= 0
+        return g.rawData_[i]
+      return null
+
+    # use our own approximation
     xVal = g.toDataXCoord(pX)
     found_pair = null
     d = null
