@@ -76,10 +76,14 @@ Bixby.monitoring.Graph = class
     g = new Dygraph(el[0], vals, opts)
 
     # TODO move variables into Graph class?
-    g._bixby_dragging = false # used to denote that we are in the middle of a click-drag operation
     g._bixby_metric = metric
     g._bixby_el = el[0]
-    g._bixby_mode = "zoom"
+
+    g._bixby_dragging = false # used to denote that we are in the middle of a click-drag operation
+    g._bixby_mode = "zoom" # whether a click+drag should initiate a "zoom" or "pan"
+    g._bixby_is_panning = false # flag to denote an active pan operation
+    g._bixby_is_zooming = false
+
     g._bixby_touch_enabled = false # default to disabled
     g._bixby_show_spinner = false # when true, a spinner will be displayed while loading data
 
@@ -147,68 +151,6 @@ Bixby.monitoring.Graph = class
     else if range && (matches = range.match(/^(.*?)\.\.(.*?)$/))
       # use y-axis range as given in metric info
       opts.valueRange = [ parseFloat(matches[1]), parseFloat(matches[2]) ]
-
-  # Add mouseup/mousedown handlers for custom zoom/pan control
-  #
-  # We want to be able to programatically toggle between zoom & pan modes
-  add_mouse_handlers: (opts) ->  ####
-    # custom zoom/pan handling
-    opts.interactionModel = _.clone(Dygraph.Interaction.defaultModel)
-
-    opts.interactionModel.mousemove = (event, g, context) ->
-      if context.isZooming
-        Dygraph.moveZoom(event, g, context);
-      else if context.isPanning
-        context.is2DPan = false # override so we can always disable vertical (y-axis) panning
-        Dygraph.movePan(event, g, context);
-
-    # override mousedown to allow toggling pan mode
-    opts.interactionModel.mousedown = (event, g, context) ->
-      # Right-click should not initiate a zoom.
-      if event.button && event.button == 2
-        return
-
-      g._bixby_dragging = true
-
-      context.initializeMouseDown(event, g, context)
-
-      if event.altKey || event.shiftKey || g._bixby_mode == "pan"
-        if g._bixby_pan_start?
-          g._bixby_pan_start()
-        Dygraph.startPan(event, g, context)
-      else
-        Dygraph.startZoom(event, g, context)
-
-    # override mouseup to load more data as we pan in either direction
-    opts.interactionModel.mouseup = (event, g, context) ->
-      g._bixby_dragging = false
-      if context.isZooming
-        Dygraph.endZoom(event, g, context)
-
-      else if context.isPanning
-        Dygraph.endPan(event, g, context)
-        if g._bixby_pan_complete?
-          g._bixby_pan_complete()
-
-
-  # Override touch events to make them optional and implement custom pan events
-  add_touch_handlers: (opts) ->
-    opts.interactionModel.touchstart = (event, g, context) ->
-      return if !g._bixby_touch_enabled
-      Dygraph.Interaction.startTouch(event, g, context)
-      if g._bixby_pan_start?
-        g._bixby_pan_start()
-
-    opts.interactionModel.touchmove = (event, g, context) ->
-      return if !g._bixby_touch_enabled
-      context.touchDirections.y = false
-      Dygraph.Interaction.moveTouch(event, g, context)
-
-    opts.interactionModel.touchend = (event, g, context) ->
-      return if !g._bixby_touch_enabled
-      Dygraph.Interaction.endTouch(event, g, context)
-      if g._bixby_pan_complete?
-        g._bixby_pan_complete()
 
   fetch_more_data: (startX, endX) ->
     # TODO if we pan multiple times into the same area which we don't have data for
