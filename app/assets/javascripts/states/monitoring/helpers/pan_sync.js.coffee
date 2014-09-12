@@ -43,7 +43,7 @@ class Bixby.monitoring.PanSyncHelper
   # @param [Hash] context               for holding special state flags
   setup_pan_handler: (graphs, graph, context) ->
 
-    return if !graph.dygraph?
+    return if !(dygraph = graph.dygraph)?
     sync = @
 
     # sync panning all graphs on page
@@ -66,16 +66,18 @@ class Bixby.monitoring.PanSyncHelper
 
         context._blockRedraw = false
 
-    graph.dygraph.updateOptions(opts, true)
+    dygraph.updateOptions(opts, true)
 
 
-    graph.dygraph._bixby_pan_start = ->
+    dygraph._bixby_pan_start = ->
+      dygraph._bixby_is_panning = true
       context._last_click = @ # store it so we can use it to filter redraws
       context._last_click_range = @xAxisRange()
 
     # fired when panning is completed on the given graph
     # update all other graphs with more data
-    graph.dygraph._bixby_pan_complete = ->
+    dygraph._bixby_pan_complete = ->
+      dygraph._bixby_is_panning = false
       # bail if X range did not change
       return if @xAxisRange()[0] == context._last_click_range[0]
       context._last_click = context._last_click_range = null

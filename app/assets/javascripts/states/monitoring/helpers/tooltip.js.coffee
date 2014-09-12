@@ -24,13 +24,15 @@ _.extend Bixby.monitoring.Graph.prototype,
     xline = @gc.find("div.line.xline")
     dVal = @gc.find("div.value.tooltip")
 
-    # only show x-line is NOT dragging (but still show the tooltip)
+    # only show x-line if NOT dragging (but still show the tooltip)
     x = el.position().left + pX
     if g._bixby_dragging
       xline.hide()
-      if g._bixby_mode == "pan"
+      if g._bixby_is_panning
+        # show nothing when panning
         dVal.hide()
-        return # show nothing when panning
+        return
+
     else
       h = el.height()
       xline.css({

@@ -16,11 +16,12 @@ _.extend Bixby.monitoring.Graph.prototype,
 
     opts.interactionModel.touchmove = (event, g, context) ->
       return if !use_touch
-      context.touchDirections.y = false
+      context.touchDirections.y = false # disable panning along y-axis
       Dygraph.Interaction.moveTouch(event, g, context)
 
     opts.interactionModel.touchend = (event, g, context) ->
       return if !use_touch
+      g._bixby_dragging = false
       Dygraph.Interaction.endTouch(event, g, context)
       if g._bixby_pan_complete?
         g._bixby_pan_complete()
