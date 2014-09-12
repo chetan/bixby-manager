@@ -17,6 +17,8 @@ class Bixby.monitoring.PanSyncHelper
   # @param [Array<Dygraph>] graphs
   # @param [Hash] context               for holding special state flags
   setup_document_handlers: (graphs, context) ->
+    sync = @
+
     $(document).on "mouseup", (e) ->
       return if !context._last_click? || (e.target.tagName && e.target.tagName.toUpperCase() == "CANVAS")
       g = context._last_click
@@ -31,7 +33,7 @@ class Bixby.monitoring.PanSyncHelper
           return if !(g = graph.dygraph)
           if g._bixby_el == el && g._bixby_needs_more_data == true
             g._bixby_needs_more_data = false
-            graph.load_more_data()
+            sync.update_graph(graph)
 
 
   # Pan events
@@ -42,6 +44,7 @@ class Bixby.monitoring.PanSyncHelper
   setup_pan_handler: (graphs, graph, context) ->
 
     return if !graph.dygraph?
+    sync = @
 
     # sync panning all graphs on page
     opts =
@@ -65,14 +68,13 @@ class Bixby.monitoring.PanSyncHelper
 
     graph.dygraph.updateOptions(opts, true)
 
+
     graph.dygraph._bixby_pan_start = ->
       context._last_click = @ # store it so we can use it to filter redraws
       context._last_click_range = @xAxisRange()
 
     # fired when panning is completed on the given graph
     # update all other graphs with more data
-    #
-    # @param [Dygraph] g        the graph which was just panned
     graph.dygraph._bixby_pan_complete = ->
       # bail if X range did not change
       return if @xAxisRange()[0] == context._last_click_range[0]
@@ -81,7 +83,7 @@ class Bixby.monitoring.PanSyncHelper
       _.eachR @, graphs, (graph) ->
         if graph.dygraph
           if _.isScrolledIntoView(graph.dygraph._bixby_el, true)
-            graph.load_more_data()
+            sync.update_graph(graph)
           else
             # defer loading of graphs that aren't visible
             graph.dygraph._bixby_needs_more_data = true
@@ -90,3 +92,36 @@ class Bixby.monitoring.PanSyncHelper
           if graph.dygraph._bixby_update_range?
             graph.dygraph.updateOptions({ dateWindow: graph.dygraph._bixby_update_range })
             graph.dygraph._bixby_update_range = null
+
+
+  # Calculate new start/end times based on the result of panning the window
+  update_graph: (graph) ->
+
+    # check if we need more data
+    g = graph.dygraph
+    [minX, maxX] = g.xAxisRange()
+    [dMinX, dMaxX] = g.xAxisExtremes()
+    start_diff = dMinX - minX
+    end_diff = maxX - dMaxX
+
+    startX = null
+    if start_diff > 100000
+      # panned passed the start of the graph (left)
+      startX = minX
+      endX = dMinX
+
+    else if end_diff > 100000
+      # panned passed the end of the graph (right)
+      startX = dMaxX
+      endX = maxX
+
+      # don't send timestamps into the future
+      now = new Date().getTime()
+      if endX > now
+        endX = now
+      if endX - startX < 100000
+        startX = null
+
+    return if startX == null # nothing to do
+
+    graph.fetch_more_data(startX, endX)

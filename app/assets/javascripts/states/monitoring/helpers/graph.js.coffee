@@ -208,41 +208,14 @@ Bixby.monitoring.Graph = class
       if g._bixby_pan_complete?
         g._bixby_pan_complete()
 
-  load_more_data: ->
-    g = @dygraph
-
-    # check if we need more data
-    [minX, maxX] = g.xAxisRange()
-    [dMinX, dMaxX] = g.xAxisExtremes()
-    start_diff = dMinX - minX
-    end_diff = maxX - dMaxX
-
-    startX = null
-    if start_diff > 100000
-      # panned passed the start of the graph (left)
-      startX = minX
-      endX = dMinX
-
-    else if end_diff > 100000
-      # panned passed the end of the graph (right)
-      startX = dMaxX
-      endX = maxX
-
-      # don't send timestamps into the future
-      now = new Date().getTime()
-      if endX > now
-        endX = now
-      if endX - startX < 100000
-        startX = null
-
-    return if startX == null
-
+  fetch_more_data: (startX, endX) ->
     # TODO if we pan multiple times into the same area which we don't have data for
     #      maybe avoid panning again.. though it is possible to have gaps in the data
     #      (periods where the machine is off?)
 
     @show_spinner()
 
+    g = @dygraph
     metric = g._bixby_metric
     query = metric.get("query")
     new_met = new Bixby.model.Metric({
