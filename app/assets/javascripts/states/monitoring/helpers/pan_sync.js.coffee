@@ -28,8 +28,7 @@ class Bixby.monitoring.PanSyncHelper
       # loop through appeared elements, match up with metric graph elements, and load data if necessary
       _.each appeared, (el) ->
         _.each graphs, (graph) ->
-          return if !graph
-          g = graph.dygraph
+          return if !(g = graph.dygraph)
           if g._bixby_el == el && g._bixby_needs_more_data == true
             g._bixby_needs_more_data = false
             graph.load_more_data()
@@ -42,7 +41,7 @@ class Bixby.monitoring.PanSyncHelper
   # @param [Hash] context               for holding special state flags
   setup_pan_handler: (graphs, graph, context) ->
 
-    return if !graph?
+    return if !graph.dygraph?
 
     # sync panning all graphs on page
     opts =
