@@ -87,5 +87,5 @@ Bixby.monitoring.handle_sparkline_hover = (el, pX, yVal) ->
     gg = $(el).data("graph")
     return if !gg
     yVal = Bixby.monitoring.find_value_near_x(gg, pX)
-    yVal = Bixby.monitoring.format_value(yVal) if yVal != "n/a"
+    yVal = Bixby.monitoring.Graph.format_value(yVal) if yVal != "n/a"
     $(el).find("span.value").text(yVal).css(opts).show()

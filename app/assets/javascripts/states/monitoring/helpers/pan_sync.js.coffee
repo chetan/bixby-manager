@@ -4,6 +4,7 @@ Bixby.monitoring ||= {}
 # Wraps all functionality related to loading more data when panning the graph
 class Bixby.monitoring.PanSyncHelper
 
+  # @param [Array<Graph>] graphs
   constructor: (@graphs) ->
     @graphs = [ @graphs ] if !_.isArray(@graphs)
     @context = {}
@@ -28,9 +29,10 @@ class Bixby.monitoring.PanSyncHelper
       _.each appeared, (el) ->
         _.each graphs, (graph) ->
           return if !graph
-          if graph._bixby_el == el && graph._bixby_needs_more_data == true
-            graph._bixby_needs_more_data = false
-            Bixby.monitoring.load_more_data(graph)
+          g = graph.dygraph
+          if g._bixby_el == el && g._bixby_needs_more_data == true
+            g._bixby_needs_more_data = false
+            graph.load_more_data()
 
 
   # Pan events
@@ -43,7 +45,7 @@ class Bixby.monitoring.PanSyncHelper
     return if !graph?
 
     # sync panning all graphs on page
-    opts = {
+    opts =
       drawCallback: (g, isInitial) ->
         # only process this callback after the initial draw and
         # only for the graph which was clicked
@@ -53,21 +55,18 @@ class Bixby.monitoring.PanSyncHelper
         range = g.xAxisRange()
         _.each graphs, (graph) ->
           # redraw all graphs except the one which was panned (g)
-          if graph && graph != g
-            if _.isScrolledIntoView(graph._bixby_el, true)
-              graph.updateOptions({
-                dateWindow: range,
-              })
+          if graph.dygraph && graph.dygraph != g
+            if _.isScrolledIntoView(graph.dygraph._bixby_el, true)
+              graph.dygraph.updateOptions({ dateWindow: range })
             else
               # defer range update til it comes into view
-              graph._bixby_update_range = range
+              graph.dygraph._bixby_update_range = range
 
         context._blockRedraw = false
-      }
 
-    graph.updateOptions(opts)
+    graph.dygraph.updateOptions(opts, true)
 
-    graph._bixby_pan_start = ->
+    graph.dygraph._bixby_pan_start = ->
       context._last_click = @ # store it so we can use it to filter redraws
       context._last_click_range = @xAxisRange()
 
@@ -75,22 +74,20 @@ class Bixby.monitoring.PanSyncHelper
     # update all other graphs with more data
     #
     # @param [Dygraph] g        the graph which was just panned
-    graph._bixby_pan_complete = ->
+    graph.dygraph._bixby_pan_complete = ->
       # bail if X range did not change
       return if @xAxisRange()[0] == context._last_click_range[0]
       context._last_click = context._last_click_range = null
 
       _.eachR @, graphs, (graph) ->
-        if graph
-          if _.isScrolledIntoView(graph._bixby_el, true)
-            Bixby.monitoring.load_more_data(graph)
+        if graph.dygraph
+          if _.isScrolledIntoView(graph.dygraph._bixby_el, true)
+            graph.load_more_data()
           else
             # defer loading of graphs that aren't visible
-            graph._bixby_needs_more_data = true
+            graph.dygraph._bixby_needs_more_data = true
 
-        # update x-axis
-        if graph && graph._bixby_update_range?
-          graph.updateOptions({
-            dateWindow: graph._bixby_update_range,
-          })
-          graph._bixby_update_range = null
+          # update x-axis
+          if graph.dygraph._bixby_update_range?
+            graph.dygraph.updateOptions({ dateWindow: graph.dygraph._bixby_update_range })
+            graph.dygraph._bixby_update_range = null

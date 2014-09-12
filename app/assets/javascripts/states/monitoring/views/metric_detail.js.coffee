@@ -103,9 +103,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           view.$("button#reset").removeClass("disabled")
           view.$("div.zoom_level button .text").text("Custom")
 
-      @graph = Bixby.monitoring.render_metric(@$("div.metric"), @metric, {}, zoom_callback)
-      if @graph
-        @sync_helper = new Bixby.monitoring.PanSyncHelper(@graph)
+
+      @bixby_graph = new Bixby.monitoring.Graph()
+      if @graph = @bixby_graph.render(@$("div.metric"), @metric, {}, zoom_callback)
+        @sync_helper = new Bixby.monitoring.PanSyncHelper(@bixby_graph)
         @graph._bixby_touch_enabled = true # enable touch events in detailed view
 
       if @level
