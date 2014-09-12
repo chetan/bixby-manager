@@ -50,7 +50,9 @@ _.extend Bixby.monitoring.Graph.prototype,
     else
       # right of line
       dVal.addClass("right").removeClass("left")
-      { left: x+6+"px", right: "auto" } # extra 6px pad so the mouse cursor doesn't cover it
+      if !Modernizr.touch
+        x += 6 # extra 6px pad so the mouse cursor doesn't cover it
+      { left: x+"px", right: "auto" }
 
     # position near mousepointer
     pY = pageY-el.offset().top
