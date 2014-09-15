@@ -9,5 +9,5 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     after_render: ->
       @metric.graph = new Bixby.monitoring.Sparkline()
-      if dygraph = @metric.graph.render(@$("div.sparkline").first(), @metric, {})
+      if dygraph = @metric.graph.render(@$("div.sparkline").first(), @metric)
         @$(".sparkline_bg").width(dygraph.getArea().w)

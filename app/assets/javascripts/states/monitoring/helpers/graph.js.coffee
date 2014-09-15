@@ -18,7 +18,7 @@ Bixby.monitoring.Graph = class
         return {point: g.rawData_[i], idx: i}
       return null
 
-    # use our own approximation
+    # use our own impl (since the previous method is private and may go away)
     xVal = g.toDataXCoord(pX)
     found_pair = null
     d = null
