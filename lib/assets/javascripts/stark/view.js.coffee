@@ -187,6 +187,7 @@ class Stark.View extends Backbone.View
 
   # Bind all events
   bind_events: ->
+    @refreshUi(@ui)
     @bind_app_events()
     @bind_link_events()
     @bind_models()

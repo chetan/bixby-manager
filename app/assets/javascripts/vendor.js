@@ -8,6 +8,7 @@
 //= require "jquery.linedtextarea"
 //= require "jquery.qrcode.min"
 //= require "jquery.mobile"
+//= require "jquery.idle-timer"
 
 //= require "underscore"
 //= require "underscore_patch"
@@ -19,6 +20,7 @@
 //= require "backbone-validation"
 //= require "backbone.stickit"
 //= require "stickit_validation_patch"
+//= require "backbone.unclassified"
 
 // ui stuff
 //= require "template"

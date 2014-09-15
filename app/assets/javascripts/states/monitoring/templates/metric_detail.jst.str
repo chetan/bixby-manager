@@ -43,6 +43,10 @@
           </label>
         </div>
 
+        <div class="btn-group">
+          <button type="button" id="live" class="btn btn-default">Live &nbsp;<span><%i play %></span></button>
+        </div>
+
         <div class="btn-group pull-right">
           <a class="btn btn-default fullscreen" title="View fullscreen"><%= _.icon("arrows-alt") %></a>
         </div>

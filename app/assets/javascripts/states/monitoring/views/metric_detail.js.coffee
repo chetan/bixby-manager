@@ -4,6 +4,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     el: "div.monitoring_content"
     template: "monitoring/metric_detail"
 
+    ui:
+      live:
+        button: "button#live"
+        icon: "button#live span"
+
     links:
       "a.check":      [ "mon_hosts_check", -> { host: @host, check: @check } ]
       "a.fullscreen": [ "metric_fullscreen", -> { host: @host, check: @check, metric: @metric } ]
@@ -28,6 +33,32 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       "click button#reset": (e) ->
         @graph.resetZoom()
+
+      "click live.button": (e) ->
+        @ui.live.button.toggleClass("active")
+        @update_live()
+
+      "mouseenter live.button": (e) ->
+        if @ui.live.button.hasClass("active")
+          @ui.live.icon.html( _.icon("pause") )
+
+      "mouseleave live.button": (e) ->
+        if @ui.live.button.hasClass("active")
+          @update_live_icon()
+
+    update_live: ->
+      @update_live_icon()
+      if @ui.live.button.hasClass("active")
+        @bixby_graph.enable_live_update()
+      else
+        @bixby_graph.disable_live_update()
+
+    update_live_icon: ->
+      html = if @ui.live.button.hasClass("active")
+        _.icon("refresh", "fa-spin")
+      else
+        _.icon("play")
+      @ui.live.icon.html(html)
 
     # Change the zoom level of the graph
     # Load data based on the time period selected, at the same sampling rate
@@ -108,6 +139,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       @bixby_graph.touch_enabled = true
       if @graph = @bixby_graph.render(@$("div.metric"), @metric, {}, zoom_callback)
         @sync_helper = new Bixby.monitoring.PanSyncHelper(@bixby_graph)
+
+      # enable live data
+      @ui.live.button.addClass("active")
+      @update_live()
 
       if @level
         # make sure we show the entire date range

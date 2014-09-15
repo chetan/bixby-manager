@@ -170,11 +170,31 @@ Bixby.monitoring.Graph = class
       # use y-axis range as given in metric info
       opts.valueRange = [ parseFloat(matches[1]), parseFloat(matches[2]) ]
 
-  fetch_more_data: (startX, endX) ->
-    # TODO if we pan multiple times into the same area which we don't have data for
-    #      maybe avoid panning again.. though it is possible to have gaps in the data
-    #      (periods where the machine is off?)
+  # Enable live updating
+  enable_live_update: ->
+    @live_data = true
+    @fetch_live_data()
 
+  # Disable live updating
+  disable_live_update: ->
+    @live_data = false
+    clearTimeout(@live_data_id) if @live_data_id
+    @live_data_id = null
+
+  # Enable a timer to fetch new data every 60 sec
+  # TODO: maintain the date range window (e.g., if 24 hours, old points should shift out as new ones are loaded)
+  fetch_live_data: ->
+    @live_data_id = _.delayR 60000, =>
+      return if !@live_data
+      [dMinX, dMaxX] = @dygraph.xAxisExtremes()
+      @fetch_more_data(dMaxX+1000, dMaxX + 120000, @fetch_live_data)  # ask for another 2min of data
+
+  # Fetch data for the given period and append it to this chart's dataset
+  #
+  # @param [Number] startX        start time in milliseconds
+  # @param [Number] endX          end time in milliseconds
+  # @param [Function] cb          [Optional] callback to fire after data has been fetched and the graph has been updated
+  fetch_more_data: (startX, endX, cb) ->
     @show_spinner()
 
     g = @dygraph
@@ -192,3 +212,5 @@ Bixby.monitoring.Graph = class
         return a[0] - b[0]
       g.updateOptions({ file: all_data })
       @hide_spinner()
+      if cb?
+        cb.call(@)
