@@ -130,10 +130,17 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         if reset
           view.set_zoom_level_label(zoom)
           view.$("button#reset").addClass("disabled")
-        else
-          view.$("button#reset").removeClass("disabled")
-          view.$("div.zoom_level button .text").text("Custom")
+          return
 
+        view.$("button#reset").removeClass("disabled")
+        view.$("div.zoom_level button .text").text("Custom")
+
+        # disable live updates if not near right edge (within 30 minutes)
+        [minX, maxX] = view.graph.xAxisRange()
+        [dMinX, dMaxX] = view.graph.xAxisExtremes()
+        if dMaxX - maxX > 1800000
+          view.ui.live.button.removeClass("active")
+          view.update_live()
 
       @bixby_graph = new Bixby.monitoring.Graph()
       @bixby_graph.touch_enabled = true
