@@ -3,6 +3,12 @@ Bixby.monitoring ||= {}
 
 Bixby.monitoring.Graph = class
 
+  # Callback which fires after zoom action is complete (ranges updated but before new data is loaded)
+  on_zoom_complete: null
+
+  # Callback which fires after pan action is complete. Only fires on the original graph which was panned.
+  on_pan_complete: null
+
   @find_value_near_x: (g, pX) ->
     if coord = @find_nearest_coord(g, pX)
       return coord.point[1]
@@ -48,8 +54,7 @@ Bixby.monitoring.Graph = class
   # div: parent div container for the metric, e.g., <div class="metric">
   # metric: Metric model instance
   # opts: extra opts for graph [optional]
-  # zoom_callback: fires after zoom is complete (data is loaded)
-  render: (div, metric, opts, zoom_callback) ->
+  render: (div, metric, opts) ->
     vals = metric.tuples()
     if !vals || vals.length == 0
       return
@@ -127,14 +132,15 @@ Bixby.monitoring.Graph = class
 
         if g._bixby_is_granular
           # already showing granular data, see if zoom was reset and show less granular data
-          if minX == g.rawData_[0][0] && maxX == g.rawData_[g.rawData_.length-1][0]
+          [dMinX, dMaxX] = g.xAxisExtremes()
+          if minX == dMinX && maxX == dMaxX
             g.updateOptions({ file: g._bixby_less_granular })
             g._bixby_less_granular = null
             g._bixby_is_granular = null
-            zoom_callback? && zoom_callback(true)
+            @on_zoom_complete? && @on_zoom_complete(true)
           return
 
-        zoom_callback? && zoom_callback()
+        @on_zoom_complete? && @on_zoom_complete(false)
 
         r = (maxX - minX) / 1000
         if r < 43200

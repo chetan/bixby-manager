@@ -39,7 +39,7 @@ class Bixby.monitoring.PanSyncHelper
   # Pan events
   #
   # @param [Array<Dygraph>] graphs
-  # @param [Dygraph] graph
+  # @param [Graph] graph
   # @param [Hash] context               for holding special state flags
   setup_pan_handler: (graphs, graph, context) ->
 
@@ -95,14 +95,15 @@ class Bixby.monitoring.PanSyncHelper
             graph.dygraph.updateOptions({ dateWindow: graph.dygraph._bixby_update_range })
             graph.dygraph._bixby_update_range = null
 
+      graph.on_pan_complete? && graph.on_pan_complete()
 
   # Calculate new start/end times based on the result of panning the window
   update_graph: (graph) ->
 
     # check if we need more data
     g = graph.dygraph
-    [minX, maxX] = g.xAxisRange()
-    [dMinX, dMaxX] = g.xAxisExtremes()
+    [minX, maxX] = g.xAxisRange() # visible range
+    [dMinX, dMaxX] = g.xAxisExtremes() # min/max in dataset
     start_diff = dMinX - minX
     end_diff = maxX - dMaxX
 

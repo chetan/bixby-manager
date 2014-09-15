@@ -60,6 +60,14 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         _.icon("play")
       @ui.live.icon.html(html)
 
+    # Disable live updates if not near right edge (within 30 minutes)
+    disable_live_on_scroll: ->
+      [minX, maxX] = @graph.xAxisRange()
+      [dMinX, dMaxX] = @graph.xAxisExtremes()
+      if dMaxX - maxX > 1800000
+        @ui.live.button.removeClass("active")
+        @update_live()
+
     # Change the zoom level of the graph
     # Load data based on the time period selected, at the same sampling rate
     #
@@ -126,7 +134,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
       view = @
 
-      zoom_callback = (reset) ->
+      @bixby_graph = new Bixby.monitoring.Graph()
+      @bixby_graph.touch_enabled = true
+      @bixby_graph.on_zoom_complete = (reset) ->
         if reset
           view.set_zoom_level_label(zoom)
           view.$("button#reset").addClass("disabled")
@@ -134,17 +144,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
         view.$("button#reset").removeClass("disabled")
         view.$("div.zoom_level button .text").text("Custom")
+        view.disable_live_on_scroll()
 
-        # disable live updates if not near right edge (within 30 minutes)
-        [minX, maxX] = view.graph.xAxisRange()
-        [dMinX, dMaxX] = view.graph.xAxisExtremes()
-        if dMaxX - maxX > 1800000
-          view.ui.live.button.removeClass("active")
-          view.update_live()
+      @bixby_graph.on_pan_complete = ->
+        view.disable_live_on_scroll()
 
-      @bixby_graph = new Bixby.monitoring.Graph()
-      @bixby_graph.touch_enabled = true
-      if @graph = @bixby_graph.render(@$("div.metric"), @metric, {}, zoom_callback)
+      if @graph = @bixby_graph.render(@$("div.metric"), @metric)
         @sync_helper = new Bixby.monitoring.PanSyncHelper(@bixby_graph)
 
       # enable live data
