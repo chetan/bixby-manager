@@ -12,6 +12,10 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           return { host: @host, check: @check, metric: @metric }
         ]
 
+    dispose: ->
+      super()
+      @metric.graph.dispose()
+
     after_render: ->
       @metric.graph = new Bixby.monitoring.Graph()
       if @metric.graph.render(@$("div.metric").first(), @metric)

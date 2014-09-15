@@ -117,7 +117,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     dispose: ->
       super()
       $(window).unbind("resize")
-      @graph.destroy() if @graph
+      @bixby_graph.dispose()
 
     after_render: ->
       super()

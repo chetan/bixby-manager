@@ -161,6 +161,11 @@ Bixby.monitoring.Graph = class
     g.updateOptions(opts, true) # don't redraw here
     return g
 
+  # Cleanup
+  dispose: ->
+    @disable_live_update()
+    @dygraph.destroy() if @dygraph
+
   # Fix the y-axis value range
   set_y_ranges: (opts, metric) ->
     opts.includeZero = true # always incldue zero on y-axis
