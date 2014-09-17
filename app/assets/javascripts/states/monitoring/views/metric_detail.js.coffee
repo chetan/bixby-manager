@@ -117,6 +117,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     dispose: ->
       super()
       $(window).unbind("resize")
+      $(document).idleTimer("destroy");
       @bixby_graph.dispose()
 
     after_render: ->
@@ -155,6 +156,12 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       # enable live data
       @ui.live.button.addClass("active")
       @update_live()
+
+      # set idle timer - disable live data when idle 5 minutes
+      $(document).idleTimer(300000)
+      $(document).on "idle.idleTimer", (event, elem, obj) =>
+        @ui.live.button.removeClass("active")
+        @update_live()
 
       if @level
         # make sure we show the entire date range
