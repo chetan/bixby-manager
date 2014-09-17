@@ -67,7 +67,7 @@ Bixby.monitoring.Graph = class
     last_date   = vals[vals.length-1][0]
     last_val    = vals[vals.length-1][1]
     footer      = $(div).find(".footer")
-    footer_text = metric.format_value(last_val, last_date) # referenced later in unhighlightCallback
+    footer_text = "Last Value: " + metric.format_value(last_val, last_date) # referenced later in unhighlightCallback
     footer.text(footer_text)
 
     # dygraph options
@@ -117,7 +117,7 @@ Bixby.monitoring.Graph = class
     opts =
       highlightCallback: (e, x, pts, row, seriesName) =>
         text = metric.format_value(pts[0].yval, x)
-        footer.text(text)
+        footer.text("Highlighted Value: " + text)
         @show_tooltip(g, el, pts[0].canvasx, e.pageY, text)
 
       unhighlightCallback: (e) =>
