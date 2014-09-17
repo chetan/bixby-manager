@@ -63,13 +63,6 @@ Bixby.monitoring.Graph = class
     @el = el = $(div).find(".graph")
     @gc = el.parents("div.graph_container")
 
-    # set initial footer text
-    last_date   = vals[vals.length-1][0]
-    last_val    = vals[vals.length-1][1]
-    footer      = $(div).find(".footer")
-    footer_text = "Last Value: " + metric.format_value(last_val, last_date) # referenced later in unhighlightCallback
-    footer.text(footer_text)
-
     # dygraph options
     opts ||= {}
     opts = _.extend({
@@ -111,17 +104,23 @@ Bixby.monitoring.Graph = class
 
     g._bixby_show_spinner = false # when true, a spinner will be displayed while loading data
 
+    @footer = $(div).find(".footer")
+    @update_footer_text(true)
     @create_tooltip()
 
     # set callbacks - have to do this after initial graph created
     opts =
       highlightCallback: (e, x, pts, row, seriesName) =>
-        text = metric.format_value(pts[0].yval, x)
-        footer.text("Highlighted Value: " + text)
+        if g._bixby_dragging
+          @update_footer_text(true)
+        else
+          text = metric.format_value(pts[0].yval, x)
+          @footer.text("Highlighted Value: " + text)
+
         @show_tooltip(g, el, pts[0].canvasx, e.pageY, text)
 
       unhighlightCallback: (e) =>
-        footer.text(footer_text)
+        @footer.text(@footer_text)
 
       # allow zooming in for more granular data (don't downsample)
       zoomCallback: (minX, maxX, yRanges) =>
@@ -147,16 +146,8 @@ Bixby.monitoring.Graph = class
           # load more granular data, since we are looking at less than 12 hours of data
           g._bixby_less_granular = g.file_
           g._bixby_is_granular = true
-          new_met = new Bixby.model.Metric({
-            id: metric.id
-            host_id: metric.get("metadata").host_id
-            start: parseInt(minX / 1000)
-            end: parseInt(maxX / 1000)
-            downsample: "1m-avg"
-          })
-          Backbone.multi_fetch [ new_met ], (err, results) ->
-            metric.set({query: new_met.get("query")})
-            g.updateOptions({ file: new_met.tuples() })
+          metric.get("query").downsample = "1m-avg"
+          @fetch_more_data(minX, maxX, null, true)
 
     g.updateOptions(opts, true) # don't redraw here
     return g
@@ -180,6 +171,17 @@ Bixby.monitoring.Graph = class
     else if range && (matches = range.match(/^(.*?)\.\.(.*?)$/))
       # use y-axis range as given in metric info
       opts.valueRange = [ parseFloat(matches[1]), parseFloat(matches[2]) ]
+
+  # Update the footer with the last value
+  update_footer_text: (force) ->
+    if !@dygraph || (!@footer.text().match(/Last Value/) && !force)
+      return # skip updating because we are probably highlighting
+
+    pair         = @dygraph.rawData_[@dygraph.rawData_.length-1]
+    last_date    = pair[0]
+    last_val     = pair[1]
+    @footer_text = "Last Value: " + @metric.format_value(last_val, last_date)
+    @footer.text(@footer_text)
 
   # Enable live updating
   enable_live_update: ->
@@ -205,7 +207,7 @@ Bixby.monitoring.Graph = class
   # @param [Number] startX        start time in milliseconds
   # @param [Number] endX          end time in milliseconds
   # @param [Function] cb          [Optional] callback to fire after data has been fetched and the graph has been updated
-  fetch_more_data: (startX, endX, cb) ->
+  fetch_more_data: (startX, endX, cb, replace) ->
     @show_spinner()
 
     g = @dygraph
@@ -218,10 +220,15 @@ Bixby.monitoring.Graph = class
       downsample: metric.get("query").downsample || "5m-avg"
     })
     Backbone.multi_fetch [ new_met ], (err, results) =>
-      # don't replace data... add on to existing data and sort by timestamp
-      all_data = g.file_.concat(new_met.tuples()).sort (a,b) ->
-        return a[0] - b[0]
-      g.updateOptions({ file: all_data })
+      if replace
+        g.updateOptions({ file: new_met.tuples() })
+      else
+        # don't replace data... add on to existing data and sort by timestamp
+        all_data = g.file_.concat(new_met.tuples()).sort (a,b) ->
+          return a[0] - b[0]
+        g.updateOptions({ file: all_data })
+
+      @update_footer_text()
       @hide_spinner()
       if cb?
         cb.call(@)
