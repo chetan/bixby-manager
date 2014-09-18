@@ -5,7 +5,7 @@ variables:
 * str - the actual contents to display
 -->
 
-<p><%= label %>: (<%= str.length %> byte<%? str.length !== 1 %>s<%/%>)</p>
+<p><%= label %>: (<%= num_bytes(str) %>, <%= num_lines(str) %>)</p>
 
 <%? str %>
   <p>

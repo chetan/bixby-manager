@@ -14,6 +14,23 @@ class Bixby.CommandResponse extends Stark.View
     b = str[str.length-1]
     return (a == "{" && b == "}") || (a == "[" && b == "]")
 
+  num_bytes: (str) ->
+    s = "#{str.length} byte"
+    if str.length != 1
+      s += "s"
+    return s
+
+  num_lines: (str) ->
+    if str.length == 0
+      return "0 lines"
+
+    lines = str.split("\n")
+    s = "#{lines.length} line"
+    if lines.length != 1
+      s += "s"
+    return s
+
+
   status_str: ->
     if @response.status == 0
       "success"
