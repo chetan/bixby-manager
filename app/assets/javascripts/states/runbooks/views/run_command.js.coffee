@@ -34,21 +34,43 @@ class Bixby.RunCommand extends Stark.View
       @$("div.form-group.#{id}").toggle()
       @$("textarea##{id}_input").focus()
 
-  after_render: ->
-    @$("select#command").select2({
-      allowClear: true
-      matcher: (term, text, opt) ->
-        # use default matcher to evaluate the option as well its option group label
-        optgroup = $(opt).parent().attr("label")
-        $.prototype.select2.defaults.matcher(term, text) ||
-          $.prototype.select2.defaults.matcher(term, optgroup)
-      })
+  # Return tags in a sorted, space-separated format
+  # ex: "#bar #foo"
+  #
+  # @param [Host] h
+  host_tags: (h) ->
+    tags = h.tags()
+    return "" if tags.length == 0
+    tags = _.map(tags, (t) -> "##{t}")
+    return tags.join(" ")
 
-    @$("select#hosts").select2({
+  after_render: ->
+    @$("select#command").select2
       allowClear: true
       matcher: (term, text, opt) ->
         # use default matcher to evaluate the option as well its option group label
         optgroup = $(opt).parent().attr("label")
-        $.prototype.select2.defaults.matcher(term, text) ||
-          $.prototype.select2.defaults.matcher(term, optgroup)
-      })
+        m = $.prototype.select2.defaults.matcher
+        m(term, text) || m(term, optgroup)
+
+    @$("select#hosts").select2
+      allowClear: true
+      formatResult: (obj, container, query, escapeMarkup) =>
+        # display tags in the dropdown, if available
+        host = @hosts.get($(obj.element).val())
+        markup = []
+        Select2.util.markMatch(obj.text, query.term, markup, (s) -> s)
+        text = markup.join("")
+        if tags = @host_tags(host)
+          markup = []
+          Select2.util.markMatch(tags, query.term, markup, (s) -> s)
+          text += " <span class='tags'>" + markup.join("") + "</span>"
+        return text
+
+      matcher: (term, text, opt) =>
+        # match against host name, tags
+        m = $.prototype.select2.defaults.matcher
+        tags = @hosts.get(opt.val()).tags()
+        if term[0] == "#"
+          term = term.substr(1)
+        m(term, text) || _.include(tags, term) || _.find(tags, (t) -> t.indexOf(term) >= 0)
