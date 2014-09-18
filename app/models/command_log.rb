@@ -8,6 +8,7 @@
 # ------------------- | ------------------ | ---------------------------
 # **`id`**            | `integer`          | `not null, primary key`
 # **`org_id`**        | `integer`          |
+# **`user_id`**       | `integer`          |
 # **`agent_id`**      | `integer`          |
 # **`command_id`**    | `integer`          |
 # **`stdin`**         | `text`             |
@@ -30,7 +31,6 @@
 #     * **`org_id`**
 #
 
-
 class CommandLog < ActiveRecord::Base
 
   # all fields are read-only
@@ -42,6 +42,7 @@ class CommandLog < ActiveRecord::Base
   multi_tenant :via => :agent
 
   belongs_to :org
+  belongs_to :user
   belongs_to :agent
   belongs_to :command
 
@@ -49,9 +50,10 @@ class CommandLog < ActiveRecord::Base
   #
   # @param [Agent] agent
   # @param [CommandSpec] request
+  # @param [User] user                [Optional] the user running the command
   #
   # @return [JsonResponse]
-  def self.log_exec(agent, request)
+  def self.log_exec(agent, request, user=nil)
 
     requested_at = Time.new
     response = nil
@@ -61,6 +63,7 @@ class CommandLog < ActiveRecord::Base
 
     c = CommandLog.new
     c.org = agent.host.org
+    c.user = user
     c.agent = agent
     c.command = Command.from_command_spec(request)
     c.stdin = request.stdin

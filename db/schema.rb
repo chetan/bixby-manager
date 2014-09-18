@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140812133656) do
+ActiveRecord::Schema.define(version: 20140918193645) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 20140812133656) do
 
   create_table "command_logs", force: true do |t|
     t.integer  "org_id"
+    t.integer  "user_id"
     t.integer  "agent_id"
     t.integer  "command_id"
     t.text     "stdin"

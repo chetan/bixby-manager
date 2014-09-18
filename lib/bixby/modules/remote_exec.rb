@@ -93,7 +93,7 @@ class RemoteExec < API
     #
     # @return [JsonResponse]
     def exec_internal(agent, command)
-      return CommandLog.log_exec(agent, command) do
+      return CommandLog.log_exec(agent, command, @current_user) do
         exec_api(agent, "shell_exec", command.to_hash)
       end
     end

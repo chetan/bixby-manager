@@ -75,7 +75,8 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
       j["operation"] == "shell_exec" and jp["repo"] == "vendor" and jp["bundle"] == "test_bundle" and jp["command"] == "baz"
     }.to_return(:status => 200, :body => JsonResponse.new("success", "", {:status => 0, :stdout => "frobnicator echoed"}).to_json)
 
-    ret = Bixby::RemoteExec.new.exec(@agent, cmd)
+    user = FactoryGirl.create(:user)
+    ret = Bixby::RemoteExec.new(nil, nil, user).exec(@agent, cmd)
 
     assert_requested(stub)
     assert ret.success?
@@ -83,6 +84,7 @@ class Test::Modules::RemoteExec < Bixby::Test::TestCase
     log = CommandLog.first
     assert log
     assert_equal @agent.host.org.id, log.org_id
+    assert_equal user.id, log.user_id
     assert_equal @agent.id, log.agent_id
     assert_equal cmd.id, log.command_id
     assert log.org
