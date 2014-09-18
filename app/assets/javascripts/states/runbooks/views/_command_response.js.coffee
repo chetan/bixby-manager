@@ -15,13 +15,16 @@ class Bixby.CommandResponse extends Stark.View
     return (a == "{" && b == "}") || (a == "[" && b == "]")
 
   num_bytes: (str) ->
+    if !str || str.length == 0
+      return "0 bytes"
+
     s = "#{str.length} byte"
     if str.length != 1
       s += "s"
     return s
 
   num_lines: (str) ->
-    if str.length == 0
+    if !str || str.length == 0
       return "0 lines"
 
     lines = str.split("\n")
