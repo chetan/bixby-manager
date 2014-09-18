@@ -70,7 +70,8 @@ class Bixby.RunCommand extends Stark.View
       matcher: (term, text, opt) =>
         # match against host name, tags
         m = $.prototype.select2.defaults.matcher
-        tags = @hosts.get(opt.val()).tags()
+        host = @hosts.get(opt.val())
+        tags = host.tags()
         if term[0] == "#"
           term = term.substr(1)
-        m(term, text) || _.include(tags, term) || _.find(tags, (t) -> t.indexOf(term) >= 0)
+        m(term, text) || m(term, host.get("desc")) || _.include(tags, term) || _.find(tags, (t) -> t.indexOf(term) >= 0)
