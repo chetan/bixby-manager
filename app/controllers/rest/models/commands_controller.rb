@@ -42,8 +42,9 @@ class Rest::Models::CommandsController < Rest::BaseController
   end
 
   def run
-    agents        = Agent.where(:host_id => params[:hosts])
-    command       = Command.find(_id(:command_id)).to_command_spec
+    hosts   = params[:hosts].map{ |s| s.to_i }.reject{ |s| s <= 0 }
+    agents  = Agent.where(:host_id => hosts)
+    command = Command.find(_id(:command_id)).to_command_spec
 
     command.args  = params[:args]   if !params[:args].blank?
     command.stdin = params[:stdin]  if !params[:stdin].blank?
@@ -52,6 +53,23 @@ class Rest::Models::CommandsController < Rest::BaseController
     results = {}
     agents.each do |agent|
       results[agent.host_id] = Bixby::RemoteExec.new(request, nil, current_user).exec(agent, command)
+    end
+
+    # write responses for invalid agents
+    hosts.each do |host_id|
+      if not results.include? host_id then
+        cr = Bixby::CommandResponse.new
+        cr.status = -1
+        cr.stdout = nil
+        cr.stderr = "[FATAL] Agent not found for host"
+
+        cr.log = CommandLog.new
+        cr.log.exec_status  = false
+        cr.log.exec_code    = -1
+        cr.log.requested_at = Time.new
+        cr.log.time_taken   = 0
+        results[host_id]    = cr
+      end
     end
 
     restful results
