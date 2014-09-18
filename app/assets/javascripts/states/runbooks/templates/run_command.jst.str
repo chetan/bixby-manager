@@ -66,6 +66,7 @@
 
     <div class="form-group">
       <button type="button" id="run" class="btn btn-primary">Run</button>
+      <%= _.icon("refresh", "fa-2x fa-spin spinner start_hidden") %>
     </div>
 
     <div class="results"></div>

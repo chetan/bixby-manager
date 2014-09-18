@@ -4,13 +4,17 @@ class Bixby.RunCommand extends Stark.View
   el: "#content"
   template: "runbooks/run_command"
 
+  ui:
+    run: "button#run"
+    spinner: "i.spinner"
+
   events:
     "change select#command": (e) ->
       command = @commands.get @$("select#command").val()
       @partial("runbooks/_command_detail", {command: command}, "div.detail")
       @$("div.detail").show()
 
-    "click button#run": (e) ->
+    "click run": (e) ->
       hosts = @$("select#hosts").val()
       command = @commands.get @$("select#command").val()
 
@@ -23,10 +27,14 @@ class Bixby.RunCommand extends Stark.View
       stdin   = @$("div.stdin textarea").val()
       env     = @$("div.env textarea").val()
 
+      @ui.run.addClass("disabled")
+      @ui.spinner.show().addClass("fa-spin")
       command.run hosts, args, stdin, env, (res) =>
         _.each res, (r, host_id) =>
           host = @hosts.get(host_id)
           @partial B.CommandResponse, {host: host, response: r}, "div.results"
+        @ui.spinner.hide().removeClass("fa-spin")
+        @ui.run.removeClass("disabled")
 
     "click button.toggle": (e) ->
       id = @$(e.target).attr("id")

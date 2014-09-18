@@ -67,7 +67,7 @@ pre.prettyjson {
 }
 
 .start_hidden {
-  display: none;
+  // elements with this class will be hidden using $.hide() on render
 }
 
 // used by bootstrap_modal_patch.js

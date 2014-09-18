@@ -187,6 +187,7 @@ class Stark.View extends Backbone.View
 
   # Bind all events
   bind_events: ->
+    @hide_elements()
     @refreshUi(@ui)
     @bind_app_events()
     @bind_link_events()
@@ -310,6 +311,9 @@ class Stark.View extends Backbone.View
   set_focus: ->
     return if !@focus
     @$(@focus).focus()
+
+  hide_elements: ->
+    @$(".start_hidden").hide()
 
   # Bind to view with stickit and enable validation if model has any configured
   stickit: (model) ->
