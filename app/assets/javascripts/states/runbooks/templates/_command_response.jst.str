@@ -5,11 +5,18 @@
   </div>
   <div class="panel-body">
     <p>TIME: <%= moment(response.log.requested_at).format("HH:mm:ss L") %></p>
-    <p>ELAPSED TIME: <%= _.str.sprintf("%0.2f", parseFloat(response.log.time_taken)) %>s</p>
-    <p>EXIT CODE: <%= response.status %> (<%= status_str() %>)</p>
 
-    <%= include("runbooks/_stdout", {label: "STDOUT", str: response.stdout}) %>
-    <%= include("runbooks/_stdout", {label: "STDERR", str: response.stderr}) %>
+    <%? response.log.exec_status %>
+      <p>ELAPSED TIME: <%= _.str.sprintf("%0.2f", parseFloat(response.log.time_taken)) %>s</p>
+      <p>EXIT CODE: <%= response.status %> (<%= status_str() %>)</p>
+
+      <%= include("runbooks/_stdout", {label: "STDOUT", str: response.stdout}) %>
+      <%= include("runbooks/_stdout", {label: "STDERR", str: response.stderr}) %>
+
+    <% } else { %>
+      <p>EXEC FAILED: <%= response.stderr %></p>
+
+    <%/%>
 
   </div>
 </div>
