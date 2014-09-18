@@ -5,6 +5,7 @@
   </div>
   <div class="panel-body">
     <p>TIME: <%= moment(response.log.requested_at).format("HH:mm:ss L") %></p>
+    <p>USER: <%= response.log.user %></p>
 
     <%? response.log.exec_status %>
       <p>ELAPSED TIME: <%= _.str.sprintf("%0.2f", parseFloat(response.log.time_taken)) %>s</p>

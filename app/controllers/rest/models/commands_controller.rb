@@ -64,6 +64,7 @@ class Rest::Models::CommandsController < Rest::BaseController
         cr.stderr = "[FATAL] Agent not found for host"
 
         cr.log = CommandLog.new
+        cr.log.user         = current_user
         cr.log.exec_status  = false
         cr.log.exec_code    = -1
         cr.log.requested_at = Time.new
