@@ -23,9 +23,9 @@ class Bixby.RunCommand extends Stark.View
         return
 
       command = command.clone()
-      args    = @$("div.args textarea").val()
-      stdin   = @$("div.stdin textarea").val()
-      env     = @$("div.env textarea").val()
+      args    = @$("div.args textarea").filter(":visible").val()
+      stdin   = @$("div.stdin textarea").filter(":visible").val()
+      env     = @$("div.env textarea").filter(":visible").val()
 
       @ui.run.addClass("disabled")
       @ui.spinner.show().addClass("fa-spin")
