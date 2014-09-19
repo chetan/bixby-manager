@@ -1,6 +1,6 @@
 
 // original from: https://github.com/af/backprop
-// checked out at ccb04d92ca6d5d0f4d5213a315874f69fc8e6a0f
+// checked out at 713088912543167f2e39a7fb8a8f14b681cbd249
 
 // currently using our fork: https://github.com/chetan/backprop/tree/alt_create
 
@@ -72,55 +72,6 @@
     };
 
 
-    // Backprop configuration method. Pass in the base model class that you want
-    // to extend. Before your model definitions, you will want to invoke it as
-    // follows:
-    //
-    // Backprop.extendModel(Backbone.Model);
-    Backprop.extendModel = function(BaseModel) {
-
-        // Add a setProperties() method on Backprop.Model's prototype.
-        // This sets a hash of values to the model, just like Backbone.Model.set().
-        // The difference is that this will apply transforms for all of the
-        // properties before setting.
-        Backprop.Model = BaseModel.extend({
-            setProperties: function(attrs, options) {
-                var schema = this.constructor._schema || {};
-                for (var name in attrs) {
-                    var propSpec = schema[name] || {};
-                    attrs[name] = transformValue(propSpec, attrs[name], this.get(name));
-                }
-                this.set(attrs, options);
-            }
-        });
-
-        // Use a modified version of Backbone.Model's extend(), so
-        // it can parse Backprop properties in model definitions
-        Backprop.Model.extend = function(protoAttrs, staticAttrs) {
-            protoAttrs = protoAttrs || {};
-
-            // Apply Backbone.Model's original extend() function:
-            var objConstructor = BaseModel.extend.apply(this, [].slice.call(arguments));
-
-            // Go through the prototype attributes and create ES5 properties for every
-            // attribute that used Backbone.property():
-            objConstructor._schema = {};
-            for (var name in protoAttrs) {
-                var val = protoAttrs[name];
-                if (val instanceof PropPlaceholder) {
-                    val.createProperty(objConstructor.prototype, name);
-                    objConstructor._schema[name] = val.spec;
-                }
-            }
-            return objConstructor;
-        };
-
-        return Backprop.Model;
-    };
-
-
-
-
 
     /***********************************************************************************************
      * Backprop extensions by chetan
@@ -179,6 +130,52 @@
     /**********************************************************************************************/
 
 
+
+    // Backprop configuration method. Pass in the base model class that you want
+    // to extend. Before your model definitions, you will want to invoke it as
+    // follows:
+    //
+    // Backprop.extendModel(Backbone.Model);
+    Backprop.extendModel = function(BaseModel) {
+
+        // Add a setProperties() method on Backprop.Model's prototype.
+        // This sets a hash of values to the model, just like Backbone.Model.set().
+        // The difference is that this will apply transforms for all of the
+        // properties before setting.
+        Backprop.Model = BaseModel.extend({
+            setProperties: function(attrs, options) {
+                var schema = this.constructor._schema || {};
+                for (var name in attrs) {
+                    var propSpec = schema[name] || {};
+                    attrs[name] = transformValue(propSpec, attrs[name], this.get(name));
+                }
+                this.set(attrs, options);
+            }
+        });
+
+        // Use a modified version of Backbone.Model's extend(), so
+        // it can parse Backprop properties in model definitions
+        Backprop.Model.extend = function(protoAttrs, staticAttrs) {
+            protoAttrs = protoAttrs || {};
+
+            // Apply Backbone.Model's original extend() function:
+            var objConstructor = BaseModel.extend.apply(this, [].slice.call(arguments));
+
+            // Go through the prototype attributes and create ES5 properties for every
+            // attribute that used Backbone.property():
+            objConstructor._schema = {};
+            for (var name in protoAttrs) {
+                var val = protoAttrs[name];
+                if (val instanceof PropPlaceholder) {
+                    val.createProperty(objConstructor.prototype, name);
+                    objConstructor._schema[name] = val.spec;
+                }
+            }
+            return objConstructor;
+        };
+
+        return Backprop.Model;
+    };
 
     // Allow use of shorthand properties like "myprop: Backprop.Boolean()". This avoids
     // having to pass in an explicit coerce function when you are just casting to a JS type.
