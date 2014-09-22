@@ -102,8 +102,8 @@ namespace 'Bixby.model', (exports, top) ->
         else
           unit_label = " " + unit
 
-      date = new Date(date) if !_.isDate(date)
-      date = strftime("%Y/%m/%d %H:%M:%S", date)
+      date = moment(date) if !moment.isMoment(date)
+      date.format("L HH:mm:ss")
       val = Bixby.monitoring.Graph.format_value(val)
 
       return _.str.sprintf("%s%s @ %s", val, unit_label, date)

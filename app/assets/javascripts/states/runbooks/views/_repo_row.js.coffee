@@ -10,14 +10,13 @@ namespace "Bixby.view", (exports, top) ->
       "#uri": "uri"
       "#branch": "branch"
       "#public_key": "public_key"
-      "#updated_at": {
+      "#updated_at":
         observe: "updated_at"
         onGet: (val, opts) ->
           if val
-            strftime("%b/%d/%Y %H:%M:%S", new Date(val))
+            moment(val).format("MMM/DD/YYYY HH:mm:ss", new Date(val))
           else
             "never"
-      }
 
     links:
       "a#name": [ "repository_view", (el) -> { repo: @repo } ]

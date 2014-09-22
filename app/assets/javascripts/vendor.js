@@ -33,7 +33,6 @@
 // utils
 //= require "async"
 //= require "md5.min"
-//= require "strftime"
 
 // tagging
 //= require "select2"
