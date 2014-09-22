@@ -21,6 +21,7 @@
 //= require "backbone.stickit"
 //= require "stickit_validation_patch"
 //= require "backbone.unclassified"
+//= require "backbone.paginator"
 
 // ui stuff
 //= require "template"

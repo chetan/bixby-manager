@@ -29,6 +29,9 @@ require "rails_ext"
 
 class Command < ActiveRecord::Base
 
+  paginates_per      100
+  max_paginates_per  500
+
   belongs_to :repo, -> { includes :org }
   belongs_to :bundle
   has_many :metric_infos

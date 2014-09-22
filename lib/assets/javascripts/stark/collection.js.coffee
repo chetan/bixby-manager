@@ -6,7 +6,7 @@
 
 window.Stark or= {}
 
-class Stark.Collection extends Backbone.Collection
+class Stark.Collection extends Backbone.PageableCollection
 
   # mixin logger
   _.extend @.prototype, Stark.Logger.prototype

@@ -40,9 +40,19 @@ class Rest::BaseController < UiController
 
     begin
       res = yield
-      if !performed? then
-        return restful(res)
+      if performed? then
+        return res
       end
+
+      res = case request.path_parameters[:action]
+      when "index"
+        # automatically apply paging to lists
+        res.page(params[:page]).per(params[:per_page])
+      else
+        res
+      end
+
+      return restful(res)
 
     rescue Exception => ex
       if ex.kind_of? MissingParam then
