@@ -1,0 +1,26 @@
+
+<h3>Command Logs</h3>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Host</th>
+      <th>User</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%
+    command_logs.each(function(log) { console.log(typeof log.requested_at); %>
+      <tr>
+        <td><%= log.command %></td>
+        <td><%= log.host %></td>
+        <td><%= (log.user || "n/a") %></td>
+        <td><%= status(log) %></td>
+        <td><%= log.requested_at.format("L HH:mm:ss") %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>

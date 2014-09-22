@@ -85,4 +85,8 @@ class CommandLog < ActiveRecord::Base
     return response
   end
 
+  def self.for_user(user)
+    where(:org_id => user.org_id).order(:requested_at => :desc)
+  end
+
 end

@@ -41,6 +41,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="run">Run a Command</a></li>
+            <li><a class="logs">Logs</a></li>
             <li><a class="repositories">Manage Repositories</a></li>
           </ul>
         </li>

@@ -82,6 +82,7 @@ Bixby::Application.routes.draw do
     resources :triggers
     resources :actions
     resources :annotations
+    resources :command_logs
   end
 
 
@@ -134,6 +135,7 @@ Bixby::Application.routes.draw do
 
   get "/runbooks" => "runbooks/base#index"
   namespace :runbooks do
+    resources :logs
   end
 
   ##############################################################################

@@ -15,3 +15,10 @@ Bixby.app.add_states { tab: "runbooks", views: [ _bv.PageLayout ] },
         @transition "inventory"
         return false
       return true
+
+  "runbook_logs":
+    url:  "runbooks/logs"
+    help: "Logs of all commands that have been run on your servers"
+
+    views: B.CommandLogs
+    models: [ B.m.CommandLogList ]

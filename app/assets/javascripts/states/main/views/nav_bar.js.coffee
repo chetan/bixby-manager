@@ -14,6 +14,7 @@ namespace "Bixby.view", (exports, top) ->
       ".tab.monitoring a.schedules": "mon_oncalls"
 
       # ".tab.runbooks a.run": "runbooks" # TODO still need to create a link here..
+      ".tab.runbooks a.logs": "runbook_logs"
       ".tab.runbooks a.repositories": "repository"
 
       # user menu
