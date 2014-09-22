@@ -3,13 +3,13 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.Repo extends Stark.Model
     @key: "repo"
+    @props
+      _strings: ["name", "uri", "branch", "public_key"]
+      _bools: "requires_key"
+      _dates: ["created_at", "updated_at"]
+
     urlRoot: "/rest/repos"
     params: [ { name: "repo", set_id: true } ]
-
-    Backprop.create_strings @, "name", "uri", "branch", "public_key"
-    Backprop.create @, "requires_key", Boolean
-    Backprop.create @, "created_at", Backprop.Date
-    Backprop.create @, "updated_at", Backprop.Date
 
     validation:
       name:

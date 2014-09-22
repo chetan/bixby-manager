@@ -3,8 +3,9 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.Command extends Stark.Model
     @key: "command"
-    Backprop.create_strings @, "repo", "name", "desc", "location", "bundle", "command"
-    Backprop.create @, "options"
+    @props
+      _strings: ["repo", "name", "desc", "location", "command", "help", "help_url"]
+      _misc:    ["options", "bundle"]
 
     params: [ { name: "command", set_id: true } ]
     urlRoot: "/rest/commands"
@@ -55,7 +56,7 @@ namespace 'Bixby.model', (exports, top) ->
           @log "error: ", err
 
     # Retrieve help text for this command
-    help: ->
+    help_html: ->
       s = ""
 
       if @get("help")

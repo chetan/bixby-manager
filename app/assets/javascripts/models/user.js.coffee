@@ -3,8 +3,10 @@ namespace 'Bixby.model', (exports, top) ->
 
   class exports.User extends Stark.Model
     @key: "user"
+    @props
+      _strings: ["name", "username", "email", "phone", "org", "tenant"]
+
     urlRoot: "/rest/users"
-    Backprop.create_strings @, "name", "username", "email", "phone", "org", "tenant"
 
     @impersonate: (user_id, callback) ->
       $.ajax @.prototype.urlRoot + "/impersonate?user_id=" + user_id, {

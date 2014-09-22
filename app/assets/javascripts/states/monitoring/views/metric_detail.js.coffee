@@ -109,7 +109,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     # Create help popover
     display_help: ->
-      if help = @check.command().help()
+      if help = @check.command().help_html()
         " " + @help(help)
       else
         ""

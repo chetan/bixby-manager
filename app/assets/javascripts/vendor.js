@@ -16,7 +16,6 @@
 
 //= require "backbone"
 //= require "backbone_patch"
-//= require "backprop"
 //= require "backbone-validation"
 //= require "backbone.stickit"
 //= require "stickit_validation_patch"
