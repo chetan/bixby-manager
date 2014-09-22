@@ -1,5 +1,5 @@
 
-class Runbooks::BaseController < Repository::BaseController
+class Runbooks::BaseController < UiController
 
   # /runbooks
   def index
