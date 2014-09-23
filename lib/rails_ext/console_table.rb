@@ -9,7 +9,7 @@ module Bixby
     # * #describe
     # * #to_table
     #
-    # `describe` can be used on the model class or an instance of a relatiion, e.g.
+    # `describe` can be used on the model class or an instance of a relation, e.g.
     # `User.describe` or `User.first.describe` or `User.where(...).describe`
     #
     # `to_table` can be used on any relation instance, e.g.
@@ -18,6 +18,17 @@ module Bixby
     # In addition, to_table takes an optional boolean param to control truncation. When true
     # (the default), certain long column types will be truncated
     module ConsoleTable
+
+      def self.puts_wide(str)
+        if !Module.const_defined?(:Pry) then
+          puts str
+          return
+        end
+
+        Pry::Pager::PageTracker.wide_pages = true
+        Pry::Helpers::BaseHelpers.stagger_output(str)
+        Pry::Pager::PageTracker.wide_pages = false
+      end
 
       def self.col_type(rows, col)
         rows.first.class.columns.find{ |c| c.name == col }.type.to_s
@@ -45,9 +56,7 @@ module Bixby
           end
         end
 
-        Pry::Pager::PageTracker.wide_pages = true
-        Pry::Helpers::BaseHelpers.stagger_output(table.to_s)
-        Pry::Pager::PageTracker.wide_pages = false
+        puts_wide(table.to_s)
         nil
       end
 
@@ -86,9 +95,7 @@ module Bixby
             out << "Associations: #{assoc.join(', ')}"
             out << ""
 
-            Pry::Pager::PageTracker.wide_pages = true
-            Pry::Helpers::BaseHelpers.stagger_output(out.join("\n"))
-            Pry::Pager::PageTracker.wide_pages = false
+            ConsoleTable.puts_wide(out.join("\n"))
             nil
 
           end
@@ -120,16 +127,18 @@ module ActiveRecord
   end
 end
 
-class Pry::Pager
-  class PageTracker
+if Module.const_defined?(:Pry) then
+  class Pry::Pager
+    class PageTracker
 
-    class << self
-      attr_accessor :wide_pages
-    end
+      class << self
+        attr_accessor :wide_pages
+      end
 
-    def page?
-      # monkey patch to page if output is too wide
-      @row >= @rows || (PageTracker.wide_pages && @col > @cols)
+      def page?
+        # monkey patch to page if output is too wide
+        @row >= @rows || (PageTracker.wide_pages && @col > @cols)
+      end
     end
   end
 end
