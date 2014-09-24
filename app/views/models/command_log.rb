@@ -8,9 +8,20 @@ module Bixby
 
       def convert
         super
-        self[:command]    = obj.command.name
-        self[:user]       = obj.user.nil? ? nil : (obj.user.name || obj.user.email)
-        self[:host]       = obj.agent.host.alias || obj.agent.host.hostname
+        self[:command] = obj.command.name
+
+        self[:user] = if obj.user then
+          obj.user.name || obj.user.email
+        else
+          nil
+        end
+
+        self[:host] = if obj.agent && obj.agent.host
+          obj.agent.host.alias || obj.agent.host.hostname
+        else
+          nil
+        end
+
         self
       end
 
