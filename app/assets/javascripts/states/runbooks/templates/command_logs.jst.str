@@ -1,26 +1,48 @@
 
-<h3>Command Logs</h3>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Command</th>
-      <th>Host</th>
-      <th>User</th>
-      <th>Status</th>
-      <th>Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%
-    command_logs.each(function(log) { console.log(typeof log.requested_at); %>
-      <tr>
-        <td><%= log.command %></td>
-        <td><%= log.host %></td>
-        <td><%= (log.user || "n/a") %></td>
-        <td><%= status(log) %></td>
-        <td><%= log.requested_at.format("L HH:mm:ss") %></td>
-      </tr>
-    <% }); %>
-  </tbody>
-</table>
+    <h3>Command Logs</h3>
+
+    <div class="row">
+      <div class="col-xs-12 text-right">
+        <button type="button" class="previous btn btn-default disabled"><%i step-backward %> Previous Page</button>
+        <button type="button" class="next btn btn-default">Next Page <%i step-forward %></button>
+        <br/>
+        <br/>
+      </div>
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Host</th>
+          <th>User</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%
+        command_logs.each(function(log) { %>
+          <tr>
+            <td><%= log.command %></td>
+            <td><%= log.host %></td>
+            <td><%= (log.user || "n/a") %></td>
+            <td><%= status(log) %></td>
+            <td><%= log.requested_at.format("L HH:mm:ss") %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12 text-right">
+    <button type="button" class="previous btn btn-default disabled"><%i step-backward %> Previous Page</button>
+    <button type="button" class="next btn btn-default">Next Page <%i step-forward %></button>
+  </div>
+</div>
