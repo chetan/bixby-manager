@@ -29,12 +29,11 @@ module PumaRunner
       events.debug(ts(str))
     end
 
-    def warn(str)
-      log("WARN: #{str}")
-    end
-
     def ts(str)
       t = Time.new.to_s
+      if str.nil? or str.empty? then
+        return "[#{t}]"
+      end
       str.split(/\n/).map{ |s| "[#{t}] #{s}" }.join("\n")
     end
 

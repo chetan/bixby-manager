@@ -70,7 +70,7 @@ module PumaRunner
         # look for dangling pids
         pids = pid.find
         if !pids.empty? then
-          warn "* found the following dangling pids: " + pids.join(", ")
+          log "* found the following dangling pids: " + pids.join(", ")
           pids.each do |p|
             log "* sending QUIT signal to #{p}"
             Process.kill("QUIT", p)
@@ -113,20 +113,26 @@ module PumaRunner
         @daemon_starter.cleanup!
       end
 
+      count = 0
+
       if pid.exists? then
         if pid.running? then
-          warn "* Killing server at #{pid.read}"
+          log "* Killing server at #{pid.read}"
           Process.kill(9, pid.read)
         end
         pid.delete()
-      else
-        # look for dangling pids
-        pids = pid.find
-        pids.each do |p|
-          warn "* Killing dangling server at #{p}"
-          Process.kill(9, p)
-        end
+        count += 1
       end
+
+      # look for dangling pids
+      pids = pid.find
+      pids.each do |p|
+        log "* Killing dangling server at #{p}"
+        Process.kill(9, p)
+        count += 1
+      end
+
+      log "done (#{count} processes killed)"
     end
 
     # Status
@@ -149,14 +155,14 @@ module PumaRunner
         # try to find via ps
         ps = pid.ps
         if !ps.empty? then
-          warn "WARNING: pid file not found, but found the following processes:"
-          warn ""
-          ps.each{ |s| warn s }
-          warn ""
+          log "WARNING: pid file not found, but found the following processes:"
+          log ""
+          ps.each{ |s| log s }
+          log ""
           exit 2
         end
 
-        log "server is not running; pid file not found"
+        log "server is not running: pid file does not exist and no processes found"
         exit 1
       end
 
