@@ -137,35 +137,37 @@ module PumaRunner
 
     # Status
     def do_status
+      current_pid = pid.read
       if pid.exists? then
+        log "found pid file with pid #{current_pid}"
 
         if pid.running? then
-          log "server #{pid.read} is running"
+          log "server #{current_pid} is running"
         else
-          log "server is not running; pid file exists, but found stale pid #{pid.read}"
+          log "server is not running, deleting stale pid file"
           begin
             pid.delete
           rescue
           end
-          exit 1
         end
 
       else
-
-        # try to find via ps
-        ps = pid.ps
-        if !ps.empty? then
-          log "WARNING: pid file not found, but found the following processes:"
-          log ""
-          ps.each{ |s| log s }
-          log ""
-          exit 2
-        end
-
-        log "server is not running: pid file does not exist and no processes found"
-        exit 1
+        log "no pid file found"
       end
 
+      # try to find via ps
+      ps = pid.ps.reject{ |s| s.split(/\s+/)[1].strip.to_i == current_pid }
+      if !ps.empty? then
+        log "WARNING: found the following dangling processes:"
+        log ""
+        ps.each{ |s| log s }
+        log ""
+        exit 2
+      end
+
+      exit 1 if !current_pid.nil?
+      log "server is not running: pid file does not exist and no processes found"
+      exit 1
     end
 
     # Thread dump
