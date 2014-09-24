@@ -165,10 +165,15 @@ module PumaRunner
         # wait for child to come up fully
         begin
 
+          p = nil
           Timeout.timeout(60) do
             # wait for the pid file to get updated with the new pid id
             # or for the startup lock to be cleared
-            while Process.pid == @pid.read || @daemon_starter.starting? do
+            while true do
+              p = @pid.read
+              if !p.nil? && Process.pid != p && !@daemon_starter.starting? then
+                break
+              end
               sleep 1
             end
           end
