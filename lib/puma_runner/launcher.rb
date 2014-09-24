@@ -95,6 +95,21 @@ module PumaRunner
     def do_restart
       if not(pid.running? or @daemon_starter.starting?) then
         # not currently running or in the process of starting
+
+        ps = pid.find
+        if !ps.empty? then
+          # found dangling servers
+          if ps.size > 1 then
+            log "* found more than 1 dangling process! bailing out"
+            exit 1
+          end
+
+          log "* found a dangling process"
+          log "* signalling server #{ps.first} to restart"
+          Process.kill("USR2", ps.first)
+          return
+        end
+
         # issue a start command (spawn new server)
         do_start()
 
