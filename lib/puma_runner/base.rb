@@ -17,15 +17,25 @@ module PumaRunner
     end
 
     def log(str)
-      events.log(str)
+      events.log(ts(str))
     end
 
     def error(str)
-      events.error(str)
+      log("ERROR: #{str}")
+      exit 1
     end
 
     def debug(str)
-      events.debug(str)
+      events.debug(ts(str))
+    end
+
+    def warn(str)
+      log("WARN: #{str}")
+    end
+
+    def ts(str)
+      t = Time.new.to_s
+      str.split(/\n/).map{ |s| "[#{t}] #{s}" }.join("\n")
     end
 
     # Load and validate configuration from PUMA_CONF

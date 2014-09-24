@@ -69,12 +69,12 @@ module PumaRunner
     def setup_signals
 
       Signal.trap("QUIT") do
-        log "* Shutting down on QUIT signal (#{Time.new})"
+        log "* Shutting down on QUIT signal"
         do_stop()
       end
 
       Signal.trap("USR2") do
-        log "* Gracefully restarting on USR2 signal (#{Time.new})"
+        log "* Gracefully restarting on USR2 signal"
         do_restart()
       end
 

@@ -17,19 +17,19 @@ module PumaRunner
 
       case cmd
         when "start"
-          log "puma_launcher: start @ #{Time.new}"
+          log "puma_launcher: start"
           do_start()
 
         when "stop"
-          log "puma_launcher: stop @ #{Time.new}"
+          log "puma_launcher: stop"
           do_stop()
 
         when "restart"
-          log "puma_launcher: restart @ #{Time.new}"
+          log "puma_launcher: restart"
           do_restart()
 
         when "zap"
-          log "puma_launcher: zap @ #{Time.new}"
+          log "puma_launcher: zap"
           do_zap()
 
         when "status"
@@ -102,7 +102,7 @@ module PumaRunner
         log "* a server is still trying to start!"
 
       elsif pid.running? then
-        log "* signalling server #{pid.read} to restart (#{Time.new})"
+        log "* signalling server #{pid.read} to restart"
         Process.kill("USR2", pid.read)
       end
     end
