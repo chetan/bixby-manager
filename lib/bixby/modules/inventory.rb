@@ -57,7 +57,7 @@ class Inventory < API
     tags = opts[:tags]
     if not tags.blank? then
       if tags.kind_of? String then
-        tags = tags.split(/, /)
+        tags = tags.split(/[, ]/).reject{ |s| s.blank? }
       end
       if tags.kind_of? Array then
         tags << "new"

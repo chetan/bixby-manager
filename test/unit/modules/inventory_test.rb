@@ -67,6 +67,29 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     refute_empty Host.tagged_with(["new"])
   end
 
+  def test_register_with_tags
+    org = FactoryGirl.create(:org)
+    opts = {
+      :uuid       => "foo",
+      :public_key => "bar",
+      :hostname   => "blah.foobar.com",
+      :tenant     => org.tenant.name,
+      :password   => "test",
+      :version    => "0.5.3"
+    }
+
+    ["foo bar", "foo, bar", "foo,bar"].each do |tags|
+      opts[:tags] = tags
+      opts[:uuid] = opts[:public_key] = tags
+      ret = Bixby::Inventory.new.register_agent(opts)
+
+      host = Host.first
+      assert host
+      assert_equal 3, host.tags.size
+      assert_equal 3, host.tags.find_all{ |t| t.name =~ /new|foo|bar/ }.size
+    end
+  end
+
   def test_validation_failure
     org = FactoryGirl.create(:org)
 
