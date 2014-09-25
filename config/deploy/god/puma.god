@@ -51,7 +51,7 @@ God.watch do |w|
   if ENV["USER"] != "travis" then
     # start if process is not running
     w.transition(:up, :start) do |on|
-      on.condition(:process_exits)
+      on.condition(:process_exits) { |c| c.notify = 'support' }
     end
   end
 
@@ -61,12 +61,14 @@ God.watch do |w|
       c.interval = 30
       c.above = 250.megabytes
       c.times = [3, 5] # 3 out of 5
+      c.notify = 'support'
     end
 
     on.condition(:cpu_usage) do |c|
       c.interval = 20
       c.above = 50.percent
       c.times = 5
+      c.notify = 'support'
     end
 
     on.condition(:http_response_code) do |c|
@@ -76,6 +78,7 @@ God.watch do |w|
       c.code_is_not = 200
       c.timeout = 10.seconds
       c.times = [3, 5] # 3 out of 5
+      c.notify = 'support'
     end
   end
 
@@ -89,6 +92,7 @@ God.watch do |w|
       c.retry_in = 10.minutes
       c.retry_times = 5
       c.retry_within = 2.hours
+      c.notify = 'support'
     end
   end
 end

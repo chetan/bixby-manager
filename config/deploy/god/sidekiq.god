@@ -49,7 +49,7 @@ God.watch do |w|
   if ENV["USER"] != "travis" then
     # start if process is not running
     w.transition(:up, :start) do |on|
-      on.condition(:process_exits)
+      on.condition(:process_exits) { |c| c.notify = 'support' }
     end
   end
 
@@ -58,6 +58,7 @@ God.watch do |w|
     on.condition(:memory_usage) do |c|
       c.above = 350.megabytes
       c.times = 2
+      c.notify = 'support'
     end
   end
 
@@ -71,6 +72,7 @@ God.watch do |w|
       c.retry_in = 10.minutes
       c.retry_times = 5
       c.retry_within = 2.hours
+      c.notify = 'support'
     end
   end
 
