@@ -30,7 +30,6 @@ end
 
 God.contact(:email) do |c|
   c.name = 'support'
-  c.group = 'support'
   c.to_email = from_email
 end
 
