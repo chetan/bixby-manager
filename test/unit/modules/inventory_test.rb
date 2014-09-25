@@ -61,10 +61,11 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     assert host, "host created"
     assert_equal hostname, host.hostname, "hostname is set"
 
-    assert_equal 3, host.tags.size
-    assert_equal 3, host.tags.find_all{ |t| t.name =~ /new|foo|bar/ }.size
+    assert_equal 2, host.tags.size
+    assert_equal 2, host.tags.find_all{ |t| t.name =~ /foo|bar/ }.size
 
-    refute_empty Host.tagged_with(["new"])
+    refute_empty Host.tagged_with(["foo"])
+    refute_empty Host.tagged_with(["bar"])
   end
 
   def test_register_with_tags
@@ -85,8 +86,8 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
 
       host = Host.first
       assert host
-      assert_equal 3, host.tags.size
-      assert_equal 3, host.tags.find_all{ |t| t.name =~ /new|foo|bar/ }.size
+      assert_equal 2, host.tags.size
+      assert_equal 2, host.tags.find_all{ |t| t.name =~ /foo|bar/ }.size
     end
   end
 

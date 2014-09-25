@@ -54,17 +54,16 @@ class Inventory < API
     end
 
     # process passed in tags
+    tag_list = nil
     tags = opts[:tags]
     if not tags.blank? then
       if tags.kind_of? String then
         tags = tags.split(/[, ]/).reject{ |s| s.blank? }
       end
       if tags.kind_of? Array then
-        tags << "new"
         tag_list = tags.sort.uniq.join(",")
       end
     end
-    tag_list = "new" if tag_list.blank?
 
     h = Host.new
     h.org_id = org.id
