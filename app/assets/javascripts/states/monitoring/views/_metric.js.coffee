@@ -2,7 +2,6 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
   class exports.Metric extends Stark.Partial
 
-    className: "metric"
     template: "monitoring/_metric"
 
     metric_label: null # set this to use a custom label

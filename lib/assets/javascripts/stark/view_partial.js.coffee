@@ -49,8 +49,8 @@ class Stark.Partial extends Stark.View
     # unless first element is a tr, wrap in a span
     first = @$el.children().first()
     if @wrap && first && first[0].tagName != "TR"
-      # c = @className || ""
-      @$el.html( "<div id='#{@id}' class='partial'>" + @$el.html() + "</div>" )
+      c = @className || ""
+      @$el.html( "<div id='#{@id}' class='partial #{c}'>" + @$el.html() + "</div>" )
     else
       first.attr("id", @id)
 
