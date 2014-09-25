@@ -82,3 +82,9 @@ pre.prettyjson {
   // .fa overrides the line-height so we need to fix it here
   line-height: 34px !important;
 }
+
+.pager-right {
+  @extend .pager;
+  text-align: right;
+  margin-top: 0;
+}

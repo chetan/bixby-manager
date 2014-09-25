@@ -5,15 +5,17 @@ namespace "Bixby", (exports, top) ->
     template: "runbooks/command_logs"
 
     ui:
-      prev: "button.previous"
-      next: "button.next"
+      prev: "li.older"
+      next: "li.newer"
 
     events:
       "click prev": ->
+        return if @ui.prev.hasClass("disabled")
         @command_logs.getPreviousPage().done =>
           @redraw()
 
       "click next": ->
+        return if @ui.next.hasClass("disabled")
         @command_logs.getNextPage().done =>
           @redraw()
 
