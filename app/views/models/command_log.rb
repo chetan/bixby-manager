@@ -17,7 +17,7 @@ module Bixby
         end
 
         self[:host] = if obj.agent && obj.agent.host
-          obj.agent.host.alias || obj.agent.host.hostname
+          obj.agent.host.name
         else
           nil
         end

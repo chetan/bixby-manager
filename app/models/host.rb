@@ -47,6 +47,14 @@ class Host < ActiveRecord::Base
     end
   end
 
+  def name
+    if !self.alias.blank? then
+      self.alias
+    else
+      self.hostname
+    end
+  end
+
   # Get basic metadata for the host
   #
   # @return [Hash] key/value pairs
