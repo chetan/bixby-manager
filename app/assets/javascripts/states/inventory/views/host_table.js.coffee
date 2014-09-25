@@ -16,23 +16,3 @@ namespace "Bixby.view.inventory", (exports, top) ->
     query_string: ->
       return "" if !@query
       return @query.replace(/tag:(.*?)\b/, "#$1")
-
-    render: ->
-      if !@query && @hosts.length == 0
-        return @transition "getting_started"
-
-      @new_hosts = @hosts.filter (h) -> h.is_new()
-      @other_hosts = @hosts.filter (h) -> !h.is_new()
-      @query ?= "" # set default val
-
-      super()
-
-      list = $(".new_host_list")
-      _.eachR @, @new_hosts, (host) ->
-        list.append @partial(exports.HostTableNewRow, { host: host }).$el
-
-      list = $(".host_list")
-      _.eachR @, @other_hosts, (host) ->
-        list.append @partial(exports.HostTableRow, { host: host }).$el
-
-      @

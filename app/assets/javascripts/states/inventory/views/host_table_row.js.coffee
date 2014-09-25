@@ -1,6 +1,6 @@
 namespace "Bixby.view.inventory", (exports, top) ->
 
-  class exports.HostTableRow extends Stark.View
+  class exports.HostTableRow extends Stark.Partial
     template:  "inventory/_host_table_row"
     tagName:   "div"
     className: "host"

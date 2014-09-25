@@ -24,7 +24,7 @@ Bixby.app.add_states { tab: "inventory", views: [_bv.PageLayout, _vi.Layout] },
     models:     { hosts: Bixby.model.HostList }
 
     validate: ->
-      if !@hosts? or @hosts.isEmpty()
+      if !@query && (!@hosts? or @hosts.isEmpty())
         @transition "getting_started", {hosts: @hosts}
         return false
       return true
