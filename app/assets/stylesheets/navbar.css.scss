@@ -4,6 +4,28 @@
 }
 
 nav {
+
+  // split dropdown begin
+  .btn.navbar-btn.dropdown-toggle {
+    padding: 3px 6px;
+    padding-top: 0;
+    margin-top: 13px;
+  }
+
+  li.tab.primary a {
+    padding-right: 8px;
+  }
+
+  li.dropdown.split {
+    padding-right: 6px;
+    padding-bottom: 4px;
+  }
+
+  li.dropdown.split.active {
+    background-color: #e7e7e7;
+  }
+  // split dropdown end
+
   ul.user {
     padding-left: 10px;
 

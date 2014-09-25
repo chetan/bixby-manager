@@ -6,22 +6,23 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/nav_bar"
 
     links:
-      "a.navbar-brand":    "inventory"
-      ".tab.inventory  a": "inventory"
+      "a.navbar-brand":   "inventory"
+      ".tab.inventory a": "inventory"
 
-      ".tab.monitoring a.overview": "monitoring_overview"
+      ".tab.monitoring.primary a":         "monitoring_overview"
+      ".tab.monitoring a.overview":        "monitoring_overview"
       ".tab.monitoring a.check_templates": "mon_check_templates"
-      ".tab.monitoring a.schedules": "mon_oncalls"
+      ".tab.monitoring a.schedules":       "mon_oncalls"
 
-      # ".tab.runbooks a.run": "runbooks" # TODO still need to create a link here..
-      ".tab.runbooks a.logs": "runbook_logs"
+      # ".tab.runbooks a.run":          "runbooks" # TODO still need to create a link here..
+      ".tab.runbooks a.logs":         "runbook_logs"
       ".tab.runbooks a.repositories": "repository"
 
       # user menu
       "a#profile":         "profile"
 
     events:
-      "click a.run": (e) ->
+      "click a.run, .tab.runbooks.primary a": (e) ->
         if !@current_user.get("otp_required_for_login")
           return @transition("runbooks")
 

@@ -21,11 +21,15 @@
         <li class="tab inventory"><a>Inventory</a></li>
 
         <!-- monitoring -->
-        <li class="tab monitoring dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Monitoring
-            <b class="caret"></b>
-          </a>
+        <li class="tab monitoring primary">
+          <a class="">Monitoring</a>
+        </li>
+
+        <li class="tab monitoring dropdown split">
+          <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Monitoring Dropdown</span>
+          </button>
           <ul class="dropdown-menu">
             <li><a class="overview">Overview</a></li>
             <li><a class="check_templates">Check Templates</a></li>
@@ -34,11 +38,15 @@
         </li>
 
         <!-- runbooks -->
-        <li class="tab runbooks dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Runbooks
-            <b class="caret"></b>
-          </a>
+        <li class="tab runbooks primary">
+          <a class="">Runbooks</a>
+        </li>
+
+        <li class="tab runbooks dropdown split">
+          <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Runbooks Dropdown</span>
+          </button>
           <ul class="dropdown-menu">
             <li><a class="run">Run a Command</a></li>
             <li><a class="logs">Logs</a></li>
