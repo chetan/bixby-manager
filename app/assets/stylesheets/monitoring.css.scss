@@ -32,19 +32,22 @@ div.metric div.tooltip {
 }
 
 // sparklines
-td.metric_label {
-  text-align: right;
-  vertical-align: middle;
-}
-div.sparkline {
-  div.graph_container {
-    div.graph {
-      position: relative;
-      width: 100px;
-      height: 1.42857;
+tr.sparkline {
+  td.metric_label {
+    text-align: right;
+    vertical-align: middle;
+  }
+  div.sparkline {
+    div.graph_container {
+      div.graph {
+        position: relative;
+        width: 150px;
+        height: 1.42857;
+      }
     }
   }
 }
+
 
 div.monitoring {
 
