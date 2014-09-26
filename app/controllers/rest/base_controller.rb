@@ -44,12 +44,9 @@ class Rest::BaseController < UiController
         return res
       end
 
-      res = case request.path_parameters[:action]
-      when "index"
-        # automatically apply paging to lists
-        res.page(params[:page]).per(params[:per_page])
-      else
-        res
+      if request.path_parameters[:action] == "index" && res.kind_of?(ActiveRecord::Relation) && res.respond_to?(:page)
+        # automatically apply paging to lists, when possible
+        res = res.page(params[:page]).per(params[:per_page])
       end
 
       return restful(res)
