@@ -26,14 +26,17 @@ _.isScrolledIntoView = (el, partial) ->
 #
 # @param [String] icon        icon name (without fa-)
 # @param [String] clazz       extra classes to add to icon
+# @param [String] title       set icon's title attribute
 #
 # @return [String] icon html, e.g., <i class="fa fa-circle"></i>
-_.icon = (icon, clazz) ->
+_.icon = (icon, clazz, title) ->
   icon = icon.trim()
   c = "fa fa-#{icon}"
-  if clazz?
-    c += " " + clazz
-  "<i class='#{c}'></i>"
+  c += " " + clazz if clazz?
+  s = "<i class='#{c}'"
+  s += " title='#{title}'" if title?
+  s += "></i>"
+  return s
 
 # Toggle a class on the given element, e.g., remove if present, else add
 _.toggleClass = (el, clazz) ->
