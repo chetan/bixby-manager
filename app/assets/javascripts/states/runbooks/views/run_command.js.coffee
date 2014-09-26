@@ -22,28 +22,32 @@ class Bixby.RunCommand extends Stark.View
         @log "no host or command selected!"
         return
 
-      command = command.clone()
-      args    = @$("div.args textarea").filter(":visible").val()
-      stdin   = @$("div.stdin textarea").filter(":visible").val()
-      env     = @$("div.env textarea").filter(":visible").val()
-
-      @ui.run.addClass("disabled")
-      @ui.spinner.show().addClass("fa-spin")
-      @$("div.results").html("")
-      command.run hosts, args, stdin, env, (res) =>
-        _.each res, (command_log, host_id) =>
-          clazz = "result#{host_id}"
-          @$("div.results").append("<div class='#{clazz}'></div>")
-          command_log.host ||= @hosts.get(host_id).name() # fix the host name, only for invalid hosts
-          @partial B.CommandResponse, {command_log: command_log}, "div.#{clazz}"
-        @ui.spinner.hide().removeClass("fa-spin")
-        @ui.run.removeClass("disabled")
+      @run_command(command, hosts)
 
     "click button.toggle": (e) ->
       id = @$(e.target).attr("id")
       _.toggleClass(e.target, "active")
       @$("div.form-group.#{id}").toggle()
       @$("textarea##{id}_input").focus()
+
+  # Run the given command on a set of hosts
+  run_command: (command, hosts) ->
+    command = command.clone()
+    args    = @$("div.args textarea").filter(":visible").val()
+    stdin   = @$("div.stdin textarea").filter(":visible").val()
+    env     = @$("div.env textarea").filter(":visible").val()
+
+    @ui.run.addClass("disabled")
+    @ui.spinner.show().addClass("fa-spin")
+    @$("div.results").html("")
+    command.run hosts, args, stdin, env, (res) =>
+      _.each res, (command_log, host_id) =>
+        clazz = "result#{host_id}"
+        @$("div.results").append("<div class='#{clazz}'></div>")
+        command_log.host ||= @hosts.get(host_id).name() # fix the host name, only for invalid hosts
+        @partial B.CommandResponse, {command_log: command_log}, "div.#{clazz}"
+      @ui.spinner.hide().removeClass("fa-spin")
+      @ui.run.removeClass("disabled")
 
   # Return tags in a sorted, space-separated format
   # ex: "#bar #foo"
