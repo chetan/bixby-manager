@@ -44,14 +44,12 @@ namespace "Bixby.view", (exports, top) ->
           @$("button.navbar-toggle:visible").click()
 
       "click a#logout": (e) ->
-        v = @
-        $.ajax("/logout", {
+        $.ajax "/logout",
           type: "POST"
           data: _.csrf()
-          success: ->
-            v.app.current_user = null
-            v.app.redir_to_login()
-        })
+          success: =>
+            @app.current_user = null
+            @app.redir_to_login()
 
       "change select#pretend": (e) ->
         user_id = $(e.target).val() # new user id
@@ -74,11 +72,10 @@ namespace "Bixby.view", (exports, top) ->
       if !user_id? || user_id == ""
         user_id = @true_user.id # impersonation was cleared
 
-      view = @
-      Bixby.model.User.impersonate user_id, (data, status, xhr) ->
-        view.$("li.dropdown").removeClass('open')
-        view.current_user = Bixby.app.current_user = new Bixby.model.User(data)
-        view.redraw()
+      Bixby.model.User.impersonate user_id, (data, status, xhr) =>
+        @$("li.dropdown").removeClass('open')
+        @current_user = Bixby.app.current_user = new Bixby.model.User(data)
+        @redraw()
         Bixby.app.transition Bixby.app.current_state.name
 
 
