@@ -31,11 +31,11 @@ class Bixby.RunCommand extends Stark.View
       @ui.spinner.show().addClass("fa-spin")
       @$("div.results").html("")
       command.run hosts, args, stdin, env, (res) =>
-        _.each res, (r, host_id) =>
+        _.each res, (command_log, host_id) =>
           clazz = "result#{host_id}"
           @$("div.results").append("<div class='#{clazz}'></div>")
-          host = @hosts.get(host_id)
-          @partial B.CommandResponse, {host: host, response: r}, "div.#{clazz}"
+          command_log.host ||= @hosts.get(host_id).name() # fix the host name, only for invalid hosts
+          @partial B.CommandResponse, {command_log: command_log}, "div.#{clazz}"
         @ui.spinner.hide().removeClass("fa-spin")
         @ui.run.removeClass("disabled")
 

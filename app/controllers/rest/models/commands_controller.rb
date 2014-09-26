@@ -52,24 +52,24 @@ class Rest::Models::CommandsController < Rest::BaseController
 
     results = {}
     agents.each do |agent|
-      results[agent.host_id] = Bixby::RemoteExec.new(request, nil, current_user).exec(agent, command)
+      results[agent.host_id] = Bixby::RemoteExec.new(request, nil, current_user).exec(agent, command).log
     end
 
     # write responses for invalid agents
     hosts.each do |host_id|
       if not results.include? host_id then
-        cr = Bixby::CommandResponse.new
-        cr.status = -1
-        cr.stdout = nil
-        cr.stderr = "[FATAL] Agent not found for host"
+        log              = CommandLog.new
+        log.command      = Command.from_command_spec(command)
+        log.user         = current_user
+        log.exec_status  = false
+        log.exec_code    = -1
+        log.status       = -1
+        log.stdout       = nil
+        log.stderr       = "[FATAL] Agent not found for host"
+        log.requested_at = Time.new
+        log.time_taken   = 0
 
-        cr.log = CommandLog.new
-        cr.log.user         = current_user
-        cr.log.exec_status  = false
-        cr.log.exec_code    = -1
-        cr.log.requested_at = Time.new
-        cr.log.time_taken   = 0
-        results[host_id]    = cr
+        results[host_id] = log
       end
     end
 
