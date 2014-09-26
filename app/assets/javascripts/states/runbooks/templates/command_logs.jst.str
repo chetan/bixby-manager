@@ -1,6 +1,6 @@
 
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<div class="row command_logs">
+  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
 
     <h3>Command Logs</h3>
 
@@ -19,8 +19,8 @@
           <th>Command</th>
           <th>Host</th>
           <th>User</th>
-          <th>Status</th>
           <th>Date</th>
+          <th class="status">Status</th>
         </tr>
       </thead>
       <tbody>
@@ -30,21 +30,22 @@
             <td><%= log.command %></td>
             <td><%= log.host %></td>
             <td><%= (log.user || "n/a") %></td>
-            <td><%= status(log) %></td>
             <td><%= log.requested_at.format("L HH:mm:ss") %></td>
+            <td class="status text-center"><%= status(log) %></td>
           </tr>
         <% }); %>
       </tbody>
     </table>
 
+    <div class="row">
+      <div class="col-xs-12 text-right">
+        <ul class="pager-right">
+          <li class="older disabled"><a>&larr; Newer</a></li>
+          <li class="newer"><a>Older &rarr;</a></li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-12 text-right">
-    <ul class="pager-right">
-      <li class="older disabled"><a>&larr; Newer</a></li>
-      <li class="newer"><a>Older &rarr;</a></li>
-    </ul>
-  </div>
-</div>

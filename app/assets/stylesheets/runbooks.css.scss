@@ -6,6 +6,12 @@ div#content.runbooks {
     margin-left: 15px;
   }
 
+  .command_logs {
+    th.status, td.status {
+      width: 50px;
+    }
+  }
+
 }
 
 .select2-result-label {

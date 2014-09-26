@@ -29,8 +29,12 @@ a {
   top: -10px;
 }
 
-i.red {
-  color: #bd362f;
+i.green, i.success {
+  color: $brand-success;
+}
+i.red, i.danger {
+  color: $brand-danger;
+  // color: #bd362f;
 }
 
 div.valid {

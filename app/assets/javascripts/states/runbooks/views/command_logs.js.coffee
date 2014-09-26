@@ -23,10 +23,9 @@ namespace "Bixby", (exports, top) ->
       if log.exec_status == true
         # ran successfully, check the actual command's status
         if log.status == 0
-          return "success"
-        else
-          return "fail (#{log.status})"
-      return "fail"
+          return _.icon("check", "fa-lg success")
+
+      return _.icon("times", "fa-lg danger")
 
     after_render: ->
       if @command_logs.state.currentPage == 1
