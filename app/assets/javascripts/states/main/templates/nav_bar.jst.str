@@ -22,7 +22,7 @@
 
         <!-- monitoring -->
         <li class="tab monitoring primary">
-          <a class="">Monitoring</a>
+          <a>Monitoring</a>
         </li>
 
         <li class="tab monitoring dropdown split">
@@ -39,7 +39,7 @@
 
         <!-- runbooks -->
         <li class="tab runbooks primary">
-          <a class="">Runbooks</a>
+          <a>Runbooks</a>
         </li>
 
         <li class="tab runbooks dropdown split">
