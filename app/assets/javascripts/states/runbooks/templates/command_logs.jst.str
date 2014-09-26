@@ -24,16 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <%
-        command_logs.each(function(log) { %>
-          <tr>
-            <td><%= log.command %></td>
-            <td><%= log.host %></td>
-            <td><%= (log.user || "n/a") %></td>
-            <td><%= log.requested_at.format("L HH:mm:ss") %></td>
-            <td class="status text-center"><%= status(log) %></td>
-          </tr>
-        <% }); %>
+        <%= each_partial(command_logs, "command_log", _bv.CommandLogRow) %>
       </tbody>
     </table>
 

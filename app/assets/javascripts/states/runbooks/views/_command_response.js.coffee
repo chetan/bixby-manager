@@ -1,5 +1,5 @@
 
-class Bixby.CommandResponse extends Stark.View
+class Bixby.CommandResponse extends Stark.Partial
   template: "runbooks/_command_response"
 
   # Test if a string looks like JSON
@@ -35,7 +35,7 @@ class Bixby.CommandResponse extends Stark.View
 
 
   status_str: ->
-    if @response.status == 0
+    if @command_log.status == 0
       "success"
     else
       "error"

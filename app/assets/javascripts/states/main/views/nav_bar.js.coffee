@@ -16,7 +16,7 @@ namespace "Bixby.view", (exports, top) ->
 
       ".tab.runbooks.primary a":      "runbooks"
       ".tab.runbooks a.run":          "runbooks"
-      ".tab.runbooks a.logs":         "runbook_logs"
+      ".tab.runbooks a.logs":         "runbooks_logs"
       ".tab.runbooks a.repositories": "repository"
 
       # user menu

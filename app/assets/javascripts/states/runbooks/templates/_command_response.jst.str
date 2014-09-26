@@ -1,21 +1,21 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title"><%= host.name() %></h3>
+    <h3 class="panel-title"><%= command_log.host %></h3>
   </div>
   <div class="panel-body">
-    <p>TIME: <%= moment(response.log.requested_at).format("HH:mm:ss L") %></p>
-    <p>USER: <%= response.log.user %></p>
+    <p>TIME: <%= moment(command_log.requested_at).format("HH:mm:ss L") %></p>
+    <p>USER: <%= command_log.user %></p>
 
-    <%? response.log.exec_status %>
-      <p>ELAPSED TIME: <%= _.str.sprintf("%0.2f", parseFloat(response.log.time_taken)) %>s</p>
-      <p>EXIT CODE: <%= response.status %> (<%= status_str() %>)</p>
+    <%? command_log.exec_status %>
+      <p>ELAPSED TIME: <%= _.str.sprintf("%0.2f", parseFloat(command_log.time_taken)) %>s</p>
+      <p>EXIT CODE: <%= command_log.status %> (<%= status_str() %>)</p>
 
-      <%= include("runbooks/_stdout", {label: "STDOUT", str: response.stdout}) %>
-      <%= include("runbooks/_stdout", {label: "STDERR", str: response.stderr}) %>
+      <%= include("runbooks/_stdout", {label: "STDOUT", str: command_log.stdout}) %>
+      <%= include("runbooks/_stdout", {label: "STDERR", str: command_log.stderr}) %>
 
     <% } else { %>
-      <p>EXEC FAILED: <%= response.stderr %></p>
+      <p>EXEC FAILED: <%= command_log.stderr %></p>
 
     <%/%>
 
