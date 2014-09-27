@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140918193645) do
+ActiveRecord::Schema.define(version: 20140926201211) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 20140918193645) do
     t.integer  "user_id"
     t.integer  "agent_id"
     t.integer  "command_id"
+    t.integer  "scheduled_command_id"
     t.text     "stdin"
     t.text     "args"
     t.boolean  "exec_status"
@@ -122,7 +123,7 @@ ActiveRecord::Schema.define(version: 20140918193645) do
     t.text     "stdout"
     t.text     "stderr"
     t.datetime "requested_at"
-    t.decimal  "time_taken",   precision: 10, scale: 3
+    t.decimal  "time_taken",           precision: 10, scale: 3
   end
 
   add_index "command_logs", ["agent_id"], name: "command_logs_agent_id_fk", using: :btree
@@ -287,6 +288,25 @@ ActiveRecord::Schema.define(version: 20140918193645) do
   end
 
   add_index "roles", ["tenant_id"], name: "roles_tenant_id_fk", using: :btree
+
+  create_table "scheduled_commands", force: true do |t|
+    t.integer  "org_id"
+    t.integer  "agent_id"
+    t.integer  "command_id"
+    t.integer  "created_by"
+    t.text     "stdin"
+    t.text     "args"
+    t.integer  "schedule_type",  limit: 2
+    t.string   "schedule"
+    t.datetime "scheduled_at"
+    t.integer  "command_log_id"
+    t.datetime "completed_at"
+  end
+
+  add_index "scheduled_commands", ["agent_id"], name: "scheduled_commands_agent_id_fk", using: :btree
+  add_index "scheduled_commands", ["command_id"], name: "scheduled_commands_command_id_fk", using: :btree
+  add_index "scheduled_commands", ["created_by"], name: "scheduled_commands_created_by_fk", using: :btree
+  add_index "scheduled_commands", ["org_id"], name: "scheduled_commands_org_id_fk", using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
@@ -470,6 +490,11 @@ ActiveRecord::Schema.define(version: 20140918193645) do
   add_foreign_key "role_permissions", "roles", name: "role_permissions_role_id_fk"
 
   add_foreign_key "roles", "tenants", name: "roles_tenant_id_fk"
+
+  add_foreign_key "scheduled_commands", "agents", name: "scheduled_commands_agent_id_fk"
+  add_foreign_key "scheduled_commands", "commands", name: "scheduled_commands_command_id_fk"
+  add_foreign_key "scheduled_commands", "orgs", name: "scheduled_commands_org_id_fk"
+  add_foreign_key "scheduled_commands", "users", name: "scheduled_commands_created_by_fk", column: "created_by"
 
   add_foreign_key "taggings", "tags", name: "fk_taggings_tags1"
 

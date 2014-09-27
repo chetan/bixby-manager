@@ -46,6 +46,9 @@ gem 'httpi', :github => "chetan/httpi", :branch => "curb_nosignal" # fix curl-re
 gem 'curb', '~> 0.8'
 
 gem "semver2"
+gem "chronic"
+gem "chronic_duration"
+gem "parse-cron"
 
 # api server for agents
 gem "em-hiredis"

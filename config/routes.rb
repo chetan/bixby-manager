@@ -83,6 +83,12 @@ Bixby::Application.routes.draw do
     resources :actions
     resources :annotations
     resources :command_logs
+
+    resources :scheduled_commands do
+      collection do
+        get "validate"
+      end
+    end
   end
 
 

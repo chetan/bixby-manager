@@ -19,8 +19,8 @@ _.val = (el) ->
 # @example
 #
 # "keyup input": _.debounceR 200, (e) ->
-#   span = @$("div.valid.username")
-#   _.unique_val e.target, (u) =>
+#   _.unique_val e.target, (val) =>
+#     console.log(val)
 #
 #
 # @param [Element] el

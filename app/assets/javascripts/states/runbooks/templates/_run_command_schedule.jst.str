@@ -1,0 +1,35 @@
+
+<div class="schedule start_hidden">
+  <hr/>
+  <h4>Schedule this command</h4>
+
+  <div class="form-group">
+    <strong>Type of schedule:</strong>
+    <div class="radio">
+      <label title="Job will run once only, at the specified time">
+        <input type="radio" name="schedule_type" value="once" class="once"> One time
+      </label>
+    </div>
+    <div class="radio">
+      <label title="Job will run repeatedly, using the given cron-formatted schedule">
+        <input type="radio" name="schedule_type" value="cron" class="cron"> Cron
+      </label>
+    </div>
+  </div>
+
+  <div class="natural start_hidden">
+    <%= include("main/_text_input", {name: "natural", label: "Enter below or choose using calendar", help: 'ex: "tomorrow at 10am" or "next tuesday at 3:15pm"'}) %>
+  </div>
+
+  <div class="cron start_hidden">
+    <%= include("main/_text_input", {name: "cron", label: "Cron Schedule", help: 'ex: "*/5 * * * * *"'}) %>
+  </div>
+
+  <div class="form-group next_schedule">
+  </div>
+
+  <div class="form-group">
+    <button type="button" id="create_schedule" class="btn btn-primary disabled">Schedule</button>
+  </div>
+</div>
+

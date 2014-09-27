@@ -5,8 +5,18 @@ class Bixby.RunCommand extends Stark.View
   template: "runbooks/run_command"
 
   ui:
+    actions: "div.actions"
     run: "button#run"
+    schedule:
+      btn: "button#schedule"
+      div: "div.schedule"
     spinner: "i.spinner"
+    results: "div.results"
+    args:  "div.args textarea"
+    stdin: "div.stdin textarea"
+    env:   "div.env textarea"
+    create_schedule: "button#create_schedule"
+    next_schedule: "div.next_schedule"
 
   events:
     "change select#command": (e) ->
@@ -15,14 +25,10 @@ class Bixby.RunCommand extends Stark.View
       @$("div.detail").show()
 
     "click run": (e) ->
-      hosts = @$("select#hosts").val()
-      command = @commands.get @$("select#command").val()
+      @run_command()
 
-      if hosts.length <= 0 || !command
-        @log "no host or command selected!"
-        return
-
-      @run_command(command, hosts)
+    "click schedule.btn": (e) ->
+      @with_inputs(@schedule_command)
 
     "click button.toggle": (e) ->
       id = @$(e.target).attr("id")
@@ -30,24 +36,80 @@ class Bixby.RunCommand extends Stark.View
       @$("div.form-group.#{id}").toggle()
       @$("textarea##{id}_input").focus()
 
-  # Run the given command on a set of hosts
-  run_command: (command, hosts) ->
-    command = command.clone()
-    args    = @$("div.args textarea").filter(":visible").val()
-    stdin   = @$("div.stdin textarea").filter(":visible").val()
-    env     = @$("div.env textarea").filter(":visible").val()
+    "click div.radio input.once": ->
+      @$("div.natural").show()
+      @$("div.cron").hide()
 
+    "click div.radio input.cron": ->
+      @$("div.cron").show()
+      @$("div.natural").hide()
+
+    "keyup input.cron": _.debounceR 250, (e) ->
+      _.unique_val e.target, (val) => @validate_schedule("cron", val)
+
+    "keyup input.natural": _.debounceR 250, (e) ->
+      _.unique_val e.target, (val) => @validate_schedule("natural", val)
+
+  validate_schedule: (type, val) ->
+    div = "div.valid.#{type}"
+    if !(val && val.length)
+      # clear the validation
+      @ui.next_schedule.hide()
+      return _.toggle_valid_input(div, null, null, true)
+
+    Bixby.model.ScheduledCommand.validate type, val, (res) =>
+      if res == false
+        _.fail(div)
+        @ui.create_schedule.addClass("disabled")
+        @ui.next_schedule.hide()
+      else
+        [time, time_rel] = res
+        _.pass(div)
+        @ui.create_schedule.removeClass("disabled")
+        text = if type == "cron"
+          "Next run time would be "
+        else
+          "Command would run at "
+        text += moment(time).format("L HH:mm:ss")
+        text += " (#{time_rel} from now)"
+        @ui.next_schedule.text(text).show()
+
+
+  # Common input handling for run/schedule below
+  with_inputs: (cmd) ->
+    hosts = @$("select#hosts").val()
+    command = @commands.get @$("select#command").val()
+
+    if !hosts || hosts.length <= 0 || !command
+      @log "no host or command selected!"
+      return
+
+    args  = @ui.args.filter(":visible").val()
+    stdin = @ui.stdin.filter(":visible").val()
+    env   = @ui.env.filter(":visible").val()
+
+    cmd.call(@, hosts, command.clone(), args, stdin, env)
+
+  schedule_command: (hosts, command, args, stdin, env) ->
+    @ui.actions.hide()
+    @ui.results.hide()
+    @ui.schedule.div.show()
+
+  # Run the given command on a set of hosts
+  run_command: (hosts, command, args, stdin, env) ->
     @ui.run.addClass("disabled")
+    @ui.schedule.btn.addClass("disabled")
     @ui.spinner.show().addClass("fa-spin")
-    @$("div.results").html("")
+    @ui.results.html("")
     command.run hosts, args, stdin, env, (res) =>
       _.each res, (command_log, host_id) =>
         clazz = "result#{host_id}"
-        @$("div.results").append("<div class='#{clazz}'></div>")
+        @ui.results.append("<div class='#{clazz}'></div>")
         command_log.host ||= @hosts.get(host_id).name() # fix the host name, only for invalid hosts
         @partial B.CommandResponse, {command_log: command_log}, "div.#{clazz}"
       @ui.spinner.hide().removeClass("fa-spin")
       @ui.run.removeClass("disabled")
+      @ui.schedule.btn.removeClass("disabled")
 
   # Return tags in a sorted, space-separated format
   # ex: "#bar #foo"
