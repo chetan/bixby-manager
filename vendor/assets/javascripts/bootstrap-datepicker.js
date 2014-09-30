@@ -1022,6 +1022,7 @@
 								}
 							}
 							this._setDate(UTCDate(year, month, day));
+							this.picker.find("input.time").filter(":visible").focus();
 						}
 						break;
 				}
