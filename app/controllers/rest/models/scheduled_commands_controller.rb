@@ -18,7 +18,8 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
     end
 
     now = Time.new
-    if t.nil? || !t.kind_of?(Time) || (t < now && params[:allow_past] != true) then
+    reject_past = (params[:allow_past] == true)
+    if t.nil? || !t.kind_of?(Time) || (t < now && reject_past) then
       return false
     end
 
