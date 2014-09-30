@@ -18,7 +18,20 @@
   </div>
 
   <div class="natural start_hidden">
-    <%= include("main/_text_input", {name: "natural", label: "Enter below or choose using calendar", help: 'ex: "tomorrow at 10am" or "next tuesday at 3:15pm"'}) %>
+    <div class="form-group has-feedback">
+      <label class="control-label" for="natural">Enter below or choose using calendar</label>
+
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button class="btn btn-default calendar" type="button"><%i calendar %></button>
+        </span>
+        <input class="form-control natural" type="text" id="natural" name="natural">
+      </div>
+
+      <div class="valid natural"></div>
+      <span class="form-control-feedback natural"></span>
+      <p class="help-block">ex: "tomorrow at 10am" or "next tuesday at 3:15pm"</p>
+    </div>
   </div>
 
   <div class="cron start_hidden">

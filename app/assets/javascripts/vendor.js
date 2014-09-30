@@ -29,6 +29,7 @@
 //= require "Markdown.Converter"
 //= require "mailcheck"
 //= require "moment.min"
+//= require "bootstrap-datepicker"
 
 // utils
 //= require "async"

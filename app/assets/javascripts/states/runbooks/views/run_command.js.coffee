@@ -17,6 +17,7 @@ class Bixby.RunCommand extends Stark.View
     env:   "div.env textarea"
     create_schedule: "button#create_schedule"
     next_schedule: "div.next_schedule"
+    calendar: "button.calendar"
 
   events:
     "change select#command": (e) ->
@@ -49,6 +50,9 @@ class Bixby.RunCommand extends Stark.View
 
     "keyup input.natural": _.debounceR 250, (e) ->
       _.unique_val e.target, (val) => @validate_schedule("natural", val)
+
+    "click calendar": ->
+      @ui.calendar.datepicker("show")
 
   validate_schedule: (type, val) ->
     div = "div.valid.#{type}"
@@ -122,6 +126,12 @@ class Bixby.RunCommand extends Stark.View
     return tags.join(" ")
 
   after_render: ->
+    @ui.calendar.datepicker(
+      todayHighlight: true
+      startDate: new Date()
+      ).on "hide", (e) ->
+        alert "selected " + e.date
+
     @$("select#command").select2
       allowClear: true
       matcher: (term, text, opt) ->
