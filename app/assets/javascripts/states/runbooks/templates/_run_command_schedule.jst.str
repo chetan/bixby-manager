@@ -7,7 +7,7 @@
     <strong>Type of schedule:</strong>
     <div class="radio">
       <label title="Job will run once only, at the specified time">
-        <input type="radio" name="schedule_type" value="once" class="once"> One time
+        <input type="radio" name="schedule_type" value="once" class="natural"> One time
       </label>
     </div>
     <div class="radio">

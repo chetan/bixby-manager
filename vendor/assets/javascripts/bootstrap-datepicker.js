@@ -303,6 +303,9 @@
 								this.update();
 						}, this),
 						keydown: $.proxy(this.keydown, this)
+					}],
+					[this.picker.find("input.time"), {
+						keyup: $.proxy(this.timeKeyup, this)
 					}]
 				];
 			}
@@ -319,6 +322,9 @@
 					}],
 					[this.component, {
 						click: $.proxy(this.show, this)
+					}],
+					[this.picker.find("input.time"), {
+						keyup: $.proxy(this.timeKeyup, this)
 					}]
 				];
 			}
@@ -329,6 +335,9 @@
 				this._events = [
 					[this.element, {
 						click: $.proxy(this.show, this)
+					}],
+					[this.picker.find("input.time"), {
+						keyup: $.proxy(this.timeKeyup, this)
 					}]
 				];
 			}
@@ -390,6 +399,7 @@
 			this.element.trigger({
 				type: event,
 				date: local_date,
+				time: this.time(),
 				dates: $.map(this.dates, this._utc_to_local),
 				format: $.proxy(function(ix, format){
 					if (arguments.length === 0){
@@ -405,6 +415,10 @@
 					return DPGlobal.formatDate(date, format, this.o.language);
 				}, this)
 			});
+		},
+
+		time: function(){
+			return this.picker.find("input.time").val();
 		},
 
 		show: function(){
@@ -949,6 +963,11 @@
 								if (this.o.autoclose)
 									this.hide();
 								break;
+							case 'time':
+								e.stopPropagation();
+								break;
+							case 'ok':
+								this.hide()
 						}
 						break;
 					case 'span':
@@ -980,6 +999,7 @@
 						break;
 					case 'td':
 						if (target.is('.day') && !target.is('.disabled')){
+							// making a date selection
 							day = parseInt(target.text(), 10)||1;
 							year = this.viewDate.getUTCFullYear();
 							month = this.viewDate.getUTCMonth();
@@ -1028,6 +1048,7 @@
 					this.dates.remove(0);
 		},
 
+		// Update the date selection
 		_setDate: function(date, which){
 			if (!which || which === 'date')
 				this._toggle_multidate(date && new Date(date));
@@ -1108,6 +1129,13 @@
 
 		dateWithinRange: function(date){
 			return date >= this.o.startDate && date <= this.o.endDate;
+		},
+
+		timeKeyup: function(e) {
+			e.preventDefault();
+			if (e.keyCode == 13) {
+				this.hide();
+			}
 		},
 
 		keydown: function(e){
@@ -1610,6 +1638,12 @@
 							'</tr>'+
 							'<tr>'+
 								'<th colspan="7" class="clear"></th>'+
+							'</tr>'+
+							'<tr>'+
+								'<th colspan="7" class="time"><input class="form-control time" type="text" name="time" placeholder="1pm, 10:47:53am, 16:30"></th>'+
+							'</tr>'+
+							'<tr>'+
+								'<th colspan="7" class="ok">OK</th>'+
 							'</tr>'+
 						'</tfoot>'
 	};

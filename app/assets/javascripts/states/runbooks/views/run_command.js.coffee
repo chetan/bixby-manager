@@ -18,6 +18,14 @@ class Bixby.RunCommand extends Stark.View
     create_schedule: "button#create_schedule"
     next_schedule: "div.next_schedule"
     calendar: "button.calendar"
+    cron:
+      div: "div.cron"
+      radio: "div.radio input.cron"
+      text: "div.cron input.cron"
+    natural:
+      div: "div.natural"
+      radio: "div.radio input.natural"
+      text: "div.natural input.natural"
 
   events:
     "change select#command": (e) ->
@@ -37,18 +45,18 @@ class Bixby.RunCommand extends Stark.View
       @$("div.form-group.#{id}").toggle()
       @$("textarea##{id}_input").focus()
 
-    "click div.radio input.once": ->
-      @$("div.natural").show()
-      @$("div.cron").hide()
+    "click natural.radio": ->
+      @ui.natural.div.show()
+      @ui.cron.div.hide()
 
-    "click div.radio input.cron": ->
-      @$("div.cron").show()
-      @$("div.natural").hide()
+    "click cron.radio": ->
+      @ui.cron.div.show()
+      @ui.natural.div.hide()
 
-    "keyup input.cron": _.debounceR 250, (e) ->
+    "keyup cron.text": _.debounceR 250, (e) ->
       _.unique_val e.target, (val) => @validate_schedule("cron", val)
 
-    "keyup input.natural": _.debounceR 250, (e) ->
+    "keyup natural.text": _.debounceR 250, (e) ->
       _.unique_val e.target, (val) => @validate_schedule("natural", val)
 
     "click calendar": ->
@@ -62,22 +70,52 @@ class Bixby.RunCommand extends Stark.View
       return _.toggle_valid_input(div, null, null, true)
 
     Bixby.model.ScheduledCommand.validate type, val, (res) =>
-      if res == false
-        _.fail(div)
-        @ui.create_schedule.addClass("disabled")
-        @ui.next_schedule.hide()
-      else
+      @toggle_schedule_status(div, res != false)
+      if res != false
         [time, time_rel] = res
-        _.pass(div)
-        @ui.create_schedule.removeClass("disabled")
-        text = if type == "cron"
-          "Next run time would be "
-        else
-          "Command would run at "
-        text += moment(time).format("L HH:mm:ss")
-        text += " (#{time_rel} from now)"
-        @ui.next_schedule.text(text).show()
+        @set_next_schedule(type, time, time_rel)
 
+  set_next_schedule: (type, time, time_rel) ->
+    text = if type == "cron"
+      "Next run time would be "
+    else
+      "Command would run at "
+    text += moment(time).format("L HH:mm:ss")
+    text += " (#{time_rel} from now)" if time_rel
+    @ui.next_schedule.text(text).show()
+
+  toggle_schedule_status: (div, pass) ->
+    if pass
+      _.pass(div)
+      @ui.create_schedule.removeClass("disabled")
+    else
+      _.fail(div)
+      @ui.create_schedule.addClass("disabled")
+      @ui.next_schedule.hide()
+
+  validate_datepicker: (date, time) ->
+    date ?= new Date()
+    date = moment(date)
+
+    if !time
+      @toggle_schedule_status("div.valid.natural", false)
+      @ui.natural.text.val("time is required")
+      return
+
+    Bixby.model.ScheduledCommand.validate "natural", time, true, (res) =>
+      @toggle_schedule_status("div.valid.natural", res != false)
+      if res == false
+        @ui.natural.text.val("invalid time: " + time)
+      else
+        # combine date & time
+        time = moment(res[0])
+        date = moment(new Date(date.year(), date.month(), date.date(), time.hours(), time.minutes(), time.seconds()))
+        if (new Date() - date._d) > 0
+          @toggle_schedule_status("div.valid.natural", false)
+          @ui.natural.text.val("date/time is in the past")
+          return
+        @set_next_schedule("natural", date)
+        @ui.natural.text.val(date.format("L HH:mm:ss"))
 
   # Common input handling for run/schedule below
   with_inputs: (cmd) ->
@@ -127,10 +165,11 @@ class Bixby.RunCommand extends Stark.View
 
   after_render: ->
     @ui.calendar.datepicker(
+      keyboardNavigation: true
       todayHighlight: true
       startDate: new Date()
-      ).on "hide", (e) ->
-        alert "selected " + e.date
+      ).on "hide", (e) =>
+        @validate_datepicker(e.date, e.time)
 
     @$("select#command").select2
       allowClear: true

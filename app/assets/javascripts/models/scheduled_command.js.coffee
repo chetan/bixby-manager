@@ -8,11 +8,14 @@ namespace 'Bixby.model', (exports, top) ->
 
     params: [ { name: "scheduled_command", set_id: true } ]
 
-    @validate: (type, str, cb) ->
+    @validate: (type, str, allow_past, cb) ->
+      if _.isFunction(allow_past)
+        cb = allow_past
+        allow_past = false
       $.ajax @::urlRoot + "/validate",
         type: "GET"
         dataType: "json"
-        data: { type: type, string: str }
+        data: { type: type, string: str, allow_past: allow_past }
         success: cb
 
     @validate_cron: (str, cb) ->

@@ -17,11 +17,12 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
       t = Chronic.parse(params[:string])
     end
 
-    if t.nil? || !t.kind_of?(Time) || t < Time.new then
+    now = Time.new
+    if t.nil? || !t.kind_of?(Time) || (t < now && params[:allow_past] != true) then
       return false
     end
 
-    return [t, ChronicDuration.output((t-Time.new).to_i, :format => :short)]
+    return [t, ChronicDuration.output((t-now).to_i, :format => :short)]
   end
 
 end
