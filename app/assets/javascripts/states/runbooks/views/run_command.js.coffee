@@ -7,14 +7,14 @@ class Bixby.RunCommand extends Stark.View
   ui:
     actions: "div.actions"
     run: "button#run"
-    schedule:
-      btn: "button#schedule"
-      div: "div.schedule"
     spinner: "i.spinner"
     results: "div.results"
     args:  "div.args textarea"
     stdin: "div.stdin textarea"
     env:   "div.env textarea"
+    schedule:
+      btn: "button#schedule"
+      div: "div.schedule"
     create_schedule: "button#create_schedule"
     next_schedule: "div.next_schedule"
     calendar: "button.calendar"
@@ -48,10 +48,12 @@ class Bixby.RunCommand extends Stark.View
     "click natural.radio": ->
       @ui.natural.div.show()
       @ui.cron.div.hide()
+      @ui.next_schedule.hide()
 
     "click cron.radio": ->
       @ui.cron.div.show()
       @ui.natural.div.hide()
+      @ui.next_schedule.hide()
 
     "keyup cron.text": _.debounceR 250, (e) ->
       _.unique_val e.target, (val) => @validate_schedule("cron", val)
