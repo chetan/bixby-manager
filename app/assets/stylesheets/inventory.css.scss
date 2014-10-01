@@ -3,8 +3,7 @@ input.install {
   font-family: $font-family-monospace;
   font-size: 12px;
   width: 500px;
-  // override bootstrap styles for readonly fields
-  cursor: default;
+  cursor: default !important; // override bootstrap styles for readonly fields
   background-color: white;
 }
 
