@@ -1,5 +1,5 @@
 
-<div class="input-group">
+<div class="input-group install">
   <span class="input-group-addon"><%i terminal %></span>
   <input class="form-control install" type="text" readonly="readonly"
     value="\\curl -sL https://get.bixby.io | bash -s <%= current_user.g('tenant') %> <%= app.manager_uri %>">

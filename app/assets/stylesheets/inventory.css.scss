@@ -1,10 +1,16 @@
 
-input.install {
-  font-family: $font-family-monospace;
-  font-size: 12px;
-  width: 500px;
-  cursor: default !important; // override bootstrap styles for readonly fields
-  background-color: white;
+div.install {
+  i {
+    font-size: 18px !important;
+    font-weight: bold !important;
+  }
+  input.install {
+    font-family: $font-family-monospace;
+    font-size: 12px;
+    width: 500px;
+    cursor: default !important; // override bootstrap styles for readonly fields
+    background-color: white;
+  }
 }
 
 ul.tags {
