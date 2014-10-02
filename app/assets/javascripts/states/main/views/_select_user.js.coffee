@@ -5,4 +5,4 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/_select_user"
 
     after_render: ->
-      @$("select#users").select2()
+      @$("select#"+@name).select2()
