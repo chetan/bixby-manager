@@ -170,6 +170,7 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bitfields (0.4.3)
     bixby-common (0.4.12)
       api-auth
       faye-websocket
@@ -556,6 +557,7 @@ DEPENDENCIES
   bahia
   better_errors
   binding_of_caller
+  bitfields (~> 0.4.3)
   bixby-api_pool!
   bixby-common
   bootstrap-sass (~> 3.1.1)

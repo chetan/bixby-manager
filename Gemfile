@@ -79,6 +79,7 @@ gem "attr_encrypted" # used in auth/otp
 gem "acts-as-taggable-on", "~> 3.1.0"
 gem "acts_as_tree"      # replace with closure_tree (better perf)?
 gem "delete_paranoid", :github => "socialcast/delete_paranoid"
+gem "bitfields", "~> 0.4.3"
 
 # notifications module
 gem "twilio-ruby"
