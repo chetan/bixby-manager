@@ -34,7 +34,7 @@
 class CommandLog < ActiveRecord::Base
 
   # all fields are read-only
-  attr_readonly :agent_id, :command_id, :stdin, :args,
+  attr_readonly :agent_id, :command_id, :stdin, :args, :env,
                 :exec_status, :exec_code,
                 :status, :stdout, :stderr,
                 :requested_at, :time_taken
@@ -45,6 +45,8 @@ class CommandLog < ActiveRecord::Base
   belongs_to :user
   belongs_to :agent
   belongs_to :command
+
+  serialize :env, JSONColumn.new
 
   # Create a new log entry for the given remote exec block
   #
@@ -68,6 +70,7 @@ class CommandLog < ActiveRecord::Base
     c.command = Command.from_command_spec(request)
     c.stdin = request.stdin
     c.args = request.args
+    c.env = request.env
     c.exec_status = response.success?
     c.exec_code =  response.code
 

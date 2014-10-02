@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20140926201211) do
     t.integer  "scheduled_command_id"
     t.text     "stdin"
     t.text     "args"
+    t.text     "env"
     t.boolean  "exec_status"
     t.integer  "exec_code"
     t.integer  "status"
@@ -296,11 +297,17 @@ ActiveRecord::Schema.define(version: 20140926201211) do
     t.integer  "created_by"
     t.text     "stdin"
     t.text     "args"
-    t.integer  "schedule_type",  limit: 2
+    t.text     "env"
+    t.integer  "schedule_type", limit: 2
     t.string   "schedule"
     t.datetime "scheduled_at"
-    t.integer  "command_log_id"
+    t.integer  "alert_on",                default: 0, null: false
+    t.string   "alert_users"
+    t.text     "alert_emails"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "completed_at"
+    t.datetime "deleted_at"
   end
 
   add_index "scheduled_commands", ["agent_id"], name: "scheduled_commands_agent_id_fk", using: :btree
