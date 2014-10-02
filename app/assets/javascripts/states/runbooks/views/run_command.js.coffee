@@ -15,7 +15,7 @@ class Bixby.RunCommand extends Stark.View
     schedule:
       btn: "button#schedule"
       div: "div.schedule"
-    create_schedule: "button#create_schedule"
+    configure_email: "button#configure_email"
     next_schedule: "div.next_schedule"
     calendar: "button.calendar"
     cron:
@@ -27,11 +27,19 @@ class Bixby.RunCommand extends Stark.View
       radio: "div.radio input.natural"
       text: "div.natural input.natural"
 
+    tab:
+      1: "div.select_command"
+      2: "div.schedule_command"
+    collapse:
+      1: "button.collapse_select_command"
+      2: "button.collapse_schedule_command"
+    command_detail: "div.detail"
+
   events:
     "change select#command": (e) ->
       command = @commands.get @$("select#command").val()
       @partial("runbooks/_command_detail", {command: command}, "div.detail")
-      @$("div.detail").show()
+      @ui.command_detail.show()
 
     "click run": (e) ->
       @run_command()
@@ -49,11 +57,13 @@ class Bixby.RunCommand extends Stark.View
       @ui.natural.div.show()
       @ui.cron.div.hide()
       @ui.next_schedule.hide()
+      @validate_schedule("natural", @ui.natural.text.val())
 
     "click cron.radio": ->
       @ui.cron.div.show()
       @ui.natural.div.hide()
       @ui.next_schedule.hide()
+      @validate_schedule("cron", @ui.cron.text.val())
 
     "keyup cron.text": _.debounceR 250, (e) ->
       _.unique_val e.target, (val) => @validate_schedule("cron", val)
@@ -64,10 +74,18 @@ class Bixby.RunCommand extends Stark.View
     "click calendar": ->
       @ui.calendar.datepicker("show")
 
+    "click h4.tab1, collapse.1": ->
+      if @ui.collapse[1].filter(":visible").length
+        @select_tab(1)
+
+    "click h4.tab2, collapse.2": ->
+      @select_tab(2)
+
   validate_schedule: (type, val) ->
     div = "div.valid.#{type}"
     if !(val && val.length)
       # clear the validation
+      @ui.configure_email.addClass("disabled")
       @ui.next_schedule.hide()
       return _.toggle_valid_input(div, null, null, true)
 
@@ -89,10 +107,10 @@ class Bixby.RunCommand extends Stark.View
   toggle_schedule_status: (div, pass) ->
     if pass
       _.pass(div)
-      @ui.create_schedule.removeClass("disabled")
+      @ui.configure_email.removeClass("disabled")
     else
       _.fail(div)
-      @ui.create_schedule.addClass("disabled")
+      @ui.configure_email.addClass("disabled")
       @ui.next_schedule.hide()
 
   validate_datepicker: (date, time) ->
@@ -134,10 +152,23 @@ class Bixby.RunCommand extends Stark.View
 
     cmd.call(@, hosts, command.clone(), args, stdin, env)
 
+  select_tab: (tab) ->
+    _.each [1..2], (i) =>
+      t = @ui.tab[i]
+      c = @ui.collapse[i]
+      if i == tab
+        t.collapse("show")
+        c.hide()
+      else
+        t.collapse("hide")
+        c.show()
+    @ui.command_detail.toggle(tab == 1)
+
   schedule_command: (hosts, command, args, stdin, env) ->
     @ui.actions.hide()
     @ui.results.hide()
     @ui.schedule.div.show()
+    @select_tab(2)
 
   # Run the given command on a set of hosts
   run_command: (hosts, command, args, stdin, env) ->
@@ -166,6 +197,8 @@ class Bixby.RunCommand extends Stark.View
     return tags.join(" ")
 
   after_render: ->
+    _.each [1..2], (i) => @ui.tab[i].collapse()
+
     @ui.calendar.datepicker(
       keyboardNavigation: true
       todayHighlight: true
