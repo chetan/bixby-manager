@@ -42,7 +42,7 @@ class Bixby.RunCommand extends Stark.View
       @ui.command_detail.show()
 
     "click run": (e) ->
-      @run_command()
+      @with_inputs(@run_command)
 
     "click schedule.btn": (e) ->
       @with_inputs(@schedule_command)
