@@ -86,6 +86,8 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.CommandList extends Stark.Collection
     model: exports.Command
     @key: "commands"
+    state:
+      pageSize: 100
     params: [ "repo" ]
     url: ->
       s = "/rest/commands"
