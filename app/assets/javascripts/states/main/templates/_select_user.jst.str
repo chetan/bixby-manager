@@ -1,0 +1,12 @@
+
+<%
+this.label = this.label || "Users";
+this.name = this.name || "users";
+%>
+
+<label for="users" class="control-label"><%= label %></label>
+<select name="<%= name %>" id="<%= name %>" multiple="true" class="form-control <%= name %> ">
+  <% users.each(function(user) { %>
+    <option value="<%= user.id %>"><%= user.get_name() %></option>
+  <% }); %>
+</select>

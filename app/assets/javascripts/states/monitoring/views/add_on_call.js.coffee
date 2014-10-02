@@ -17,6 +17,3 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
         Backbone.multi_save oncall, (err, results) =>
           @transition "monitoring", { host: @host }
-
-    after_render: ->
-      @$("select#users").select2()
