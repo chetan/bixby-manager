@@ -60,6 +60,8 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.UserList extends Stark.Collection
     model: exports.User
     @key: "users"
+    state:
+      pageSize: 100
     url: "/rest/users"
 
     comparator: (user) ->
