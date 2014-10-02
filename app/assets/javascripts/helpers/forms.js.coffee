@@ -1,13 +1,21 @@
 
 # Retrieve the value of the given [input] element. Properly handles checkboxes
+#
+# @param [jQuery] el        jQuery element or String selector
+# @return [Object] value
 _.val = (el) ->
+  el = $(el)
   if el.length
     el = $(el[0])
   else
     el = $(el)
 
-  if el.prop("type") == "checkbox"
-    return el.prop("checked")
+  type = el.prop("type")
+  if type == "checkbox" || type == "radio"
+    return if el.prop("checked")
+      el.val()
+    else
+      false
   else
     return el.val()
 
