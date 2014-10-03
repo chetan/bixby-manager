@@ -5,6 +5,14 @@ class Scheduler
   class RecurringJob < Job
     attr_accessor :interval
 
+    # Create a new RecurringJob
+    #
+    # @param [Fixnum] interval        time in seconds between runs
+    # @param [Class] klass            class which has the method we want to run
+    # @param [Symbol] method          name of _instance_ method to call
+    # @param [Array<Object>] args     array of arguments to pass to method
+    #
+    # @return [RecurringJob]
     def self.create(interval, klass, method, args = [])
       job = super(klass, method, args)
       job.interval = interval
