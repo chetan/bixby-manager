@@ -49,6 +49,7 @@ module Bixby
   #   Metric::Status.lookup(3)      => "CRITICAL"
   #   Metric::Status.lookup("OK")   => 1
   #   Metric::Status.lookup(:OK)    => 1
+  #   Metric::Status["OK"]          => 1
   #
   # @param [Module] mod
   def self.create_const_map(mod)
@@ -59,7 +60,7 @@ module Bixby
       v = mod.const_get(k)
       map[k] = v
       map[k.to_s] = v
-      map[v] = k.to_s
+      map[v] = k.to_s if !map.include? v
     end
 
     mod.const_set(:CONST_MAP, map)
