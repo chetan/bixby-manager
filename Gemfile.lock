@@ -171,13 +171,13 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bitfields (0.4.3)
-    bixby-common (0.4.12)
-      api-auth
-      faye-websocket
-      httpi
-      logging
-      multi_json
-      semver2
+    bixby-common (0.4.13)
+      api-auth (~> 1.0)
+      faye-websocket (~> 0.7)
+      httpi (~> 2.1)
+      logging (~> 1.8)
+      multi_json (~> 1.8)
+      semver2 (~> 3.3)
     bootstrap-sass (3.1.1.1)
       sass (~> 3.2)
     brakeman (2.6.0)
@@ -259,7 +259,7 @@ GEM
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
     fastercsv (1.5.5)
-    faye-websocket (0.7.3)
+    faye-websocket (0.7.4)
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.3.1)
     ffi (1.9.3)
@@ -460,7 +460,7 @@ GEM
       ffi-compiler (>= 0.0.2)
       rake
     secure_headers (1.2.0)
-    semver2 (3.3.3)
+    semver2 (3.4.0)
     sexp_processor (4.4.3)
     sextant (0.2.4)
       rails (>= 3.2)
@@ -532,8 +532,8 @@ GEM
     webmock (1.18.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
-    websocket-driver (0.3.3)
-    websocket-driver (0.3.3-java)
+    websocket-driver (0.3.4)
+    websocket-driver (0.3.4-java)
     xray (1.1)
     yard (0.8.7.4)
 
