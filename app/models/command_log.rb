@@ -4,22 +4,24 @@
 #
 # ### Columns
 #
-# Name                | Type               | Attributes
-# ------------------- | ------------------ | ---------------------------
-# **`id`**            | `integer`          | `not null, primary key`
-# **`org_id`**        | `integer`          |
-# **`user_id`**       | `integer`          |
-# **`agent_id`**      | `integer`          |
-# **`command_id`**    | `integer`          |
-# **`stdin`**         | `text`             |
-# **`args`**          | `text`             |
-# **`exec_status`**   | `boolean`          |
-# **`exec_code`**     | `integer`          |
-# **`status`**        | `integer`          |
-# **`stdout`**        | `text`             |
-# **`stderr`**        | `text`             |
-# **`requested_at`**  | `datetime`         |
-# **`time_taken`**    | `decimal(10, 3)`   |
+# Name                        | Type               | Attributes
+# --------------------------- | ------------------ | ---------------------------
+# **`id`**                    | `integer`          | `not null, primary key`
+# **`org_id`**                | `integer`          |
+# **`user_id`**               | `integer`          |
+# **`agent_id`**              | `integer`          |
+# **`command_id`**            | `integer`          |
+# **`scheduled_command_id`**  | `integer`          |
+# **`stdin`**                 | `text`             |
+# **`args`**                  | `text`             |
+# **`env`**                   | `text`             |
+# **`exec_status`**           | `boolean`          |
+# **`exec_code`**             | `integer`          |
+# **`status`**                | `integer`          |
+# **`stdout`**                | `text`             |
+# **`stderr`**                | `text`             |
+# **`requested_at`**          | `datetime`         |
+# **`time_taken`**            | `decimal(10, 3)`   |
 #
 # ### Indexes
 #
