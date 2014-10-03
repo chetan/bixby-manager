@@ -2,6 +2,7 @@
 # Retrieve the value of the given [input] element. Properly handles checkboxes
 #
 # @param [jQuery] el        jQuery element or String selector
+#
 # @return [Object] value
 _.val = (el) ->
   el = $(el)
@@ -18,6 +19,14 @@ _.val = (el) ->
       false
   else
     return el.val()
+
+# Retrieve an array of values of the given elements
+#
+# @param [jQuery] el           jQuery element or String selector
+#
+# @return [Array] values
+_.vals = (el) ->
+  return $(el).map((i, e) -> _.val(e)).toArray()
 
 # Execute the given callback only when unique inputs are seen
 #
