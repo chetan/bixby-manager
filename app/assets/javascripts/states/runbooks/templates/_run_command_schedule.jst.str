@@ -48,5 +48,35 @@
       <button type="button" id="configure_email" class="btn btn-primary disabled">Next: configure email</button>
     </div>
   </div>
+
 </div>
 
+<div class="configure_email start_hidden">
+  <h4 class="underline tab3">
+    Configure email (optional)
+    <button class="btn btn-default btn-xs pull-right collapse_configure_email start_hidden"><%i chevron-down %></button>
+  </h4>
+
+  <div class="form-group">
+    <label class="control-label" title="">Send email on status:</label>
+    <%= include("main/_checkbox", {clazz: "status", value: "success", name: "Sucess"}) %>
+    <%= include("main/_checkbox", {clazz: "status", value: "error", name: "Error (Non-zero)"}) %>
+  </div>
+
+  <div class="select_emails start_hidden">
+    <label class="control-label" title="">Send email to:</label>
+    <div class="form-group">
+      <%= include("main/_checkbox", {clazz: "email_to_me", name: "Me (" + current_user.get("email") + ")"}) %>
+    </div>
+    <div class="form-group">
+      <%= include_partial(_bv.SelectUser, {name: "email_to_users"}) %>
+    </div>
+    <div class="form-group">
+      <%= include("main/_text_input", {name: "email_to_emails", label: "Emails"}) %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button type="button" id="create_schedule" class="btn btn-primary">Schedule Command</button>
+  </div>
+</div>

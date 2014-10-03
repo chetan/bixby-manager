@@ -3,7 +3,7 @@ class AddScheduledCommands < ActiveRecord::Migration
 
     create_table :scheduled_commands do |t|
       t.integer :org_id
-      t.integer :agent_id
+      t.string :agent_ids
       t.integer :command_id
       t.integer :created_by
 
@@ -24,7 +24,6 @@ class AddScheduledCommands < ActiveRecord::Migration
       t.timestamp :deleted_at, :null => true
 
       t.foreign_key :orgs
-      t.foreign_key :agents
       t.foreign_key :commands
       t.foreign_key :users, :column => :created_by
     end

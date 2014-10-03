@@ -15,7 +15,10 @@ class Bixby.RunCommand extends Stark.View
     schedule:
       btn: "button#schedule"
       div: "div.schedule"
-    configure_email: "button#configure_email"
+    configure_email:
+      btn: "button#configure_email"
+      div: "div.configure_email"
+      select: "div.select_emails"
     next_schedule: "div.next_schedule"
     calendar: "button.calendar"
     cron:
@@ -26,14 +29,17 @@ class Bixby.RunCommand extends Stark.View
       div: "div.natural"
       radio: "div.radio input.natural"
       text: "div.natural input.natural"
-
     tab:
       1: "div.select_command"
       2: "div.schedule_command"
+      3: "div.configure_email"
     collapse:
       1: "button.collapse_select_command"
       2: "button.collapse_schedule_command"
+      3: "button.collapse_configure_email"
     command_detail: "div.detail"
+    status: "input.status"
+    create_schedule: "button#create_schedule"
 
   events:
     "change select#command": (e) ->
@@ -45,6 +51,17 @@ class Bixby.RunCommand extends Stark.View
       @with_inputs(@run_command)
 
     "click schedule.btn": (e) ->
+      @ui.actions.hide()
+      @ui.results.hide()
+      @ui.schedule.div.show()
+      @select_tab(2)
+
+    "click configure_email.btn": (e) ->
+      @ui.configure_email.btn.show()
+      @ui.configure_email.div.show()
+      @select_tab(3)
+
+    "click create_schedule": ->
       @with_inputs(@schedule_command)
 
     "click button.toggle": (e) ->
@@ -81,11 +98,19 @@ class Bixby.RunCommand extends Stark.View
     "click h4.tab2, collapse.2": ->
       @select_tab(2)
 
+    "click h4.tab3, collapse.3": ->
+      @select_tab(3)
+
+    "change status": ->
+      # if either of the status checkboxes are checked, show the user selection form
+      checks = @ui.status.filter(":checked")
+      @ui.configure_email.select.toggle(checks && checks.length > 0)
+
   validate_schedule: (type, val) ->
     div = "div.valid.#{type}"
     if !(val && val.length)
       # clear the validation
-      @ui.configure_email.addClass("disabled")
+      @ui.configure_email.btn.addClass("disabled")
       @ui.next_schedule.hide()
       return _.toggle_valid_input(div, null, null, true)
 
@@ -97,8 +122,10 @@ class Bixby.RunCommand extends Stark.View
 
   set_next_schedule: (type, time, time_rel) ->
     text = if type == "cron"
+      @ui.natural.text.data("date", null)
       "Next run time would be "
     else
+      @ui.natural.text.data("date", time)
       "Command would run at "
     text += moment(time).format("L HH:mm:ss")
     text += " (#{time_rel} from now)" if time_rel
@@ -107,10 +134,10 @@ class Bixby.RunCommand extends Stark.View
   toggle_schedule_status: (div, pass) ->
     if pass
       _.pass(div)
-      @ui.configure_email.removeClass("disabled")
+      @ui.configure_email.btn.removeClass("disabled")
     else
       _.fail(div)
-      @ui.configure_email.addClass("disabled")
+      @ui.configure_email.btn.addClass("disabled")
       @ui.next_schedule.hide()
 
   validate_datepicker: (date, time) ->
@@ -138,7 +165,7 @@ class Bixby.RunCommand extends Stark.View
         @ui.natural.text.val(date.format("L HH:mm:ss"))
 
   # Common input handling for run/schedule below
-  with_inputs: (cmd) ->
+  with_inputs: (fn) ->
     hosts = @$("select#hosts").val()
     command = @commands.get @$("select#command").val()
 
@@ -148,12 +175,12 @@ class Bixby.RunCommand extends Stark.View
 
     args  = @ui.args.filter(":visible").val()
     stdin = @ui.stdin.filter(":visible").val()
-    env   = @ui.env.filter(":visible").val()
+    env   = Bixby.model.Command.parse_env(@ui.env.filter(":visible").val())
 
-    cmd.call(@, hosts, command.clone(), args, stdin, env)
+    fn.call(@, hosts, command.clone(), args, stdin, env)
 
   select_tab: (tab) ->
-    _.each [1..2], (i) =>
+    _.each [1..3], (i) =>
       t = @ui.tab[i]
       c = @ui.collapse[i]
       if i == tab
@@ -165,10 +192,23 @@ class Bixby.RunCommand extends Stark.View
     @ui.command_detail.toggle(tab == 1)
 
   schedule_command: (hosts, command, args, stdin, env) ->
-    @ui.actions.hide()
-    @ui.results.hide()
-    @ui.schedule.div.show()
-    @select_tab(2)
+    alert_users = @$("select#email_to_users").val() || []
+    if _.val(@$("input.email_to_me"))
+      alert_users.push(@current_user.id)
+
+    sc = new Bixby.model.ScheduledCommand
+      hosts: hosts
+      command_id: command.id
+      stdin: stdin
+      args: args
+      env: env
+      schedule_type: _.val(@ui.natural.radio) || _.val(@ui.cron.radio)
+      schedule: @ui.cron.text.val()
+      scheduled_at: @ui.natural.text.data("date")
+      alert_on: _.vals(@ui.status.filter(":checked"))
+      alert_users: alert_users
+      alert_emails: @$("input.email_to_emails").val()
+    sc.save()
 
   # Run the given command on a set of hosts
   run_command: (hosts, command, args, stdin, env) ->
@@ -197,7 +237,7 @@ class Bixby.RunCommand extends Stark.View
     return tags.join(" ")
 
   after_render: ->
-    _.each [1..2], (i) => @ui.tab[i].collapse()
+    _.each [1..3], (i) => @ui.tab[i].collapse()
 
     @ui.calendar.datepicker(
       keyboardNavigation: true
