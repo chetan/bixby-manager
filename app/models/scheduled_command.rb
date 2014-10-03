@@ -46,6 +46,8 @@ class ScheduledCommand < ActiveRecord::Base
   include Bitfields
   bitfield :alert_on, 1 => :alert_on_success, 2 => :alert_on_error
 
+  serialize :env, JSONColumn.new
+
   module ScheduleType
     CRON    = 1
     ONCE    = 2
@@ -66,6 +68,16 @@ class ScheduledCommand < ActiveRecord::Base
     if cron? then
       self.scheduled_at = CronParser.new(self.schedule).next()
     end
+  end
+
+  def command_spec
+    spec = self.command.to_command_spec
+
+    spec.args  = self.args
+    spec.stdin = self.stdin
+    spec.env   = self.env
+
+    return spec
   end
 
 end
