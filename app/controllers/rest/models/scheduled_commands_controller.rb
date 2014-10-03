@@ -23,7 +23,10 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
     sc.alert_users = (params[:alert_users] || []).map{ |s| s.to_i }.reject{ |s| s <= 0 }.sort.uniq.join(",")
     sc.alert_emails = params[:alert_emails]
 
-    sc.save
+    sc.save!
+    sc.schedule_job!
+
+    true
   end
 
   def validate

@@ -31,8 +31,7 @@ class Scheduler
 
       # cleanup args - pass models through globalid
       args = args.kind_of?(Array) ? args : [args]
-      args = args.map { |a| a.kind_of?(ActiveModel::GlobalIdentification) ? a.global_id : a }
-      job.args = args
+      job.args = serialize_args(args)
 
       return job
     end
@@ -55,6 +54,18 @@ class Scheduler
 
 
     private
+
+    def self.serialize_args(args)
+      if args.kind_of? Array then
+        args.map { |a| serialize_arg(a) }
+      else
+        serialize_arg(args)
+      end
+    end
+
+    def self.serialize_arg(arg)
+      arg.kind_of?(ActiveModel::GlobalIdentification) ? arg.global_id : arg
+    end
 
     def self.deserialize_args(args)
       args.map do |arg|

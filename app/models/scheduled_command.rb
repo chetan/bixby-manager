@@ -41,7 +41,8 @@ class ScheduledCommand < ActiveRecord::Base
   belongs_to :agent
   belongs_to :command
   belongs_to :user, :foreign_key => :created_by
-  belongs_to :command_log
+
+  has_many :command_logs
 
   include Bitfields
   bitfield :alert_on, 1 => :alert_on_success, 2 => :alert_on_error
@@ -78,6 +79,22 @@ class ScheduledCommand < ActiveRecord::Base
     spec.env   = self.env
 
     return spec
+  end
+
+  def agents
+    Agent.where(:id => self.agent_ids.split(/,/).map{ |s| s.to_i })
+  end
+
+  def get_alert_users
+    ids = self.alert_users.split(/,/).map{ |s| s.to_i }
+    return nil if ids.blank?
+    User.where(:id => ids)
+  end
+
+  # Schedules job to run at the designated time
+  def schedule_job!
+    job = Bixby::Scheduler::ScheduledCommandJob.create(self)
+    Bixby::Scheduler.new.schedule_at(self.scheduled_at, job)
   end
 
 end

@@ -94,4 +94,13 @@ class CommandLog < ActiveRecord::Base
     where(:org_id => user.org_id).order(:requested_at => :desc)
   end
 
+  def success?
+    self.exec_status && self.status == 0
+  end
+
+  def error?
+    !success?
+  end
+  alias_method :fail?, :error?
+
 end
