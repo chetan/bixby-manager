@@ -20,11 +20,11 @@ class Scheduler
     end
 
     def self.perform(*args)
-      orig_args = args.dup
-
       interval = args.shift.to_i
       klass    = args.shift.constantize
       method   = args.shift
+
+      orig_args = args.dup
 
       begin
         log.debug { "Going to execute: #{klass}.#{method}" }
