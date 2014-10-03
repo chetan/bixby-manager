@@ -173,9 +173,13 @@ class Bixby.RunCommand extends Stark.View
       @log "no host or command selected!"
       return
 
-    args  = @ui.args.filter(":visible").val()
-    stdin = @ui.stdin.filter(":visible").val()
-    env   = Bixby.model.Command.parse_env(@ui.env.filter(":visible").val())
+    get_val = (sel) =>
+      # the parent div (tab) may be collapsed but we only care if this el was toggled into view
+      @$(sel).filter(-> $(@).css("display") == "block").find("textarea").val()
+
+    args  = get_val("div.args")
+    stdin = get_val("div.stdin")
+    env   = Bixby.model.Command.parse_env(get_val("div.env"))
 
     fn.call(@, hosts, command.clone(), args, stdin, env)
 
