@@ -20,6 +20,7 @@ class Scheduler
     end
 
     def self.perform(*args)
+      orig_args = args.dup
 
       interval = args.shift.to_i
       klass    = args.shift.constantize
@@ -35,8 +36,9 @@ class Scheduler
       end
 
       # reschedule
-      job = RecurringJob.create(interval, klass, method, args)
+      job = RecurringJob.create(interval, klass, method, orig_args)
       Scheduler.new.schedule_in(interval, job)
+      true
     end
 
     def queue_args
