@@ -29,24 +29,7 @@ namespace 'Bixby.model', (exports, top) ->
       return need
 
     run: (hosts, args, stdin, env, successCb) ->
-
-      if _.isString(env)
-        # convert env string into an object hash of key/value pairs
-        # expects env to have one pair on each line, separated by '=',
-        # e.g., "foo=bar\nbaz=boo"
-        e = {}
-        env.split(/\n/).forEach (line) ->
-          line = line.trim()
-          i = line.indexOf('=')
-          if i < 0
-            return
-          k = line.substr(0, i).trim()
-          v = line.substr(i+1).trim()
-          if v[0] == '"' || v[0] == "'"
-            v = JSON.parse(v)
-          e[k] = v
-        env = e
-
+      env = @constructor.parse_env(env)
       @ajax "post",
         url: @url() + "/run"
         data: {hosts: hosts, args: args, stdin: stdin, env: env}
@@ -54,6 +37,27 @@ namespace 'Bixby.model', (exports, top) ->
           successCb(data)
         error: (xhr, status, err) =>
           @log "error: ", err
+
+    # Convert env string into an object hash of key/value pairs.
+    # Expects env to have one pair on each line, separated by '=',
+    # e.g., "foo=bar\nbaz=boo"
+    #
+    # @param [String] env
+    # @return [Object]
+    @parse_env: (env) ->
+      return env if ! _.isString(env)
+      e = {}
+      env.split(/\n/).forEach (line) ->
+        line = line.trim()
+        i = line.indexOf('=')
+        if i < 0
+          return
+        k = line.substr(0, i).trim()
+        v = line.substr(i+1).trim()
+        if v[0] == '"' || v[0] == "'"
+          v = JSON.parse(v)
+        e[k] = v
+      return e
 
     # Retrieve help text for this command
     help_html: ->
