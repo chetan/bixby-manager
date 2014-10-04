@@ -27,6 +27,7 @@ class Scheduler
           log.debug { "Executing scheduled command #{scheduled_command.id} on agent #{agent.id}" }
           res = Bixby::RemoteExec.new.exec(agent, scheduled_command.command_spec)
           res.log.scheduled_command_id = scheduled_command.id
+          res.log.user_id = scheduled_command.created_by
           res.log.save
           responses << res
 
