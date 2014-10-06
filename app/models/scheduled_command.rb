@@ -24,6 +24,7 @@
 # **`updated_at`**     | `datetime`         |
 # **`completed_at`**   | `datetime`         |
 # **`deleted_at`**     | `datetime`         |
+# **`run_count`**      | `integer`          | `default(0), not null`
 #
 # ### Indexes
 #

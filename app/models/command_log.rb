@@ -12,6 +12,7 @@
 # **`agent_id`**              | `integer`          |
 # **`command_id`**            | `integer`          |
 # **`scheduled_command_id`**  | `integer`          |
+# **`run_id`**                | `integer`          |
 # **`stdin`**                 | `text`             |
 # **`args`**                  | `text`             |
 # **`env`**                   | `text`             |

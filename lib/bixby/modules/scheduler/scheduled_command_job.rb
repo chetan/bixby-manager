@@ -20,13 +20,15 @@ class Scheduler
       args = deserialize_args(args)
       scheduled_command = args.shift
 
-      responses = []
+      scheduled_command.run_count += 1
 
+      responses = []
       scheduled_command.agents.each do |agent|
         begin
           log.debug { "Executing scheduled command #{scheduled_command.id} on agent #{agent.id}" }
           res = Bixby::RemoteExec.new.exec(agent, scheduled_command.command_spec)
           res.log.scheduled_command_id = scheduled_command.id
+          res.log.run_id = scheduled_command.run_count
           res.log.user_id = scheduled_command.created_by
           res.log.save
           responses << res
@@ -42,7 +44,6 @@ class Scheduler
 
       if scheduled_command.once? then
         scheduled_command.completed_at = Time.new
-        scheduled_command.save
       end
 
       # Fire alerts
@@ -55,6 +56,7 @@ class Scheduler
         scheduled_command.schedule_job!
       end
 
+      scheduled_command.save
       true
     end
 

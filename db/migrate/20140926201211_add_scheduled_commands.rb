@@ -22,6 +22,7 @@ class AddScheduledCommands < ActiveRecord::Migration
       t.timestamps
       t.timestamp :completed_at, :null => true
       t.timestamp :deleted_at, :null => true
+      t.integer :run_count, :null => false, :default => 0
 
       t.foreign_key :orgs
       t.foreign_key :commands
@@ -29,6 +30,7 @@ class AddScheduledCommands < ActiveRecord::Migration
     end
 
     add_column :command_logs, :scheduled_command_id, :int, :after => :command_id, :null => true
+    add_column :command_logs, :run_id, :int, :after => :scheduled_command_id, :null => true
     add_column :command_logs, :env, :text, :after => :args, :null => true
 
   end

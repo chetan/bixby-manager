@@ -1,6 +1,7 @@
 
 JOB:          <%= @command_name %><% if @command_name != @script then %>
 SCRIPT:       <%= @script %><% end %>
+RUN ID:       <%= @scheduled_command.run_count %>
 STATUS:       <%= @logs.count{ |l| l.success? } %>/<%= @logs.size %> HOSTS SUCCEEDED
 ARGS:         <%= @scheduled_command.args ? @scheduled_command.args : "n/a" %>
 ENV:          <%= env() %>
