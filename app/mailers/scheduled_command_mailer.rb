@@ -7,19 +7,19 @@ class ScheduledCommandMailer < ActionMailer::Base
 
     cmd = scheduled_command.command
     if !cmd.name.blank? then
-      command_name = cmd.name
+      @command_name = cmd.name
     else
-      command_name = "#{cmd.bundle.path}/bin/#{cmd.command}"
+      @command_name = "#{cmd.bundle.path}/bin/#{cmd.command}"
     end
 
-    subject = "[Bixby] Scheduled Job: #{command_name} -- "
+    subject = "[Bixby] Scheduled Job: #{@command_name} -- "
     if logs.size == 1 then
-      subject += logs.first.success? ? "SUCCEEDED" : "FAILED"
+      subject += logs.first.success? ? "SUCCES" : "FAIL"
     else
       pass = logs.count{ |l| l.success? }
       fail = logs.size - pass
       if pass == logs.size then
-        subject += "SUCCEEDED"
+        subject += "SUCCES"
       else
         subject += "#{fail}/#{logs.size} FAILED"
       end
@@ -35,4 +35,25 @@ class ScheduledCommandMailer < ActionMailer::Base
          :to      => emails,
          :subject => subject)
   end
+
+
+  class << self
+    def num_bytes(str)
+      return "0 bytes" if str.blank?
+
+      s = "#{str.length} byte"
+      s += "s" if str.length > 1
+      s
+    end
+
+    def num_lines(str)
+      return "0 lines" if str.blank?
+
+      lines = str.split("\n")
+      s = "#{lines.length} line"
+      s += "s" if lines.length != 1
+      s
+    end
+  end
+
 end

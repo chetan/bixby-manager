@@ -1,0 +1,22 @@
+
+<% @logs.each do |log| %>
+
+HOST: <% log.agent.host.name %>
+-----------------------------------------------------------
+
+TIME: <%= log.requested_at.strftime("%H:%M:%S %m/%d/%Y") %>
+USER: <%= log.user ? log.user.display_name : "n/a" %>
+ELAPSED TIME: <%= sprintf("%0.2f", log.time_taken) %>
+EXIT CODE: <%= log.status %> (<%= log.success? ? "success" : "error" %>)
+
+STDOUT: (<%= num_bytes(log.stdout) %>, <%= num_lines(log.stdout) %>)
+===========================
+<%= log.stdout %>
+--EOF--
+
+STDERR: (<%= num_bytes(log.stderr) %>, <%= num_lines(log.stderr) %>)
+==========================
+<%= log.stderr %>
+--EOF--
+
+<% end %>

@@ -119,8 +119,12 @@ class User < ActiveRecord::Base
   end
   alias_method :cant, :cant?
 
+  def display_name
+    self.name || self.username
+  end
+
   def email_address
-    name = self.name || self.username
+    name = self.display_name
     if name.blank? then
       self.email
     else
