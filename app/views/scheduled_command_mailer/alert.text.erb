@@ -1,22 +1,22 @@
 
+JOB:          <%= @command_name %><% if @command_name != @script then %>
+SCRIPT:       <%= @script %><% end %>
+STATUS:       <%= @logs.count{ |l| l.success? } %>/<%= @logs.size %> HOSTS SUCCEEDED
+ARGS:         <%= @scheduled_command.args ? @scheduled_command.args : "n/a" %>
+ENV:          <%= env() %>
+STDIN:        <%= stdin() %>
+
 <% @logs.each do |log| %>
+HOST: <%= log.agent.host.name %>
+===========================================================
 
-HOST: <% log.agent.host.name %>
------------------------------------------------------------
+TIME:         <%= log.requested_at.strftime("%H:%M:%S %m/%d/%Y") %>
+ELAPSED TIME: <%= log.time_taken_str %>
+EXIT CODE:    <%= log.status %> (<%= log.success? ? "success" : "error" %>)
+OWNER:        <%= log.user ? log.user.display_name : "n/a" %>
 
-TIME: <%= log.requested_at.strftime("%H:%M:%S %m/%d/%Y") %>
-USER: <%= log.user ? log.user.display_name : "n/a" %>
-ELAPSED TIME: <%= sprintf("%0.2f", log.time_taken) %>
-EXIT CODE: <%= log.status %> (<%= log.success? ? "success" : "error" %>)
+<%= out(log, :stdout) %>
 
-STDOUT: (<%= num_bytes(log.stdout) %>, <%= num_lines(log.stdout) %>)
-===========================
-<%= log.stdout %>
---EOF--
-
-STDERR: (<%= num_bytes(log.stderr) %>, <%= num_lines(log.stderr) %>)
-==========================
-<%= log.stderr %>
---EOF--
+<%= out(log, :stderr) %>
 
 <% end %>

@@ -1,43 +1,7 @@
 
 class ScheduledCommandMailer < ActionMailer::Base
 
-  def alert(scheduled_command, logs)
-    @scheduled_command = scheduled_command
-    @logs = logs
-
-    cmd = scheduled_command.command
-    if !cmd.name.blank? then
-      @command_name = cmd.name
-    else
-      @command_name = "#{cmd.bundle.path}/bin/#{cmd.command}"
-    end
-
-    subject = "[Bixby] Scheduled Job: #{@command_name} -- "
-    if logs.size == 1 then
-      subject += logs.first.success? ? "SUCCES" : "FAIL"
-    else
-      pass = logs.count{ |l| l.success? }
-      fail = logs.size - pass
-      if pass == logs.size then
-        subject += "SUCCES"
-      else
-        subject += "#{fail}/#{logs.size} FAILED"
-      end
-    end
-
-    emails = []
-    users = scheduled_command.get_alert_users
-    if users then
-      users.each{ |u| emails << u.email_address }
-    end
-
-    mail(:from    => BIXBY_CONFIG[:mailer_from],
-         :to      => emails,
-         :subject => subject)
-  end
-
-
-  class << self
+  module Helpers
     def num_bytes(str)
       return "0 bytes" if str.blank?
 
@@ -54,6 +18,69 @@ class ScheduledCommandMailer < ActionMailer::Base
       s += "s" if lines.length != 1
       s
     end
+
+    def out(log, sym)
+      str = log.send(sym.to_sym)
+      s = "#{sym.to_s.upcase}: (#{num_bytes(str)}, #{num_lines(str)})"
+      s += "\n" + ("-"*s.length)
+      s += str.blank? ? "" : "\n" + str
+      s += "\n--EOF--"
+      s
+    end
+
+    def env
+      env = @scheduled_command.env
+      if env.blank? then
+        "n/a"
+      else
+        env.keys.map { |k| "#{k}=#{env[k]}" }.join(", ")
+      end
+    end
+
+    def stdin
+      if @scheduled_command.stdin.blank? then
+        "n/a"
+      else
+        "\n" + ("-"*30) + @scheduled_command.stdin + "\n--EOF--"
+      end
+    end
+  end
+
+  helper Helpers
+
+  def alert(scheduled_command, logs)
+    @scheduled_command = scheduled_command
+    @logs = logs
+
+    cmd = scheduled_command.command
+    @script = "#{cmd.bundle.path}/bin/#{cmd.command}"
+    @command_name = !cmd.name.blank? ? cmd.name : @script
+
+    subject = "[Bixby] Scheduled Job: #{@command_name} -- "
+    if logs.size == 1 then
+      subject += logs.first.success? ? "SUCCESS" : "FAIL"
+    else
+      pass = logs.count{ |l| l.success? }
+      fail = logs.size - pass
+      if pass == logs.size then
+        subject += "SUCCESS"
+      else
+        subject += "#{fail}/#{logs.size} FAILED"
+      end
+    end
+
+    emails = []
+    users = scheduled_command.get_alert_users
+    if users then
+      users.each{ |u| emails << u.email_address }
+    end
+    if !scheduled_command.alert_emails.blank? then
+      emails += scheduled_command.alert_emails.split(/,/)
+    end
+
+    mail(:from    => BIXBY_CONFIG[:mailer_from],
+         :to      => emails,
+         :subject => subject)
   end
 
 end

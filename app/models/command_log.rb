@@ -103,4 +103,12 @@ class CommandLog < ActiveRecord::Base
   end
   alias_method :fail?, :error?
 
+  def time_taken_str
+    if self.time_taken < 60 then
+      sprintf("%0.2f", self.time_taken) + " sec"
+    else
+      ChronicDuration.output(self.time_taken.to_i, :short)
+    end
+  end
+
 end
