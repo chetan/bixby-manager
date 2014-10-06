@@ -44,13 +44,23 @@ class ScheduledCommandMailer < ActionMailer::Base
         "\n" + ("-"*30) + @scheduled_command.stdin + "\n--EOF--"
       end
     end
+
+    def total_time_taken
+      if @total_elapsed < 60 then
+        sprintf("%0.2f", @total_elapsed) + " sec"
+      else
+        ChronicDuration.output(@total_elapsed.to_i, :short)
+      end
+    end
   end
 
   helper Helpers
 
-  def alert(scheduled_command, logs)
+  def alert(scheduled_command, logs, time_start, total_elapsed)
     @scheduled_command = scheduled_command
     @logs = logs
+    @time_start = time_start
+    @total_elapsed = total_elapsed
 
     cmd = scheduled_command.command
     @script = "#{cmd.bundle.path}/bin/#{cmd.command}"

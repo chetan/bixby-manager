@@ -22,6 +22,7 @@ class Scheduler
 
       scheduled_command.run_count += 1
 
+      time_start = Time.new
       responses = []
       scheduled_command.agents.each do |agent|
         begin
@@ -40,15 +41,22 @@ class Scheduler
         end
       end
 
+      time_end = Time.new
       log.debug { "Completed scheduled command #{scheduled_command.id} for all agents" }
 
       if scheduled_command.once? then
-        scheduled_command.completed_at = Time.new
+        scheduled_command.completed_at = time_end
       end
 
-      # Fire alerts
+      # Fire alerts if necessary
       logs = responses.map{ |r| r.log }
-      ScheduledCommandMailer.alert(scheduled_command, logs).deliver
+      success = logs.count{ |l| l.success? } == logs.size
+      if (success && scheduled_command.alert_on_success?) ||
+          (!success && scheduled_command.alert_on_error?) then
+
+        total_elapsed = time_end - time_start
+        ScheduledCommandMailer.alert(scheduled_command, logs, time_start, total_elapsed).deliver
+      end
 
       # reschedule
       if scheduled_command.cron? then

@@ -1,8 +1,11 @@
 
 JOB:          <%= @command_name %><% if @command_name != @script then %>
 SCRIPT:       <%= @script %><% end %>
-RUN ID:       <%= @scheduled_command.run_count %>
+RUN ID:       <%= @scheduled_command.run_count %><% if @scheduled_command.cron? then %>
+NEXT RUN:     <%= @scheduled_command.scheduled_at.strftime("%m/%d/%Y %H:%M:%S") %><% end %>
 STATUS:       <%= @logs.count{ |l| l.success? } %>/<%= @logs.size %> HOSTS SUCCEEDED
+START TIME:   <%= @time_start.strftime("%m/%d/%Y %H:%M:%S") %>
+ELAPSED TIME: <%= total_time_taken() %>
 ARGS:         <%= @scheduled_command.args ? @scheduled_command.args : "n/a" %>
 ENV:          <%= env() %>
 STDIN:        <%= stdin() %>
@@ -11,7 +14,7 @@ STDIN:        <%= stdin() %>
 HOST: <%= log.agent.host.name %>
 ===========================================================
 
-TIME:         <%= log.requested_at.strftime("%H:%M:%S %m/%d/%Y") %>
+TIME:         <%= log.requested_at.strftime("%m/%d/%Y %H:%M:%S") %>
 ELAPSED TIME: <%= log.time_taken_str %>
 EXIT CODE:    <%= log.status %> (<%= log.success? ? "success" : "error" %>)
 OWNER:        <%= log.user ? log.user.display_name : "n/a" %>
