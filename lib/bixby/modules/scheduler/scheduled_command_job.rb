@@ -48,6 +48,12 @@ class Scheduler
         scheduled_command.completed_at = time_end
       end
 
+      # reschedule
+      if scheduled_command.cron? then
+        scheduled_command.update_next_run_time!
+        scheduled_command.schedule_job!
+      end
+
       # Fire alerts if necessary
       logs = responses.map{ |r| r.log }
       success = logs.count{ |l| l.success? } == logs.size
@@ -56,12 +62,6 @@ class Scheduler
 
         total_elapsed = time_end - time_start
         ScheduledCommandMailer.alert(scheduled_command, logs, time_start, total_elapsed).deliver
-      end
-
-      # reschedule
-      if scheduled_command.cron? then
-        scheduled_command.update_next_run_time!
-        scheduled_command.schedule_job!
       end
 
       scheduled_command.save

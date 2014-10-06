@@ -1,23 +1,26 @@
 
 JOB:          <%= @command_name %><% if @command_name != @script then %>
 SCRIPT:       <%= @script %><% end %>
+OWNER:        <%= log.user ? log.user.email_address : "n/a" %>
 RUN ID:       <%= @scheduled_command.run_count %><% if @scheduled_command.cron? then %>
-NEXT RUN:     <%= @scheduled_command.scheduled_at.strftime("%m/%d/%Y %H:%M:%S") %><% end %>
+NEXT RUN:     <%= @scheduled_command.scheduled_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %><% end %>
+
 STATUS:       <%= @logs.count{ |l| l.success? } %>/<%= @logs.size %> HOSTS SUCCEEDED
-START TIME:   <%= @time_start.strftime("%m/%d/%Y %H:%M:%S") %>
+START TIME:   <%= @time_start.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
 ELAPSED TIME: <%= total_time_taken() %>
+
 ARGS:         <%= @scheduled_command.args ? @scheduled_command.args : "n/a" %>
 ENV:          <%= env() %>
 STDIN:        <%= stdin() %>
+
 
 <% @logs.each do |log| %>
 HOST: <%= log.agent.host.name %>
 ===========================================================
 
-TIME:         <%= log.requested_at.strftime("%m/%d/%Y %H:%M:%S") %>
+TIME:         <%= log.requested_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
 ELAPSED TIME: <%= log.time_taken_str %>
 EXIT CODE:    <%= log.status %> (<%= log.success? ? "success" : "error" %>)
-OWNER:        <%= log.user ? log.user.display_name : "n/a" %>
 
 <%= out(log, :stdout) %>
 
