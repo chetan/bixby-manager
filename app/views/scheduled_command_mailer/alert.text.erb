@@ -15,12 +15,13 @@ STDIN:        <%= stdin() %>
 
 
 <% @logs.each do |log| %>
+
 HOST: <%= log.agent.host.name %>
 ===========================================================
 
 TIME:         <%= log.requested_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
 ELAPSED TIME: <%= log.time_taken_str %>
-EXIT CODE:    <%= log.status %> (<%= log.success? ? "success" : "error" %>)
+EXIT CODE:    <%= log.status %> (<%= log.success? ? "SUCCESS" : "ERROR" %>)
 
 <%= out(log, :stdout) %>
 
