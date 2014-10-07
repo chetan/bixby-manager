@@ -41,7 +41,7 @@ class ScheduledCommand < ActiveRecord::Base
   belongs_to :org
   belongs_to :agent
   belongs_to :command
-  belongs_to :user, :foreign_key => :created_by
+  belongs_to :owner, :class_name => User, :foreign_key => :created_by
 
   has_many :command_logs
 
@@ -56,6 +56,10 @@ class ScheduledCommand < ActiveRecord::Base
     NATURAL = 2
   end
   Bixby::Util.create_const_map(ScheduleType)
+
+  def self.for_user(user)
+    where(:org_id => user.org.id)
+  end
 
   def cron?
     self.schedule_type == ScheduleType::CRON
