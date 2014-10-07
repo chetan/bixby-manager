@@ -1,0 +1,42 @@
+
+<div class="row command_logs">
+  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
+
+    <h3>Scheduled Commands</h3>
+
+    <div class="row">
+      <div class="col-xs-12 text-right">
+        <ul class="pager-right">
+          <li class="older disabled"><a>&larr; Previous Page</a></li>
+          <li class="newer"><a>Next Page &rarr;</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Host</th>
+          <th>User</th>
+          <th>Date</th>
+          <th class="status">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= each_partial(command_logs, "command_log", _bv.CommandLogRow) %>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <div class="col-xs-12 text-right">
+        <ul class="pager-right">
+          <li class="older disabled"><a>&larr; Previous Page</a></li>
+          <li class="newer"><a>Next Page &rarr;</a></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+

@@ -6,18 +6,22 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/nav_bar"
 
     links:
+      # inventory
       "a.navbar-brand":   "inventory"
       ".tab.inventory a": "inventory"
 
+      # monitoring
       ".tab.monitoring.primary a":         "monitoring_overview"
       ".tab.monitoring a.overview":        "monitoring_overview"
       ".tab.monitoring a.check_templates": "mon_check_templates"
       ".tab.monitoring a.schedules":       "mon_oncalls"
 
-      ".tab.runbooks.primary a":      "runbooks"
-      ".tab.runbooks a.run":          "runbooks"
-      ".tab.runbooks a.logs":         "runbooks_logs"
-      ".tab.runbooks a.repositories": "repository"
+      # runbooks
+      ".tab.runbooks.primary a":            "runbooks"
+      ".tab.runbooks a.run":                "runbooks"
+      ".tab.runbooks a.scheduled_commands": "scheduled_commands"
+      ".tab.runbooks a.logs":               "runbooks_logs"
+      ".tab.runbooks a.repositories":       "repository"
 
       # user menu
       "a#profile":         "profile"
@@ -100,14 +104,13 @@ namespace "Bixby.view", (exports, top) ->
         el.addClass("disabled").attr("title", "No help available on this screen")
 
     after_render: ->
-      @$("select#pretend").select2({
+      @$("select#pretend").select2
         allowClear: true
         matcher: (term, text, opt) ->
           # use default matcher to evaluate the option as well its option group label
           optgroup = $(opt).parent().attr("label")
           $.prototype.select2.defaults.matcher(term, text) ||
             $.prototype.select2.defaults.matcher(term, optgroup)
-        })
 
     dispose: ->
       super

@@ -27,5 +27,4 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.ScheduledCommandList extends Stark.Collection
     model: exports.ScheduledCommand
     @key: "scheduled_commands"
-    url: -> "/rest/hosts/#{@host_id || @host.id}/triggers"
-    params: [ "host" ]
+    url: "/rest/scheduled_commands"

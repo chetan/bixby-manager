@@ -142,6 +142,7 @@ Bixby::Application.routes.draw do
   get "/runbooks" => "runbooks/base#index"
   namespace :runbooks do
     resources :logs
+    resources :scheduled_commands
   end
 
   ##############################################################################
