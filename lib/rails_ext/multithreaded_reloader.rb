@@ -1,7 +1,7 @@
 
 module MultithreadedReloader
 
-  PATHS = %w{app lib}
+  PATHS = %w{app lib test/mailers/previews}
 
   # Reload all files in the given path if they have changed since the given timestamp
   #
