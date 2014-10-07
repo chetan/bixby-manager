@@ -1,7 +1,7 @@
 
 JOB:          <%= @command_name %><% if @command_name != @script then %>
 SCRIPT:       <%= @script %><% end %>
-OWNER:        <%= log.user ? log.user.email_address : "n/a" %>
+OWNER:        <%= @scheduled_command.user ? @scheduled_command.user.email_address : "n/a" %>
 RUN ID:       <%= @scheduled_command.run_count %><% if @scheduled_command.cron? then %>
 NEXT RUN:     <%= @scheduled_command.scheduled_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %><% end %>
 
