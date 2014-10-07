@@ -36,6 +36,9 @@ i.red, i.danger {
   color: $brand-danger;
   // color: #bd362f;
 }
+i.yellow, i.warning {
+  color: $brand-warning;
+}
 
 div.valid {
   font-size: normal;

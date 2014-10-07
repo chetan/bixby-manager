@@ -17,14 +17,16 @@
       <thead>
         <tr>
           <th>Command</th>
-          <th>Host</th>
-          <th>User</th>
-          <th>Date</th>
-          <th class="status">Status</th>
+          <th>Owner</th>
+          <th>Type</th>
+          <th>Schedule</th>
+          <th>Last Run</th>
+          <th>Next Run</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
-        <%= each_partial(command_logs, "command_log", _bv.CommandLogRow) %>
+        <%= each_partial(scheduled_commands, "scheduled_command", _bv.ScheduledCommandRow) %>
       </tbody>
     </table>
 

@@ -4,6 +4,10 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.ScheduledCommand extends Stark.Model
 
     @key: "scheduled_command"
+    @props
+      _strings: ["agent_ids", "owner", "stdin", "args", "schedule", "alert_users", "alert_emails", "command", "hosts", "org", "status"]
+      _ints:    ["command_id", "created_by", "schedule_type", "alert_on", "run_count"]
+      _dates:   ["created_at", "updated_at", "deleted_at", "scheduled_at", "completed_at", "last_run", "next_run"]
     urlRoot: "/rest/scheduled_commands"
 
     params: [ { name: "scheduled_command", set_id: true } ]

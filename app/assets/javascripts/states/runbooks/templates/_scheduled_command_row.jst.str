@@ -1,0 +1,10 @@
+
+<tr>
+  <td><a><%= scheduled_command.command %></a></td>
+  <td><%= scheduled_command.owner %></td>
+  <td><%= schedule_type() %></td>
+  <td><%= schedule() %></td>
+  <td><%= (scheduled_command.last_run ? scheduled_command.last_run.format("L HH:mm:ss") : "") %></td>
+  <td><%= (scheduled_command.next_run ? scheduled_command.next_run.format("L HH:mm:ss") : "n/a") %></td>
+  <td class="status text-center"><%= status() %></td>
+</tr>
