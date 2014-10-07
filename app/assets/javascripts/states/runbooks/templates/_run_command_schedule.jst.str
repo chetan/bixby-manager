@@ -10,12 +10,12 @@
       <strong>Type of schedule:</strong>
       <div class="radio">
         <label title="Job will run once only, at the specified time">
-          <input type="radio" name="schedule_type" value="once" class="natural"> One time
+          <input type="radio" name="schedule_type" value="2" class="natural"> One time
         </label>
       </div>
       <div class="radio">
         <label title="Job will run repeatedly, using the given cron-formatted schedule">
-          <input type="radio" name="schedule_type" value="cron" class="cron"> Cron
+          <input type="radio" name="schedule_type" value="1" class="cron"> Cron
         </label>
       </div>
     </div>

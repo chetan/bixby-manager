@@ -95,6 +95,12 @@ class ApplicationController < ActionController::Base
     return nil
   end
 
+  def _array(sym)
+    arr = params[sym.to_sym] || []
+    arr = [arr] if !arr.kind_of? Array
+    return arr
+  end
+
   # Restful response
   #
   # Handles HTML request normally; XML/JSON requests are handled using
