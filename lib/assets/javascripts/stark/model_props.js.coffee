@@ -14,8 +14,9 @@ Stark.Model.props = (new_props) ->
     _.each keys, (k) ->
       create_prop(k)
       props[k] = (s) ->
-        # take care to preserve null/undefined values, only coerce if we have something
+        # take care to preserve null/undefined/array values, only coerce if we have something
         if s?
+          return s if _.isArray(s)
           return f(s)
         else
           return s
@@ -26,7 +27,7 @@ Stark.Model.props = (new_props) ->
         extract_prop(val, String)
       when "_dates"
         extract_prop(val, (s) -> moment(s))
-      when "_numbers", "_nums"
+      when "_numbers", "_nums", "_integers", "_ints"
         extract_prop(val, Number)
       when "_bools"
         extract_prop(val, Boolean)
