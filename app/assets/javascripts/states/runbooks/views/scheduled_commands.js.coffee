@@ -23,11 +23,9 @@ namespace "Bixby", (exports, top) ->
           @transition(new_state)
 
     after_render: ->
-      @log @state
       @tab = @state.page_tab
-      @log "tab: ", @tab
       @ui.tab[@tab].parent().addClass("active")
       @ui.pane[@tab].addClass("active")
+
       html = @include_partial(B.ScheduledCommandsTable, {scheduled_commands: @scheduled_commands})
       @ui.pane[@tab].html(html)
-
