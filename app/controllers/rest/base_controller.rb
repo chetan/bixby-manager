@@ -7,12 +7,6 @@ class Rest::BaseController < UiController
 
   private
 
-  # Override method from ActionController::ImplicitRender which will always try to render a template
-  # when returning from a controller action. We handle it below in #restful_response instead.
-  def default_render(*args)
-    # no-op
-  end
-
   # Check for a valid user session or API authentication header
   #
   # @return [Boolean] true if the request is not authenticated (user must login)

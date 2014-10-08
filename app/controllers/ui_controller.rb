@@ -9,6 +9,7 @@ class UiController < ApplicationController
   before_filter :set_current_tenant
   before_filter :bootstrap_current_user
   before_filter :bootstrap_users
+  around_action :always_render_index
 
   # Handle some common errors by simply redirecting to /inventory (for now)
   # TODO better handling
@@ -34,6 +35,20 @@ class UiController < ApplicationController
 
 
   protected
+
+  # Override method from ActionController::ImplicitRender which will always try to render a template
+  # when returning from a controller action. We handle it below in #restful_response instead.
+  def default_render(*args)
+    # no-op
+  end
+
+  def always_render_index
+    res = yield
+    if performed? then
+      return res
+    end
+    render :index
+  end
 
   def set_current_tenant
     if current_user.kind_of?(User) && current_user.can?("impersonate_users") then
