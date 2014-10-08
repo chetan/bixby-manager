@@ -1,0 +1,10 @@
+
+<div class="row">
+  <div class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
+
+    <h3>Command Logs</h3>
+    <br/>
+    <%= include_partial(B.CommandResponse, {command_log: command_log}) %>
+
+  </div>
+</div>
