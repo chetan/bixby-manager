@@ -2,7 +2,15 @@
 class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
 
   def index
-    restful ScheduledCommand.for_user(current_user).order(:created_at => :asc)
+    restful ScheduledCommand.for_user(current_user).
+      where("schedule_type = 1 OR completed_at IS NULL").
+      order(:created_at => :asc)
+  end
+
+  def history
+    restful ScheduledCommand.for_user(current_user).
+      where("schedule_type = 2 AND completed_at IS NOT NULL").
+      order(:created_at => :asc)
   end
 
   def create

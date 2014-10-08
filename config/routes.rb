@@ -87,6 +87,7 @@ Bixby::Application.routes.draw do
     resources :scheduled_commands do
       collection do
         get "validate"
+        get "history"
       end
     end
   end
@@ -142,7 +143,11 @@ Bixby::Application.routes.draw do
   get "/runbooks" => "runbooks/base#index"
   namespace :runbooks do
     resources :logs
-    resources :scheduled_commands
+    resources :scheduled_commands do
+      collection do
+        get :history
+      end
+    end
   end
 
   ##############################################################################

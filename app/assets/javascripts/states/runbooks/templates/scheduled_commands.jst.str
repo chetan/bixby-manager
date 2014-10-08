@@ -4,39 +4,14 @@
 
     <h3>Scheduled Commands</h3>
 
-    <div class="row">
-      <div class="col-xs-12 text-right">
-        <ul class="pager-right">
-          <li class="older disabled"><a>&larr; Previous Page</a></li>
-          <li class="newer"><a>Next Page &rarr;</a></li>
-        </ul>
-      </div>
-    </div>
+    <ul class="nav nav-tabs" role="tablist">
+      <li><a href="#active" class="active" role="tab" data-toggle="tab">Active</a></li>
+      <li><a href="#history" class="history" role="tab" data-toggle="tab">History</a></li>
+    </ul>
 
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Command</th>
-          <th>Owner</th>
-          <th>Type</th>
-          <th>Schedule</th>
-          <th>Last Run</th>
-          <th>Next Run</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= each_partial(scheduled_commands, "scheduled_command", _bv.ScheduledCommandRow) %>
-      </tbody>
-    </table>
-
-    <div class="row">
-      <div class="col-xs-12 text-right">
-        <ul class="pager-right">
-          <li class="older disabled"><a>&larr; Previous Page</a></li>
-          <li class="newer"><a>Next Page &rarr;</a></li>
-        </ul>
-      </div>
+    <div class="tab-content">
+      <div class="tab-pane" id="active"></div>
+      <div class="tab-pane" id="history"></div>
     </div>
 
   </div>
