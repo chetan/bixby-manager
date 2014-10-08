@@ -30,6 +30,13 @@ Bixby.app.add_states { tab: "runbooks", views: [ _bv.PageLayout ] },
     views: B.CommandLog
     models: [ B.m.CommandLog ]
 
+  "scheduled_command":
+    url:  "runbooks/scheduled_commands/:scheduled_command_id"
+    help: ""
+
+    views:  B.ScheduledCommand
+    models: [ B.m.ScheduledCommand ]
+
   "scheduled_commands_history":
     url:  "runbooks/scheduled_commands/history"
     help: ""

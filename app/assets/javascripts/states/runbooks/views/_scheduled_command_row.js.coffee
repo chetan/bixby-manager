@@ -4,6 +4,9 @@ namespace "Bixby.view", (exports, top) ->
     className: "scheduled_command_row"
     template: "runbooks/_scheduled_command_row"
 
+    links:
+      "a": [ "scheduled_command", -> { scheduled_command: @scheduled_command } ]
+
     schedule_type: ->
       switch @scheduled_command.schedule_type
         when 1

@@ -10,8 +10,9 @@
     </ul>
 
     <div class="tab-content">
-      <div class="tab-pane" id="active"></div>
-      <div class="tab-pane" id="history"></div>
+      <div class="tab-pane active">
+        <%= include_partial(B.ScheduledCommandsTable, {scheduled_commands: scheduled_commands}) %>
+      </div>
     </div>
 
   </div>
