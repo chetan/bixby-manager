@@ -139,6 +139,10 @@ class ApplicationController < ActionController::Base
     name = opts.delete(:name)
     api_opts = opts[:use] ? { :use => opts.delete(:use) } : nil
 
+    if type.nil?() && obj.kind_of?(ActiveRecord::Relation) then
+      type = obj.model
+    end
+
     if type.nil? then
 
       # infer the type from the object
