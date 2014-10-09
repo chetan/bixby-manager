@@ -15,7 +15,17 @@ class Runbooks::ScheduledCommandsController < Runbooks::BaseController
   end
 
   def show
-    bootstrap ScheduledCommand.find(_id)
+    sc = ScheduledCommand.find(_id)
+    bootstrap sc
+
+    if sc.cron? then
+      # also need logs for this command
+      logs = CommandLog.for_user(current_user).
+        where(:scheduled_command_id => sc.id).
+        includes(:command, :agent, :user).
+        limit(10)
+      bootstrap logs, :type => "ScheduledCommandLog"
+    end
   end
 
 end

@@ -1,10 +1,10 @@
 
 <h3>Scheduled Commands</h3>
+<br/>
 
 <div class="row">
   <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
 
-    <br/>
     <div class="panel panel-default scheduled_command">
       <div class="panel-heading">
         <h3 class="panel-title"><%= scheduled_command.command %></h3>
@@ -88,4 +88,28 @@
     </div>
 
   </div>
+
+
+  <%? scheduled_command.is_cron() %>
+    <div class="col-xs-12 col-sm-8 col-md-7 col-lg-8">
+      <div class="panel panel-default scheduled_command_logs">
+        <div class="panel-heading">
+          <h3 class="panel-title">Recent Logs</h3>
+        </div>
+
+        <%= include_partial(B.CommandLogTable) %>
+
+        <div class="panel-footer">
+          <%= include("main/_pager") %>
+        </div>
+      </div>
+    </div>
+
+  <% } else if (scheduled_command.is_once() && scheduled_command.command_log()) { %>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+      <%= include_partial(B.CommandResponse, {command_log: scheduled_command.command_log()}) %>
+    </div>
+
+  <%/%>
+
 </div>

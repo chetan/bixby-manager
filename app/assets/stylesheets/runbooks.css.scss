@@ -19,6 +19,15 @@ div#content.runbooks {
     }
   }
 
+  div.scheduled_command_logs {
+    table {
+      margin-bottom: 3px;
+    }
+    ul.pager-right {
+      margin-bottom: 0;
+    }
+  }
+
 }
 
 .select2-result-label {

@@ -18,3 +18,11 @@ namespace 'Bixby.model', (exports, top) ->
     model: exports.CommandLog
     @key: "command_logs"
     url: "/rest/command_logs"
+
+  class exports.ScheduledCommandLogList extends Stark.Collection
+    model: exports.CommandLog
+    @key: "command_logs"
+    state:
+      pageSize: 10
+    params: ["scheduled_command"]
+    url: -> "/rest/command_logs?scheduled_command_id=#{@scheduled_command_id}"
