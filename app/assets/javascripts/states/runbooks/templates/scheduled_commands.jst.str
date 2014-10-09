@@ -1,9 +1,10 @@
 
+<h3>Scheduled Commands</h3>
+
 <div class="row command_logs">
   <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
 
-    <h3>Scheduled Commands</h3>
-
+    <br/>
     <ul class="nav nav-tabs" role="tablist">
       <li><a href="#active" class="active" role="tab" data-toggle="tab">Active</a></li>
       <li><a href="#history" class="history" role="tab" data-toggle="tab">History</a></li>

@@ -20,8 +20,9 @@ module Bixby
         # extra info
         last_run = ::CommandLog.where(:scheduled_command_id => obj.id, :run_id => obj.run_count).order(:requested_at => :asc).first
         if last_run then
-          self[:last_run] = last_run.requested_at
-          self[:status] = last_run.success? ? "success" : "fail"
+          self[:last_run_log] = render(last_run)
+          self[:last_run]     = last_run.requested_at
+          self[:status]       = last_run.success? ? "success" : "fail"
         end
         if obj.cron? || !last_run then
           self[:next_run] = obj.scheduled_at

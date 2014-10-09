@@ -13,6 +13,10 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
       order(:created_at => :asc)
   end
 
+  def show
+    restful ScheduledCommand.find(_id)
+  end
+
   def create
     sc = ScheduledCommand.new
 

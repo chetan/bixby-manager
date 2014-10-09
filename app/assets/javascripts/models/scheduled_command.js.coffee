@@ -8,6 +8,7 @@ namespace 'Bixby.model', (exports, top) ->
       _strings: ["agent_ids", "owner", "stdin", "args", "schedule", "alert_users", "alert_emails", "command", "hosts", "org", "status"]
       _ints:    ["command_id", "created_by", "schedule_type", "alert_on", "run_count"]
       _dates:   ["created_at", "updated_at", "deleted_at", "scheduled_at", "completed_at", "last_run", "next_run"]
+      _other:   ["env"]
     urlRoot: "/rest/scheduled_commands"
 
     params: [ { name: "scheduled_command", set_id: true } ]
@@ -27,6 +28,16 @@ namespace 'Bixby.model', (exports, top) ->
 
     @validate_natural: (str, cb) ->
       @validate("natural", str, cb)
+
+    is_cron: ->
+      @schedule_type == 1
+
+    is_once: ->
+      @schedule_type == 2
+
+    command_log: ->
+      if last = @get("last_run_log")
+        new B.m.CommandLog(last)
 
   class exports.ScheduledCommandList extends Stark.Collection
     model: exports.ScheduledCommand
