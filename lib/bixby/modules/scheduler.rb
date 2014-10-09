@@ -86,6 +86,15 @@ class Scheduler < API
     driver.schedule_at_with_queue(timestamp, job, queue)
   end
 
+  # Cancel the given job
+  #
+  # @param [String] job_id
+  #
+  # @param [Boolean] returns true if successfully canceled
+  def cancel(job_id)
+    driver.cancel(job_id)
+  end
+
 end # Scheduler
 end # Bixby
 

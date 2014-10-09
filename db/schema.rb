@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140926201211) do
+ActiveRecord::Schema.define(version: 20141009201458) do
 
   create_table "actions", force: true do |t|
     t.integer  "trigger_id",            null: false
@@ -302,6 +302,7 @@ ActiveRecord::Schema.define(version: 20140926201211) do
     t.integer  "schedule_type", limit: 2
     t.string   "schedule"
     t.datetime "scheduled_at"
+    t.string   "job_id"
     t.integer  "alert_on",                default: 0, null: false
     t.string   "alert_users"
     t.text     "alert_emails"

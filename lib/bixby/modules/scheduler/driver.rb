@@ -14,6 +14,10 @@ class Scheduler
         raise NotImplementedError.new("schedule_at_with_queue must be overridden!")
       end
 
+      def cancel(job_id)
+        raise NotImplementedError.new("cancel must be overridden!")
+      end
+
     end
 
   end

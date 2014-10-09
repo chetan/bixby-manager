@@ -17,6 +17,7 @@
 # **`schedule_type`**  | `integer`          |
 # **`schedule`**       | `string(255)`      |
 # **`scheduled_at`**   | `datetime`         |
+# **`job_id`**         | `string(255)`      |
 # **`alert_on`**       | `integer`          | `default(0), not null`
 # **`alert_users`**    | `string(255)`      |
 # **`alert_emails`**   | `text`             |
@@ -99,7 +100,12 @@ class ScheduledCommand < ActiveRecord::Base
   # Schedules job to run at the designated time
   def schedule_job!
     job = Bixby::Scheduler::ScheduledCommandJob.create(self)
-    Bixby::Scheduler.new.schedule_at(self.scheduled_at, job)
+    self.job_id = Bixby::Scheduler.new.schedule_at(self.scheduled_at, job)
+  end
+
+  def cancel_job!
+    Bixby::Scheduler.new.cancel(self.job_id)
+    self.job_id = nil
   end
 
 end

@@ -56,6 +56,15 @@ class Scheduler
         ::Sidekiq::Client.push(args)
       end
 
+      def cancel(job_id)
+        job = ::Sidekiq::ScheduledSet.new.find_job(job_id)
+        if job then
+          job.delete
+          return true
+        end
+        return false
+      end
+
     end
 
   end
