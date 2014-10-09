@@ -8,6 +8,7 @@ namespace "Bixby.view", (exports, top) ->
 
     show: ->
       @$el.modal("show")
+      @$("textarea").linedtextarea();
 
     after_render: ->
       @$el.modal({ show: false })
