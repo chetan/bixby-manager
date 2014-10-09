@@ -111,9 +111,13 @@ class Stark.State
 
     for name in @route.paramNames
       if name.match(/_id$/)
+        if @[name] # see if we have 'foo_id'
+          return url.replace(":#{name}", @[name])
+
+        # see if we have the model 'foo' itself
         v = name.replace(/_id$/, '')
         if @[v] && @[v].id
-          url = url.replace(":#{name}", @[v].id)
+          return url.replace(":#{name}", @[v].id)
         else
           @log "WARNING: couldn't find substitution for #{name} in #{@url}"
           return false
