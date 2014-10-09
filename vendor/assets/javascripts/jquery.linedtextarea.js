@@ -63,11 +63,10 @@
 
 			/* Turn off the wrapping of as we don't want to screw up the line numbers */
 			textarea.attr("wrap", "off");
-			var originalTextAreaWidth	= textarea.outerWidth();
 
 			/* Wrap the text area in the elements we need */
 			textarea.wrap("<div class='linedtextarea'></div>");
-			var linedTextAreaDiv	= textarea.parent().wrap("<div class='linedwrap' style='width:" + originalTextAreaWidth + "px'></div>");
+			var linedTextAreaDiv	= textarea.parent().wrap("<div class='linedwrap' style='width:100%'></div>");
 			var linedWrapDiv 			= linedTextAreaDiv.parent();
 
 			linedWrapDiv.prepend("<div class='lines' style='width:50px'></div>");
@@ -89,15 +88,19 @@
 			}
 
 
-			/* Set the width */
-			var sidebarWidth					= linesDiv.outerWidth();
-			var paddingHorizontal 		= parseInt( linedWrapDiv.css("border-left-width") ) + parseInt( linedWrapDiv.css("border-right-width") ) + parseInt( linedWrapDiv.css("padding-left") ) + parseInt( linedWrapDiv.css("padding-right") );
-			var linedWrapDivNewWidth 	= originalTextAreaWidth - paddingHorizontal;
-			var textareaNewWidth			= originalTextAreaWidth - sidebarWidth - paddingHorizontal - 20;
+			/* Set the width of the textarea */
+			var resizeTextarea = function() {
+				var fullWidth            = linedWrapDiv.outerWidth();
+				var sidebarWidth         = linesDiv.outerWidth();
+				var paddingHorizontal    = parseInt( linedWrapDiv.css("border-left-width") ) + parseInt( linedWrapDiv.css("border-right-width") ) + parseInt( linedWrapDiv.css("padding-left") ) + parseInt( linedWrapDiv.css("padding-right") );
+				var linedWrapDivNewWidth = fullWidth - paddingHorizontal;
+				var textareaNewWidth     = fullWidth - sidebarWidth - paddingHorizontal - 20;
 
-			textarea.width( textareaNewWidth );
-			linedWrapDiv.width( linedWrapDivNewWidth );
-
+				textarea.width( textareaNewWidth );
+				// linedWrapDiv.width( linedWrapDivNewWidth );
+			};
+			resizeTextarea();
+			$(window).resize(resizeTextarea);
 
 
 			/* React to the scroll event */
@@ -110,7 +113,7 @@
 			});
 
 
-			/* Should the textarea get resized outside of our control */
+			/* Should the textarea get resized outside of our control (by dragging the grabber) */
 			// workaround for a lack of a resize event on textareas using the native resize control
 			// via http://stackoverflow.com/a/7055239
 			textarea.data('x', textarea.outerWidth());
