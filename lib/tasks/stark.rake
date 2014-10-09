@@ -32,7 +32,7 @@ class StarkViewTask
 
       File.open(view_file, 'w') do |f|
         f.puts <<-EOF
-namespace "Bixby.view", (exports, top) ->
+namespace "Bixby", (exports, top) ->
 
   class exports.#{view} extends Stark.#{clazz}
     #{el}
