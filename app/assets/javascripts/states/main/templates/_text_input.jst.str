@@ -10,10 +10,13 @@ this.value       = this.value || null;
 this.help        = (this.help && _.isString(this.help)) ? this.help : null;
 this.icon        = this.icon  || null;
 this.autocomplete= this.autocomplete || false;
+this.hide_label  = this.hide_label || false;
 %>
 
 <div class="form-group has-feedback">
-  <label class="control-label" for="<%= name %>" <%? title %>title="<%= title %>"<%/%>><%= label %></label>
+  <%? !hide_label %>
+    <label class="control-label" for="<%= name %>" <%? title %>title="<%= title %>"<%/%>><%= label %></label>
+  <%/%>
   <input
     class="form-control <%= name %>"
     type="<%= (type || 'text') %>"
