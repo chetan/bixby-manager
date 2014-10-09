@@ -31,7 +31,7 @@ Stark.Model.props = (new_props) ->
         extract_prop(val, Number)
       when "_bools"
         extract_prop(val, Boolean)
-      when "_misc", "_other"
+      when "_misc", "_other", "_objects", "_object", "_objs", "_obj"
         extract_prop(val, (x) -> return x)
 
 
