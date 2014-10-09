@@ -242,7 +242,7 @@ class Stark.View extends Backbone.View
         _.extend s, @get_link_data(data, el)
 
         url = s.create_url()
-        url = "/" + url if url.charAt(0) != '/'
+        url = "/" + url if url && url.charAt(0) != '/'
 
         @$(el).attr("href", url)
 
