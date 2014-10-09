@@ -1,0 +1,9 @@
+
+<div class="row">
+  <div class="col-xs-12 text-right">
+    <ul class="pager-right">
+      <li class="older disabled"><a>&larr; Newer</a></li>
+      <li class="newer"><a>Older &rarr;</a></li>
+    </ul>
+  </div>
+</div>

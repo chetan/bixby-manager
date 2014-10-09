@@ -1,0 +1,15 @@
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Host</th>
+      <th>User</th>
+      <th>Date</th>
+      <th class="status">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= each_partial(command_logs, "command_log", _bv.CommandLogRow) %>
+  </tbody>
+</table>
