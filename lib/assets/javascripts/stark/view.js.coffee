@@ -94,6 +94,8 @@ class Stark.View extends Backbone.View
     # mixin view helpers
     if Stark.View.helpers
       _.extend @, Stark.View.helpers
+    if @helpers
+      _.each @helpers, (h) => _.extend(@, h)
 
     # _.bindAll @, _.functions(@) # don't think this is even needed
     return @
