@@ -13,6 +13,7 @@ tmp/
 *.sql
 *.pgsql
 *.sh
+app/views/devise
 
 # config
 config/database.yml
