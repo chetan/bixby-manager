@@ -66,7 +66,7 @@
 		}, helpers = instance.helpers = {
 			'=': function (js) {
 				// output js
-				return '__out__+=' + js + ';';
+				return '__out__+=(' + js + ');';
 			},
 			'-': function (js) {
 				// output js if defined
