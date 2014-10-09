@@ -18,4 +18,4 @@ namespace "Bixby.view", (exports, top) ->
         "click a": (e) ->
           e.preventDefault()
           e.stopPropagation()
-          modal = @partial(exports.CommandLogModal, { command_log: @command_log }).show()
+          @partial(exports.CommandLogModal, { command_log: @command_log }).show()
