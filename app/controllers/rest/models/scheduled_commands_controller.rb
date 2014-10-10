@@ -47,6 +47,8 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
       sc.alert_emails = params[:alert_emails]
     end
 
+    # need to save before & after so we can get an id
+    sc.save!
     sc.schedule_job!
     sc.save!
 
