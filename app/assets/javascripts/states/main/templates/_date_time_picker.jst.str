@@ -1,0 +1,9 @@
+
+<div class="input-group">
+  <span class="input-group-btn">
+    <button class="btn btn-default calendar" type="button"><%i calendar %></button>
+  </span>
+  <input class="form-control natural" type="text" id="natural" name="natural">
+</div>
+<div class="valid natural"></div>
+<span class="form-control-feedback natural"></span>

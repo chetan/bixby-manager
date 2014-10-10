@@ -87,11 +87,13 @@ class Bixby.RunCommand extends Stark.View
     "keyup cron.text": _.debounceR 250, (e) ->
       _.unique_val e.target, (val) => @validate_schedule("cron", val)
 
-    "keyup natural.text": _.debounceR 250, (e) ->
-      _.unique_val e.target, (val) => @validate_schedule("natural", val)
-
-    "click calendar": ->
-      @ui.calendar.datepicker("show")
+    "datepicker.change natural.text": (e, valid, date, date_rel) ->
+      @toggle_schedule_status("div.valid.natural", valid)
+      if valid
+        @set_next_schedule("natural", date, date_rel)
+      else
+        @ui.configure_email.btn.addClass("disabled")
+        @ui.next_schedule.hide()
 
     "click h4.tab1, collapse.1": ->
       if @ui.collapse[1].filter(":visible").length
@@ -114,7 +116,7 @@ class Bixby.RunCommand extends Stark.View
       # clear the validation
       @ui.configure_email.btn.addClass("disabled")
       @ui.next_schedule.hide()
-      return _.toggle_valid_input(div, null, null, true)
+      return _.clear_valid_input(div)
 
     Bixby.model.ScheduledCommand.validate type, val, (res) =>
       @toggle_schedule_status(div, res != false)
@@ -141,30 +143,6 @@ class Bixby.RunCommand extends Stark.View
       _.fail(div)
       @ui.configure_email.btn.addClass("disabled")
       @ui.next_schedule.hide()
-
-  validate_datepicker: (date, time) ->
-    date ?= new Date()
-    date = moment(date)
-
-    if !time
-      @toggle_schedule_status("div.valid.natural", false)
-      @ui.natural.text.val("time is required")
-      return
-
-    Bixby.model.ScheduledCommand.validate "natural", time, true, (res) =>
-      @toggle_schedule_status("div.valid.natural", res != false)
-      if res == false
-        @ui.natural.text.val("invalid time: " + time)
-      else
-        # combine date & time
-        time = moment(res[0])
-        date = moment(new Date(date.year(), date.month(), date.date(), time.hours(), time.minutes(), time.seconds()))
-        if (new Date() - date._d) > 0
-          @toggle_schedule_status("div.valid.natural", false)
-          @ui.natural.text.val("date/time is in the past")
-          return
-        @set_next_schedule("natural", date)
-        @ui.natural.text.val(date.format("L HH:mm:ss"))
 
   # Common input handling for run/schedule below
   with_inputs: (fn) ->
@@ -247,13 +225,6 @@ class Bixby.RunCommand extends Stark.View
 
   after_render: ->
     _.each [1..3], (i) => @ui.tab[i].collapse()
-
-    @ui.calendar.datepicker(
-      keyboardNavigation: true
-      todayHighlight: true
-      startDate: new Date()
-      ).on "hide", (e) =>
-        @validate_datepicker(e.date, e.time)
 
     @$("select#command").select2
       allowClear: true
