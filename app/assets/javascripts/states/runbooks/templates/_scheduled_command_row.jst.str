@@ -7,7 +7,10 @@
   <td>
     <%= date(scheduled_command.last_run) || "" %>  <%= status() %>
   </td>
+
+  <%? state.page_tab !== "history" %>
   <td>
     <%= date(scheduled_command.next_run) || "n/a" %>
   </td>
+  <%/%>
 </tr>

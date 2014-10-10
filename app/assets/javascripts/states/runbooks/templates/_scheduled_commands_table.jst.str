@@ -9,7 +9,9 @@
       <th class="text-center">Type</th>
       <th>Schedule</th>
       <th>Last Run</th>
-      <th>Next Run <%= _.icon("clock-o", "fa-lg warning pull-right", "Pending") %></th>
+      <%? state.page_tab !== "history" %>
+        <th>Next Run <%= _.icon("clock-o", "fa-lg warning pull-right", "Pending") %></th>
+      <%/%>
     </tr>
   </thead>
   <tbody>
