@@ -19,18 +19,10 @@
           <div class="btn-group">
             <button class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Run Again <%i refresh %></button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Now</a></li>
-              <li><a href="#">In 5 minutes</a></li>
-              <li><a href="#">... 1 hour</a></li>
-              <li class="divider"></li>
-              <li>
-                <div class="input-group">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default btn-sm calendar" type="button"><%i calendar %></button>
-                  </span>
-                  <input class="form-control custom input-sm" id="custom" name="custom" placeholder="custom time" type="text">
-                </div>
-              </li>
+              <li><a class="now">Now</a></li>
+              <li><a class="5min">In 5 minutes</a></li>
+              <li><a class="1hour">... 1 hour</a></li>
+              <li><a class="custom">Custom date/time</a></li>
             </ul>
           </div>
         <%/%>
