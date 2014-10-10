@@ -5,6 +5,11 @@
   <td><%= schedule_type() %></td>
   <td><%= schedule() %></td>
   <td><%= date(scheduled_command.last_run) || "" %></td>
-  <td><%= date(scheduled_command.next_run) || "n/a" %></td>
-  <td class="status text-center"><%= status() %></td>
+  <td>
+    <%= date(scheduled_command.next_run) || "n/a" %>
+    <%? scheduled_command.next_run && scheduled_command.last_run %>
+      <%= _.icon("clock-o", "fa-lg warning", "Pending") %>
+    <%/%>
+  </td>
+  <td class="status text-center"><%= status() || _.icon("clock-o", "fa-lg warning", "Pending") %></td>
 </tr>

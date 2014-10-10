@@ -16,6 +16,9 @@ namespace "Bixby", (exports, top) ->
         e.stopPropagation()
 
       "click button.cancel": ->
+        @scheduled_command.destroy
+          success: =>
+            @transition("scheduled_commands")
 
       "click button.toggle": ->
         if @scheduled_command.enabled

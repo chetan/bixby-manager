@@ -75,6 +75,13 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
     sc
   end
 
+  def destroy
+    sc = ScheduledCommand.find(_id)
+    sc.disable!
+    sc.destroy!
+    true
+  end
+
   def validate
 
     t = nil

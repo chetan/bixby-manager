@@ -21,6 +21,8 @@ namespace 'Bixby.helpers', (exports, top) ->
           return _.icon("check", "fa-lg success", "Success")
         when "fail"
           return _.icon("times", "fa-lg danger", "Fail")
+        else
+          ""
 
     date: (date) ->
       if date
