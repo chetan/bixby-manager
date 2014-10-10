@@ -4,7 +4,7 @@
     <h3 class="panel-title"><%= command_log.host %></h3>
   </div>
   <div class="panel-body">
-    <p>TIME: <%= moment(command_log.requested_at).format("HH:mm:ss L") %></p>
+    <p>TIME: <%= moment(command_log.requested_at).format("L HH:mm:ss") %></p>
     <p>USER: <%= command_log.user %></p>
 
     <%? command_log.exec_status %>
