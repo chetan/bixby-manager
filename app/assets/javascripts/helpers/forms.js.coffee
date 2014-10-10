@@ -81,23 +81,20 @@ _.toggle_valid_input = (el, msg, valid, clear) ->
   if _.isString(el)
     if el.lastIndexOf(".") >= 0
       el = el.substr(el.lastIndexOf(".")+1)
-    valid_div = "div.valid.#{el}"
-    icon_span = "span.form-control-feedback.#{el}"
+    valid_div = $("div.valid.#{el}")
+    icon_span = $("span.form-control-feedback.#{el}")
   else
-    valid_div = el
+    valid_div = $(el)
     icon_span = null
 
-  p = $(valid_div).parent()
-  if !(p[0].nodeName == "DIV" && p.hasClass("has-feedback"))
-    p = null
+  feedback = valid_div.parents("div.has-feedback")
 
   # clear all validations
   if clear
-    $(valid_div).removeClass("pass fail").html("")
-    $(icon_span).removeClass("fa fa-check fa-times") if icon_span
-    p.removeClass("has-success has-error has-warning") if p
+    valid_div.removeClass("pass fail").html("")
+    icon_span.removeClass("fa fa-check fa-times") if icon_span
+    feedback.removeClass("has-success has-error has-warning")
     return
-
 
   # set validations
   if valid
@@ -106,12 +103,13 @@ _.toggle_valid_input = (el, msg, valid, clear) ->
     c = [ "fa fa-times", "fa-check", "fail", "pass", "has-error", "has-success" ]
 
   if icon_span
-    $(icon_span).addClass(c.shift()).removeClass(c.shift())
+    icon_span.addClass(c.shift()).removeClass(c.shift())
   else
     c.shift(); c.shift()
 
-  $(valid_div).addClass(c.shift()).removeClass(c.shift()).html(msg)
-  p.addClass(c.shift()).removeClass(c.shift()) if p
+  valid_div.addClass(c.shift()).removeClass(c.shift()).html(msg)
+  feedback.addClass(c.shift()).removeClass(c.shift())
 
+# Clear the pass/fail validation feedback
 _.clear_valid_input = (el) ->
   _.toggle_valid_input(el, null, null, true)
