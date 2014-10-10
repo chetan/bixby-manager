@@ -212,7 +212,10 @@ class Bixby.RunCommand extends Stark.View
       alert_on: _.vals(@ui.status.filter(":checked"))
       alert_users: alert_users
       alert_emails: @$("input.email_to_emails").val()
-    sc.save()
+
+    sc.save {},
+      success: =>
+        @transition("scheduled_commands")
 
   # Run the given command on a set of hosts
   run_command: (hosts, command, args, stdin, env) ->
