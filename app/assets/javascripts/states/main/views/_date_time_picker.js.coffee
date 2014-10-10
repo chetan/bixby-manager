@@ -10,7 +10,9 @@ namespace "Bixby", (exports, top) ->
         text: "input.natural"
 
     events:
-      "click calendar": ->
+      "click calendar": (e) ->
+        e.stopPropagation()
+        e.preventDefault()
         @ui.calendar.datepicker("show")
 
       "keyup natural.text": _.debounceR 250, (e) ->
