@@ -75,12 +75,14 @@ class Bixby.RunCommand extends Stark.View
       @ui.cron.div.hide()
       @ui.next_schedule.hide()
       @validate_schedule("natural", @ui.natural.text.val())
+      @ui.natural.text.putCursorAtEnd()
 
     "click cron.radio": ->
       @ui.cron.div.show()
       @ui.natural.div.hide()
       @ui.next_schedule.hide()
       @validate_schedule("cron", @ui.cron.text.val())
+      @ui.cron.text.putCursorAtEnd()
 
     "keyup cron.text": _.debounceR 250, (e) ->
       _.unique_val e.target, (val) => @validate_schedule("cron", val)
