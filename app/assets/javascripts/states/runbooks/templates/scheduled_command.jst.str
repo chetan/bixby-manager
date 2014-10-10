@@ -10,9 +10,12 @@
         <h3 class="panel-title"><%= scheduled_command.command %></h3>
       </div>
       <div class="panel-body">
-        <%? scheduled_command.is_once() && scheduled_command.last_run %>
-          <a class="btn btn-default btn-sm view_log">View Log <%i book %></a>
 
+        <%? scheduled_command.is_once() && !scheduled_command.last_run %>
+          <button class="btn btn-danger btn-sm cancel">Cancel <%i times %></button>
+        <%/%>
+
+        <%? scheduled_command.is_once() && scheduled_command.last_run %>
           <div class="btn-group">
             <button class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Run Again <%i refresh %></button>
             <ul class="dropdown-menu" role="menu">
@@ -31,9 +34,9 @@
             </ul>
           </div>
         <%/%>
+
         <%? scheduled_command.is_cron() %>
-          <button class="btn btn-default btn-sm view_logs">View Logs <%i book %></button>
-          <button class="btn btn-default btn-sm">Disable</button>
+          <button class="btn btn-default btn-sm btn-warning toggle">Disable</button>
         <%/%>
       </div>
       <table class="table">
@@ -72,16 +75,31 @@
           </tr>
           <tr>
             <td>Last Run</td>
-            <td><%= date(scheduled_command.last_run) || "" %></td>
+            <td><%= date(scheduled_command.last_run) || "" %> <%= status() %></td>
           </tr>
           <tr>
             <td>Next Run</td>
-            <td><%= date(scheduled_command.next_run) || "n/a" %></td>
+            <td>
+              <%= date(scheduled_command.next_run) || "n/a" %>
+              <%? scheduled_command.next_run %>
+                <%= _.icon("clock-o", "fa-lg warning", "Pending") %>
+              <%/%>
+            </td>
           </tr>
+
+          <%? scheduled_command.is_cron() %>
           <tr>
             <td>Status</td>
-            <td><%= status() %></td>
+            <td>
+              <%? scheduled_command.enabled %>
+                <span class="success">Enabled</span>
+              <% } else { %>
+                <span class="danger">Disabled</span>
+              <%/%>
+            </td>
           </tr>
+          <%/%>
+
         </tbody>
       </table>
 

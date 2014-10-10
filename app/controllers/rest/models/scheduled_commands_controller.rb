@@ -47,10 +47,32 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
       sc.alert_emails = params[:alert_emails]
     end
 
-    sc.save!
     sc.schedule_job!
+    sc.save!
 
     true
+  end
+
+  def disable
+    sc = ScheduledCommand.find(_id)
+    if !sc.enabled then
+      return sc
+    end
+    sc.disable!
+    sc.save!
+
+    sc
+  end
+
+  def enable
+    sc = ScheduledCommand.find(_id)
+    if sc.enabled then
+      return sc
+    end
+    sc.enable!
+    sc.save!
+
+    sc
   end
 
   def validate

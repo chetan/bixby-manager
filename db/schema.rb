@@ -302,15 +302,16 @@ ActiveRecord::Schema.define(version: 20141009201458) do
     t.integer  "schedule_type", limit: 2
     t.string   "schedule"
     t.datetime "scheduled_at"
+    t.boolean  "enabled",                 default: true, null: false
     t.string   "job_id"
-    t.integer  "alert_on",                default: 0, null: false
+    t.integer  "alert_on",                default: 0,    null: false
     t.string   "alert_users"
     t.text     "alert_emails"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
     t.datetime "deleted_at"
-    t.integer  "run_count",               default: 0, null: false
+    t.integer  "run_count",               default: 0,    null: false
   end
 
   add_index "scheduled_commands", ["command_id"], name: "scheduled_commands_command_id_fk", using: :btree

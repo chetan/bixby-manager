@@ -8,7 +8,7 @@ module Bixby
             :schedule_type, :schedule, :scheduled_at,
             :alert_on, :alert_users, :alert_emails,
             :created_at, :updated_at, :completed_at, :deleted_at,
-            :run_count
+            :run_count, :enabled
 
       def convert
         super

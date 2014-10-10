@@ -29,14 +29,14 @@ a {
   top: -10px;
 }
 
-i.green, i.success {
+.green, .success {
   color: $brand-success;
 }
-i.red, i.danger {
+.red, .danger {
   color: $brand-danger;
   // color: #bd362f;
 }
-i.yellow, i.warning {
+.yellow, .warning {
   color: $brand-warning;
 }
 

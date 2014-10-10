@@ -8,6 +8,7 @@ namespace 'Bixby.model', (exports, top) ->
       _strings: ["agent_ids", "owner", "stdin", "args", "schedule", "alert_users", "alert_emails", "command", "hosts", "org", "status"]
       _ints:    ["command_id", "created_by", "schedule_type", "alert_on", "run_count"]
       _dates:   ["created_at", "updated_at", "deleted_at", "scheduled_at", "completed_at", "last_run", "next_run"]
+      _bools:   ["enabled"]
       _other:   ["env"]
     urlRoot: "/rest/scheduled_commands"
 
@@ -38,6 +39,24 @@ namespace 'Bixby.model', (exports, top) ->
     command_log: ->
       if last = @get("last_run_log")
         new B.m.CommandLog(last)
+
+    disable: (cb) ->
+      $.ajax @urlRoot + "/disable",
+        type: "POST"
+        dataType: "json"
+        data: _.csrf({id: @id})
+        success: (data, textStatus, jqXHR) =>
+          @set(data)
+          cb.call(@)
+
+    enable: (cb) ->
+      $.ajax @urlRoot + "/enable",
+        type: "POST"
+        dataType: "json"
+        data: _.csrf({id: @id})
+        success: (data, textStatus, jqXHR) =>
+          @set(data)
+          cb.call(@)
 
   class exports.ScheduledCommandList extends Stark.Collection
     model: exports.ScheduledCommand

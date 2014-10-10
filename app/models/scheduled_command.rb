@@ -17,6 +17,7 @@
 # **`schedule_type`**  | `integer`          |
 # **`schedule`**       | `string(255)`      |
 # **`scheduled_at`**   | `datetime`         |
+# **`enabled`**        | `boolean`          | `default(TRUE), not null`
 # **`job_id`**         | `string(255)`      |
 # **`alert_on`**       | `integer`          | `default(0), not null`
 # **`alert_users`**    | `string(255)`      |
@@ -106,6 +107,18 @@ class ScheduledCommand < ActiveRecord::Base
   def cancel_job!
     Bixby::Scheduler.new.cancel(self.job_id)
     self.job_id = nil
+    self.scheduled_at = nil
+  end
+
+  def enable!
+    self.enabled = true
+    update_next_run_time!
+    schedule_job!
+  end
+
+  def disable!
+    self.enabled = false
+    cancel_job!
   end
 
 end

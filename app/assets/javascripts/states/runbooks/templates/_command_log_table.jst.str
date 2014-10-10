@@ -6,7 +6,7 @@
       <th>Host</th>
       <th>User</th>
       <th>Date</th>
-      <th class="status">Status</th>
+      <th class="status text-center">Status</th>
     </tr>
   </thead>
   <tbody>

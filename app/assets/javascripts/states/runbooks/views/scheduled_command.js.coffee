@@ -8,14 +8,22 @@ namespace "Bixby", (exports, top) ->
     ui:
       prev: "li.older"
       next: "li.newer"
-
-    links:
-      "a.view_log": [ "runbooks_log", -> {command_log: @scheduled_command.command_log()} ]
+      toggle: "button.toggle"
 
     events:
       "click ul.dropdown-menu input": (e) ->
         e.preventDefault()
         e.stopPropagation()
+
+      "click button.cancel": ->
+
+      "click button.toggle": ->
+        if @scheduled_command.enabled
+          @scheduled_command.disable =>
+            @redraw()
+        else
+          @scheduled_command.enable =>
+            @redraw()
 
       "click prev": ->
         return if @ui.prev.hasClass("disabled")
@@ -28,6 +36,12 @@ namespace "Bixby", (exports, top) ->
           @redraw()
 
     after_render: ->
+      if @scheduled_command.enabled
+        @ui.toggle.removeClass("btn-success").addClass("btn-warning").text("Disable")
+      else
+        @ui.toggle.removeClass("btn-warning").addClass("btn-success").text("Enable")
+
+
       if @command_logs.state.currentPage == 1
         @ui.prev.addClass("disabled")
       else
