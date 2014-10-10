@@ -1,12 +1,16 @@
 
 namespace 'Bixby.helpers', (exports, top) ->
   exports.ScheduledCommand =
-    schedule_type: ->
+    schedule_type: (add_text) ->
       switch @scheduled_command.schedule_type
         when 1
-          "Cron"
+          s = _.icon("refresh", null, "Cron job")
+          s += " Cron" if add_text
+          s
         when 2
-          "Once"
+          s = _.icon("calendar", null, "One time job")
+          s += " Once" if add_text
+          s
 
     schedule: ->
       switch @scheduled_command.schedule_type

@@ -47,7 +47,7 @@
           </tr>
           <tr>
             <td>Type</td>
-            <td><%= schedule_type() %></td>
+            <td><%= schedule_type(true) %></td>
           </tr>
           <tr>
             <td>Schedule</td>

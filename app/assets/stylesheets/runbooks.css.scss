@@ -19,6 +19,12 @@ div#content.runbooks {
     }
   }
 
+  div.scheduled_commands_table {
+    th i.fa-clock-o {
+      margin-top: 3px;
+    }
+  }
+
   div.scheduled_command_logs {
     table {
       margin-bottom: 3px;
