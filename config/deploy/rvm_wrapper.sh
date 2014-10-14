@@ -8,10 +8,17 @@
 #       to be very explicit about which ruby to use.
 
 if [[ $USE_RVM == "system" ]]; then
-  source /usr/local/rvm/environments/$USE_RUBY_VERSION
+  rvm_env="/usr/local/rvm/environments/$USE_RUBY_VERSION"
 else
-  source /home/`whoami`/.rvm/environments/$USE_RUBY_VERSION
+  home=$(echo ~)
+  rvm_env="$home/.rvm/environments/$USE_RUBY_VERSION"
 fi
+
+if [ ! -f $rvm_env ]; then
+  echo "Ruby version '$USE_RUBY_VERSION' not found at $rvm_env"
+  exit 1
+fi
+source $rvm_env
 
 if [ -f /usr/lib/libtcmalloc_minimal.so.0.1.0 ]; then
   export LD_PRELOAD=/usr/lib/libtcmalloc_minimal.so.0.1.0
