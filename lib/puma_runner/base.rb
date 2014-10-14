@@ -1,4 +1,6 @@
 
+require "mixlib/shellout"
+
 module PumaRunner
   class Base
 
@@ -14,6 +16,10 @@ module PumaRunner
 
     def rails_root
       @config.options[:directory]
+    end
+
+    def rails_env
+      @config.options[:environment]
     end
 
     def log(str)
@@ -75,8 +81,9 @@ module PumaRunner
       binds = config.options[:binds]
       debug "* Binding to #{binds.inspect}"
 
-      binder = Puma::Binder.new(events)
-      binder.import_from_env # always try to import, if they are there
+      binder = PumaRunner::SocketBinder.new(events)
+      binder.import_from_env    # always try to import, if they are there
+      binder.import_from_socket
       binder.parse(binds, events) # not sure why we need events again
 
       binder
@@ -97,10 +104,55 @@ module PumaRunner
       redirects
     end
 
+    def respawn_child
+      respawn_child_exec()
+      # respawn_child_fork()
+    end
+
+    def respawn_child_exec
+      @socket_passer = SocketPasser.new(self.binder)
+      @socket_passer.start
+
+      runner = File.join(rails_root, "script", "puma")
+      child_pid = rvm_exec("#{runner} server &")
+      Process.detach(child_pid)
+
+      @socket_passer.join
+
+      return child_pid
+    end
+
+    # Execute a command using rvm_wrapper.sh
+    #
+    # Wipes all traces of the currently running ruby version in favor of the version configured
+    # in bixby.yml. This is to allow restarting across ruby versions
+    #
+    # @param [String] cmd
+    #
+    # @return [Fixnum] child PID
+    def rvm_exec(cmd)
+      conf = YAML.load_file(File.join(rails_root, "config", "bixby.yml"))[rails_env]
+      env = {
+        "USE_RUBY_VERSION"   => conf["ruby"],
+        "USE_RVM"            => conf["rvm"],
+        "_ORIGINAL_GEM_PATH" => nil,
+        "BUNDLE_BIN_PATH"    => nil,
+        "RUBYOPT"            => nil,
+        "RUBYLIB"            => nil,
+        "PATH"               => ENV["PATH"].split(/:/).reject{ |s| s =~ %r{\.rvm|/usr/local/rvm} }.join(":")
+      }
+
+      rvm_wrapper = File.join(rails_root, "config", "deploy", "rvm_wrapper.sh")
+      cmd = Mixlib::ShellOut.new("#{rvm_wrapper} #{cmd}", :environment => env)
+      cmd.run_command
+
+      return cmd.status.pid
+    end
+
     # Spawn the child process in a subshell
     #
     # @return [Fixnum] new child pid
-    def respawn_child
+    def respawn_child_fork
       cmd = File.join(self.rails_root, "script", "puma") + " server"
       redirects = export_fds()
       child_pid = fork { Dir.chdir(self.rails_root); exec(cmd, redirects) }

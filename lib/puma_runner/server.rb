@@ -196,7 +196,7 @@ module PumaRunner
 
         end
 
-      end
+      end # 3.times
 
       if !started then
         log "* failed to start after 3 tries.. bailing out!"
