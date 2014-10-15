@@ -13,7 +13,7 @@ class Repository < API
     def update
       with_ssh do
         g = Git.open(repo.path, :log => log)
-        g.pull("origin", "origin/master")
+        g.pull("origin", "master")
       end
     end
 
