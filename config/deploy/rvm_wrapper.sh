@@ -37,7 +37,7 @@ export RUBY_HEAP_FREE_MIN=200000        # 200,000
 # export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
 
 if [ ! -z "$RUN_IN_BG" ]; then
-  # background an dreturn the pid of the new process (mainly useful when calling puma start)
+  # background and return the pid of the new process (mainly useful when calling puma start)
   $* &
   echo $!
 else
