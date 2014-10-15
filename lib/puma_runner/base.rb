@@ -114,11 +114,14 @@ module PumaRunner
       @socket_passer.start
 
       runner = File.join(rails_root, "script", "puma")
-      child_pid = rvm_exec("#{runner} server &")
+      child_pid = rvm_exec("#{runner} server")
       Process.detach(child_pid)
+
+      log "* started server process #{child_pid}, waiting for it to initialize..."
 
       @socket_passer.join
 
+      log "* done"
       return child_pid
     end
 
@@ -139,12 +142,18 @@ module PumaRunner
         "BUNDLE_BIN_PATH"    => nil,
         "RUBYOPT"            => nil,
         "RUBYLIB"            => nil,
-        "PATH"               => ENV["PATH"].split(/:/).reject{ |s| s =~ %r{\.rvm|/usr/local/rvm} }.join(":")
+        "PATH"               => ENV["PATH"].split(/:/).reject{ |s| s =~ %r{\.rvm|/usr/local/rvm} }.join(":"),
+        "RUN_IN_BG"          => "1"
       }
 
       rvm_wrapper = File.join(rails_root, "config", "deploy", "rvm_wrapper.sh")
       cmd = Mixlib::ShellOut.new("#{rvm_wrapper} #{cmd}", :environment => env)
       cmd.run_command
+
+      s = cmd.stdout.strip
+      if s.to_i.to_s == s then
+        return s.to_i # the real pid is returned from the script, assuming it ran successfully
+      end
 
       return cmd.status.pid
     end
