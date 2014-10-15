@@ -71,7 +71,7 @@ gem "pretender"
 gem "api-auth", :github => "chetan/api_auth", :branch => "bixby"
 
 # repository module
-gem "git", "= 1.2.5"
+gem "git", "~> 1.2.8"
 gem "sshkey"
 
 # rails plugins
