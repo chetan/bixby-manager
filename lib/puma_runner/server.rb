@@ -112,6 +112,10 @@ module PumaRunner
         # go!
         server.run
 
+      rescue SocketError => ex
+        log "* [FATAL] Caught SocketError: #{ex.message}\n" + ex.backtrace.join("\n")
+        exit 1
+
       ensure
         @daemon_starter.cleanup!
       end
