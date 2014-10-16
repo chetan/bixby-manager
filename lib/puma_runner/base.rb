@@ -111,6 +111,10 @@ module PumaRunner
 
     def respawn_child_exec
       @socket_passer = SocketPasser.new(self.binder)
+      if !@socket_passer.test_sockets then
+        log "* [FATAL] listener sockets failed test; exiting"
+        exit 1
+      end
       @socket_passer.start
 
       runner = File.join(rails_root, "script", "puma")

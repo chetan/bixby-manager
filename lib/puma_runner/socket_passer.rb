@@ -7,6 +7,22 @@ module PumaRunner
       @thread = nil
     end
 
+    # Try to validate that our listener sockets are all in working order
+    def test_sockets
+      begin
+        return false if @binder.listeners.empty?
+        @binder.listeners.each_with_index do |(bind_url,io),i|
+          if !(io && io.kind_of?(IO) && !io.closed?) then
+            return false
+          end
+        end
+      rescue Exception => ex
+        return false
+      end
+
+      return true
+    end
+
     def start
       ENV["PUMA_INHERIT_SOCK"] = @sock = random_sockname()
       @server = UNIXServer.new(@sock)

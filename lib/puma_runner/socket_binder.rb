@@ -16,6 +16,12 @@ module PumaRunner
         # got a socket url, read io
         url = str
         fd = conn.recv_io
+
+        # try to validate it first
+        if !fd.kind_of?(IO) || fd.closed? then
+          raise SocketError, "received an invalid socket fd"
+        end
+
         @inherited_fds[url] = fd.to_i
       end
     end
