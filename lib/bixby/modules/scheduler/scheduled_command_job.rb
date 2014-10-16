@@ -52,6 +52,8 @@ class Scheduler
       if scheduled_command.cron? then
         scheduled_command.update_next_run_time!
         scheduled_command.schedule_job!
+      else
+        scheduled_command.job_id = nil
       end
 
       # Fire alerts if necessary
