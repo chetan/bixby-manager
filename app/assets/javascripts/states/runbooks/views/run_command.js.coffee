@@ -224,7 +224,10 @@ class Bixby.RunCommand extends Stark.View
     return tags.join(" ")
 
   after_render: ->
-    _.each [1..3], (i) => @ui.tab[i].collapse()
+
+    # init collapsible tabs
+    @ui.tab[1].addClass("in")
+    _.each [1..3], (i) => @ui.tab[i].addClass("collapse")
 
     @$("select#command").select2
       allowClear: true
