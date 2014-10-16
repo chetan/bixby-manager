@@ -44,8 +44,11 @@ class Bixby.RunCommand extends Stark.View
   events:
     "change select#command": (e) ->
       command = @commands.get @$("select#command").val()
-      @partial("runbooks/_command_detail", {command: command}, "div.detail")
-      @ui.command_detail.show()
+      if command
+        @partial("runbooks/_command_detail", {command: command}, "div.detail")
+        @ui.command_detail.show()
+      else
+        @ui.command_detail.html("").hide()
 
     "click run": (e) ->
       @with_inputs(@run_command)
