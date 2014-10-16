@@ -43,12 +43,15 @@ class Bixby.RunCommand extends Stark.View
 
   events:
     "change select#command": (e) ->
-      command = @commands.get @$("select#command").val()
-      if command
+      if command = @selected_command()
         @partial("runbooks/_command_detail", {command: command}, "div.detail")
         @ui.command_detail.show()
       else
         @ui.command_detail.html("").hide()
+      @enable_actions()
+
+    "change select#hosts": (e) ->
+      @enable_actions()
 
     "click run": (e) ->
       @with_inputs(@run_command)
@@ -147,10 +150,31 @@ class Bixby.RunCommand extends Stark.View
       @ui.configure_email.btn.addClass("disabled")
       @ui.next_schedule.hide()
 
+  # Enable the 'run' and 'schedule' buttons if checks pass
+  enable_actions: ->
+    enable = !(@selected_command() && @selected_hosts())
+    @ui.run.toggleClass("disabled", enable)
+    @ui.schedule.btn.toggleClass("disabled", enable)
+
+  # Get the selected Command model
+  #
+  # @return [Command]
+  selected_command: ->
+    @commands.get @$("select#command").val()
+
+  # Get the list of selected host ids
+  #
+  # @return [Array<String>]
+  selected_hosts: ->
+    hosts = @$("select#hosts").val()
+    if !hosts || hosts.length <= 0
+      return null
+    return hosts
+
   # Common input handling for run/schedule below
   with_inputs: (fn) ->
-    hosts = @$("select#hosts").val()
-    command = @commands.get @$("select#command").val()
+    hosts = @selected_hosts()
+    command = @selected_command()
 
     if !hosts || hosts.length <= 0 || !command
       @log "no host or command selected!"
