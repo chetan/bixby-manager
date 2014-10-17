@@ -44,7 +44,7 @@ class Bixby.RunCommand extends Stark.View
     hosts: "select#hosts"
 
   events:
-    "change command": (e) ->
+    "change command": ->
       if command = @selected_command()
         @partial("runbooks/_command_detail", {command: command}, "div.detail")
         @ui.command_detail.show()
@@ -52,16 +52,16 @@ class Bixby.RunCommand extends Stark.View
         @ui.command_detail.html("").hide()
       @enable_actions()
 
-    "change hosts": (e) ->
+    "change hosts": ->
       @enable_actions()
 
-    "click run": (e) ->
+    "click run": ->
       @with_inputs(@run_command)
 
-    "click schedule.btn": (e) ->
+    "click schedule.btn": ->
       @click_schedule()
 
-    "click configure_email.btn": (e) ->
+    "click configure_email.btn": ->
       @click_configure_email()
 
     "click create_schedule": ->

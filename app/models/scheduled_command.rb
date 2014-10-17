@@ -48,7 +48,9 @@ class ScheduledCommand < ActiveRecord::Base
   has_many :command_logs
 
   include Bitfields
-  bitfield :alert_on, 1 => :alert_on_success, 2 => :alert_on_error
+  bitfield :alert_on,
+           1 => :alert_on_success,
+           2 => :alert_on_error
 
   serialize :env, JSONColumn.new
 
