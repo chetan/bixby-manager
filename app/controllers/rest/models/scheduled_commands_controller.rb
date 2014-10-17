@@ -110,14 +110,18 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
   def validate
 
     t = nil
-    if params[:type] == 'cron' then
-      begin
-        t = CronParser.new(params[:string]).next()
-      rescue ArgumentError
-      end
+    str = params[:string]
 
-    elsif params[:type] == 'natural' then
-      t = Chronic.parse(params[:string])
+    case params[:type]
+      when "cron"
+        begin
+          t = CronParser.new(str).next()
+        rescue ArgumentError
+        end
+
+      when "natural"
+        t = Chronic.parse(str)
+        t = Time.parse(str) if t.nil?
     end
 
     now = Time.new
