@@ -58,6 +58,16 @@ namespace 'Bixby.model', (exports, top) ->
         e[k] = v
       return e
 
+    # Convert an env object into a string of key/value pairs, each on a new line
+    #
+    # @param [Object] env
+    #
+    # @return [String]
+    @env_str: (env) ->
+      s = ""
+      _.each env, (v, k) -> s += "#{k}=#{v}\n"
+      return s
+
     # Retrieve help text for this command
     help_html: ->
       s = ""

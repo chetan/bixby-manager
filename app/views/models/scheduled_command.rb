@@ -13,6 +13,7 @@ module Bixby
       def convert
         super
         self[:org]   = obj.org.name
+        self[:host_ids] = obj.agents.includes(:host).map { |a| a.host.id }
         self[:hosts] = obj.agents.includes(:host).map { |a| a.host.name }
         self[:owner] = obj.owner.name
         self[:command] = obj.command.display_name

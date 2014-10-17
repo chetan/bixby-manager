@@ -22,7 +22,8 @@
               <li><a class="now">Now</a></li>
               <li><a class="5min">In 5 minutes</a></li>
               <li><a class="1hour">... 1 hour</a></li>
-              <li><a class="custom">Custom date/time</a></li>
+              <li class="divider" role="presentation"></li>
+              <li><a class="custom">Custom</a></li>
             </ul>
           </div>
         <%/%>

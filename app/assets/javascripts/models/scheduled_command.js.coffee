@@ -9,7 +9,7 @@ namespace 'Bixby.model', (exports, top) ->
       _ints:    ["command_id", "created_by", "schedule_type", "alert_on", "run_count"]
       _dates:   ["created_at", "updated_at", "deleted_at", "scheduled_at", "completed_at", "last_run", "next_run"]
       _bools:   ["enabled"]
-      _other:   ["env"]
+      _other:   ["env", "host_ids"]
     urlRoot: "/rest/scheduled_commands"
 
     params: [ { name: "scheduled_command", set_id: true } ]
@@ -36,9 +36,18 @@ namespace 'Bixby.model', (exports, top) ->
     is_once: ->
       @schedule_type == 2
 
+    alert_on_success: ->
+      return (@alert_on & 1) == 1
+
+    alert_on_error: ->
+      return (@alert_on & 2) == 2
+
     command_log: ->
       if last = @get("last_run_log")
         new B.m.CommandLog(last)
+
+    env_str: ->
+      B.m.Command.env_str(@env)
 
     # Disable this ScheduledCommand
     disable: (cb) ->

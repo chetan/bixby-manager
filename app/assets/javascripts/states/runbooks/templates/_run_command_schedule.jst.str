@@ -50,8 +50,8 @@
 
   <div class="form-group">
     <label class="control-label" title="">Send email on status:</label>
-    <%= include("main/_checkbox", {clazz: "status", value: "success", name: "Sucess"}) %>
-    <%= include("main/_checkbox", {clazz: "status", value: "error", name: "Error (Non-zero)"}) %>
+    <%= include("main/_checkbox", {clazz: "status success", value: "success", name: "Sucess"}) %>
+    <%= include("main/_checkbox", {clazz: "status error", value: "error", name: "Error (Non-zero)"}) %>
   </div>
 
   <div class="select_emails start_hidden">

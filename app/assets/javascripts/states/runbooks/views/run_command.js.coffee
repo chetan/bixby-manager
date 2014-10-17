@@ -40,9 +40,11 @@ class Bixby.RunCommand extends Stark.View
     command_detail: "div.detail"
     status: "input.status"
     create_schedule: "button#create_schedule"
+    command: "select#command"
+    hosts: "select#hosts"
 
   events:
-    "change select#command": (e) ->
+    "change command": (e) ->
       if command = @selected_command()
         @partial("runbooks/_command_detail", {command: command}, "div.detail")
         @ui.command_detail.show()
@@ -50,22 +52,17 @@ class Bixby.RunCommand extends Stark.View
         @ui.command_detail.html("").hide()
       @enable_actions()
 
-    "change select#hosts": (e) ->
+    "change hosts": (e) ->
       @enable_actions()
 
     "click run": (e) ->
       @with_inputs(@run_command)
 
     "click schedule.btn": (e) ->
-      @ui.actions.hide()
-      @ui.results.hide()
-      @ui.schedule.div.show()
-      @select_tab(2)
+      @click_schedule()
 
     "click configure_email.btn": (e) ->
-      @ui.configure_email.btn.show()
-      @ui.configure_email.div.show()
-      @select_tab(3)
+      @click_configure_email()
 
     "click create_schedule": ->
       @with_inputs(@schedule_command)
@@ -116,10 +113,22 @@ class Bixby.RunCommand extends Stark.View
       checks = @ui.status.filter(":checked")
       @ui.configure_email.select.toggle(checks && checks.length > 0)
 
+  click_schedule: ->
+    @ui.actions.hide()
+    @ui.results.hide()
+    @ui.schedule.div.show()
+    @select_tab(2)
+
+  click_configure_email: ->
+    @ui.configure_email.btn.hide()
+    @ui.configure_email.div.show()
+    @select_tab(3)
+
   validate_schedule: (type, val) ->
     div = "div.valid.#{type}"
     if !(val && val.length)
       # clear the validation
+      @ui.create_schedule.addClass("disabled")
       @ui.configure_email.btn.addClass("disabled")
       @ui.next_schedule.hide()
       return _.clear_valid_input(div)
@@ -145,9 +154,11 @@ class Bixby.RunCommand extends Stark.View
     if pass
       _.pass(div)
       @ui.configure_email.btn.removeClass("disabled")
+      @ui.create_schedule.removeClass("disabled")
     else
       _.fail(div)
       @ui.configure_email.btn.addClass("disabled")
+      @ui.create_schedule.addClass("disabled")
       @ui.next_schedule.hide()
 
   # Enable the 'run' and 'schedule' buttons if checks pass
@@ -160,13 +171,13 @@ class Bixby.RunCommand extends Stark.View
   #
   # @return [Command]
   selected_command: ->
-    @commands.get @$("select#command").val()
+    @commands.get @ui.command.val()
 
   # Get the list of selected host ids
   #
   # @return [Array<String>]
   selected_hosts: ->
-    hosts = @$("select#hosts").val()
+    hosts = @ui.hosts.val()
     if !hosts || hosts.length <= 0
       return null
     return hosts
@@ -256,7 +267,7 @@ class Bixby.RunCommand extends Stark.View
     @ui.tab[1].addClass("in")
     _.each [1..3], (i) => @ui.tab[i].addClass("collapse")
 
-    @$("select#command").select2
+    @ui.command.select2
       allowClear: true
       matcher: (term, text, opt) ->
         # use default matcher to evaluate the option as well its option group label
@@ -264,7 +275,7 @@ class Bixby.RunCommand extends Stark.View
         m = $.prototype.select2.defaults.matcher
         m(term, text) || m(term, optgroup)
 
-    @$("select#hosts").select2
+    @ui.hosts.select2
       allowClear: true
       formatResult: (obj, container, query, escapeMarkup) =>
         # display tags in the dropdown, if available
@@ -286,3 +297,46 @@ class Bixby.RunCommand extends Stark.View
         if term[0] == "#"
           term = term.substr(1)
         m(term, text) || m(term, host.get("desc")) || _.include(tags, term) || _.find(tags, (t) -> t.indexOf(term) >= 0)
+
+    if @scheduled_command
+      @customize_command(@scheduled_command)
+
+  customize_command: (cmd) ->
+    # set command props
+    @ui.hosts.val(cmd.host_ids).select2()
+    @ui.command.val(cmd.command_id).select2()
+    @ui.args.val(cmd.args) if cmd.args
+    @ui.stdin.val(cmd.stdin) if cmd.stdin
+    @ui.env.val(cmd.env_str()) if cmd.env && !_.isEmpty(cmd.env)
+
+    # activate other tabs
+    @click_schedule()
+    @click_configure_email()
+    @select_tab(2)
+
+    # setup schedule info
+    if cmd.is_once()
+      @ui.natural.radio.click()
+      @ui.natural.text.focus()
+      @ui.create_schedule.addClass("disabled")
+    else
+      @ui.cron.text.val(cmd.schedule)
+      @ui.cron.radio.click()
+
+    # setup alert info
+    @ui.configure_email.select.toggle(true)
+    @$("input.status.success").attr("checked", cmd.alert_on_success())
+    @$("input.status.error").attr("checked", cmd.alert_on_error())
+
+    # set alert users
+    if cmd.alert_users
+      user_ids = cmd.alert_users.split(/,/)
+      me = String(@current_user.id)
+      if _.include(user_ids, me)
+        user_ids = _.filter(user_ids, (s) -> s != me)
+        @$("input.email_to_me").attr("checked", true)
+      if user_ids.length > 0
+        @$("select#email_to_users").val(user_ids).select2()
+
+    if cmd.alert_emails
+      @$("input.email_to_emails").val(cmd.alert_emails)

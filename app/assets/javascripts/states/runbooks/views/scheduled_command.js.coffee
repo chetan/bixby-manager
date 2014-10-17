@@ -51,7 +51,7 @@ namespace "Bixby", (exports, top) ->
             d.add(1, "hours")
             @reschedule(d)
           when "custom"
-            null
+            @transition "runbooks", { scheduled_command: @scheduled_command }
 
     reschedule: (time) ->
       @scheduled_command.repeat time, (new_sc) =>
