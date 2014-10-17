@@ -16,7 +16,7 @@
         <%/%>
 
         <%? scheduled_command.is_once() && scheduled_command.last_run %>
-          <div class="btn-group">
+          <div class="btn-group repeat_command">
             <button class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Run Again <%i refresh %></button>
             <ul class="dropdown-menu" role="menu">
               <li><a class="now">Now</a></li>

@@ -9,6 +9,7 @@ namespace "Bixby", (exports, top) ->
       prev: "li.older"
       next: "li.newer"
       toggle: "button.toggle"
+      repeat: "div.repeat_command li a"
 
     events:
       "click ul.dropdown-menu input": (e) ->
@@ -37,6 +38,24 @@ namespace "Bixby", (exports, top) ->
         return if @ui.next.hasClass("disabled")
         @command_logs.getNextPage().done =>
           @redraw()
+
+      "click repeat": (e) ->
+        d = moment(new Date())
+        switch $(e.target).attr("class")
+          when "now"
+            @reschedule(d)
+          when "5min"
+            d.add(5, "minutes")
+            @reschedule(d)
+          when "1hour"
+            d.add(1, "hours")
+            @reschedule(d)
+          when "custom"
+            null
+
+    reschedule: (time) ->
+      @scheduled_command.repeat time, (new_sc) =>
+        @transition "scheduled_command", { scheduled_command: new_sc }
 
     after_render: ->
       if @scheduled_command.enabled

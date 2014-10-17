@@ -55,6 +55,29 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
     true
   end
 
+  def repeat
+    sc = ScheduledCommand.find(_id)
+    if sc.blank? then
+      # TODO
+    end
+
+    # create copy and schedule it
+    sc = sc.dup
+
+    sc.deleted_at   = nil
+    sc.completed_at = nil
+    sc.job_id       = nil
+    sc.enabled      = true
+    sc.run_count    = 0
+
+    sc.scheduled_at = Time.parse(params[:scheduled_at])
+    sc.save!
+    sc.schedule_job!
+    sc.save!
+
+    sc
+  end
+
   def disable
     sc = ScheduledCommand.find(_id)
     if !sc.enabled then

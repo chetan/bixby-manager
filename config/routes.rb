@@ -88,8 +88,12 @@ Bixby::Application.routes.draw do
       collection do
         get "validate"
         get "history"
+      end
+
+      member do
         post "enable"
         post "disable"
+        post "repeat"
       end
     end
   end

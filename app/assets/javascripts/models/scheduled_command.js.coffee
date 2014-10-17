@@ -58,6 +58,13 @@ namespace 'Bixby.model', (exports, top) ->
           @set(data)
           cb.call(@)
 
+    repeat: (time, cb) ->
+      @ajax @url("/repeat"),
+        data: {id: @id, scheduled_at: time}
+        success: (data, textStatus, jqXHR) =>
+          sc = new ScheduledCommand(data)
+          cb.call(@, sc)
+
   class exports.ScheduledCommandList extends Stark.Collection
     model: exports.ScheduledCommand
     @key: "scheduled_commands"
