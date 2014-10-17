@@ -40,27 +40,26 @@ namespace 'Bixby.model', (exports, top) ->
       if last = @get("last_run_log")
         new B.m.CommandLog(last)
 
+    # Disable this ScheduledCommand
     disable: (cb) ->
-      $.ajax @urlRoot + "/disable",
-        type: "POST"
-        dataType: "json"
-        data: _.csrf({id: @id})
-        success: (data, textStatus, jqXHR) =>
-          @set(data)
-          cb.call(@)
+      @toggle("/disable", cb)
 
+    # Enable this ScheduledCommand
     enable: (cb) ->
-      $.ajax @urlRoot + "/enable",
-        type: "POST"
-        dataType: "json"
-        data: _.csrf({id: @id})
+      @toggle("/enable", cb)
+
+    # Toggle this ScheduledCommand
+    toggle: (method, cb) ->
+      @ajax @url(method),
+        data: {id: @id}
         success: (data, textStatus, jqXHR) =>
           @set(data)
           cb.call(@)
 
+    # Run this command again with the same inputs, targets, etc
     repeat: (time, cb) ->
       @ajax @url("/repeat"),
-        data: {id: @id, scheduled_at: time}
+        data: {scheduled_at: time}
         success: (data, textStatus, jqXHR) =>
           sc = new ScheduledCommand(data)
           cb.call(@, sc)
