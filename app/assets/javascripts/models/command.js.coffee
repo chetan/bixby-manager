@@ -30,8 +30,7 @@ namespace 'Bixby.model', (exports, top) ->
 
     run: (hosts, args, stdin, env, successCb) ->
       env = @constructor.parse_env(env)
-      @ajax "post",
-        url: @url() + "/run"
+      @ajax  @url("/run"),
         data: {hosts: hosts, args: args, stdin: stdin, env: env}
         success: (data, status, xhr) =>
           successCb(data)
