@@ -536,6 +536,7 @@ GEM
     websocket-driver (0.3.4-java)
     xray (1.1)
     yard (0.8.7.4)
+    zopfli-bin (0.1.0)
 
 PLATFORMS
   java
@@ -662,3 +663,4 @@ DEPENDENCIES
   webmock
   xray
   yard
+  zopfli-bin

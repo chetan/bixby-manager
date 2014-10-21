@@ -122,6 +122,7 @@ group :assets do
   gem 'uglifier'
   gem 'font-awesome-rails'
   gem 'sprockets-font_compressor', :require => false
+  gem 'zopfli-bin'
 
   # execjs prefers ruby racer (needed by uglifier and coffee-script)
   # added due to sudden segfaulting with nodejs driver
