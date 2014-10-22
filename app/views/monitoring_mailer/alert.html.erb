@@ -1,0 +1,30 @@
+
+<p class="fixed">
+<strong>METRIC:</strong>       <%= @command.display_name %><% if @info %> - <%= @info.name || @info.desc %><% end %><br/>
+<strong>KEY:</strong>&nbsp;&nbsp;&nbsp;&nbsp;<%= @metric.key %><br/>
+<% if !@metric.tags_to_s.blank? then %>
+<strong>TAGS:</strong>&nbsp;&nbsp;&nbsp;<%= @metric.tags_to_s %><br/>
+<% end %>
+<strong>SCRIPT:</strong>       <%= @command.script %><br/>
+<strong>STATUS:</strong>       <%= @trigger.severity_to_s %><br/>
+</p>
+
+<p class="fixed">
+  <strong><%= @metric.last_value %><%= @unit %></strong>
+  <%= @trigger.sign_to_s %> <%= @trigger.threshold %><%= @unit %>
+  @ <%= @metric.updated_at %>
+</p>
+
+<% url = monitoring_host_check_url(@metric.check.host, @metric.check) %>
+<p>View in Bixby: <a href="<%= url %>"><%= url %></a></p>
+
+<hr/>
+
+<% if @help[:text] then %>
+  <h4>Metric description:</h4>
+  <p><%= GitHub::Markdown.render_gfm(@help[:text]).html_safe %></p>
+
+  <% if @help[:url] then %>
+    <p>See also: <a href="<%= @help[:url] %>"><%= URI.unescape(@help[:url]) %></a></p>
+  <% end %>
+<% end %>

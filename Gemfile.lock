@@ -272,6 +272,7 @@ GEM
     foreigner (1.6.1)
       activerecord (>= 3.0.0)
     git (1.2.8)
+    github-markdown (0.6.7)
     growl (1.0.3)
     haml (4.0.5)
       tilt
@@ -585,6 +586,7 @@ DEPENDENCIES
   font-awesome-rails
   foreigner
   git (~> 1.2.8)
+  github-markdown
   haml
   haml_assets
   highline

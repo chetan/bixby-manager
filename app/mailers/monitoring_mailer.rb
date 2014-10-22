@@ -1,6 +1,8 @@
 
 class MonitoringMailer < ActionMailer::Base
 
+  layout "mailer_base"
+
   def alert(metric, trigger, user)
     @user    = user
     @trigger = trigger

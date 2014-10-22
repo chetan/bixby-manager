@@ -36,6 +36,7 @@ gem "exception_notification"
 # view related
 gem 'haml'
 gem 'kaminari'
+gem 'github-markdown'
 
 
 # bixby requirements
