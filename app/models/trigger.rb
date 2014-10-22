@@ -82,6 +82,33 @@ class Trigger < ActiveRecord::Base
     end
   end
 
+  # Retrieve the severity as a string for display
+  #
+  # @return [String]
+  def severity_to_s
+    Severity[self.severity].to_s.upcase
+  end
+
+  # Retrieve the threshold sign as a string
+  #
+  # @return [String]
+  def sign_to_s
+    case self.sign
+      when :gt
+        ">"
+      when :ge
+        ">="
+      when :lt
+        "<"
+      when :le
+        "<="
+      when :eq
+        "=="
+      when :ne
+        "!="
+    end
+  end
+
   # Test the given value according to the set threshold & sign
   #
   # @param [Float] val    value to test
