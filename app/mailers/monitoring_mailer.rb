@@ -1,15 +1,22 @@
 
 class MonitoringMailer < ActionMailer::Base
 
-  def alert(metric, alert, user)
-    @user = user
-    @alert = alert
-    @metric = metric
+  def alert(metric, trigger, user)
+    @user    = user
+    @trigger = trigger
+    @metric  = metric
+    @info    = metric.info
+    @unit    = @info && @info.unit ? @info.unit : ""
 
     @command = metric.check.command
 
-    subject = "[Bixby] " + alert.severity_to_s + ": #{@command.display_name} is "
-    subject += " #{alert.sign_to_s} #{alert.threshold}"
+    manifest = @command.to_command_spec.manifest
+    @help = {
+      :text => manifest["help"],
+      :url  => manifest["help_url"]
+    }
+
+    subject = "[Bixby] #{trigger.severity_to_s}: #{@command.display_name} is #{trigger.sign_to_s} #{trigger.threshold}"
 
     mail(
       :from    => BIXBY_CONFIG[:mailer_from],

@@ -1,2 +1,18 @@
 
-oh noes, servers on fire!
+METRIC:       <%= @command.display_name %><% if @info %> - <%= @info.name || @info.desc %><% end %>
+KEY:          <%= @metric.key %><% if !@metric.tags_to_s.blank? then %>
+TAGS:         <%= @metric.tags_to_s %><% end %>
+SCRIPT:       <%= @command.script %>
+STATUS:       <%= @trigger.severity_to_s %>
+
+<%= @metric.last_value %><%= @unit %> <%= @trigger.sign_to_s %> <%= @trigger.threshold %><%= @unit %> at <%= @metric.updated_at %>
+<% if @help[:text] then %>
+
+Metric description:
+<%= @help[:text] %><% if @help[:url] then %>
+
+See also: <%= @help[:url] %><% end %>
+---
+<% end %>
+
+View in Bixby: <%= monitoring_host_check_url(@metric.check.host, @metric.check) %>

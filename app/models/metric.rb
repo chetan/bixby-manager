@@ -65,6 +65,11 @@ class Metric < ActiveRecord::Base
     self.check.org
   end
 
+  def metric_info
+    self.check.metric_infos.find{ |mi| mi.metric == self.key }
+  end
+  alias_method :info, :metric_info
+
   # Add new tag to this metric
   #
   # @param [String] key
@@ -74,6 +79,10 @@ class Metric < ActiveRecord::Base
     tags << Metadata.new(:key => key, :value => value, :source => source,
                              :object_type => Metadata::Type::METRIC, :object_fk_id => id)
     nil
+  end
+
+  def tags_to_s
+    tags.reject{ |t| t.key =~ /_id$/ }.map{ |t| "#{t.key}=#{t.value}" }.join(", ")
   end
 
   # Find an existing Metric or return a new instance

@@ -47,7 +47,11 @@ class Command < ActiveRecord::Base
   end
 
   def display_name
-    name || File.join(bundle.path, "bin", command)
+    name || script
+  end
+
+  def script
+    File.join(bundle.path, "bin", command)
   end
 
   # Convert CommandSpec to Command
