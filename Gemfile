@@ -186,6 +186,7 @@ end
 
 group :development, :test do
   gem "mongoid", "~> 4.0"
+  gem "did_you_mean"
 end
 
 group :test do

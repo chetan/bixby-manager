@@ -235,6 +235,8 @@ GEM
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
+    did_you_mean (0.7.0)
+      binding_of_caller
     easycov (0.4.0)
       multi_json
       simplecov
@@ -578,6 +580,7 @@ DEPENDENCIES
   curb (~> 0.8)
   database_cleaner (= 1.0.1)
   delete_paranoid!
+  did_you_mean
   em-hiredis
   exception_notification
   execjs
