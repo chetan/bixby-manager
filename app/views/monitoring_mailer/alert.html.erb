@@ -6,7 +6,7 @@
 <strong>TAGS:</strong>&nbsp;&nbsp;&nbsp;<%= @metric.tags_to_s %><br/>
 <% end %>
 <strong>SCRIPT:</strong>       <%= @command.script %><br/>
-<strong>STATUS:</strong>       <%= @trigger.severity_to_s %><br/>
+<strong>STATUS:</strong>       <span class="<%= @trigger.severity_to_s.downcase %>"><%= @trigger.severity_to_s.upcase %></span><br/>
 </p>
 
 <p class="fixed">
