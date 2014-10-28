@@ -23,6 +23,13 @@ namespace 'Bixby.model', (exports, top) ->
           return "public keys can only be used with git or ssh protocols"
         return null
 
+    # Return a URI suitable for linking
+    href: ->
+      uri = @get("uri")
+      if uri.match(/^git@github\.com:/)
+        uri.replace(/^git@github\.com:/, "https://github.com/")
+      else
+        uri
 
   class exports.RepoList extends Stark.Collection
     model: exports.Repo

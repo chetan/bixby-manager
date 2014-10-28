@@ -2,7 +2,7 @@
 <tr>
   <td><a id="name"></a></td>
   <td>
-    <a id="uri" href="<%= repo.uri %>"></a>
+    <a id="uri" href="<%= repo.href() %>"></a>
     <%? repo.public_key %>
       <button type="button" class="btn btn-xs btn-default pubkey pull-right">View Public Key</button>
       <div class="modal start_hidden">
