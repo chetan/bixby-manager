@@ -59,7 +59,7 @@ God.watch do |w|
   w.transition(:up, :restart) do |on|
     on.condition(:memory_usage) do |c|
       c.interval = 30
-      c.above = 250.megabytes
+      c.above = 350.megabytes
       c.times = [3, 5] # 3 out of 5
       c.notify = 'support'
     end
