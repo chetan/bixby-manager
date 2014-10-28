@@ -4,14 +4,18 @@
   <td>
     <a id="uri" href="<%= repo.uri %>"></a>
     <%? repo.public_key %>
-      &nbsp;&nbsp;<button type="button" class="btn btn-mini pubkey">View Public Key</button>
-      <div class="modal hide">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h3>Public Key</h3>
+      <button type="button" class="btn btn-xs btn-default pubkey pull-right">View Public Key</button>
+      <div class="modal start_hidden">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Public Key</h4>
+            </div>
+            <div class="modal-body">
+              <textarea id="public_key" rows="6" style="width: 97%;"></textarea>
+            </div>
         </div>
-        <div class="modal-body">
-          <textarea id="public_key" rows="6" style="width: 97%;"></textarea>
         </div>
       </div>
     <%/%>
