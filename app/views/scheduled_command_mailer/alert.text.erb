@@ -1,8 +1,8 @@
 
 JOB:          <%= @command_name %><% if @command_name != @script then %>
 SCRIPT:       <%= @script %><% end %>
-OWNER:        <%= @scheduled_command.owner.email_address %>
-RUN ID:       <%= @scheduled_command.run_count %><% if @scheduled_command.cron? then %>
+OWNER:        <%= @scheduled_command.owner.email_address %><% if @scheduled_command.cron? then %>
+RUN ID:       <%= @scheduled_command.run_count %>
 NEXT RUN:     <%= @scheduled_command.scheduled_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %><% end %>
 
 STATUS:       <%= @logs.count{ |l| l.success? } %>/<%= @logs.size %> HOSTS SUCCEEDED<% if @scheduled_command.once? then %>

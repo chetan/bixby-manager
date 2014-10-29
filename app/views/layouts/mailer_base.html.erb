@@ -32,9 +32,13 @@
 
     a {color: blue;}
 
-    p.fixed { font-family: 'Courier New', monospace; }
+    p.fixed, td.key, td.value { font-family: 'Courier New', monospace; }
     .warning { color: orange; }
     .critical { color: red; }
+    td.key { font-weight: bold; min-width: 125px; vertical-align: top; }
+    td.value { padding-left: 20px; }
+    table.panel { border-collapse: separate; }
+    td.panel { border-collapse: separate; border: 2px solid #717171; padding: 10px; border-radius: 5px; }
   </style>
 
   <style data-roadie-ignore>

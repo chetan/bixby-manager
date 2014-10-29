@@ -1,6 +1,8 @@
 
 class ScheduledCommandMailer < ActionMailer::Base
 
+  layout "mailer_base"
+
   module Helpers
     def num_bytes(str)
       return "0 bytes" if str.blank?
@@ -28,12 +30,12 @@ class ScheduledCommandMailer < ActionMailer::Base
       s
     end
 
-    def env
+    def env(sep=", ")
       env = @scheduled_command.env
       if env.blank? then
         "n/a"
       else
-        env.keys.map { |k| "#{k}=#{env[k]}" }.join(", ")
+        env.keys.map { |k| "#{k}=#{env[k]}" }.join(sep)
       end
     end
 

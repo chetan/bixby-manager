@@ -1,0 +1,64 @@
+
+<br/>
+<table cellpadding="0" cellspacing="0" border="0">
+  <%= render "key_row", :k => "JOB:", :v => @command_name %>
+
+  <% if @command_name != @script then %>
+    <%= render "key_row", :k => "SCRIPT:", :v => @script %>
+  <% end %>
+
+  <%= render "key_row", :k => "OWNER:", :v => @scheduled_command.owner.email_address %>
+
+  <% if @scheduled_command.cron? then %>
+    <%= render "key_row", :k => "RUN ID:", :v => @scheduled_command.run_count %>
+    <%= render "key_row", :k => "NEXT RUN:", :v => @scheduled_command.scheduled_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
+  <% end %>
+</table>
+
+<br/>
+<table cellpadding="0" cellspacing="0" border="0">
+  <%= render "key_row", :k => "STATUS:", :v => "#{@logs.count{ |l| l.success? }}/#{@logs.size} HOSTS SUCCEEDED" %>
+  <%= render "key_row", :k => "SCHEDULED:", :v => @scheduled_command.scheduled_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
+  <%= render "key_row", :k => "START TIME:", :v => @time_start.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
+  <%= render "key_row", :k => "ELAPSED TIME:", :v => total_time_taken() %>
+</table>
+
+<br/>
+<table cellpadding="0" cellspacing="0" border="0">
+  <%= render "key_row", :k => "ARGS:", :v => @scheduled_command.args ? @scheduled_command.args : "n/a" %>
+  <%= render "key_row", :k => "ENV:", :v => env("<br>").html_safe %>
+  <%= render "key_row", :k => "STDIN:", :v => stdin() %>
+</table>
+
+<br/>
+
+<% @logs.each do |log| %>
+
+<br/>
+<table cellpadding="0" cellspacing="0" border="0" class="panel">
+  <tr>
+    <td class="panel">
+
+      <table cellpadding="0" cellspacing="0" border="0">
+        <%= render "key_row", :k => "HOST:", :v => log.agent.host.name %>
+      </table>
+      <br/>
+      <table cellpadding="0" cellspacing="0" border="0">
+        <%= render "key_row", :k => "TIME:", :v => log.requested_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
+        <%= render "key_row", :k => "ELAPSED TIME:", :v => log.time_taken_str %>
+        <%= render "key_row", :k => "EXIT CODE:", :v => "#{log.status} (#{log.success? ? "SUCCESS" : "ERROR"})" %>
+      </table>
+
+<pre>
+<%= out(log, :stdout) %>
+</pre>
+
+<pre>
+<%= out(log, :stderr) %>
+</pre>
+
+    </td>
+  </tr>
+</table>
+
+<% end %>
