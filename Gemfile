@@ -85,6 +85,8 @@ gem "bitfields", "~> 0.4.3"
 # notifications module
 gem "twilio-ruby"
 gem "pony"
+gem "roadie", "~> 3.0.1"
+gem "roadie-rails", "~> 1.0.3"
 
 # scheduler module
 gem "redis", "~> 3.0", :require => ["redis/connection/hiredis", "redis"]
