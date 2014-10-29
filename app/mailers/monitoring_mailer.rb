@@ -1,6 +1,7 @@
 
 class MonitoringMailer < ActionMailer::Base
 
+  include Roadie::Rails::Automatic
   layout "mailer_base"
 
   def alert(metric, trigger, user)

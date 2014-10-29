@@ -1,6 +1,7 @@
 
 class ScheduledCommandMailer < ActionMailer::Base
 
+  include Roadie::Rails::Automatic
   layout "mailer_base"
 
   module Helpers

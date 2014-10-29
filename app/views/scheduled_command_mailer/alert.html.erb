@@ -37,7 +37,7 @@
 <br/>
 <table cellpadding="0" cellspacing="0" border="0" class="panel">
   <tr>
-    <td class="panel">
+    <td class="panel <%= (log.success? ? "SUCCESS" : "ERROR").downcase %>">
 
       <table cellpadding="0" cellspacing="0" border="0">
         <%= render "key_row", :k => "HOST:", :v => log.agent.host.name %>
