@@ -88,8 +88,12 @@ class UiController < ApplicationController
 
   def authenticate_user!(opts={})
     return if is_logged_in?
-    session[:return_to] = request.original_fullpath
-    redirect_to "/login"
+    url = request.original_fullpath
+    if url != "/" && url !~ %r{^/login} then
+      cookies[:return_to] = request.original_fullpath
+    end
+    set_csrf_cookie
+    render :index # let stark handle the redirect to login
   end
 
 end

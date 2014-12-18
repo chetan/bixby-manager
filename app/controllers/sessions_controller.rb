@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
       return redirect_to "/login/verify_token"
 
     when AUTH_SUCCESS
-      redirect_to(session.delete(:return_to) || default_url)
+      redirect_to(cookies.delete(:return_to) || default_url)
     end
 
   end
@@ -55,7 +55,7 @@ class SessionsController < ApplicationController
 
   def token_success
     data = { :user => current_user, :csrf => form_authenticity_token }
-    data[:redir] = session.delete(:return_to) if session.include? :return_to
+    data[:redir] = cookies.delete(:return_to) if cookies.include? :return_to
 
     if current_user.can?("impersonate_users")
       MultiTenant.with(nil) {

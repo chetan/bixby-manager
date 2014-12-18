@@ -63,7 +63,15 @@ class Stark.App
     if @data?
       @current_user = @data.current_user
 
+    if !@current_user?
+      @log "not logged in, sending to login page: #{@login_route}"
+      @router.start({silent: true})
+      @router.route(@login_route)
+      return
+
     if !@router.start()
+      # router.start() will fire an event which calls the correct controller if a route was matched
+      # otherwise we enter here and figure out what to do
       @log "no routes matched"
       if @current_user?
         @log "appear to be logged in, using default route: #{@default_route}"

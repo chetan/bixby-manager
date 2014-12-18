@@ -39,9 +39,9 @@ class Stark.Router
   # against all the registered routes.
   #
   # @return [Boolean] true if a route was matched
-  start: ->
+  start: (opts) ->
     @log "starting history"
-    return Backbone.history.start({ pushState: true })
+    return Backbone.history.start(_.extend({pushState: true}, opts))
 
   # Connect an address with a particular state
   # Directly creates a Backbone.history route
