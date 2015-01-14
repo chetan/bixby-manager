@@ -29,6 +29,9 @@ div.check_editor {
 }
 div.metric div.tooltip {
   pointer-events: none;
+  div.tooltip-inner {
+    max-width: none;
+  }
 }
 
 // sparklines
