@@ -16,11 +16,11 @@ GIT
 
 GIT
   remote: git://github.com/chetan/bixby-api_pool.git
-  revision: 6607ee8a2607727b1a1f8534858db24ebe69573a
+  revision: f087a81892b17115d3dba964ac316139f5a24944
   specs:
-    bixby-api_pool (0.1.1)
+    bixby-api_pool (0.2.0)
       actionpool (~> 0.2)
-      ethon (~> 0.7)
+      net-http-persistent
 
 GIT
   remote: git://github.com/chetan/continuum.git
@@ -29,14 +29,6 @@ GIT
     continuum (0.2)
       multi_json
       rake
-
-GIT
-  remote: git://github.com/chetan/httpi.git
-  revision: 0489fa98abb1d2c45fa92b87000e0514cad51442
-  branch: curb_nosignal
-  specs:
-    httpi (2.2.5)
-      rack
 
 GIT
   remote: git://github.com/chetan/micron.git
@@ -52,14 +44,6 @@ GIT
   revision: f36e788584801aa528a284693b54faeee4467a6d
   specs:
     awesome_print (1.2.0)
-
-GIT
-  remote: git://github.com/red5studios/newrelic-curb.git
-  revision: c842132efc2157cb58b9ea252ca688ccfe7147fb
-  specs:
-    newrelic-curb (0.0.6)
-      curb
-      newrelic_rpm
 
 GIT
   remote: git://github.com/socialcast/delete_paranoid.git
@@ -233,7 +217,6 @@ GEM
       safe_yaml (~> 1.0.0)
     css_parser (1.3.5)
       addressable
-    curb (0.8.5)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
@@ -249,8 +232,6 @@ GEM
       hiredis (~> 0.5.0)
     encryptor (1.3.0)
     erubis (2.7.0)
-    ethon (0.7.1)
-      ffi (>= 1.3.0)
     eventmachine (1.0.3)
     eventmachine (1.0.3-java)
     exception_notification (4.0.1)
@@ -290,6 +271,8 @@ GEM
     hiredis (0.5.2-java)
     hitimes (1.2.1)
     hitimes (1.2.1-java)
+    httpi (2.3.0)
+      rack
     i18n (0.6.11)
     immigrant (0.1.8)
       activerecord (>= 3.0)
@@ -348,6 +331,7 @@ GEM
       optionable (~> 0.2.0)
     multi_json (1.10.1)
     mysql2 (0.3.16)
+    net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -590,7 +574,6 @@ DEPENDENCIES
   coffee-script-source
   continuum!
   coveralls
-  curb (~> 0.8)
   database_cleaner (= 1.0.1)
   delete_paranoid!
   did_you_mean
@@ -607,7 +590,7 @@ DEPENDENCIES
   haml_assets
   highline
   hiredis
-  httpi!
+  httpi
   immigrant
   json
   kaminari
@@ -625,7 +608,6 @@ DEPENDENCIES
   mongoid (~> 4.0)
   multi_json
   mysql2
-  newrelic-curb!
   newrelic-middleware
   newrelic-redis
   newrelic_moped

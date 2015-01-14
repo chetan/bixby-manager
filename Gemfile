@@ -43,8 +43,7 @@ gem 'github-markdown'
 gem 'bixby-common'
 # gem 'bixby-common', :path => "../common"
 
-gem 'httpi', :github => "chetan/httpi", :branch => "curb_nosignal" # fix curl-related segfault
-gem 'curb', '~> 0.8'
+gem 'httpi'
 
 gem "semver2"
 gem "chronic"
@@ -162,7 +161,6 @@ group :development do
   gem 'newrelic_rpm', :require => false
   gem 'newrelic-redis', :require => false
   gem 'newrelic_moped', :require => false
-  gem 'newrelic-curb', :github => "red5studios/newrelic-curb", :require => false
   gem 'newrelic-middleware', :require => false
 
   # docs

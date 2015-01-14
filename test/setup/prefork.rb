@@ -11,8 +11,6 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../../config/environment', __FILE__)
 require 'rails/test_help'
 
-# load curb first so webmock can stub it out as necessary
-require 'curb'
 require 'httpi'
 require 'continuum/http/httpi'
 require 'webmock'

@@ -158,7 +158,7 @@ class RemoteExec < API
         logger.debug { ret.to_s }
         return ret
 
-      rescue Curl::Err::CurlError => ex
+      rescue HTTPI::Error, HTTPI::ConnectionError => ex
         ret = JsonResponse.new("fail", ex.message, ex.backtrace)
         logger.warn { ex }
         return ret

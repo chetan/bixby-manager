@@ -90,12 +90,13 @@ EOF
     test_metric_row(ret)
   end
 
-  def test_get_doesnt_raise_when_down
-    Bixby::Metrics::OpenTSDB.expects(:get).raises(Curl::Err::ConnectionFailedError)
-    ret = Bixby::Metrics.new.get({})
-    assert ret
-    assert_empty ret
-  end
+  # TODO not using opentsdb [or curl anymore...]
+  # def test_get_doesnt_raise_when_down
+  #   Bixby::Metrics::OpenTSDB.expects(:get).raises(Curl::Err::ConnectionFailedError)
+  #   ret = Bixby::Metrics.new.get({})
+  #   assert ret
+  #   assert_empty ret
+  # end
 
   def test_multi_get
     stub, req = create_req()

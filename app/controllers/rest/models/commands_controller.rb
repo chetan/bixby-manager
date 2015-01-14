@@ -27,6 +27,7 @@ class Rest::Models::CommandsController < Rest::BaseController
       end
     rescue Exception => ex
       if ex.message == "Curl::Err::ConnectionFailedError"
+        # TODO this shouldn't come up anymore
         msg = "Failed to contact agent (#{ex.message})"
       else
         msg = ex.message
