@@ -1,5 +1,6 @@
 language: ruby
 before_install:
+  - "gem install bundler --no-ri --no-rdoc"
   - "curl -sL https://s3.bixby.io/wad > ~/wad"
   - "chmod +x ~/wad"
 install:
@@ -13,7 +14,8 @@ after_script:
   - "bundle exec brakeman -q"
 
 rvm:
-  - 2.1.1
+  - 2.1.5
+  - 2.2.0
 
 branches:
   only:
