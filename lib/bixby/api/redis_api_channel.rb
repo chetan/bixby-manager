@@ -5,6 +5,7 @@ module Bixby
     def initialize
       @responses = {}
       @started = false
+      @thread_pool = Bixby::ThreadPool.new(:min_size => 1, :max_size => 8)
     end
 
     # Execute the given JsonRequest via some other host using Redis PubSub
@@ -59,13 +60,14 @@ module Bixby
       end
 
       if EM.reactor_running? then
+        logger.debug "EM already running, starting pubsub on next tick"
         EM.next_tick {
           start_pubsub()
         }
 
       else
         Thread.new {
-          logger.debug "starting EventMachine"
+          logger.debug "starting EventMachine runloop"
           EM.run {
             start_pubsub()
           }
@@ -89,56 +91,31 @@ module Bixby
         (host, port) = BIXBY_CONFIG["redis"].split(/:/)
         port ||= 6379
         @client = EM::Hiredis::PubsubClient.new(host, port.to_i)
-        @client.connect
 
-        @client.subscribe(host_key(AgentRegistry.hostname)) do |msg|
+        # subscribe to our channel when connected
+        @client.on(:connected) do
+          logger.debug { "connected to redis; subscribing to redis api channel #{AgentRegistry.hostname}" }
+          @client.subscribe(host_key(AgentRegistry.hostname)) do |msg|
 
-          begin
-            req = Bixby::WebSocket::Message.from_wire(msg)
-            logger.debug { "new '#{req.type}' message" }
+            begin
+              req = Bixby::WebSocket::Message.from_wire(msg)
+              logger.debug { "new '#{req.type}' message" }
 
-            if req.type == "rpc" then
-              logger.debug { "got request for agent #{req.headers["agent_id"]}" }
-
-              # Execute the requested method and return the result
-              agent_id = req.headers["agent_id"]
-              api = AgentRegistry.get(agent_id)
-              if api.nil? then
-                # TODO
+              case req.type
+                when "rpc"
+                  handle_rpc(req)
+                when "rpc_result"
+                  handle_rpc_result(req)
               end
 
-              # Release the thread that received the RPC request by quickly
-              # firing the request off to the Agent in another background
-              # thread. The Agent's response will be returend by EM via
-              # callback.
-              EM.defer {
-                logger.debug "executing json_req in defer thread"
-
-                api.execute_async(req.json_request) do |json_res|
-                  # wrap and publish to requesting client
-                  res = Bixby::WebSocket::Response.new(json_res, req.id).to_wire
-                  reply_to = req.headers["reply_to"]
-                  num = Sidekiq.redis{ |c| c.publish(host_key(reply_to), res) }
-                  logger.debug { "published response to #{reply_to}" }
-                end
-
-                logger.debug "defer thread complete; callback created"
-              }
-
-            elsif req.type == "rpc_result" then
-              # Pass the result back to the caller
-              # need to get the actual instance of this class since we are running in a callback
-              # AgentRegistry.redis_channel.responses[req.id].response = JsonResponse.from_json(req.body)
-              res = JsonResponse.from_json(req.body)
-              logger.debug(res.to_s)
-              publish_response(req.id, res)
-
+            rescue Exception => ex
+              logger.error ex
             end
 
-          rescue => ex
-            logger.error ex
           end
         end
+
+        @client.connect
 
       rescue Exception => ex
         logger.error "Error starting PubSub client"
@@ -148,6 +125,42 @@ module Bixby
       RedisAPIChannel.logger.debug { "started PubSub client" }
 
     end
+
+    def handle_rpc(req)
+      logger.debug { "got request for agent #{req.headers["agent_id"]}" }
+
+      # Execute the requested method and return the result
+      agent_id = req.headers["agent_id"]
+      api = AgentRegistry.get(agent_id)
+      if api.nil? then
+        # TODO
+      end
+
+      # Release the thread that received the RPC request by quickly
+      # firing the request off to the Agent in another background
+      # thread.
+      @thread_pool.perform do
+        logger.debug "handling json_req in background thread"
+
+        api.execute_async(req.json_request) do |json_res|
+          # wrap and publish to requesting client
+          res = Bixby::WebSocket::Response.new(json_res, req.id).to_wire
+          reply_to = req.headers["reply_to"]
+          num = Sidekiq.redis{ |c| c.publish(host_key(reply_to), res) }
+          logger.debug { "published response to #{reply_to} : received by #{num} hosts" }
+        end
+      end
+    end
+
+    def handle_rpc_result(req)
+      # Pass the result back to the caller
+      # need to get the actual instance of this class since we are running in a callback
+      # AgentRegistry.redis_channel.responses[req.id].response = JsonResponse.from_json(req.body)
+      res = JsonResponse.from_json(req.body)
+      logger.debug{ res.to_s }
+      publish_response(req.id, res)
+    end
+
 
     # Get the redis PubSub channel key for the given host
     #

@@ -6,7 +6,11 @@ module Bixby
 
     extend Bixby::Log
 
-    def self.call(env)
+    def initialize
+      @thread_pool = Bixby::ThreadPool.new(:min_size => 1, :max_size => 8)
+    end
+
+    def call(env)
 
       if not Faye::WebSocket.websocket?(env) then
         # Redirect the client to the Rails application, if the request
@@ -15,7 +19,7 @@ module Bixby
       end
 
       ws = Faye::WebSocket.new(env)
-      api = Bixby::WebSocket::APIChannel.new(ws, ServerHandler)
+      api = Bixby::WebSocket::APIChannel.new(ws, ServerHandler, @thread_pool)
 
       ws.on :open do |e|
         begin

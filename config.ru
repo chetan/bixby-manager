@@ -6,7 +6,7 @@ require ::File.expand_path('../config/environment',  __FILE__)
 
 wsapp = Rack::Builder.new do
   use Rack::CommonLogger, Rails.logger
-  run Bixby::WebSocketServer
+  run Bixby::WebSocketServer.new
 end
 
 run Rack::URLMap.new(

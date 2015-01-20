@@ -98,8 +98,8 @@ class API < TestCase
     BIXBY_CONFIG[:crypto] = true
 
     @request.env['RAW_POST_DATA'] = JsonRequest.new("hello:hi", "joe").to_json
-    ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
     @request.headers.env["DATE"] = (Time.now-1800).utc.strftime("%a, %d %b %Y %T GMT")
+    ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
     post :handle
 
     # validate response
