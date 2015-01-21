@@ -13,4 +13,7 @@ if ::Rails.env == "development" then
   end
 
   # ActiveSupport::Dependencies.log_activity = true
+
+  # EM::Hiredis.logger = Logging.logger[EM::Hiredis]
+  # EM::Hiredis.logger.level = :debug
 end
