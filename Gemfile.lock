@@ -24,12 +24,6 @@ GIT
       hitimes
 
 GIT
-  remote: git://github.com/michaeldv/awesome_print.git
-  revision: f36e788584801aa528a284693b54faeee4467a6d
-  specs:
-    awesome_print (1.2.0)
-
-GIT
   remote: git://github.com/socialcast/delete_paranoid.git
   revision: f882d4062ab51d520f8c63bbfac5ef02ad869cce
   specs:
@@ -129,10 +123,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    acts-as-taggable-on (3.1.1)
-      actionpack (>= 3, < 5)
-      activerecord (>= 3, < 5)
-      activesupport (>= 3, < 5)
+    acts-as-taggable-on (3.4.3)
+      activerecord (>= 3.2, < 5)
     acts_as_tree (1.6.1)
       activerecord (>= 3.0.0)
     addressable (2.3.6)
@@ -143,6 +135,7 @@ GEM
     arel (6.0.0)
     attr_encrypted (1.3.2)
       encryptor (>= 1.3.0)
+    awesome_print (1.6.1)
     bahia (0.7.2)
       open4 (~> 1.3.0)
     better_errors (1.1.0)
@@ -250,8 +243,6 @@ GEM
       rake
     font-awesome-rails (4.1.0.0)
       railties (>= 3.2, < 5.0)
-    foreigner (1.6.1)
-      activerecord (>= 3.0.0)
     git (1.2.8)
     github-markdown (0.6.7)
     globalid (0.3.0)
@@ -272,9 +263,8 @@ GEM
     httpi (2.3.0)
       rack
     i18n (0.7.0)
-    immigrant (0.1.8)
+    immigrant (0.2.0)
       activerecord (>= 3.0)
-      foreigner (>= 1.2.1)
     interception (0.5)
     jdbc-mysql (5.1.30)
     jdbc-postgres (9.3.1101)
@@ -562,11 +552,11 @@ DEPENDENCIES
   activerecord-jdbcpostgresql-adapter
   activerecord-jdbcsqlite3-adapter (~> 1.3.0)
   activerecord-session_store
-  acts-as-taggable-on (~> 3.1.0)
+  acts-as-taggable-on (~> 3.1)
   acts_as_tree
   annotate (>= 2.5.0)
   attr_encrypted
-  awesome_print!
+  awesome_print
   bahia
   better_errors
   binding_of_caller
@@ -596,7 +586,6 @@ DEPENDENCIES
   factory_girl_rails
   faye-websocket
   font-awesome-rails
-  foreigner
   git (~> 1.2.8)
   github-markdown
   haml

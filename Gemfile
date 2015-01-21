@@ -11,8 +11,7 @@ gem 'psych'
 # webserver
 gem "puma",     :platforms => [:mri, :rbx, :jruby], :require => false
 
-# adds foreign key support to activerecord
-gem "foreigner"
+# adds foreign key utils
 gem "immigrant"
 
 # uncomment if using in production
@@ -77,7 +76,7 @@ gem "sshkey"
 
 # rails plugins
 gem "attr_encrypted" # used in auth/otp
-gem "acts-as-taggable-on", "~> 3.1.0"
+gem "acts-as-taggable-on", "~> 3.1"
 gem "acts_as_tree"      # replace with closure_tree (better perf)?
 gem "delete_paranoid", :github => "socialcast/delete_paranoid"
 gem "bitfields", "~> 0.4.3"
@@ -144,7 +143,7 @@ group :development do
   # debugging
   gem "byebug",     :platforms => [:mri_20, :mri_21]
   gem "pry-byebug", :platforms => [:mri_20, :mri_21]
-  gem "awesome_print", :github => "michaeldv/awesome_print" # to fix error with mongoid/bson
+  gem "awesome_print"
   gem "coffee-rails-source-maps"
   gem "bullet"
 
