@@ -5,8 +5,8 @@ if Module.const_defined? :Sidekiq then
   Sidekiq::Logging.logger = Logging.logger[Sidekiq]
 
   if Rails.env == "development" && Sidekiq.server? then
-    # quiet sidekiq logs in dev mode
-    Logging.logger.root.level = :info
+    # quiet logs on stdout
+    Logging.appenders["stdout"].level = :info
   end
 
   module Sidekiq

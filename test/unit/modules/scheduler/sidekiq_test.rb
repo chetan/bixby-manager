@@ -17,6 +17,7 @@ module Bixby::Test::Modules::SchedulerDrivers
 
     def setup
       super
+      toggle_inline_testing(false)
       Bixby::Scheduler.driver = Bixby::Scheduler::Sidekiq
       Bixby::Scheduler.configure(BIXBY_CONFIG)
       @job = Bixby::Scheduler::Job.create(Foobar, :baz, nil)
