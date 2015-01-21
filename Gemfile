@@ -3,7 +3,8 @@ source 'https://rubygems.org'
 # need jruby alternative for:
 # scrypt
 
-gem 'rails', '~> 4.1'
+gem 'rails', '~> 4.2'
+gem 'responders', '~> 2.0'
 gem 'activerecord-session_store'
 gem 'psych'
 
@@ -84,15 +85,13 @@ gem "bitfields", "~> 0.4.3"
 # notifications module
 gem "twilio-ruby"
 gem "pony"
-gem "roadie", "~> 3.0.1"
-gem "roadie-rails", "~> 1.0.3"
+gem "roadie", "~> 3.0"
+gem "roadie-rails", "~> 1.0"
 
 # scheduler module
 gem "redis", "~> 3.0", :require => ["redis/connection/hiredis", "redis"]
 # though hiredis is an extension, it should degrade gracefully for jruby
 gem "hiredis"
-
-gem "activemodel-globalid", :github => "chetan/activemodel-globalid", :branch => "proper_railtie_namespace"
 
 # uncomment if you are using resque in production
 # gem "resque"

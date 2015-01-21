@@ -33,6 +33,7 @@ class CustomPlan < Zeus::Rails
     ENV["IS_RAILS_SERVER"] = "1"
     require 'rails/commands/server'
     server = ::Rails::Server.new
+    server.options[:Host] = "0.0.0.0" # workaround for listener being set to 'localhost' which resolves to ::1 on OSX
     Dir.chdir(::Rails.application.root)
     bixby_bootstrap()
     server.start

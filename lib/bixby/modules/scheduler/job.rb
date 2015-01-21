@@ -1,6 +1,4 @@
 
-require 'active_model/global_locator'
-
 module Bixby
 class Scheduler
 
@@ -64,13 +62,13 @@ class Scheduler
     end
 
     def self.serialize_arg(arg)
-      arg.kind_of?(ActiveModel::GlobalIdentification) ? arg.global_id : arg
+      arg.kind_of?(GlobalID::Identification) ? arg.global_id : arg
     end
 
     def self.deserialize_args(args)
       args.map do |arg|
         if arg.kind_of? String then
-          ActiveModel::GlobalLocator.locate(arg) || arg
+          GlobalID::Locator.locate(arg) || arg
         else
           arg
         end
