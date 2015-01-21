@@ -68,7 +68,7 @@ gem "mixlib-shellout"
 gem "scrypt"
 gem "rotp", "~> 2.0"
 gem "pretender"
-gem 'bixby-auth', :path => "../auth"
+gem 'bixby-auth' #, :path => "../auth"
 
 # repository module
 gem "git", "~> 1.2.8"

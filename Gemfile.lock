@@ -65,11 +65,6 @@ GIT
       simplecov
       simplecov-console
 
-PATH
-  remote: ../auth
-  specs:
-    bixby-auth (0.1.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -144,6 +139,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bitfields (0.4.3)
+    bixby-auth (0.1.1)
     bixby-common (0.6.0)
       bixby-auth (~> 0.1)
       faye-websocket (~> 0.7)
@@ -562,7 +558,7 @@ DEPENDENCIES
   binding_of_caller
   bitfields (~> 0.4.3)
   bixby-api_pool!
-  bixby-auth!
+  bixby-auth
   bixby-common
   bootstrap-sass (~> 3.1.1)
   brakeman
