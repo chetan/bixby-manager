@@ -9,7 +9,7 @@
 # **`id`**                 | `integer`          | `not null, primary key`
 # **`check_template_id`**  | `integer`          | `not null`
 # **`command_id`**         | `integer`          | `not null`
-# **`args`**               | `text`             |
+# **`args`**               | `text(65535)`      |
 # **`created_at`**         | `datetime`         |
 # **`updated_at`**         | `datetime`         |
 # **`deleted_at`**         | `datetime`         |

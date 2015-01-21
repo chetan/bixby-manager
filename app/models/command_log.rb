@@ -13,14 +13,14 @@
 # **`command_id`**            | `integer`          |
 # **`scheduled_command_id`**  | `integer`          |
 # **`run_id`**                | `integer`          |
-# **`stdin`**                 | `text`             |
-# **`args`**                  | `text`             |
-# **`env`**                   | `text`             |
+# **`stdin`**                 | `text(65535)`      |
+# **`args`**                  | `text(65535)`      |
+# **`env`**                   | `text(65535)`      |
 # **`exec_status`**           | `boolean`          |
 # **`exec_code`**             | `integer`          |
 # **`status`**                | `integer`          |
-# **`stdout`**                | `text`             |
-# **`stderr`**                | `text`             |
+# **`stdout`**                | `text(65535)`      |
+# **`stderr`**                | `text(65535)`      |
 # **`requested_at`**          | `datetime`         |
 # **`time_taken`**            | `decimal(10, 3)`   |
 #

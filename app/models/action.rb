@@ -10,7 +10,7 @@
 # **`trigger_id`**   | `integer`          | `not null`
 # **`action_type`**  | `integer`          | `not null`
 # **`target_id`**    | `integer`          | `not null`
-# **`args`**         | `text`             |
+# **`args`**         | `text(65535)`      |
 # **`deleted_at`**   | `datetime`         |
 #
 # ### Indexes

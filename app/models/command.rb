@@ -13,7 +13,7 @@
 # **`desc`**        | `string(255)`      |
 # **`location`**    | `string(255)`      |
 # **`command`**     | `string(255)`      |
-# **`options`**     | `text`             |
+# **`options`**     | `text(65535)`      |
 # **`updated_at`**  | `datetime`         |
 # **`deleted_at`**  | `datetime`         |
 #

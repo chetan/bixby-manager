@@ -11,8 +11,8 @@
 # **`name`**         | `string(255)`      |
 # **`uri`**          | `string(255)`      |
 # **`branch`**       | `string(255)`      |
-# **`private_key`**  | `text`             |
-# **`public_key`**   | `text`             |
+# **`private_key`**  | `text(65535)`      |
+# **`public_key`**   | `text(65535)`      |
 # **`created_at`**   | `datetime`         |
 # **`updated_at`**   | `datetime`         |
 #

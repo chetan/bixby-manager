@@ -10,17 +10,17 @@
 # **`host_id`**       | `integer`          | `not null`
 # **`uuid`**          | `string(255)`      |
 # **`ip`**            | `string(16)`       |
-# **`port`**          | `integer`          | `default(18000)`
-# **`public_key`**    | `text`             |
+# **`port`**          | `integer`          | `default("18000")`
+# **`public_key`**    | `text(65535)`      |
 # **`access_key`**    | `string(32)`       | `not null`
 # **`secret_key`**    | `string(128)`      | `not null`
-# **`status`**        | `integer`          | `default(0), not null`
+# **`status`**        | `integer`          | `default("0"), not null`
 # **`version`**       | `string(255)`      |
 # **`created_at`**    | `datetime`         |
 # **`updated_at`**    | `datetime`         |
 # **`deleted_at`**    | `datetime`         |
 # **`last_seen_at`**  | `datetime`         |
-# **`is_connected`**  | `boolean`          | `default(FALSE)`
+# **`is_connected`**  | `boolean`          | `default("0")`
 #
 # ### Indexes
 #

@@ -10,7 +10,7 @@
 # **`repo_id`**     | `integer`          |
 # **`path`**        | `string(255)`      |
 # **`name`**        | `string(255)`      |
-# **`desc`**        | `text`             |
+# **`desc`**        | `text(65535)`      |
 # **`version`**     | `string(255)`      |
 # **`digest`**      | `string(255)`      |
 # **`created_at`**  | `datetime`         |
@@ -22,7 +22,6 @@
 # * `bundles_repo_id_fk`:
 #     * **`repo_id`**
 #
-
 
 class Bundle < ActiveRecord::Base
 

@@ -10,12 +10,12 @@
 # **`host_id`**          | `integer`          | `not null`
 # **`agent_id`**         | `integer`          | `not null`
 # **`command_id`**       | `integer`          | `not null`
-# **`args`**             | `text`             |
+# **`args`**             | `text(65535)`      |
 # **`normal_interval`**  | `integer`          |
 # **`retry_interval`**   | `integer`          |
 # **`timeout`**          | `integer`          |
 # **`plot`**             | `boolean`          |
-# **`enabled`**          | `boolean`          | `default(FALSE)`
+# **`enabled`**          | `boolean`          | `default("0")`
 # **`created_at`**       | `datetime`         |
 # **`updated_at`**       | `datetime`         |
 # **`deleted_at`**       | `datetime`         |

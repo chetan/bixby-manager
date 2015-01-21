@@ -8,7 +8,7 @@
 # ----------------- | ------------------ | ---------------------------
 # **`id`**          | `integer`          | `not null, primary key`
 # **`session_id`**  | `string(255)`      | `not null`
-# **`data`**        | `text`             |
+# **`data`**        | `text(65535)`      |
 # **`created_at`**  | `datetime`         | `not null`
 # **`updated_at`**  | `datetime`         | `not null`
 #

@@ -13,8 +13,8 @@
 # **`name`**                       | `string(255)`      |
 # **`email`**                      | `string(255)`      |
 # **`phone`**                      | `string(255)`      |
-# **`sign_in_count`**              | `integer`          | `default(0), not null`
-# **`failed_attempts`**            | `integer`          | `default(0), not null`
+# **`sign_in_count`**              | `integer`          | `default("0"), not null`
+# **`failed_attempts`**            | `integer`          | `default("0"), not null`
 # **`last_request_at`**            | `datetime`         |
 # **`current_sign_in_at`**         | `datetime`         |
 # **`last_sign_in_at`**            | `datetime`         |

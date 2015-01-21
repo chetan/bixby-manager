@@ -10,7 +10,7 @@
 # **`org_id`**      | `integer`          | `not null`
 # **`host_id`**     | `integer`          |
 # **`name`**        | `string(255)`      | `not null`
-# **`detail`**      | `text`             |
+# **`detail`**      | `text(65535)`      |
 # **`created_at`**  | `datetime`         |
 #
 # ### Indexes
@@ -18,7 +18,6 @@
 # * `fk_annotations_hosts1_idx`:
 #     * **`host_id`**
 #
-
 
 class Annotation < ActiveRecord::Base
 

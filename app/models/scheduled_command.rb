@@ -11,22 +11,22 @@
 # **`agent_ids`**      | `string(255)`      |
 # **`command_id`**     | `integer`          |
 # **`created_by`**     | `integer`          |
-# **`stdin`**          | `text`             |
-# **`args`**           | `text`             |
-# **`env`**            | `text`             |
+# **`stdin`**          | `text(65535)`      |
+# **`args`**           | `text(65535)`      |
+# **`env`**            | `text(65535)`      |
 # **`schedule_type`**  | `integer`          |
 # **`schedule`**       | `string(255)`      |
 # **`scheduled_at`**   | `datetime`         |
-# **`enabled`**        | `boolean`          | `default(TRUE), not null`
+# **`enabled`**        | `boolean`          | `default("1"), not null`
 # **`job_id`**         | `string(255)`      |
-# **`alert_on`**       | `integer`          | `default(0), not null`
+# **`alert_on`**       | `integer`          | `default("0"), not null`
 # **`alert_users`**    | `string(255)`      |
-# **`alert_emails`**   | `text`             |
+# **`alert_emails`**   | `text(65535)`      |
 # **`created_at`**     | `datetime`         |
 # **`updated_at`**     | `datetime`         |
 # **`completed_at`**   | `datetime`         |
 # **`deleted_at`**     | `datetime`         |
-# **`run_count`**      | `integer`          | `default(0), not null`
+# **`run_count`**      | `integer`          | `default("0"), not null`
 #
 # ### Indexes
 #

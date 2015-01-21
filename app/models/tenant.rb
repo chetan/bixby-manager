@@ -9,7 +9,7 @@
 # **`id`**           | `integer`          | `not null, primary key`
 # **`name`**         | `string(255)`      |
 # **`password`**     | `string(255)`      |
-# **`private_key`**  | `text`             |
+# **`private_key`**  | `text(65535)`      |
 #
 
 class Tenant < ActiveRecord::Base
