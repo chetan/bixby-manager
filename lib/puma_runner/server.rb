@@ -85,7 +85,7 @@ module PumaRunner
 
       $0 = "puma: server (booting)"
 
-      trap_thread_dump() # in case we get stuck somewhere
+      # trap_thread_dump() # in case we get stuck somewhere
       redirect_io()
 
       begin
@@ -107,6 +107,7 @@ module PumaRunner
         setup_signals()
 
         # Start EM properly (i.e. at the proper time, which is now!)
+        # TODO replace with startup callback?
         Bixby::AgentRegistry.redis_channel.start!
 
         # go!
@@ -225,21 +226,21 @@ module PumaRunner
     end
 
     # Setup thread dump signal
-    def trap_thread_dump
-      # print a thread dump on SIGALRM
-      # kill -ALRM `cat /var/www/bixby/tmp/pids/puma.pid`
-      Signal.trap 'SIGALRM' do
-        STDERR.puts "=== puma thread dump: #{Time.now} ==="
-        STDERR.puts
-        Thread.list.each do |thread|
-          STDERR.puts "Thread-#{thread.object_id}"
-          STDERR.puts thread.backtrace.join("\n    \\_ ")
-          STDERR.puts "-"
-          STDERR.puts
-        end
-        STDERR.puts "=== end puma thread dump ==="
-      end
-    end
+    # def trap_thread_dump
+    #   # print a thread dump on SIGALRM
+    #   # kill -ALRM `cat /var/www/bixby/tmp/pids/puma.pid`
+    #   Signal.trap 'SIGALRM' do
+    #     STDERR.puts "=== puma thread dump: #{Time.now} ==="
+    #     STDERR.puts
+    #     Thread.list.each do |thread|
+    #       STDERR.puts "Thread-#{thread.object_id}"
+    #       STDERR.puts thread.backtrace.join("\n    \\_ ")
+    #       STDERR.puts "-"
+    #       STDERR.puts
+    #     end
+    #     STDERR.puts "=== end puma thread dump ==="
+    #   end
+    # end
 
   end # Server
 end # PumaRunner
