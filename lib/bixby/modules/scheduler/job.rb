@@ -62,7 +62,7 @@ class Scheduler
     end
 
     def self.serialize_arg(arg)
-      arg.kind_of?(GlobalID::Identification) ? arg.global_id : arg
+      arg.kind_of?(GlobalID::Identification) ? arg.to_global_id : arg
     end
 
     def self.deserialize_args(args)
