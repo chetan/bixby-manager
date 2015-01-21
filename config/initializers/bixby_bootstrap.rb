@@ -21,6 +21,8 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
     Rails.logger.warn("Removed STDOUT appender since we are running in rake")
   end
 
+  Bixby::ThreadDump.trap!
+
   Rails.logger.info "Bootstrapping BIXBY"
 
   require 'bixby'
