@@ -15,6 +15,14 @@ GIT
       rake
 
 GIT
+  remote: git://github.com/chetan/logging-rails.git
+  revision: abffe13dd89df6ea0216c1e2729500a205697a3a
+  branch: bixby
+  specs:
+    logging-rails (0.4.0)
+      logging (~> 1.8)
+
+GIT
   remote: git://github.com/chetan/micron.git
   revision: 0c1e9c0b9d9e052805f43485fe3454cbd25913c5
   specs:
@@ -24,37 +32,22 @@ GIT
       hitimes
 
 GIT
-  remote: git://github.com/socialcast/delete_paranoid.git
-  revision: f882d4062ab51d520f8c63bbfac5ef02ad869cce
+  remote: git://github.com/chetan/simplecov-console.git
+  revision: c32de9d0bddd971e71472d0139e1dadd085f1a87
   specs:
-    delete_paranoid (2.0.0)
-      activerecord
-
-GIT
-  remote: https://github.com/chetan/logging-rails.git
-  revision: abffe13dd89df6ea0216c1e2729500a205697a3a
-  branch: bixby
-  specs:
-    logging-rails (0.4.0)
-      logging (~> 1.8)
-
-GIT
-  remote: https://github.com/chetan/simplecov-console.git
-  revision: a72e58b312eb53e1dc9d322ff16f5043621660ca
-  specs:
-    simplecov-console (0.1.3)
-      colorize
+    simplecov-console (0.2.0)
+      ansi
       hirb
       simplecov
 
 GIT
-  remote: https://github.com/chetan/simplecov-html.git
+  remote: git://github.com/chetan/simplecov-html.git
   revision: 6328490fbafcb873303b6dd1bb228867dacd03b6
   specs:
     simplecov-html (0.7.1)
 
 GIT
-  remote: https://github.com/chetan/test_guard.git
+  remote: git://github.com/chetan/test_guard.git
   revision: 178e47e2e57dc83060d6cabc18f206916b9d02f2
   specs:
     test_guard (0.2.1)
@@ -64,6 +57,13 @@ GIT
       listen
       simplecov
       simplecov-console
+
+GIT
+  remote: git://github.com/socialcast/delete_paranoid.git
+  revision: f882d4062ab51d520f8c63bbfac5ef02ad869cce
+  specs:
+    delete_paranoid (2.0.0)
+      activerecord
 
 GEM
   remote: https://rubygems.org/
@@ -189,7 +189,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
-    colorize (0.7.3)
     columnize (0.8.9)
     connection_pool (2.1.1)
     coveralls (0.7.0)
@@ -202,7 +201,7 @@ GEM
       safe_yaml (~> 1.0.0)
     css_parser (1.3.5)
       addressable
-    database_cleaner (1.0.1)
+    database_cleaner (1.4.0)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
     did_you_mean (0.9.4)
@@ -233,13 +232,12 @@ GEM
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.5.1)
     ffi (1.9.6)
-    ffi (1.9.6-java)
     ffi-compiler (0.1.3)
       ffi (>= 1.0.0)
       rake
     font-awesome-rails (4.1.0.0)
       railties (>= 3.2, < 5.0)
-    git (1.2.8)
+    git (1.2.9.1)
     github-markdown (0.6.7)
     globalid (0.3.0)
       activesupport (>= 4.1.0)
@@ -255,7 +253,6 @@ GEM
     hiredis (0.5.2)
     hiredis (0.5.2-java)
     hitimes (1.2.1)
-    hitimes (1.2.1-java)
     httpi (2.3.0)
       rack
     i18n (0.7.0)
@@ -573,7 +570,7 @@ DEPENDENCIES
   coffee-script-source
   continuum!
   coveralls
-  database_cleaner (= 1.0.1)
+  database_cleaner
   delete_paranoid!
   did_you_mean
   em-hiredis

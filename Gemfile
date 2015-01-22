@@ -9,7 +9,7 @@ gem 'activerecord-session_store'
 gem 'psych'
 
 # webserver
-gem "puma",     :platforms => [:mri, :rbx, :jruby], :require => false
+gem "puma",     :platforms => [:ruby, :jruby], :require => false
 
 # adds foreign key utils
 gem "immigrant"
@@ -19,7 +19,7 @@ gem "immigrant"
 # gem "activerecord-jdbc-adapter", :platforms => :jruby
 # gem "activerecord-jdbcmysql-adapter, "~> 1.3.0"", :platforms => :jruby
 
-gem "pg", :platforms => [:mri, :rbx]
+gem "pg", :platforms => :ruby
 gem "activerecord-jdbc-adapter", :platforms => :jruby
 gem "activerecord-jdbcpostgresql-adapter", :platforms => :jruby
 
@@ -28,7 +28,7 @@ gem "secure_headers"
 gem "rack-health", :require => "rack/health"
 gem "logging"
 gem "logging-rails", :require => "logging/rails",
-                     :git     => "https://github.com/chetan/logging-rails.git",
+                     :github  => "chetan/logging-rails", # patch to remove global logger
                      :branch  => "bixby"
 gem "lograge"
 gem "exception_notification"
@@ -58,8 +58,8 @@ gem "faye-websocket"
 # gem "websocket-rack"
 
 gem "multi_json"
-gem "oj",           :platforms => [:mri, :rbx]
-gem "json",         :platforms => [:mri, :rbx, :jruby]
+gem "oj",           :platforms => :ruby
+gem "json",         :platforms => [:ruby, :jruby]
 
 gem "request_store"
 gem "mixlib-shellout"
@@ -126,8 +126,8 @@ group :assets do
   # execjs prefers ruby racer (needed by uglifier and coffee-script)
   # added due to sudden segfaulting with nodejs driver
   gem 'execjs'
-  gem 'therubyracer', :platforms => [:mri, :rbx]
-  gem 'therubyrhino', :platforms => [:jruby]
+  gem 'therubyracer', :platforms => :ruby
+  gem 'therubyrhino', :platforms => :jruby
 end
 
 group :assets, :development do
@@ -137,12 +137,14 @@ end
 
 group :development do
 
-  gem "mysql2", :platforms => [:mri, :rbx]
+  gem "mysql2", :platforms => :ruby
   gem "activerecord-jdbcmysql-adapter", "~> 1.3.0", :platforms => :jruby
 
   # debugging
-  gem "byebug",     :platforms => [:mri_20, :mri_21]
-  gem "pry-byebug", :platforms => [:mri_20, :mri_21]
+  platforms :mri do
+    gem "byebug"
+    gem "pry-byebug"
+  end
   gem "awesome_print"
   gem "coffee-rails-source-maps"
   gem "bullet"
@@ -150,7 +152,7 @@ group :development do
   # rails debugging helpers
   gem "letter_opener"
   gem "better_errors"
-  gem "binding_of_caller", :platforms => [:mri_19, :mri_20, :mri_21, :rbx] # used by better_errors for advanced features
+  gem "binding_of_caller", :platforms => :ruby # used by better_errors for advanced features
   gem "xray", :require => "xray/thread_dump_signal_handler"
   gem "quiet_assets"
 
@@ -162,7 +164,7 @@ group :development do
 
   # docs
   gem "yard"
-  gem "redcarpet", :platforms => [:mri, :rbx]
+  gem "redcarpet", :platforms => :ruby
   gem "annotate", ">= 2.5.0"
 
   # utils
@@ -193,30 +195,30 @@ group :test do
   gem "minitest", :require => false
   gem 'mocha',    :require => false
   gem "bahia"
-  gem "database_cleaner", "=1.0.1"
+  gem "database_cleaner"
   gem "factory_girl_rails"
   gem "mock_redis"
 
   # test utils
   gem "micron", :github => "chetan/micron"
-  gem "test_guard", :git => "https://github.com/chetan/test_guard.git"
+  gem "test_guard", :github => "chetan/test_guard"
   gem 'rb-inotify', :require => false
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
 
   # coverage
   gem "coveralls",            :require => false
-  gem "simplecov",            :platforms => [:mri_19, :mri_20, :mri_21], :require => false
-  gem "simplecov-html",       :platforms => [:mri_19, :mri_20, :mri_21], :git => "https://github.com/chetan/simplecov-html.git", :require => false
-  gem "simplecov-console",    :platforms => [:mri_19, :mri_20, :mri_21], :git => "https://github.com/chetan/simplecov-console.git", :require => false
+  gem "simplecov",            :require => false
+  gem "simplecov-html",       :github => "chetan/simplecov-html", :require => false
+  gem "simplecov-console",    :github => "chetan/simplecov-console", :require => false
 
   # quality
-  gem "cane", :platforms => [:mri_19, :mri_20, :mri_21], :require => false
+  gem "cane", :require => false
   gem "brakeman", :require => false
 
   # gems used for dev/test env
   # for using sqlite3 as db backend
-  gem "sqlite3", :platforms => [:mri, :rbx]
+  gem "sqlite3", :platforms => :ruby
   gem "activerecord-jdbcsqlite3-adapter", "~> 1.3.0", :platforms => "jruby"
 
   gem "resque"
