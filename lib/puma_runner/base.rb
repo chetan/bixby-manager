@@ -154,10 +154,13 @@ module PumaRunner
       log "* debug: rails_root=#{rails_root}"
       log "* debug: full_cmd=#{full_cmd}"
       cmd = nil
-      Bundler.with_clean_env do
-        # do extra env cleanup, on top of our custom env created above
-        cmd = Mixlib::ShellOut.new(full_cmd, :environment => env)
-        cmd.run_command
+      log "* chdir to #{rails_root}"
+      Dir.chdir(rails_root) do
+        Bundler.with_clean_env do
+          # do extra env cleanup, on top of our custom env created above
+          cmd = Mixlib::ShellOut.new(full_cmd, :environment => env)
+          cmd.run_command
+        end
       end
 
       if cmd.error? then
