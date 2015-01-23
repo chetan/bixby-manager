@@ -61,8 +61,9 @@ module PumaRunner
       self.binder = bind_sockets()
       begin
         Timeout::timeout(60) do
-          respawn_child()
-          @socker_passer.join
+          child_pid = respawn_child()
+          @socket_passer.join
+          log "* server started successfully on pid #{child_pid}"
         end
       rescue Timeout::Error => ex
         error "timed out (60 sec) waiting for server to start!"

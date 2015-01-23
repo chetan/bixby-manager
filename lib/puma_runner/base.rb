@@ -123,9 +123,6 @@ module PumaRunner
 
       log "* started server process #{child_pid}, waiting for it to initialize..."
 
-      @socket_passer.join
-
-      log "* done"
       return child_pid
     end
 
@@ -147,13 +144,18 @@ module PumaRunner
         "RUBYOPT"            => nil,
         "RUBYLIB"            => nil,
         "PATH"               => ENV["PATH"].split(/:/).reject{ |s| s =~ %r{\.rvm|/usr/local/rvm} }.join(":"),
-        "RUN_IN_BG"          => "1"
+        "RUN_IN_BG"          => "1",
+        "PUMA_INHERIT_SOCK"  => ENV["PUMA_INHERIT_SOCK"]
       }
 
       rvm_wrapper = File.join(rails_root, "config", "deploy", "rvm_wrapper.sh")
       full_cmd = "#{rvm_wrapper} #{cmd}"
-      cmd = Mixlib::ShellOut.new(full_cmd, :environment => env)
-      cmd.run_command
+      cmd = nil
+      Bundler.with_clean_env do
+        # do extra env cleanup, on top of our custom env created above
+        cmd = Mixlib::ShellOut.new(full_cmd, :environment => env)
+        cmd.run_command
+      end
 
       if cmd.error? then
         msg = "* server start failed with exit code #{cmd.status.exitstatus}\n"

@@ -169,7 +169,6 @@ module PumaRunner
 
           p = nil
           Timeout.timeout(60) do
-
             @socket_passer.join
 
             # wait for the pid file to get updated with the new pid id
@@ -208,6 +207,8 @@ module PumaRunner
         $0 = "puma: server (running, respawn failed)"
         return
       end
+
+      log "* replacement process started successfully, shutting down"
 
       $0 = "puma: server (winding down)"
       sleep 5
