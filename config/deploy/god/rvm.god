@@ -14,4 +14,4 @@ end
 # used by RVM_WRAPPER script to set up the env
 conf = YAML.load_file(File.join(RAILS_ROOT, "config", "bixby.yml"))[RAILS_ENV]
 ENV["USE_RUBY_VERSION"] = conf["ruby"]
-ENV["USE_RVM"]          = conf["rvm"]
+ENV["USE_RVM"]          = (conf["rvm"] == "system" ? "system" : conf["user"])

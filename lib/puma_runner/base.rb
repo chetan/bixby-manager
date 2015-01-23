@@ -138,7 +138,7 @@ module PumaRunner
       conf = YAML.load_file(File.join(rails_root, "config", "bixby.yml"))[rails_env]
       env = {
         "USE_RUBY_VERSION"   => conf["ruby"],
-        "USE_RVM"            => conf["rvm"],
+        "USE_RVM"            => (conf["rvm"] == "system" ? "system" : conf["user"]),
         "_ORIGINAL_GEM_PATH" => nil,
         "BUNDLE_BIN_PATH"    => nil,
         "RUBYOPT"            => nil,
