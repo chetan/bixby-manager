@@ -71,7 +71,7 @@ module PumaRunner
     def pass_sockets(client)
       @binder.listeners.each_with_index do |(bind_url,io),i|
         io.autoclose = false
-        client.puts(bind_url)
+        client.puts(bind_url.strip)
         client.send_io(io)
       end
       client.puts "_END_"
