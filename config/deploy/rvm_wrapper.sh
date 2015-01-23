@@ -8,6 +8,7 @@
 #       to be very explicit about which ruby to use.
 
 logger $$ "... rvm_wrapper debug start ..."
+logger $$ self: $(readlink -f $0)
 logger $$ pwd: `pwd`
 logger $$ cmd: $*
 

@@ -150,6 +150,9 @@ module PumaRunner
 
       rvm_wrapper = File.join(rails_root, "config", "deploy", "rvm_wrapper.sh")
       full_cmd = "#{rvm_wrapper} #{cmd}"
+      log "* debug: pwd=#{Dir.pwd}"
+      log "* debug: rails_root=#{rails_root}"
+      log "* debug: full_cmd=#{full_cmd}"
       cmd = nil
       Bundler.with_clean_env do
         # do extra env cleanup, on top of our custom env created above
