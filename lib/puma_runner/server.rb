@@ -222,6 +222,7 @@ module PumaRunner
     # Delete the PID file if the PID within it is ours
     def delete_pid()
       if @pid.ours? then
+        log "* deleting pid file since we own it"
         @pid.delete()
       end
     end

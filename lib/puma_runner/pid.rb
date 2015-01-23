@@ -30,6 +30,7 @@ module PumaRunner
     end
 
     def initialize(file)
+      @events = Puma::PidEvents.new($stdout, $stderr)
       @pid_file = file
       @pid_dir = File.dirname(file)
     end
@@ -46,11 +47,13 @@ module PumaRunner
 
     # Write out our PID
     def write
+      @events.log("writing pid #{pid_file}")
       ensure_pid_dir()
       File.open(@pid_file, 'w'){ |f| f.write(Process.pid) }
     end
 
     def delete
+      @events.log("deleting pid #{pid_file}")
       File.unlink(@pid_file)
     end
 

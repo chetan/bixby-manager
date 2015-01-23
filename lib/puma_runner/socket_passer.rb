@@ -3,6 +3,7 @@ module PumaRunner
   class SocketPasser
 
     def initialize(binder)
+      @events = Puma::PidEvents.new($stdout, $stderr)
       @binder = binder
       @thread = nil
     end
@@ -30,6 +31,7 @@ module PumaRunner
         client = nil
         begin
           client = @server.accept
+          @events.log("[Passer] got client")
           pass_sockets(client)
 
         rescue Exception => ex
@@ -71,7 +73,9 @@ module PumaRunner
     def pass_sockets(client)
       @binder.listeners.each_with_index do |(bind_url,io),i|
         io.autoclose = false
+        @events.log("[Passer] sending url #{bind_url.strip}")
         client.puts(bind_url.strip)
+        @events.log("[Passer] sending io #{io.inspect}")
         client.send_io(io)
       end
       client.puts "_END_"
