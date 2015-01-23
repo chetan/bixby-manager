@@ -21,7 +21,7 @@ God.watch do |w|
   w.uid = USER
   w.gid = GROUP
 
-  w.behavior(:clean_pid_file)
+  # w.behavior(:clean_pid_file)
 
   # determine the state on startup
   w.transition(:init, { true => :up, false => :start }) do |on|
