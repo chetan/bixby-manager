@@ -47,7 +47,7 @@ God.watch do |w|
   # god[3883]: Condition 'God::Conditions::ProcessExits' requires an event system but none has been loaded
   if ENV["USER"] != "travis" then
     # start if process is not running
-    w.transition(:up, :start) do |on|
+    w.transition(:up, :init) do |on|
       on.condition(:process_exits) { |c| c.notify = 'support' }
     end
   end
