@@ -1,7 +1,4 @@
 
-# https://gist.github.com/208581
-# http://unicorn.bogomips.org/SIGNALS.html
-
 God.watch do |w|
   w.dir      = RAILS_ROOT
   w.name     = "puma"
