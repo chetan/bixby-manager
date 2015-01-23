@@ -1,4 +1,5 @@
 
+require 'bixby-common/util/signal'
 require 'timeout'
 
 module PumaRunner
@@ -68,12 +69,12 @@ module PumaRunner
     # Setup daemon signals
     def setup_signals
 
-      Signal.trap("QUIT") do
+      Bixby::Signal.trap("QUIT") do
         log "* Shutting down on QUIT signal"
         do_stop()
       end
 
-      Signal.trap("USR2") do
+      Bixby::Signal.trap("USR2") do
         log "* Gracefully restarting on USR2 signal"
         do_restart()
       end
@@ -153,25 +154,24 @@ module PumaRunner
     # Restart
     def do_restart()
 
-      $0 = "puma: server (spawning replacement)"
-
       # First spawn a replacement node and pass it our FDs
       # then tell this server to quit
 
       # try up to 3 times to get it to start
       started = false
-      3.times do |try|
-        child_pid = respawn_child()
+      (1..3).each do |try|
+        $0 = "puma: server (spawning replacement, try #{try} of 3)"
 
-        if try > 1 then
-          $0 = "puma: server (spawning replacement, try #{try} of 3)"
-        end
+        child_pid = respawn_child()
 
         # wait for child to come up fully
         begin
 
           p = nil
           Timeout.timeout(60) do
+
+            @socket_passer.join
+
             # wait for the pid file to get updated with the new pid id
             # or for the startup lock to be cleared
             while true do

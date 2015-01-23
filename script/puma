@@ -1,8 +1,14 @@
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
-require 'puma'
-require 'puma/cli'
+begin
+  require 'bundler/setup'
+  require 'puma'
+  require 'puma/cli'
+rescue LoadError => ex
+  puts ex.message
+  system("logger '#{ex.message}'")
+  raise ex
+end
 
 # grab the actual rails root location from the puma config file
 #

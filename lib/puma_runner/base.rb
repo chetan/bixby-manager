@@ -151,8 +151,19 @@ module PumaRunner
       }
 
       rvm_wrapper = File.join(rails_root, "config", "deploy", "rvm_wrapper.sh")
-      cmd = Mixlib::ShellOut.new("#{rvm_wrapper} #{cmd}", :environment => env)
+      full_cmd = "#{rvm_wrapper} #{cmd}"
+      cmd = Mixlib::ShellOut.new(full_cmd, :environment => env)
       cmd.run_command
+
+      if cmd.error? then
+        msg = "* server start failed with exit code #{cmd.status.exitstatus}\n"
+        msg += "* command was: #{full_cmd}\n"
+        msg += "* stdout/stderr:\n"
+        msg += cmd.stdout if cmd.stdout && !cmd.stdout.strip.empty?
+        msg += cmd.stderr if cmd.stderr && !cmd.stderr.strip.empty?
+        error msg
+        exit 1
+      end
 
       s = cmd.stdout.strip
       if s.to_i.to_s == s then

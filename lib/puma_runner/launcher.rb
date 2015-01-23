@@ -1,4 +1,6 @@
 
+require 'timeout'
+
 module PumaRunner
 
   # Puma service control
@@ -57,7 +59,15 @@ module PumaRunner
       end
 
       self.binder = bind_sockets()
-      respawn_child()
+      begin
+        Timeout::timeout(60) do
+          respawn_child()
+          @socker_passer.join
+        end
+      rescue Timeout::Error => ex
+        error "timed out (60 sec) waiting for server to start!"
+        exit 1
+      end
     end
 
     # Stop
