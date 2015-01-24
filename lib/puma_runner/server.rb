@@ -10,7 +10,7 @@ module PumaRunner
 
     def initialize
       super
-      @events = Puma::PidEvents.new($stdout, $stderr)
+      @events = PidEvents.new($stdout, $stderr)
     end
 
     # Redirect STDOUT/STDERR to files

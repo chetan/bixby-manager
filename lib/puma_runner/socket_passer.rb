@@ -3,7 +3,7 @@ module PumaRunner
   class SocketPasser
 
     def initialize(binder)
-      @events = Puma::PidEvents.new($stdout, $stderr)
+      @events = PidEvents.new($stdout, $stderr)
       @binder = binder
       @thread = nil
     end

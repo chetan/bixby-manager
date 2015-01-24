@@ -7,7 +7,7 @@ module PumaRunner
     attr_accessor :config, :binder, :app, :events, :server, :pid
 
     def initialize
-      @events     = Puma::Events.new($stdout, $stderr)
+      @events     = PidEvents.new($stdout, $stderr)
       @config     = load_config()
       @pid        = Pid.new(config.options[:pidfile])
 
@@ -23,24 +23,15 @@ module PumaRunner
     end
 
     def log(str)
-      events.log(ts(str))
+      events.log(str)
     end
 
     def error(str)
-      log("ERROR: #{str}")
-      exit 1
+      events.error(str)
     end
 
     def debug(str)
-      events.debug(ts(str))
-    end
-
-    def ts(str)
-      t = Time.new.to_s
-      if str.nil? or str.empty? then
-        return "[#{t}]"
-      end
-      str.split(/\n/).map{ |s| "[#{t}] #{s}" }.join("\n")
+      events.debug(str)
     end
 
     # Load and validate configuration from PUMA_CONF
@@ -150,9 +141,7 @@ module PumaRunner
 
       rvm_wrapper = File.join(rails_root, "config", "deploy", "rvm_wrapper.sh")
       full_cmd = "#{rvm_wrapper} #{cmd}"
-      log "* debug: pwd=#{Dir.pwd}"
-      log "* debug: rails_root=#{rails_root}"
-      log "* debug: full_cmd=#{full_cmd}"
+
       cmd = nil
       log "* chdir to #{rails_root}"
       Dir.chdir(rails_root) do
@@ -164,11 +153,11 @@ module PumaRunner
       end
 
       if cmd.error? then
-        msg = "* server start failed with exit code #{cmd.status.exitstatus}\n"
-        msg += "* command was: #{full_cmd}\n"
-        msg += "* stdout/stderr:\n"
-        msg += cmd.stdout if cmd.stdout && !cmd.stdout.strip.empty?
-        msg += cmd.stderr if cmd.stderr && !cmd.stderr.strip.empty?
+        msg = "server start failed with exit code #{cmd.status.exitstatus}\n"
+        msg += "  command was: #{full_cmd}\n"
+        msg += "  stdout/stderr:\n"
+        msg += "    " + cmd.stdout.gsub(/\n/, "    \n") if cmd.stdout && !cmd.stdout.strip.empty?
+        msg += "    " + cmd.stderr.gsub(/\n/, "    \n") if cmd.stderr && !cmd.stderr.strip.empty?
         error msg
         exit 1
       end

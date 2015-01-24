@@ -30,7 +30,7 @@ module PumaRunner
     end
 
     def initialize(file)
-      @events = Puma::PidEvents.new($stdout, $stderr)
+      @events = PidEvents.new($stdout, $stderr)
       @pid_file = file
       @pid_dir = File.dirname(file)
     end

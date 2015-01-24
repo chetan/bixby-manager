@@ -3,7 +3,7 @@ module PumaRunner
   class SocketBinder < Puma::Binder
 
     def import_from_socket
-      events = Puma::PidEvents.new($stdout, $stderr)
+      events = PidEvents.new($stdout, $stderr)
 
       filename = ENV["PUMA_INHERIT_SOCK"]
       return if filename.nil? or filename.empty?
