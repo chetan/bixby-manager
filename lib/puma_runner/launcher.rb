@@ -58,6 +58,7 @@ module PumaRunner
         return
       end
 
+      log "* starting puma #{::Puma::Const::PUMA_VERSION}"
       self.binder = bind_sockets()
       begin
         Timeout::timeout(60) do

@@ -22,7 +22,7 @@ module PumaRunner
       if stdout
         STDOUT.reopen stdout, (append ? "a" : "w")
         STDOUT.sync = true
-        STDOUT.puts "=== puma startup: #{Time.now} ==="
+        STDOUT.puts "=== puma #{::Puma::Const::PUMA_VERSION} startup: #{Time.now} ==="
       end
 
       if stderr
@@ -30,7 +30,7 @@ module PumaRunner
         STDERR.sync = true
         if stdout != stderr then
           # no need to dupe
-          STDERR.puts "=== puma startup: #{Time.now} ==="
+          STDERR.puts "=== puma #{::Puma::Const::PUMA_VERSION} startup: #{Time.now} ==="
         end
       end
     end
@@ -88,6 +88,7 @@ module PumaRunner
 
       # trap_thread_dump() # in case we get stuck somewhere
       redirect_io()
+
 
       begin
         # bootstrap
