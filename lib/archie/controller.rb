@@ -56,15 +56,17 @@ module Archie
     end
 
     def set_csrf_cookie
-      cookies.encrypted[:csrf] = form_authenticity_token
+      real_csrf_token(session) # force token to get generated so we can use it
+      cookies.encrypted[:csrf] = session[:_csrf_token]
     end
 
     def validate_csrf_cookie
       csrf = cookies.encrypted[:csrf]
       cookies.delete(:csrf)
 
-      csrf == params[request_forgery_protection_token] ||
-        csrf == request.headers['X-CSRF-Token']
+      fake_session = { :_csrf_token => csrf } # use a fake session hash for the following method
+      valid_authenticity_token?(fake_session, form_authenticity_param) ||
+        valid_authenticity_token?(fake_session, request.headers['X-CSRF-Token'])
     end
 
   end
