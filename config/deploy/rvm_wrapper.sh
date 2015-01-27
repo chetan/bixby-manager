@@ -7,10 +7,10 @@
 # i.e., in this case, $rvm_path would would inherit from root and we want
 #       to be very explicit about which ruby to use.
 
-logger $$ "... rvm_wrapper debug start ..."
-logger $$ self: $(readlink -f $0)
-logger $$ pwd: `pwd`
-logger $$ cmd: $*
+# logger $$ "... rvm_wrapper debug start ..."
+# logger $$ self: $(readlink -f $0)
+# logger $$ pwd: `pwd`
+# logger $$ cmd: $*
 
 if [[ $USE_RVM == "system" ]]; then
   # use system-wide install of rvm
@@ -18,18 +18,22 @@ if [[ $USE_RVM == "system" ]]; then
 else
   # use user-local version of rvm
   user=${USE_RVM:-`whoami`}
-  rvm_env="/home/$user/.rvm/environments/$USE_RUBY_VERSION"
+  home="/Users/$user"
+  if [ ! -d "$home" ]; then
+    home="/home/$user"
+  fi
+  rvm_env="$home/.rvm/environments/$USE_RUBY_VERSION"
 fi
 
 if [ ! -f $rvm_env ]; then
   echo "Ruby version '$USE_RUBY_VERSION' not found at $rvm_env"
-  logger $$ "Ruby version '$USE_RUBY_VERSION' not found at $rvm_env"
-  logger $$ "... rvm_wrapper debug end with ERROR ..."
+  # logger $$ "Ruby version '$USE_RUBY_VERSION' not found at $rvm_env"
+  # logger $$ "... rvm_wrapper debug end with ERROR ..."
   exit 1
 fi
 
-logger $$ "rvm_env: $rvm_env"
-logger $$ "... rvm_wrapper debug end ..."
+# logger $$ "rvm_env: $rvm_env"
+# logger $$ "... rvm_wrapper debug end ..."
 
 source $rvm_env
 
