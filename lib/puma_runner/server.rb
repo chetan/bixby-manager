@@ -162,46 +162,10 @@ module PumaRunner
       started = false
       (1..3).each do |try|
         $0 = "puma: server (spawning replacement, try #{try} of 3)"
-
         child_pid = respawn_child()
-
-        # wait for child to come up fully
-        begin
-
-          p = nil
-          Timeout.timeout(60) do
-            @socket_passer.join
-
-            # wait for the pid file to get updated with the new pid id
-            # or for the startup lock to be cleared
-            while true do
-              p = @pid.read
-              if !p.nil? && Process.pid != p && !@daemon_starter.starting? then
-                break
-              end
-              sleep 1
-            end
-          end
-
-          if Process.pid != @pid.read && @pid.running? then
-            # pid file changed and daemon is running
-            started = true
-            break
-          end
-
-        rescue Timeout::Error
-          # if we got here, kill the child process and try again
-          log "* replacement startup timed out"
-          if Pid.running?(child_pid) then
-            Process.kill(9, child_pid) # kill!
-          else
-            log "* child process seems to have died"
-          end
-          @daemon_starter.cleanup! # nuke locks so we can try again
-
-        end
-
-      end # 3.times
+        started = wait_for_child(child_pid)
+        break if started
+      end
 
       if !started then
         log "* failed to start after 3 tries.. bailing out!"
@@ -212,12 +176,54 @@ module PumaRunner
       log "* replacement process started successfully, shutting down"
 
       $0 = "puma: server (winding down)"
-      sleep 5
+      # sleep 5
 
       server.begin_restart
       server.thread.join
 
       log "* Server shutdown complete"
+    end
+
+    # wait for child to come up fully
+    def wait_for_child(child_pid)
+      begin
+
+        p = nil
+        Timeout.timeout(60) do
+
+          # wait for SocketPasser to finish its job (means new proc started up)
+          # AND wait for the pid file to get updated with the new pid id
+          # AND for the startup lock to be cleared
+          while true do
+            if !Pid.running?(child_pid) then
+              # new process died, bail out
+              raise Timeout::Error
+            end
+            p = @pid.read
+            if @socket_passer.join(0.1) && !p.nil? && Process.pid != p && !@daemon_starter.starting? then
+              break
+            end
+            sleep 1
+          end
+        end
+
+        if Process.pid != @pid.read && @pid.running? then
+          # pid file changed and daemon is running
+          return true
+        end
+
+      rescue Timeout::Error
+        # if we got here, kill the child process and try again
+        log "* replacement startup timed out"
+        if Pid.running?(child_pid) then
+          Process.kill(9, child_pid) # kill!
+        else
+          log "* child process seems to have died"
+        end
+        @daemon_starter.cleanup! # nuke locks so we can try again
+      end
+
+      false
     end
 
     # Delete the PID file if the PID within it is ours
@@ -227,23 +233,6 @@ module PumaRunner
         @pid.delete()
       end
     end
-
-    # Setup thread dump signal
-    # def trap_thread_dump
-    #   # print a thread dump on SIGALRM
-    #   # kill -ALRM `cat /var/www/bixby/tmp/pids/puma.pid`
-    #   Signal.trap 'SIGALRM' do
-    #     STDERR.puts "=== puma thread dump: #{Time.now} ==="
-    #     STDERR.puts
-    #     Thread.list.each do |thread|
-    #       STDERR.puts "Thread-#{thread.object_id}"
-    #       STDERR.puts thread.backtrace.join("\n    \\_ ")
-    #       STDERR.puts "-"
-    #       STDERR.puts
-    #     end
-    #     STDERR.puts "=== end puma thread dump ==="
-    #   end
-    # end
 
   end # Server
 end # PumaRunner

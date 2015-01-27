@@ -42,8 +42,8 @@ module PumaRunner
       end
     end
 
-    def join
-      @thread && @thread.join
+    def join(limit=nil)
+      @thread && @thread.join(limit)
     end
 
     def stop
