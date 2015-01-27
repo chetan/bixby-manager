@@ -6,7 +6,6 @@ begin
   require 'puma/cli'
 rescue LoadError => ex
   puts ex.message
-  system("logger '#{ex.message}'")
   raise ex
 end
 
