@@ -209,8 +209,8 @@ group :test do
   # coverage
   gem "coveralls",            :require => false
   gem "simplecov",            :require => false
-  gem "simplecov-html",       :github => "chetan/simplecov-html", :require => false
-  gem "simplecov-console",    :github => "chetan/simplecov-console", :require => false
+  gem "simplecov-html",       :require => false
+  gem "simplecov-console",    :require => false, :github => "chetan/simplecov-console"
 
   # quality
   gem "cane", :require => false
