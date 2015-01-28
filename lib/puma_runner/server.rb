@@ -1,5 +1,6 @@
 
 require 'bixby-common/util/signal'
+require 'bixby-common/util/thread_dump'
 require 'timeout'
 
 module PumaRunner
@@ -86,9 +87,8 @@ module PumaRunner
 
       $0 = "puma: server (booting)"
 
-      # trap_thread_dump() # in case we get stuck somewhere
       redirect_io()
-
+      temp_thread = Bixby::ThreadDump.trap!
 
       begin
         # bootstrap
@@ -107,6 +107,10 @@ module PumaRunner
         log "* Daemonized (pid changed #{old_pid_id} -> #{Process.pid})"
         pid.write
         setup_signals()
+
+        # kill old thread and trap again after daemonizing
+        temp_thread.kill
+        Bixby::ThreadDump.trap!
 
         # Start EM properly (i.e. at the proper time, which is now!)
         # TODO replace with startup callback?
@@ -195,8 +199,9 @@ module PumaRunner
           # AND wait for the pid file to get updated with the new pid id
           # AND for the startup lock to be cleared
           while true do
-            if !Pid.running?(child_pid) then
-              # new process died, bail out
+            if !Pid.running?(child_pid) && @socket_passer.join(1).nil? then
+              # new process died but SocketPasser is still waiting/working, bail out
+              # (pid changes when daemonizing so we need to do the extra check)
               raise Timeout::Error
             end
             p = @pid.read

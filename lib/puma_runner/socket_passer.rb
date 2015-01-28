@@ -43,7 +43,8 @@ module PumaRunner
     end
 
     def join(limit=nil)
-      @thread && @thread.join(limit)
+      raise "called join before start!" if !@thread
+      @thread.join(limit)
     end
 
     def stop
