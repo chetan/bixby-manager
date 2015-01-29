@@ -12,7 +12,7 @@ class Repository < API
 
     def update
       with_ssh do
-        g = Git.open(repo.path, :log => log)
+        g = Git.open(File.expand_path(repo.path), :log => log)
         g.pull("origin", "master")
       end
     end
