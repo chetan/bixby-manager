@@ -5,5 +5,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
     template: "monitoring/monitoring_overview"
 
     after_render: ->
-      $(window).resize _.debounceR 500, =>
+      $(window).on "resize.monitoring.overview", _.debounceR 500, =>
         @redraw()
+
+    dispose: ->
+      super
+      $(window).off "resize.monitoring.overview"
