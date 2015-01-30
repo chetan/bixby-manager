@@ -112,8 +112,8 @@ group :assets do
   # asset related gems
   gem 'sprockets-rails'
   gem 'sass'
-  gem 'sass-rails', '~> 4.0.2'
-  gem 'bootstrap-sass', '~> 3.1.1'
+  gem 'sass-rails'
+  gem 'bootstrap-sass', '~> 3.3'
   gem 'sprockets-jst-str'
   gem 'coffee-script'
   gem 'coffee-script-source'
