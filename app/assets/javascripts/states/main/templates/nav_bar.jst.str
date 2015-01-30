@@ -22,10 +22,10 @@
 
         <!-- monitoring -->
         <li class="tab monitoring primary">
-          <a>Monitoring</a>
+          <a data-toggle="dropdown">Monitoring</a>
         </li>
 
-        <li class="tab monitoring dropdown split">
+        <li class="tab monitoring dropdown split hidden-xs">
           <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
             <span class="sr-only">Toggle Monitoring Dropdown</span>
@@ -39,10 +39,10 @@
 
         <!-- runbooks -->
         <li class="tab runbooks primary">
-          <a>Runbooks</a>
+          <a data-toggle="dropdown">Runbooks</a>
         </li>
 
-        <li class="tab runbooks dropdown split">
+        <li class="tab runbooks dropdown split hidden-xs">
           <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
             <span class="sr-only">Toggle Runbooks Dropdown</span>

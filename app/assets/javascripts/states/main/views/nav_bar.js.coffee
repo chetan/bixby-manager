@@ -64,11 +64,7 @@ namespace "Bixby.view", (exports, top) ->
 
     app_events:
       "state:activate": (state) ->
-        @update_help(state)
-        if state.tab?
-          $("ul.nav li.tab").removeClass("active")
-          @current_tab = state.tab
-          $("ul.nav li.tab.#{@current_tab}").addClass("active")
+        @set_current_state(state)
 
     impersonate: (user_id) ->
       return if !@true_user.can("impersonate_users")
@@ -93,6 +89,14 @@ namespace "Bixby.view", (exports, top) ->
         @users ||= Bixby.app.bootstrap_data.users
       super
 
+    set_current_state: (state) ->
+      return if !state?
+      @update_help(state)
+      if state.tab?
+        $("ul.nav li.tab").removeClass("active")
+        @current_tab = state.tab
+        $("ul.nav li.tab.#{@current_tab}").addClass("active")
+
     # Update the help popover/button
     update_help: (new_state) ->
       return if !Bixby.app.current_state
@@ -103,7 +107,26 @@ namespace "Bixby.view", (exports, top) ->
       else
         el.addClass("disabled").attr("title", "No help available on this screen")
 
+    resize_nav: ->
+      # in case we are firing after a resize, set the active tab
+      if !@$("ul.nav li.tab.active").length
+        @set_current_state(Bixby.app.current_state)
+
+      # depending on resolution, correct the nav
+      if _.is_xs()
+        target = "li.tab.primary"
+      else
+        target = "li.tab.split"
+
+      # attach dropdown menu to active <li>
+      _.each ["monitoring", "runbooks"], (m) =>
+        @$("li.tab.#{m} ul.dropdown-menu").detach().appendTo("#{target}.#{m}")
+        @$("#{target}.#{m}").addClass("dropdown")
+        @$("#{target}.#{m} a").first().addClass("dropdown-toggle").on "click.dropdown.#{m}.mobile", $.fn.dropdown.Constructor.prototype.toggle
+
     after_render: ->
+      @resize_nav()
+
       @$("select#pretend").select2
         allowClear: true
         matcher: (term, text, opt) ->
@@ -112,6 +135,10 @@ namespace "Bixby.view", (exports, top) ->
           $.prototype.select2.defaults.matcher(term, text) ||
             $.prototype.select2.defaults.matcher(term, optgroup)
 
+      $(window).on "resize.navbar", _.debounceR 500, =>
+        @redraw()
+
     dispose: ->
       super
       @$("a.help").popover("destroy")
+      $(window).off "resize.navbar"

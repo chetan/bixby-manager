@@ -36,6 +36,7 @@ class Stark.Partial extends Stark.View
       @parent.after_render_hooks.unshift(func)
 
   redraw: ->
+    @dispose()
     @$el.html(@render_html())
     $("div#"+@id).html(@$el.html())
     @bind_events()
