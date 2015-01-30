@@ -9,7 +9,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     events:
       "mousemove td.sparkline": (e) ->
-        return if !$(e.target).hasClass("sparkline")
+        return if !$(e.target).hasClass("sparkline") || !@metrics[0].graph.dygraph
 
         x = e.clientX - @$("div.graph").first().offset().left
 
