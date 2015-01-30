@@ -1,4 +1,11 @@
 
+# Cancel all subsequent events, including other events bounced on the same target
+#
+# @param [Event] e
+_.cancelEvents = (e) ->
+  e.preventDefault()
+  e.stopImmediatePropagation()
+
 # Check whether the given element is visible in the current viewport
 #
 # via: http://stackoverflow.com/questions/487073/check-if-element-is-visible-after-scrolling#488073

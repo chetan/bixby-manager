@@ -28,6 +28,7 @@ namespace "Bixby.view", (exports, top) ->
 
     events:
       "click a.run, .tab.runbooks.primary a": (e) ->
+        _.cancelEvents(e)
         if !@current_user.get("otp_required_for_login")
           return @transition("runbooks")
 
