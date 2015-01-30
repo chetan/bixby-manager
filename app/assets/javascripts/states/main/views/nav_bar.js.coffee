@@ -27,8 +27,9 @@ namespace "Bixby.view", (exports, top) ->
       "a#profile":         "profile"
 
     events:
-      "click a.run, .tab.runbooks.primary a": (e) ->
+      "click a.run, .tab.runbooks.primary a:first": (e) ->
         _.cancelEvents(e)
+        @close_nav()
         if !@current_user.get("otp_required_for_login")
           return @transition("runbooks")
 
@@ -67,6 +68,10 @@ namespace "Bixby.view", (exports, top) ->
       "state:activate": (state) ->
         @set_current_state(state)
 
+    close_nav: ->
+      @$(".navbar-collapse").collapse("hide")
+      @$("li.open").removeClass("open")
+
     impersonate: (user_id) ->
       return if !@true_user.can("impersonate_users")
 
@@ -74,7 +79,7 @@ namespace "Bixby.view", (exports, top) ->
         user_id = @true_user.id # impersonation was cleared
 
       Bixby.model.User.impersonate user_id, (data, status, xhr) =>
-        @$("li.dropdown").removeClass('open')
+        @$("li.open").removeClass('open')
         @current_user = Bixby.app.current_user = new Bixby.model.User(data)
         @redraw()
         Bixby.app.transition Bixby.app.current_state.name
@@ -122,8 +127,7 @@ namespace "Bixby.view", (exports, top) ->
       # attach dropdown menu to active <li>
       _.each ["monitoring", "runbooks"], (m) =>
         @$("li.tab.#{m} ul.dropdown-menu").detach().appendTo("#{target}.#{m}")
-        @$("#{target}.#{m}").addClass("dropdown")
-        @$("#{target}.#{m} a").first().addClass("dropdown-toggle").on "click.dropdown.#{m}.mobile", $.fn.dropdown.Constructor.prototype.toggle
+        @$("#{target}.#{m} .dropdown-toggle").on "click.dropdown.#{m}.mobile", $.fn.dropdown.Constructor.prototype.toggle
 
     after_render: ->
       @resize_nav()

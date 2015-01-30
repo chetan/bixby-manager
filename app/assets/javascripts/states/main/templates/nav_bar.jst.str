@@ -22,7 +22,7 @@
 
         <!-- monitoring -->
         <li class="tab monitoring primary">
-          <a data-toggle="dropdown">Monitoring</a>
+          <a class="dropdown-toggle" data-toggle="dropdown">Monitoring</a>
         </li>
 
         <li class="tab monitoring dropdown split hidden-xs">
@@ -39,7 +39,7 @@
 
         <!-- runbooks -->
         <li class="tab runbooks primary">
-          <a data-toggle="dropdown">Runbooks</a>
+          <a class="dropdown-toggle" data-toggle="dropdown">Runbooks</a>
         </li>
 
         <li class="tab runbooks dropdown split hidden-xs">
