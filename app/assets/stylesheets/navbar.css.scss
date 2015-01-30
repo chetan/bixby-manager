@@ -3,6 +3,13 @@
   margin-bottom: 0;
 }
 
+@media (max-width: $screen-xs-max) {
+  .navbar-nav {
+    margin: 7px 0;
+  }
+}
+
+
 nav {
 
   // split dropdown begin
@@ -28,12 +35,20 @@ nav {
 
   ul.user {
     padding-left: 10px;
+    @media (max-width: $screen-xs-max) {
+      padding-left: 0;
+    }
 
     li.tab.user a.dropdown-toggle {
       padding-top: 5px;
       padding-bottom: 5px;
     }
   }
+
+  .navbar-right {
+    margin-right: 0;
+  }
+
   div.navbar-collapse {
     padding-right: 0;
   }
