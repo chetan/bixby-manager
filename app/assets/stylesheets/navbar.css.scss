@@ -80,3 +80,35 @@ img.gravatar {
   border-radius: 3px 3px 3px 3px;
   box-shadow: 0 1px 0 #FFFFFF;
 }
+
+// page load progress bar
+
+div.progress.loading {
+  height: 10px;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+div.progress.loading.hiding {
+  // hide our progress bar
+  @include transition(opacity 0.5s ease);
+  opacity: 0;
+}
+
+div.progress-bar {
+  @include transition(width 0s); // instant reset
+  width: 0;
+}
+
+div.progress-bar.loading {
+  // slowly load to a max of 95%
+  @include transition(width 5s ease);
+  width: 95% !important;
+}
+
+div.progress-bar.loaded {
+  // quickly move to 100%
+  @include transition(width 0.2s ease);
+  width: 100% !important;
+}
+

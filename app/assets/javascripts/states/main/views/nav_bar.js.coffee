@@ -67,17 +67,25 @@ namespace "Bixby.view", (exports, top) ->
       "click a.help-alert": (e) ->
         # display help as alert box at top of page
         if (text = Bixby.app.current_state.help) && ($("div.help.alert").length == 0)
-          @log "going to display help from ", text
           html = @markdown(text)
           partial = @create_partial("main/_help_alert", {content: html})
           $("div#content").prepend(partial.render_partial_html())
 
     app_events:
       "state:activate": (state) ->
+        # move progress bar to 100% and hide
+        $("div.progress.loading div.progress-bar").removeClass("loading").addClass("loaded")
+        $("div.progress.loading").addClass("hiding")
         @set_current_state(state)
 
       "state:before_activate": (new_state) ->
         $("div.help.alert").remove()
+
+      "state:before_load": (new_state) ->
+        # display progress bar
+        $("div.progress.loading").removeClass("hiding").css({visibility: "visible"})
+        # force the width to reset before showing loading transition
+        $("div.progress.loading div.progress-bar").removeClass("loaded").width("0").addClass("loading")
 
     close_nav: ->
       @$(".navbar-collapse").collapse("hide")

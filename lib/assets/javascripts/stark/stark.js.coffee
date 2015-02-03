@@ -182,6 +182,7 @@ class Stark.App
     state = new @states[state_name](@, state_data)
 
     # load data into state, retrieve models which are missing
+    @trigger("state:before_load")
     needed = state.missing_data
     if !(needed? && needed.length > 0)
       @change_state(state, timer_name)

@@ -1,6 +1,12 @@
 
 <%= include_partial(Bixby.view.NavBar) %>
 
+<div class="progress loading invisible">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <span class="sr-only">page load progress</span>
+  </div>
+</div>
+
 <div class="container-fluid" id="content">
 </div>
 

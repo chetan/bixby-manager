@@ -7,6 +7,10 @@
 @import "profile";
 @import "runbooks";
 
+div#content {
+  margin-top: -10px; // used to offset the hidden progress bar
+}
+
 .control-label .markdown > p {
   margin: 0;
 }
