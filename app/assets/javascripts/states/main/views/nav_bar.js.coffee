@@ -64,6 +64,14 @@ namespace "Bixby.view", (exports, top) ->
       "click a#stop_impersonating": (e) ->
         @impersonate()
 
+      "click a.help-alert": (e) ->
+        # display help as alert box at top of page
+        if (text = Bixby.app.current_state.help) && ($("div.help.alert").length == 0)
+          @log "going to display help from ", text
+          html = @markdown(text)
+          partial = @create_partial("main/_help_alert", {content: html})
+          $("div#content").prepend(partial.render_partial_html())
+
     app_events:
       "state:activate": (state) ->
         @set_current_state(state)
@@ -106,12 +114,12 @@ namespace "Bixby.view", (exports, top) ->
     # Update the help popover/button
     update_help: (new_state) ->
       return if !Bixby.app.current_state
-      el = @$("a.help").popover("destroy")
+      el = @$("a.help[data-toggle='popover']").popover("destroy")
       if text = Bixby.app.current_state.help
         el.attr("title", "").popover({ title: null, content: @markdown(text), html: true })
         el.attr("title", "Help").removeClass("disabled")
       else
-        el.addClass("disabled").attr("title", "No help available on this screen")
+        @$("a.help").addClass("disabled").attr("title", "No help available on this screen")
 
     resize_nav: ->
       # in case we are firing after a resize, set the active tab

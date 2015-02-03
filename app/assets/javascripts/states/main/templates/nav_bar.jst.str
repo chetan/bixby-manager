@@ -58,9 +58,11 @@
 
       <!-- HELP -->
       <a tabindex="0" data-toggle="popover" data-trigger="focus" data-container="body"
-        data-placement="bottom" class="help btn navbar-btn">
+        data-placement="bottom" class="help btn navbar-btn hidden-xs">
           <%= _.icon("question-circle", "fa-2x hidden-xs") %>
-          <span class="visible-xs">Help <%= _.icon("question-circle fa-lg") %></span>
+      </a>
+      <a tabindex="0" class="help btn navbar-btn visible-xs-inline-block help-alert">
+        <span class="visible-xs">Help <%= _.icon("question-circle fa-lg") %></span>
       </a>
 
       <!-- USER -->
