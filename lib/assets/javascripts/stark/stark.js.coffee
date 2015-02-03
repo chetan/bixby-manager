@@ -220,6 +220,7 @@ class Stark.App
         state.dispose(state)
         return
 
+      @trigger("state:before_activate", @)
       state.render()
 
     catch ex

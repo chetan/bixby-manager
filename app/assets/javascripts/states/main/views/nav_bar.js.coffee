@@ -76,6 +76,9 @@ namespace "Bixby.view", (exports, top) ->
       "state:activate": (state) ->
         @set_current_state(state)
 
+      "state:before_activate": (new_state) ->
+        $("div.help.alert").remove()
+
     close_nav: ->
       @$(".navbar-collapse").collapse("hide")
       @$("li.open").removeClass("open")
