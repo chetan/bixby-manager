@@ -28,6 +28,7 @@ namespace "Bixby.view", (exports, top) ->
 
     events:
       "click a.run, .tab.runbooks.primary a:first": (e) ->
+        @$(".tab.runbooks").addClass("active")
         _.cancelEvents(e)
         @close_nav()
         if !@current_user.get("otp_required_for_login")
@@ -42,6 +43,9 @@ namespace "Bixby.view", (exports, top) ->
             else
               alert("fail")
         c.render()
+
+      "click .tab.monitoring.primary a:first": (e) ->
+        @$(".tab.monitoring").addClass("active")
 
       "click a": (e) ->
         # hide the navbar-toggle on click (only visible on xs or sm screens)
