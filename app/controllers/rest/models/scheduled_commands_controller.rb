@@ -10,7 +10,7 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
   def history
     restful ScheduledCommand.for_user(current_user).
       where("schedule_type = 2 AND completed_at IS NOT NULL").
-      order(:created_at => :asc)
+      order(:created_at => :desc).includes(:last_run)
   end
 
   def show

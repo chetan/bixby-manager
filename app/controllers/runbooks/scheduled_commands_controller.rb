@@ -10,8 +10,9 @@ class Runbooks::ScheduledCommandsController < Runbooks::BaseController
 
   def history
     bootstrap ScheduledCommand.for_user(current_user).
-      where("schedule_type = 2 AND completed_at IS NOT NULL").
-      order(:created_at => :asc), :type => "ScheduledCommandHistory"
+        where("schedule_type = 2 AND completed_at IS NOT NULL").
+        order(:created_at => :asc).includes(:last_run),
+      :type => "ScheduledCommandHistory", :name => "scheduled_commands"
   end
 
   def show

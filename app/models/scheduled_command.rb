@@ -4,32 +4,35 @@
 #
 # ### Columns
 #
-# Name                 | Type               | Attributes
-# -------------------- | ------------------ | ---------------------------
-# **`id`**             | `integer`          | `not null, primary key`
-# **`org_id`**         | `integer`          |
-# **`agent_ids`**      | `string(255)`      |
-# **`command_id`**     | `integer`          |
-# **`created_by`**     | `integer`          |
-# **`stdin`**          | `text(65535)`      |
-# **`args`**           | `text(65535)`      |
-# **`env`**            | `text(65535)`      |
-# **`schedule_type`**  | `integer`          |
-# **`schedule`**       | `string(255)`      |
-# **`scheduled_at`**   | `datetime`         |
-# **`enabled`**        | `boolean`          | `default("1"), not null`
-# **`job_id`**         | `string(255)`      |
-# **`alert_on`**       | `integer`          | `default("0"), not null`
-# **`alert_users`**    | `string(255)`      |
-# **`alert_emails`**   | `text(65535)`      |
-# **`created_at`**     | `datetime`         |
-# **`updated_at`**     | `datetime`         |
-# **`completed_at`**   | `datetime`         |
-# **`deleted_at`**     | `datetime`         |
-# **`run_count`**      | `integer`          | `default("0"), not null`
+# Name                   | Type               | Attributes
+# ---------------------- | ------------------ | ---------------------------
+# **`id`**               | `integer`          | `not null, primary key`
+# **`org_id`**           | `integer`          |
+# **`agent_ids`**        | `string(255)`      |
+# **`command_id`**       | `integer`          |
+# **`created_by`**       | `integer`          |
+# **`stdin`**            | `text(65535)`      |
+# **`args`**             | `text(65535)`      |
+# **`env`**              | `text(65535)`      |
+# **`schedule_type`**    | `integer`          |
+# **`schedule`**         | `string(255)`      |
+# **`scheduled_at`**     | `datetime`         |
+# **`enabled`**          | `boolean`          | `default("1"), not null`
+# **`job_id`**           | `string(255)`      |
+# **`alert_on`**         | `integer`          | `default("0"), not null`
+# **`alert_users`**      | `string(255)`      |
+# **`alert_emails`**     | `text(65535)`      |
+# **`created_at`**       | `datetime`         |
+# **`updated_at`**       | `datetime`         |
+# **`completed_at`**     | `datetime`         |
+# **`deleted_at`**       | `datetime`         |
+# **`run_count`**        | `integer`          | `default("0"), not null`
+# **`last_run_log_id`**  | `integer`          |
 #
 # ### Indexes
 #
+# * `fk_rails_3628effe0d`:
+#     * **`last_run_log_id`**
 # * `scheduled_commands_command_id_fk`:
 #     * **`command_id`**
 # * `scheduled_commands_created_by_fk`:
@@ -45,7 +48,8 @@ class ScheduledCommand < ActiveRecord::Base
   belongs_to :command
   belongs_to :owner, :class_name => User, :foreign_key => :created_by
 
-  has_many :command_logs
+  has_many    :command_logs
+  belongs_to  :last_run, :class_name => CommandLog, :foreign_key => :last_run_log_id
 
   include Bitfields
   bitfield :alert_on,

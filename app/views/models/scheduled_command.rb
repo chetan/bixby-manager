@@ -19,7 +19,7 @@ module Bixby
         self[:command] = obj.command.display_name
 
         # extra info
-        last_run = ::CommandLog.where(:scheduled_command_id => obj.id, :run_id => obj.run_count).order(:requested_at => :asc).first
+        last_run = obj.last_run
         if last_run then
           self[:last_run_log] = render(last_run)
           self[:last_run]     = last_run.requested_at

@@ -32,6 +32,10 @@
 #     * **`command_id`**
 # * `command_logs_org_id_fk`:
 #     * **`org_id`**
+# * `command_logs_scheduled_command_id_fk`:
+#     * **`scheduled_command_id`**
+# * `command_logs_user_id_fk`:
+#     * **`user_id`**
 #
 
 class CommandLog < ActiveRecord::Base
