@@ -94,7 +94,7 @@ class Stark.State
       if _.isObject(model) && !@[key]
         # create new model to be fetched
         @[key] = @_data[key] = new model(data)
-        @log "will ajax load:", @[key]
+        @log "will ajax load: #{@[key].getClassName()}"
         needed.push @[key]
 
     return needed

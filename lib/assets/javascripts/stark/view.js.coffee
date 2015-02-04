@@ -102,7 +102,7 @@ class Stark.View extends Backbone.View
 
   # Cleanup any resources used by the view. Should remove all views and unbind any events
   dispose: ->
-    @log "disposing of view ", @
+    @log "disposing of view #{@getClassName()}"
     @$el.html("")
     @stopListening()
     @unstickit()
