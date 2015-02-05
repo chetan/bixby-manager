@@ -10,3 +10,9 @@ namespace "Bixby.view.inventory", (exports, top) ->
       "div.body a.host":       [ "inv_view_host", (el) -> { host: @host } ]
 
     bindings: [ "host" ]
+
+    last_seen_label: ->
+      if seen = @host.get("last_seen_at")
+        "Agent last seen at " + seen.format()
+      else
+        "Agent has never connected"

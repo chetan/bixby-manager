@@ -6,7 +6,7 @@ class Inventory::HostsController < UiController
     if not query.blank? then
       hosts = Host.search(query, current_user)
     else
-      hosts = Host.for_user(current_user)
+      hosts = Host.for_user(current_user).includes(:agent)
     end
     bootstrap hosts
   end

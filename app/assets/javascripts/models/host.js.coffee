@@ -6,6 +6,11 @@ namespace 'Bixby.model', (exports, top) ->
     urlRoot: "/rest/hosts"
     params: [ { name: "host", set_id: true } ]
 
+    @props
+      _strings: ["hostname", "alias", "desc", "ip", "org"]
+      _dates: ["last_seen_at"]
+      _bools: ["is_connected"]
+
     name: ->
       if @get("alias")? && @get("alias").length > 0
         return @get("alias")
@@ -19,6 +24,10 @@ namespace 'Bixby.model', (exports, top) ->
 
     is_new: ->
       return @has_tag("new")
+
+    is_active: ->
+      # active if currently connected OR last connected in the last 7 days
+      @get("is_connected") || (@get("last_seen_at") && @get("last_seen_at").isAfter( moment().startOf("day").subtract(7, "days") ))
 
     add_tag: (tag) ->
       tags = @tags()
