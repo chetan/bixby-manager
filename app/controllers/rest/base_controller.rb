@@ -3,6 +3,7 @@ class Rest::BaseController < UiController
 
   skip_before_filter :bootstrap_current_user
   skip_before_filter :bootstrap_users
+  skip_around_action :always_render_index
   around_action :restful_response
 
   private
