@@ -13,6 +13,9 @@ namespace "Bixby.view.inventory", (exports, top) ->
         @$("#addHostModal").modal("show")
         @$("#addHostModal input.install").focus()
 
+      "click button.show_inactive": (e) ->
+        @transition("inv_search", {query: "is:inactive"})
+
     query_string: ->
       return "" if !@query
       return @query.replace(/tag:(.*?)\b/, "#$1")

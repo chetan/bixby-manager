@@ -112,6 +112,26 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
     assert_empty Host.search("bar=baz", user)
   end
 
+  def test_search_inactive
+    host = FactoryGirl.create(:agent).host
+    user = FactoryGirl.create(:user)
+    user.org = host.org
+    user.save
+
+    # create an extra host that's inactive (no agent attached)
+    inactive_host = FactoryGirl.create(:host).tap { |h| h.org = host.org; h.save }
+
+    hosts = Host.for_user(user)
+    assert_equal 1, hosts.size
+
+    hosts = Host.for_user(user, true)
+    assert_equal 2, hosts.size
+
+    hosts = Host.search("is:inactive", user)
+    assert_equal 1, hosts.size
+    assert_equal inactive_host.id, hosts.first.id
+  end
+
   def test_for_user
     h = FactoryGirl.create(:agent).host
     h2 = FactoryGirl.create(:agent).host

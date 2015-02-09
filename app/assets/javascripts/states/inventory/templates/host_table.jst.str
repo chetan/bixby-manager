@@ -5,6 +5,7 @@
   <% } else { %>
     <h2>All hosts</h2>
     <button class="btn btn-sm btn-primary add_host" type="button">Add Host</button>
+    <button class="btn btn-sm btn-default show_inactive" type="button">Show Inactive Hosts</button>
   <%/%>
 
   <div class="host_list">

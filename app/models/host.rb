@@ -143,15 +143,34 @@ class Host < ActiveRecord::Base
       end
     end
 
+    # handle special flags
+    is_inactive = false
+    include_inactive = false
+    if meta["is"] then
+      is = meta["is"]
+      if is == "active" then
+        meta.delete("is")
+      elsif is == "inactive" then
+        meta.delete("is")
+        is_inactive = include_inactive = true
+      end
+    end
+
     # find by tag
     if not tags.empty? then
-      hosts = Host.tagged_with(tags).for_user(user)
+      hosts = Host.tagged_with(tags).for_user(user, include_inactive)
       if hosts.empty? then
         return []
       end
 
     else
-      hosts = Host.for_user(user)
+      hosts = Host.for_user(user, include_inactive)
+    end
+
+    # apply special flags
+    if is_inactive then
+      # want only inactive hosts
+      hosts = hosts.reject { |h| h.agent && h.agent.active? }
     end
 
     # filter by metadata
