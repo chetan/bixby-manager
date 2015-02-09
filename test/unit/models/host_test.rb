@@ -91,7 +91,19 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
     host.add_metadata("kernel", "darwin")
     host.add_metadata("foo", "bar")
 
-    h = Host.search("foo=bar", user).first
+    # create an extra agent/host
+    FactoryGirl.create(:agent).host.tap { |h| h.org = host.org; h.save }
+
+    hosts = Host.search("foo=bar", user)
+    assert_equal 1, hosts.size
+    h = hosts.first
+    assert h
+    assert_equal host.id, h.id
+
+    # alternate form
+    hosts = Host.search("foo:bar", user)
+    assert_equal 1, hosts.size
+    h = hosts.first
     assert h
     assert_equal host.id, h.id
 

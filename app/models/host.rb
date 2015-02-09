@@ -109,7 +109,7 @@ class Host < ActiveRecord::Base
   # Search for hosts matching the given terms
   #
   # Fields searched for keywords: hostname, ip, alias, desc
-  # Search by tag: tag:foo or #foo
+  # Search by tag: #foo, tag:foo, or 'tags:foo,bar'
   # Search by metadata: foo=bar
   #
   # @param [String] terms
@@ -124,17 +124,19 @@ class Host < ActiveRecord::Base
 
     # parse terms
     terms.split(/\s+/).each do |s|
-      if s =~ /^(\w+):(.*?)$/ then
-        val = $2
-        if $1 =~ /^tags?$/ then
-          tags += val.split(/,/)
-        end
-
-      elsif s =~ /^#(.*?)$/ then
+      if s =~ /^#(.*?)$/ then
         tags << $1
 
-      elsif s =~ /^(\w+)=(.*?)$/ then
-        meta[$1] = $2
+      elsif s =~ /^(\w+)[=:](.*?)$/ then
+        key = $1
+        val = $2
+        if $1 =~ /^tags?$/ then
+          # alternate tag format
+          tags += val.split(/,/)
+          next
+        end
+
+        meta[key] = val
 
       else
         keys << s
