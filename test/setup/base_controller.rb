@@ -29,7 +29,7 @@ module Bixby
         args = [ {:format => "json"} ]
       end
       ret = super(action, verb, *args)
-      puts @response.body
+      # puts @response.body
       ret
     end
 

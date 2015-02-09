@@ -72,7 +72,7 @@ module MultiTenant
         def multi_tenant_decr
           return if !multi_tenant_logger.debug?
           if (RequestStore.store[:multi_tenant_verify] -= 1) <= 0 then
-            multi_tenant_logger.debug { "} # MULTI_TENANT OK" }
+            multi_tenant_logger.debug { "}" } # MULTI_TENANT OK
           end
         end
 
