@@ -9,8 +9,9 @@ namespace "Bixby.view", (exports, top) ->
       "search:set_query": (query) ->
         @set_query(query)
 
-      "before:transition": ->
-        @set_query("")
+      "before:transition": (new_state_name, new_state_data) ->
+        if new_state_name != "inv_search"
+          @set_query("")
 
     events:
       "submit form": (e) ->
@@ -23,7 +24,9 @@ namespace "Bixby.view", (exports, top) ->
 
     set_query: (q) ->
       @query = q
-      $("div.navbar form.navbar-search input").val(q)
+      val = @$("input").val()
+      if val != q
+        @$("input").val(q)
 
     get_query: ->
       return @query || ""
