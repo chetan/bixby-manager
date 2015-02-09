@@ -5,16 +5,14 @@ namespace "Bixby.view", (exports, top) ->
     reuse: true
     template: "main/nav_search"
 
-    app_events: {
+    app_events:
       "search:set_query": (query) ->
         @set_query(query)
 
       "before:transition": ->
         @set_query("")
 
-    }
-
-    events: {
+    events:
       "submit form": (e) ->
         e.preventDefault()
         @set_query($("form input").val())
@@ -22,8 +20,6 @@ namespace "Bixby.view", (exports, top) ->
           @transition "inv_search", { query: @query }
         else
           @transition "inventory"
-
-    }
 
     set_query: (q) ->
       @query = q
