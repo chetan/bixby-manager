@@ -3,11 +3,14 @@ class Rest::Models::HostsController < ::Rest::BaseController
 
   def index
     query = params[:q] || params[:query]
+    include_inactive = (params[:inactive] && params[:inactive] == "true")
+
     if not query.blank? then
       hosts = Host.search(query, current_user)
     else
-      hosts = Host.for_user(current_user)
+      hosts = Host.for_user(current_user, include_inactive)
     end
+
     restful hosts
   end
 

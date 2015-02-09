@@ -16,8 +16,8 @@ class Rest::Models::Hosts < TestCase
     sign_with_agent
 
     # add another host to make sure we get both back
-    h = FactoryGirl.create(:host)
-    h.org = @host.org
+    h = FactoryGirl.create(:agent).host
+    h.org_id = @host.org.id
     h.save!
 
     get :index

@@ -72,4 +72,10 @@ class Agent < ActiveRecord::Base
     return SemVer.parse("v#{version}")
   end
 
+  def active?
+    # active if currently connected OR last connected in the last 7 days
+    is_connected || (last_seen_at && last_seen_at > Time.new.beginning_of_day-7.days)
+  end
+
+
 end

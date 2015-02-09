@@ -35,7 +35,7 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
   end
 
   def test_search_by_tag_and_kw
-    host = FactoryGirl.create(:host)
+    host = FactoryGirl.create(:agent).host
     user = FactoryGirl.create(:user)
     user.org = host.org
     user.save
@@ -81,7 +81,7 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
   end
 
   def test_search_by_metadata
-    host = FactoryGirl.create(:host)
+    host = FactoryGirl.create(:agent).host
     user = FactoryGirl.create(:user)
     user.org = host.org
     user.save
@@ -101,8 +101,8 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
   end
 
   def test_for_user
-    h = FactoryGirl.create(:host)
-    h2 = FactoryGirl.create(:host)
+    h = FactoryGirl.create(:agent).host
+    h2 = FactoryGirl.create(:agent).host
     u = FactoryGirl.create(:user)
     u.org = h.org
     u.save

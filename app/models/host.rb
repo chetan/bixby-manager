@@ -91,11 +91,19 @@ class Host < ActiveRecord::Base
   # (based on Org)
   #
   # @param [User] user
+  # @param [Boolean] include_inactive         Whether or not to include inactive hosts in the results
   #
   # @return [Array<Host>]
-  def self.for_user(user)
+  def self.for_user(user, include_inactive=false)
     return nil if user.nil?
-    where(:org_id => user.org)
+    hosts = where(:org_id => user.org).includes(:agent)
+
+    if !include_inactive then
+      # filter out inactive ones
+      hosts = hosts.reject{ |h| !h.agent || !h.agent.active? }
+    end
+
+    hosts
   end
 
   # Search for hosts matching the given terms
@@ -135,7 +143,7 @@ class Host < ActiveRecord::Base
 
     # find by tag
     if not tags.empty? then
-      hosts = Host.for_user(user).tagged_with(tags)
+      hosts = Host.tagged_with(tags).for_user(user)
       if hosts.empty? then
         return []
       end
