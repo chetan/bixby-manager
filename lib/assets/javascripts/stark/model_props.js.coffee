@@ -1,6 +1,18 @@
 
 "use strict"
 
+# Create HTML5 properties on a Model
+#
+#
+# Example usage:
+#
+# class exports.Host extends Stark.Model
+#   @props
+#     _strings: ["hostname", "alias", "desc", "ip", "org"]
+#     _dates:   ["last_seen_at"]
+#     _bools:   ["is_connected"]
+#
+# @param [Object] new_props         Hash of property types and associated keys
 Stark.Model.props = (new_props) ->
   props = (@_props ||= {})
   proto = @prototype
