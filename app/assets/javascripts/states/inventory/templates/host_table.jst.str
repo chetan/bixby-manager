@@ -4,7 +4,7 @@
     <h2>Hosts matching <%= query_string() %></h2>
   <% } else { %>
     <h2>All hosts</h2>
-    <button class="btn btn-primary add_host" type="button">Add Host</button>
+    <button class="btn btn-sm btn-primary add_host" type="button">Add Host</button>
   <%/%>
 
   <div class="host_list">
