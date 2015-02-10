@@ -7,7 +7,7 @@ namespace 'Bixby.model', (exports, top) ->
     @props
       _strings: ["command", "host", "user", "stdout", "stderr"]
       _dates:   "requested_at"
-      _numbers: ["org_id", "user_id", "agent_id", "command_id", "time_taken", "exec_code", "status"]
+      _numbers: ["org_id", "user_id", "agent_id", "command_id", "scheduled_command_id", "time_taken", "exec_code", "status"]
       _bools:   ["exec_status"]
       _misc:    "args"
 
