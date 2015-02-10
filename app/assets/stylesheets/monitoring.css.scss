@@ -109,6 +109,12 @@ div.monitoring {
 }
 
 // Fullscreen graphs
+@media (min-width: $screen-sm-min) {
+  div.btn-group.btn-fullscreen {
+    float: right;
+  }
+}
+
 .fullscreen_div {
   display:    block;
   box-sizing: border-box;
