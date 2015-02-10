@@ -5,13 +5,17 @@ _.extend Bixby.monitoring.Graph.prototype,
   create_tooltip: ->
     @gc.append('<div class="tooltip in value"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>')
     @gc.append('<div class="line xline"></div>')
+    @tooltip =
+      xline:  @gc.find("div.line.xline")
+      bubble: @gc.find("div.value.tooltip")
+
     @gc.mouseout (e) =>
       @hide_tooltip()
 
   # Hide the x-value crosshair and tooltip
   hide_tooltip: ->
-    @gc.find("div.line.xline").hide()
-    @gc.find("div.value.tooltip").hide()
+    @tooltip.xline.hide()
+    @tooltip.bubble.hide()
 
   # Position x-value crosshair & draw value tooltip
   #
@@ -21,8 +25,8 @@ _.extend Bixby.monitoring.Graph.prototype,
   # @param [Number] pageY
   # @param [String] text     tooltip text to display
   show_tooltip: (g, el, pX, pageY, text) ->
-    xline = @gc.find("div.line.xline")
-    dVal = @gc.find("div.value.tooltip")
+    xline = @tooltip.xline
+    dVal = @tooltip.bubble
 
     # only show x-line if NOT dragging (but still show the tooltip)
     x = el.position().left + pX

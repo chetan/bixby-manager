@@ -27,10 +27,19 @@ div.check_editor {
 .dygraph-axis-label {
   font-size: 10px;
 }
+
+// tooltips
 div.metric div.tooltip {
   pointer-events: none;
-  div.tooltip-inner {
-    max-width: none;
+  @media (min-width: $screen-sm-min) {
+    div.tooltip-inner {
+      max-width: none;
+    }
+  }
+  @media (max-width: $screen-xs-max) {
+    div.tooltip-inner {
+      white-space: normal;
+    }
   }
 }
 
