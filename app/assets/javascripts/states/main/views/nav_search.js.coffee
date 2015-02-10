@@ -16,6 +16,7 @@ namespace "Bixby.view", (exports, top) ->
     events:
       "submit form": (e) ->
         e.preventDefault()
+        @parent.close_nav()
         @set_query($("form input").val())
         if @query and @query != ""
           @transition "inv_search", { query: @query }

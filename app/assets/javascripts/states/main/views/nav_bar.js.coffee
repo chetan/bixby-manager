@@ -93,7 +93,7 @@ namespace "Bixby.view", (exports, top) ->
 
     # Close nav menu if open
     close_nav: ->
-      if @$("li.open").length > 0
+      if @$(".navbar-collapse.in").length > 0 || @$("li.open").length > 0
         @$(".navbar-collapse").collapse("hide")
         @$("li.open").removeClass("open")
 
