@@ -91,9 +91,11 @@ namespace "Bixby.view", (exports, top) ->
         # force the width to reset before showing loading transition
         $("div.progress.loading div.progress-bar").removeClass("loaded").width("0").addClass("loading")
 
+    # Close nav menu if open
     close_nav: ->
-      @$(".navbar-collapse").collapse("hide")
-      @$("li.open").removeClass("open")
+      if @$("li.open").length > 0
+        @$(".navbar-collapse").collapse("hide")
+        @$("li.open").removeClass("open")
 
     impersonate: (user_id) ->
       return if !@true_user.can("impersonate_users")
