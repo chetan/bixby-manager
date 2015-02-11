@@ -1,5 +1,5 @@
 /*
-* jQuery Mobile v1.4.3
+* jQuery Mobile v1.4.5
 * http://jquerymobile.com
 *
 * Copyright 2010, 2014 jQuery Foundation, Inc. and other contributors
@@ -8,7 +8,7 @@
 *
 */
 
-// NOTE: custom build with only touch events
+// NOTE: custom build with only: events[touch, orientation change], ios orientation change fix
 
 (function ( root, doc, factory ) {
 	if ( typeof define === "function" && define.amd ) {
@@ -21,7 +21,194 @@
 		// Browser globals
 		factory( root.jQuery, root, doc );
 	}
-}( this, document, function ( jQuery, window, document, undefined ) {// This plugin is an experiment for abstracting away the touch and mouse
+}( this, document, function ( jQuery, window, document, undefined ) {	(function( $, undefined ) {
+		$.extend( $.support, {
+			orientation: "orientation" in window && "onorientationchange" in window
+		});
+	}( jQuery ));
+
+
+	// throttled resize event
+	(function( $ ) {
+		$.event.special.throttledresize = {
+			setup: function() {
+				$( this ).bind( "resize", handler );
+			},
+			teardown: function() {
+				$( this ).unbind( "resize", handler );
+			}
+		};
+
+		var throttle = 250,
+			handler = function() {
+				curr = ( new Date() ).getTime();
+				diff = curr - lastCall;
+
+				if ( diff >= throttle ) {
+
+					lastCall = curr;
+					$( this ).trigger( "throttledresize" );
+
+				} else {
+
+					if ( heldCall ) {
+						clearTimeout( heldCall );
+					}
+
+					// Promise a held call will still execute
+					heldCall = setTimeout( handler, throttle - diff );
+				}
+			},
+			lastCall = 0,
+			heldCall,
+			curr,
+			diff;
+	})( jQuery );
+
+
+(function( $, window ) {
+	var win = $( window ),
+		event_name = "orientationchange",
+		get_orientation,
+		last_orientation,
+		initial_orientation_is_landscape,
+		initial_orientation_is_default,
+		portrait_map = { "0": true, "180": true },
+		ww, wh, landscape_threshold;
+
+	// It seems that some device/browser vendors use window.orientation values 0 and 180 to
+	// denote the "default" orientation. For iOS devices, and most other smart-phones tested,
+	// the default orientation is always "portrait", but in some Android and RIM based tablets,
+	// the default orientation is "landscape". The following code attempts to use the window
+	// dimensions to figure out what the current orientation is, and then makes adjustments
+	// to the to the portrait_map if necessary, so that we can properly decode the
+	// window.orientation value whenever get_orientation() is called.
+	//
+	// Note that we used to use a media query to figure out what the orientation the browser
+	// thinks it is in:
+	//
+	//     initial_orientation_is_landscape = $.mobile.media("all and (orientation: landscape)");
+	//
+	// but there was an iPhone/iPod Touch bug beginning with iOS 4.2, up through iOS 5.1,
+	// where the browser *ALWAYS* applied the landscape media query. This bug does not
+	// happen on iPad.
+
+	if ( $.support.orientation ) {
+
+		// Check the window width and height to figure out what the current orientation
+		// of the device is at this moment. Note that we've initialized the portrait map
+		// values to 0 and 180, *AND* we purposely check for landscape so that if we guess
+		// wrong, , we default to the assumption that portrait is the default orientation.
+		// We use a threshold check below because on some platforms like iOS, the iPhone
+		// form-factor can report a larger width than height if the user turns on the
+		// developer console. The actual threshold value is somewhat arbitrary, we just
+		// need to make sure it is large enough to exclude the developer console case.
+
+		ww = window.innerWidth || win.width();
+		wh = window.innerHeight || win.height();
+		landscape_threshold = 50;
+
+		initial_orientation_is_landscape = ww > wh && ( ww - wh ) > landscape_threshold;
+
+		// Now check to see if the current window.orientation is 0 or 180.
+		initial_orientation_is_default = portrait_map[ window.orientation ];
+
+		// If the initial orientation is landscape, but window.orientation reports 0 or 180, *OR*
+		// if the initial orientation is portrait, but window.orientation reports 90 or -90, we
+		// need to flip our portrait_map values because landscape is the default orientation for
+		// this device/browser.
+		if ( ( initial_orientation_is_landscape && initial_orientation_is_default ) || ( !initial_orientation_is_landscape && !initial_orientation_is_default ) ) {
+			portrait_map = { "-90": true, "90": true };
+		}
+	}
+
+	$.event.special.orientationchange = $.extend( {}, $.event.special.orientationchange, {
+		setup: function() {
+			// If the event is supported natively, return false so that jQuery
+			// will bind to the event using DOM methods.
+			if ( $.support.orientation && !$.event.special.orientationchange.disabled ) {
+				return false;
+			}
+
+			// Get the current orientation to avoid initial double-triggering.
+			last_orientation = get_orientation();
+
+			// Because the orientationchange event doesn't exist, simulate the
+			// event by testing window dimensions on resize.
+			win.bind( "throttledresize", handler );
+		},
+		teardown: function() {
+			// If the event is not supported natively, return false so that
+			// jQuery will unbind the event using DOM methods.
+			if ( $.support.orientation && !$.event.special.orientationchange.disabled ) {
+				return false;
+			}
+
+			// Because the orientationchange event doesn't exist, unbind the
+			// resize event handler.
+			win.unbind( "throttledresize", handler );
+		},
+		add: function( handleObj ) {
+			// Save a reference to the bound event handler.
+			var old_handler = handleObj.handler;
+
+			handleObj.handler = function( event ) {
+				// Modify event object, adding the .orientation property.
+				event.orientation = get_orientation();
+
+				// Call the originally-bound event handler and return its result.
+				return old_handler.apply( this, arguments );
+			};
+		}
+	});
+
+	// If the event is not supported natively, this handler will be bound to
+	// the window resize event to simulate the orientationchange event.
+	function handler() {
+		// Get the current orientation.
+		var orientation = get_orientation();
+
+		if ( orientation !== last_orientation ) {
+			// The orientation has changed, so trigger the orientationchange event.
+			last_orientation = orientation;
+			win.trigger( event_name );
+		}
+	}
+
+	// Get the current page orientation. This method is exposed publicly, should it
+	// be needed, as jQuery.event.special.orientationchange.orientation()
+	$.event.special.orientationchange.orientation = get_orientation = function() {
+		var isPortrait = true, elem = document.documentElement;
+
+		// prefer window orientation to the calculation based on screensize as
+		// the actual screen resize takes place before or after the orientation change event
+		// has been fired depending on implementation (eg android 2.3 is before, iphone after).
+		// More testing is required to determine if a more reliable method of determining the new screensize
+		// is possible when orientationchange is fired. (eg, use media queries + element + opacity)
+		if ( $.support.orientation ) {
+			// if the window orientation registers as 0 or 180 degrees report
+			// portrait, otherwise landscape
+			isPortrait = portrait_map[ window.orientation ];
+		} else {
+			isPortrait = elem && elem.clientWidth / elem.clientHeight < 1.1;
+		}
+
+		return isPortrait ? "portrait" : "landscape";
+	};
+
+	$.fn[ event_name ] = function( fn ) {
+		return fn ? this.bind( event_name, fn ) : this.trigger( event_name );
+	};
+
+	// jQuery < 1.8
+	if ( $.attrFn ) {
+		$.attrFn[ event_name ] = true;
+	}
+
+}( jQuery, this ));
+
+
+// This plugin is an experiment for abstracting away the touch and mouse
 // events so that developers don't have to worry about which method of input
 // the device their document is loaded on supports.
 //
@@ -783,7 +970,7 @@ if ( eventCaptureSupported ) {
 					emitted = false;
 
 				context.move = function( event ) {
-					if ( !start ) {
+					if ( !start || event.isDefaultPrevented() ) {
 						return;
 					}
 
@@ -860,6 +1047,94 @@ if ( eventCaptureSupported ) {
 		};
 	});
 
+})( jQuery, this );
+
+(function( $, window, undefined ) {
+	$.extend( $.mobile, {
+
+		// Version of the jQuery Mobile Framework
+		version: "1.4.5",
+
+		// Deprecated and no longer used in 1.4 remove in 1.5
+		// Define the url parameter used for referencing widget-generated sub-pages.
+		// Translates to example.html&ui-page=subpageIdentifier
+		// hash segment before &ui-page= is used to make Ajax request
+		subPageUrlKey: "ui-page",
+
+		hideUrlBar: true,
+
+		// Keepnative Selector
+		keepNative: ":jqmData(role='none'), :jqmData(role='nojs')",
+
+		// Deprecated in 1.4 remove in 1.5
+		// Class assigned to page currently in view, and during transitions
+		activePageClass: "ui-page-active",
+
+		// Deprecated in 1.4 remove in 1.5
+		// Class used for "active" button state, from CSS framework
+		activeBtnClass: "ui-btn-active",
+
+		// Deprecated in 1.4 remove in 1.5
+		// Class used for "focus" form element state, from CSS framework
+		focusClass: "ui-focus",
+
+		// Automatically handle clicks and form submissions through Ajax, when same-domain
+		ajaxEnabled: true,
+
+		// Automatically load and show pages based on location.hash
+		hashListeningEnabled: true,
+
+		// disable to prevent jquery from bothering with links
+		linkBindingEnabled: true,
+
+		// Set default page transition - 'none' for no transitions
+		defaultPageTransition: "fade",
+
+		// Set maximum window width for transitions to apply - 'false' for no limit
+		maxTransitionWidth: false,
+
+		// Minimum scroll distance that will be remembered when returning to a page
+		// Deprecated remove in 1.5
+		minScrollBack: 0,
+
+		// Set default dialog transition - 'none' for no transitions
+		defaultDialogTransition: "pop",
+
+		// Error response message - appears when an Ajax page request fails
+		pageLoadErrorMessage: "Error Loading Page",
+
+		// For error messages, which theme does the box use?
+		pageLoadErrorMessageTheme: "a",
+
+		// replace calls to window.history.back with phonegaps navigation helper
+		// where it is provided on the window object
+		phonegapNavigationEnabled: false,
+
+		//automatically initialize the DOM when it's ready
+		autoInitializePage: true,
+
+		pushStateEnabled: true,
+
+		// allows users to opt in to ignoring content by marking a parent element as
+		// data-ignored
+		ignoreContentEnabled: false,
+
+		buttonMarkup: {
+			hoverDelay: 200
+		},
+
+		// disable the alteration of the dynamic base tag or links in the case
+		// that a dynamic base tag isn't supported
+		dynamicBaseEnabled: true,
+
+		// default the property to remove dependency on assignment in init module
+		pageContainer: $(),
+
+		//enable cross-domain page support
+		allowCrossDomainPages: false,
+
+		dialogHashKey: "&ui-state=dialog"
+	});
 })( jQuery, this );
 
 (function( $, window, undefined ) {
@@ -970,651 +1245,6 @@ if ( eventCaptureSupported ) {
 
 	$.extend( $.find, oldFind );
 
-})( jQuery, this );
-
-/*!
- * jQuery UI Widget c0ab71056b936627e8a7821f03c044aec6280a40
- * http://jqueryui.com
- *
- * Copyright 2013 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/jQuery.widget/
- */
-(function( $, undefined ) {
-
-var uuid = 0,
-	slice = Array.prototype.slice,
-	_cleanData = $.cleanData;
-$.cleanData = function( elems ) {
-	for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
-		try {
-			$( elem ).triggerHandler( "remove" );
-		// http://bugs.jquery.com/ticket/8235
-		} catch( e ) {}
-	}
-	_cleanData( elems );
-};
-
-$.widget = function( name, base, prototype ) {
-	var fullName, existingConstructor, constructor, basePrototype,
-		// proxiedPrototype allows the provided prototype to remain unmodified
-		// so that it can be used as a mixin for multiple widgets (#8876)
-		proxiedPrototype = {},
-		namespace = name.split( "." )[ 0 ];
-
-	name = name.split( "." )[ 1 ];
-	fullName = namespace + "-" + name;
-
-	if ( !prototype ) {
-		prototype = base;
-		base = $.Widget;
-	}
-
-	// create selector for plugin
-	$.expr[ ":" ][ fullName.toLowerCase() ] = function( elem ) {
-		return !!$.data( elem, fullName );
-	};
-
-	$[ namespace ] = $[ namespace ] || {};
-	existingConstructor = $[ namespace ][ name ];
-	constructor = $[ namespace ][ name ] = function( options, element ) {
-		// allow instantiation without "new" keyword
-		if ( !this._createWidget ) {
-			return new constructor( options, element );
-		}
-
-		// allow instantiation without initializing for simple inheritance
-		// must use "new" keyword (the code above always passes args)
-		if ( arguments.length ) {
-			this._createWidget( options, element );
-		}
-	};
-	// extend with the existing constructor to carry over any static properties
-	$.extend( constructor, existingConstructor, {
-		version: prototype.version,
-		// copy the object used to create the prototype in case we need to
-		// redefine the widget later
-		_proto: $.extend( {}, prototype ),
-		// track widgets that inherit from this widget in case this widget is
-		// redefined after a widget inherits from it
-		_childConstructors: []
-	});
-
-	basePrototype = new base();
-	// we need to make the options hash a property directly on the new instance
-	// otherwise we'll modify the options hash on the prototype that we're
-	// inheriting from
-	basePrototype.options = $.widget.extend( {}, basePrototype.options );
-	$.each( prototype, function( prop, value ) {
-		if ( !$.isFunction( value ) ) {
-			proxiedPrototype[ prop ] = value;
-			return;
-		}
-		proxiedPrototype[ prop ] = (function() {
-			var _super = function() {
-					return base.prototype[ prop ].apply( this, arguments );
-				},
-				_superApply = function( args ) {
-					return base.prototype[ prop ].apply( this, args );
-				};
-			return function() {
-				var __super = this._super,
-					__superApply = this._superApply,
-					returnValue;
-
-				this._super = _super;
-				this._superApply = _superApply;
-
-				returnValue = value.apply( this, arguments );
-
-				this._super = __super;
-				this._superApply = __superApply;
-
-				return returnValue;
-			};
-		})();
-	});
-	constructor.prototype = $.widget.extend( basePrototype, {
-		// TODO: remove support for widgetEventPrefix
-		// always use the name + a colon as the prefix, e.g., draggable:start
-		// don't prefix for widgets that aren't DOM-based
-		widgetEventPrefix: existingConstructor ? (basePrototype.widgetEventPrefix || name) : name
-	}, proxiedPrototype, {
-		constructor: constructor,
-		namespace: namespace,
-		widgetName: name,
-		widgetFullName: fullName
-	});
-
-	// If this widget is being redefined then we need to find all widgets that
-	// are inheriting from it and redefine all of them so that they inherit from
-	// the new version of this widget. We're essentially trying to replace one
-	// level in the prototype chain.
-	if ( existingConstructor ) {
-		$.each( existingConstructor._childConstructors, function( i, child ) {
-			var childPrototype = child.prototype;
-
-			// redefine the child widget using the same prototype that was
-			// originally used, but inherit from the new version of the base
-			$.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor, child._proto );
-		});
-		// remove the list of existing child constructors from the old constructor
-		// so the old child constructors can be garbage collected
-		delete existingConstructor._childConstructors;
-	} else {
-		base._childConstructors.push( constructor );
-	}
-
-	$.widget.bridge( name, constructor );
-
-	return constructor;
-};
-
-$.widget.extend = function( target ) {
-	var input = slice.call( arguments, 1 ),
-		inputIndex = 0,
-		inputLength = input.length,
-		key,
-		value;
-	for ( ; inputIndex < inputLength; inputIndex++ ) {
-		for ( key in input[ inputIndex ] ) {
-			value = input[ inputIndex ][ key ];
-			if ( input[ inputIndex ].hasOwnProperty( key ) && value !== undefined ) {
-				// Clone objects
-				if ( $.isPlainObject( value ) ) {
-					target[ key ] = $.isPlainObject( target[ key ] ) ?
-						$.widget.extend( {}, target[ key ], value ) :
-						// Don't extend strings, arrays, etc. with objects
-						$.widget.extend( {}, value );
-				// Copy everything else by reference
-				} else {
-					target[ key ] = value;
-				}
-			}
-		}
-	}
-	return target;
-};
-
-$.widget.bridge = function( name, object ) {
-	var fullName = object.prototype.widgetFullName || name;
-	$.fn[ name ] = function( options ) {
-		var isMethodCall = typeof options === "string",
-			args = slice.call( arguments, 1 ),
-			returnValue = this;
-
-		// allow multiple hashes to be passed on init
-		options = !isMethodCall && args.length ?
-			$.widget.extend.apply( null, [ options ].concat(args) ) :
-			options;
-
-		if ( isMethodCall ) {
-			this.each(function() {
-				var methodValue,
-					instance = $.data( this, fullName );
-				if ( options === "instance" ) {
-					returnValue = instance;
-					return false;
-				}
-				if ( !instance ) {
-					return $.error( "cannot call methods on " + name + " prior to initialization; " +
-						"attempted to call method '" + options + "'" );
-				}
-				if ( !$.isFunction( instance[options] ) || options.charAt( 0 ) === "_" ) {
-					return $.error( "no such method '" + options + "' for " + name + " widget instance" );
-				}
-				methodValue = instance[ options ].apply( instance, args );
-				if ( methodValue !== instance && methodValue !== undefined ) {
-					returnValue = methodValue && methodValue.jquery ?
-						returnValue.pushStack( methodValue.get() ) :
-						methodValue;
-					return false;
-				}
-			});
-		} else {
-			this.each(function() {
-				var instance = $.data( this, fullName );
-				if ( instance ) {
-					instance.option( options || {} )._init();
-				} else {
-					$.data( this, fullName, new object( options, this ) );
-				}
-			});
-		}
-
-		return returnValue;
-	};
-};
-
-$.Widget = function( /* options, element */ ) {};
-$.Widget._childConstructors = [];
-
-$.Widget.prototype = {
-	widgetName: "widget",
-	widgetEventPrefix: "",
-	defaultElement: "<div>",
-	options: {
-		disabled: false,
-
-		// callbacks
-		create: null
-	},
-	_createWidget: function( options, element ) {
-		element = $( element || this.defaultElement || this )[ 0 ];
-		this.element = $( element );
-		this.uuid = uuid++;
-		this.eventNamespace = "." + this.widgetName + this.uuid;
-		this.options = $.widget.extend( {},
-			this.options,
-			this._getCreateOptions(),
-			options );
-
-		this.bindings = $();
-		this.hoverable = $();
-		this.focusable = $();
-
-		if ( element !== this ) {
-			$.data( element, this.widgetFullName, this );
-			this._on( true, this.element, {
-				remove: function( event ) {
-					if ( event.target === element ) {
-						this.destroy();
-					}
-				}
-			});
-			this.document = $( element.style ?
-				// element within the document
-				element.ownerDocument :
-				// element is window or document
-				element.document || element );
-			this.window = $( this.document[0].defaultView || this.document[0].parentWindow );
-		}
-
-		this._create();
-		this._trigger( "create", null, this._getCreateEventData() );
-		this._init();
-	},
-	_getCreateOptions: $.noop,
-	_getCreateEventData: $.noop,
-	_create: $.noop,
-	_init: $.noop,
-
-	destroy: function() {
-		this._destroy();
-		// we can probably remove the unbind calls in 2.0
-		// all event bindings should go through this._on()
-		this.element
-			.unbind( this.eventNamespace )
-			.removeData( this.widgetFullName )
-			// support: jquery <1.6.3
-			// http://bugs.jquery.com/ticket/9413
-			.removeData( $.camelCase( this.widgetFullName ) );
-		this.widget()
-			.unbind( this.eventNamespace )
-			.removeAttr( "aria-disabled" )
-			.removeClass(
-				this.widgetFullName + "-disabled " +
-				"ui-state-disabled" );
-
-		// clean up events and states
-		this.bindings.unbind( this.eventNamespace );
-		this.hoverable.removeClass( "ui-state-hover" );
-		this.focusable.removeClass( "ui-state-focus" );
-	},
-	_destroy: $.noop,
-
-	widget: function() {
-		return this.element;
-	},
-
-	option: function( key, value ) {
-		var options = key,
-			parts,
-			curOption,
-			i;
-
-		if ( arguments.length === 0 ) {
-			// don't return a reference to the internal hash
-			return $.widget.extend( {}, this.options );
-		}
-
-		if ( typeof key === "string" ) {
-			// handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
-			options = {};
-			parts = key.split( "." );
-			key = parts.shift();
-			if ( parts.length ) {
-				curOption = options[ key ] = $.widget.extend( {}, this.options[ key ] );
-				for ( i = 0; i < parts.length - 1; i++ ) {
-					curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
-					curOption = curOption[ parts[ i ] ];
-				}
-				key = parts.pop();
-				if ( value === undefined ) {
-					return curOption[ key ] === undefined ? null : curOption[ key ];
-				}
-				curOption[ key ] = value;
-			} else {
-				if ( value === undefined ) {
-					return this.options[ key ] === undefined ? null : this.options[ key ];
-				}
-				options[ key ] = value;
-			}
-		}
-
-		this._setOptions( options );
-
-		return this;
-	},
-	_setOptions: function( options ) {
-		var key;
-
-		for ( key in options ) {
-			this._setOption( key, options[ key ] );
-		}
-
-		return this;
-	},
-	_setOption: function( key, value ) {
-		this.options[ key ] = value;
-
-		if ( key === "disabled" ) {
-			this.widget()
-				.toggleClass( this.widgetFullName + "-disabled", !!value );
-			this.hoverable.removeClass( "ui-state-hover" );
-			this.focusable.removeClass( "ui-state-focus" );
-		}
-
-		return this;
-	},
-
-	enable: function() {
-		return this._setOptions({ disabled: false });
-	},
-	disable: function() {
-		return this._setOptions({ disabled: true });
-	},
-
-	_on: function( suppressDisabledCheck, element, handlers ) {
-		var delegateElement,
-			instance = this;
-
-		// no suppressDisabledCheck flag, shuffle arguments
-		if ( typeof suppressDisabledCheck !== "boolean" ) {
-			handlers = element;
-			element = suppressDisabledCheck;
-			suppressDisabledCheck = false;
-		}
-
-		// no element argument, shuffle and use this.element
-		if ( !handlers ) {
-			handlers = element;
-			element = this.element;
-			delegateElement = this.widget();
-		} else {
-			// accept selectors, DOM elements
-			element = delegateElement = $( element );
-			this.bindings = this.bindings.add( element );
-		}
-
-		$.each( handlers, function( event, handler ) {
-			function handlerProxy() {
-				// allow widgets to customize the disabled handling
-				// - disabled as an array instead of boolean
-				// - disabled class as method for disabling individual parts
-				if ( !suppressDisabledCheck &&
-						( instance.options.disabled === true ||
-							$( this ).hasClass( "ui-state-disabled" ) ) ) {
-					return;
-				}
-				return ( typeof handler === "string" ? instance[ handler ] : handler )
-					.apply( instance, arguments );
-			}
-
-			// copy the guid so direct unbinding works
-			if ( typeof handler !== "string" ) {
-				handlerProxy.guid = handler.guid =
-					handler.guid || handlerProxy.guid || $.guid++;
-			}
-
-			var match = event.match( /^(\w+)\s*(.*)$/ ),
-				eventName = match[1] + instance.eventNamespace,
-				selector = match[2];
-			if ( selector ) {
-				delegateElement.delegate( selector, eventName, handlerProxy );
-			} else {
-				element.bind( eventName, handlerProxy );
-			}
-		});
-	},
-
-	_off: function( element, eventName ) {
-		eventName = (eventName || "").split( " " ).join( this.eventNamespace + " " ) + this.eventNamespace;
-		element.unbind( eventName ).undelegate( eventName );
-	},
-
-	_delay: function( handler, delay ) {
-		function handlerProxy() {
-			return ( typeof handler === "string" ? instance[ handler ] : handler )
-				.apply( instance, arguments );
-		}
-		var instance = this;
-		return setTimeout( handlerProxy, delay || 0 );
-	},
-
-	_hoverable: function( element ) {
-		this.hoverable = this.hoverable.add( element );
-		this._on( element, {
-			mouseenter: function( event ) {
-				$( event.currentTarget ).addClass( "ui-state-hover" );
-			},
-			mouseleave: function( event ) {
-				$( event.currentTarget ).removeClass( "ui-state-hover" );
-			}
-		});
-	},
-
-	_focusable: function( element ) {
-		this.focusable = this.focusable.add( element );
-		this._on( element, {
-			focusin: function( event ) {
-				$( event.currentTarget ).addClass( "ui-state-focus" );
-			},
-			focusout: function( event ) {
-				$( event.currentTarget ).removeClass( "ui-state-focus" );
-			}
-		});
-	},
-
-	_trigger: function( type, event, data ) {
-		var prop, orig,
-			callback = this.options[ type ];
-
-		data = data || {};
-		event = $.Event( event );
-		event.type = ( type === this.widgetEventPrefix ?
-			type :
-			this.widgetEventPrefix + type ).toLowerCase();
-		// the original event may come from any element
-		// so we need to reset the target on the new event
-		event.target = this.element[ 0 ];
-
-		// copy original event properties over to the new event
-		orig = event.originalEvent;
-		if ( orig ) {
-			for ( prop in orig ) {
-				if ( !( prop in event ) ) {
-					event[ prop ] = orig[ prop ];
-				}
-			}
-		}
-
-		this.element.trigger( event, data );
-		return !( $.isFunction( callback ) &&
-			callback.apply( this.element[0], [ event ].concat( data ) ) === false ||
-			event.isDefaultPrevented() );
-	}
-};
-
-$.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
-	$.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
-		if ( typeof options === "string" ) {
-			options = { effect: options };
-		}
-		var hasOptions,
-			effectName = !options ?
-				method :
-				options === true || typeof options === "number" ?
-					defaultEffect :
-					options.effect || defaultEffect;
-		options = options || {};
-		if ( typeof options === "number" ) {
-			options = { duration: options };
-		}
-		hasOptions = !$.isEmptyObject( options );
-		options.complete = callback;
-		if ( options.delay ) {
-			element.delay( options.delay );
-		}
-		if ( hasOptions && $.effects && $.effects.effect[ effectName ] ) {
-			element[ method ]( options );
-		} else if ( effectName !== method && element[ effectName ] ) {
-			element[ effectName ]( options.duration, options.easing, callback );
-		} else {
-			element.queue(function( next ) {
-				$( this )[ method ]();
-				if ( callback ) {
-					callback.call( element[ 0 ] );
-				}
-				next();
-			});
-		}
-	};
-});
-
-})( jQuery );
-
-(function( $, undefined ) {
-
-var rcapitals = /[A-Z]/g,
-	replaceFunction = function( c ) {
-		return "-" + c.toLowerCase();
-	};
-
-$.extend( $.Widget.prototype, {
-	_getCreateOptions: function() {
-		var option, value,
-			elem = this.element[ 0 ],
-			options = {};
-
-		//
-		if ( !$.mobile.getAttribute( elem, "defaults" ) ) {
-			for ( option in this.options ) {
-				value = $.mobile.getAttribute( elem, option.replace( rcapitals, replaceFunction ) );
-
-				if ( value != null ) {
-					options[ option ] = value;
-				}
-			}
-		}
-
-		return options;
-	}
-});
-
-//TODO: Remove in 1.5 for backcompat only
-$.mobile.widget = $.Widget;
-
-})( jQuery );
-
-(function( $, window, undefined ) {
-	$.extend( $.mobile, {
-
-		// Version of the jQuery Mobile Framework
-		version: "1.4.3",
-
-		// Deprecated and no longer used in 1.4 remove in 1.5
-		// Define the url parameter used for referencing widget-generated sub-pages.
-		// Translates to example.html&ui-page=subpageIdentifier
-		// hash segment before &ui-page= is used to make Ajax request
-		subPageUrlKey: "ui-page",
-
-		hideUrlBar: true,
-
-		// Keepnative Selector
-		keepNative: ":jqmData(role='none'), :jqmData(role='nojs')",
-
-		// Deprecated in 1.4 remove in 1.5
-		// Class assigned to page currently in view, and during transitions
-		activePageClass: "ui-page-active",
-
-		// Deprecated in 1.4 remove in 1.5
-		// Class used for "active" button state, from CSS framework
-		activeBtnClass: "ui-btn-active",
-
-		// Deprecated in 1.4 remove in 1.5
-		// Class used for "focus" form element state, from CSS framework
-		focusClass: "ui-focus",
-
-		// Automatically handle clicks and form submissions through Ajax, when same-domain
-		ajaxEnabled: true,
-
-		// Automatically load and show pages based on location.hash
-		hashListeningEnabled: true,
-
-		// disable to prevent jquery from bothering with links
-		linkBindingEnabled: true,
-
-		// Set default page transition - 'none' for no transitions
-		defaultPageTransition: "fade",
-
-		// Set maximum window width for transitions to apply - 'false' for no limit
-		maxTransitionWidth: false,
-
-		// Minimum scroll distance that will be remembered when returning to a page
-		// Deprecated remove in 1.5
-		minScrollBack: 0,
-
-		// Set default dialog transition - 'none' for no transitions
-		defaultDialogTransition: "pop",
-
-		// Error response message - appears when an Ajax page request fails
-		pageLoadErrorMessage: "Error Loading Page",
-
-		// For error messages, which theme does the box use?
-		pageLoadErrorMessageTheme: "a",
-
-		// replace calls to window.history.back with phonegaps navigation helper
-		// where it is provided on the window object
-		phonegapNavigationEnabled: false,
-
-		//automatically initialize the DOM when it's ready
-		autoInitializePage: true,
-
-		pushStateEnabled: true,
-
-		// allows users to opt in to ignoring content by marking a parent element as
-		// data-ignored
-		ignoreContentEnabled: false,
-
-		buttonMarkup: {
-			hoverDelay: 200
-		},
-
-		// disable the alteration of the dynamic base tag or links in the case
-		// that a dynamic base tag isn't supported
-		dynamicBaseEnabled: true,
-
-		// default the property to remove dependency on assignment in init module
-		pageContainer: $(),
-
-		//enable cross-domain page support
-		allowCrossDomainPages: false,
-
-		dialogHashKey: "&ui-state=dialog"
-	});
 })( jQuery, this );
 
 /*!
@@ -1914,13 +1544,32 @@ $.ui.plugin = {
 (function( $, window, undefined ) {
 
 	// Subtract the height of external toolbars from the page height, if the page does not have
-	// internal toolbars of the same type
+	// internal toolbars of the same type. We take care to use the widget options if we find a
+	// widget instance and the element's data-attributes otherwise.
 	var compensateToolbars = function( page, desiredHeight ) {
 		var pageParent = page.parent(),
 			toolbarsAffectingHeight = [],
-			externalHeaders = pageParent.children( ":jqmData(role='header')" ),
+
+			// We use this function to filter fixed toolbars with option updatePagePadding set to
+			// true (which is the default) from our height subtraction, because fixed toolbars with
+			// option updatePagePadding set to true compensate for their presence by adding padding
+			// to the active page. We want to avoid double-counting by also subtracting their
+			// height from the desired page height.
+			noPadders = function() {
+				var theElement = $( this ),
+					widgetOptions = $.mobile.toolbar && theElement.data( "mobile-toolbar" ) ?
+						theElement.toolbar( "option" ) : {
+							position: theElement.attr( "data-" + $.mobile.ns + "position" ),
+							updatePagePadding: ( theElement.attr( "data-" + $.mobile.ns +
+								"update-page-padding" ) !== false )
+						};
+
+				return !( widgetOptions.position === "fixed" &&
+					widgetOptions.updatePagePadding === true );
+			},
+			externalHeaders = pageParent.children( ":jqmData(role='header')" ).filter( noPadders ),
 			internalHeaders = page.children( ":jqmData(role='header')" ),
-			externalFooters = pageParent.children( ":jqmData(role='footer')" ),
+			externalFooters = pageParent.children( ":jqmData(role='footer')" ).filter( noPadders ),
 			internalFooters = page.children( ":jqmData(role='footer')" );
 
 		// If we have no internal headers, but we do have external headers, then their height
@@ -2221,730 +1870,6 @@ $.ui.plugin = {
 
 })( jQuery, this );
 
-
-(function( $, undefined ) {
-$.mobile.widgets = {};
-
-var originalWidget = $.widget,
-
-	// Record the original, non-mobileinit-modified version of $.mobile.keepNative
-	// so we can later determine whether someone has modified $.mobile.keepNative
-	keepNativeFactoryDefault = $.mobile.keepNative;
-
-$.widget = (function( orig ) {
-	return function() {
-		var constructor = orig.apply( this, arguments ),
-			name = constructor.prototype.widgetName;
-
-		constructor.initSelector = ( ( constructor.prototype.initSelector !== undefined ) ?
-			constructor.prototype.initSelector : ":jqmData(role='" + name + "')" );
-
-		$.mobile.widgets[ name ] = constructor;
-
-		return constructor;
-	};
-})( $.widget );
-
-// Make sure $.widget still has bridge and extend methods
-$.extend( $.widget, originalWidget );
-
-// For backcompat remove in 1.5
-$.mobile.document.on( "create", function( event ) {
-	$( event.target ).enhanceWithin();
-});
-
-$.widget( "mobile.page", {
-	options: {
-		theme: "a",
-		domCache: false,
-
-		// Deprecated in 1.4 remove in 1.5
-		keepNativeDefault: $.mobile.keepNative,
-
-		// Deprecated in 1.4 remove in 1.5
-		contentTheme: null,
-		enhanced: false
-	},
-
-	// DEPRECATED for > 1.4
-	// TODO remove at 1.5
-	_createWidget: function() {
-		$.Widget.prototype._createWidget.apply( this, arguments );
-		this._trigger( "init" );
-	},
-
-	_create: function() {
-		// If false is returned by the callbacks do not create the page
-		if ( this._trigger( "beforecreate" ) === false ) {
-			return false;
-		}
-
-		if ( !this.options.enhanced ) {
-			this._enhance();
-		}
-
-		this._on( this.element, {
-			pagebeforehide: "removeContainerBackground",
-			pagebeforeshow: "_handlePageBeforeShow"
-		});
-
-		this.element.enhanceWithin();
-		// Dialog widget is deprecated in 1.4 remove this in 1.5
-		if ( $.mobile.getAttribute( this.element[0], "role" ) === "dialog" && $.mobile.dialog ) {
-			this.element.dialog();
-		}
-	},
-
-	_enhance: function () {
-		var attrPrefix = "data-" + $.mobile.ns,
-			self = this;
-
-		if ( this.options.role ) {
-			this.element.attr( "data-" + $.mobile.ns + "role", this.options.role );
-		}
-
-		this.element
-			.attr( "tabindex", "0" )
-			.addClass( "ui-page ui-page-theme-" + this.options.theme );
-
-		// Manipulation of content os Deprecated as of 1.4 remove in 1.5
-		this.element.find( "[" + attrPrefix + "role='content']" ).each( function() {
-			var $this = $( this ),
-				theme = this.getAttribute( attrPrefix + "theme" ) || undefined;
-				self.options.contentTheme = theme || self.options.contentTheme || ( self.options.dialog && self.options.theme ) || ( self.element.jqmData("role") === "dialog" &&  self.options.theme );
-				$this.addClass( "ui-content" );
-				if ( self.options.contentTheme ) {
-					$this.addClass( "ui-body-" + ( self.options.contentTheme ) );
-				}
-				// Add ARIA role
-				$this.attr( "role", "main" ).addClass( "ui-content" );
-		});
-	},
-
-	bindRemove: function( callback ) {
-		var page = this.element;
-
-		// when dom caching is not enabled or the page is embedded bind to remove the page on hide
-		if ( !page.data( "mobile-page" ).options.domCache &&
-			page.is( ":jqmData(external-page='true')" ) ) {
-
-			// TODO use _on - that is, sort out why it doesn't work in this case
-			page.bind( "pagehide.remove", callback || function( e, data ) {
-
-				//check if this is a same page transition and if so don't remove the page
-				if( !data.samePage ){
-					var $this = $( this ),
-						prEvent = new $.Event( "pageremove" );
-
-					$this.trigger( prEvent );
-
-					if ( !prEvent.isDefaultPrevented() ) {
-						$this.removeWithDependents();
-					}
-				}
-			});
-		}
-	},
-
-	_setOptions: function( o ) {
-		if ( o.theme !== undefined ) {
-			this.element.removeClass( "ui-page-theme-" + this.options.theme ).addClass( "ui-page-theme-" + o.theme );
-		}
-
-		if ( o.contentTheme !== undefined ) {
-			this.element.find( "[data-" + $.mobile.ns + "='content']" ).removeClass( "ui-body-" + this.options.contentTheme )
-				.addClass( "ui-body-" + o.contentTheme );
-		}
-	},
-
-	_handlePageBeforeShow: function(/* e */) {
-		this.setContainerBackground();
-	},
-	// Deprecated in 1.4 remove in 1.5
-	removeContainerBackground: function() {
-		this.element.closest( ":mobile-pagecontainer" ).pagecontainer({ "theme": "none" });
-	},
-	// Deprecated in 1.4 remove in 1.5
-	// set the page container background to the page theme
-	setContainerBackground: function( theme ) {
-		this.element.parent().pagecontainer( { "theme": theme || this.options.theme } );
-	},
-	// Deprecated in 1.4 remove in 1.5
-	keepNativeSelector: function() {
-		var options = this.options,
-			keepNative = $.trim( options.keepNative || "" ),
-			globalValue = $.trim( $.mobile.keepNative ),
-			optionValue = $.trim( options.keepNativeDefault ),
-
-			// Check if $.mobile.keepNative has changed from the factory default
-			newDefault = ( keepNativeFactoryDefault === globalValue ?
-				"" : globalValue ),
-
-			// If $.mobile.keepNative has not changed, use options.keepNativeDefault
-			oldDefault = ( newDefault === "" ? optionValue : "" );
-
-		// Concatenate keepNative selectors from all sources where the value has
-		// changed or, if nothing has changed, return the default
-		return ( ( keepNative ? [ keepNative ] : [] )
-			.concat( newDefault ? [ newDefault ] : [] )
-			.concat( oldDefault ? [ oldDefault ] : [] )
-			.join( ", " ) );
-	}
-});
-})( jQuery );
-
-(function( $, undefined ) {
-
-$.mobile.degradeInputs = {
-	color: false,
-	date: false,
-	datetime: false,
-	"datetime-local": false,
-	email: false,
-	month: false,
-	number: false,
-	range: "number",
-	search: "text",
-	tel: false,
-	time: false,
-	url: false,
-	week: false
-};
-// Backcompat remove in 1.5
-$.mobile.page.prototype.options.degradeInputs = $.mobile.degradeInputs;
-
-// Auto self-init widgets
-$.mobile.degradeInputsWithin = function( target ) {
-
-	target = $( target );
-
-	// Degrade inputs to avoid poorly implemented native functionality
-	target.find( "input" ).not( $.mobile.page.prototype.keepNativeSelector() ).each(function() {
-		var element = $( this ),
-			type = this.getAttribute( "type" ),
-			optType = $.mobile.degradeInputs[ type ] || "text",
-			html, hasType, findstr, repstr;
-
-		if ( $.mobile.degradeInputs[ type ] ) {
-			html = $( "<div>" ).html( element.clone() ).html();
-			// In IE browsers, the type sometimes doesn't exist in the cloned markup, so we replace the closing tag instead
-			hasType = html.indexOf( " type=" ) > -1;
-			findstr = hasType ? /\s+type=["']?\w+['"]?/ : /\/?>/;
-			repstr = " type=\"" + optType + "\" data-" + $.mobile.ns + "type=\"" + type + "\"" + ( hasType ? "" : ">" );
-
-			element.replaceWith( html.replace( findstr, repstr ) );
-		}
-	});
-
-};
-
-})( jQuery );
-
-
-(function( $, undefined ) {
-		var path, $base, dialogHashKey = "&ui-state=dialog";
-
-		$.mobile.path = path = {
-			uiStateKey: "&ui-state",
-
-			// This scary looking regular expression parses an absolute URL or its relative
-			// variants (protocol, site, document, query, and hash), into the various
-			// components (protocol, host, path, query, fragment, etc that make up the
-			// URL as well as some other commonly used sub-parts. When used with RegExp.exec()
-			// or String.match, it parses the URL into a results array that looks like this:
-			//
-			//     [0]: http://jblas:password@mycompany.com:8080/mail/inbox?msg=1234&type=unread#msg-content
-			//     [1]: http://jblas:password@mycompany.com:8080/mail/inbox?msg=1234&type=unread
-			//     [2]: http://jblas:password@mycompany.com:8080/mail/inbox
-			//     [3]: http://jblas:password@mycompany.com:8080
-			//     [4]: http:
-			//     [5]: //
-			//     [6]: jblas:password@mycompany.com:8080
-			//     [7]: jblas:password
-			//     [8]: jblas
-			//     [9]: password
-			//    [10]: mycompany.com:8080
-			//    [11]: mycompany.com
-			//    [12]: 8080
-			//    [13]: /mail/inbox
-			//    [14]: /mail/
-			//    [15]: inbox
-			//    [16]: ?msg=1234&type=unread
-			//    [17]: #msg-content
-			//
-			urlParseRE: /^\s*(((([^:\/#\?]+:)?(?:(\/\/)((?:(([^:@\/#\?]+)(?:\:([^:@\/#\?]+))?)@)?(([^:\/#\?\]\[]+|\[[^\/\]@#?]+\])(?:\:([0-9]+))?))?)?)?((\/?(?:[^\/\?#]+\/+)*)([^\?#]*)))?(\?[^#]+)?)(#.*)?/,
-
-			// Abstraction to address xss (Issue #4787) by removing the authority in
-			// browsers that auto-decode it. All references to location.href should be
-			// replaced with a call to this method so that it can be dealt with properly here
-			getLocation: function( url ) {
-				var parsedUrl = this.parseUrl( url || location.href ),
-					uri = url ? parsedUrl : location,
-
-					// Make sure to parse the url or the location object for the hash because using
-					// location.hash is autodecoded in firefox, the rest of the url should be from
-					// the object (location unless we're testing) to avoid the inclusion of the
-					// authority
-					hash = parsedUrl.hash;
-
-				// mimic the browser with an empty string when the hash is empty
-				hash = hash === "#" ? "" : hash;
-
-				return uri.protocol +
-					parsedUrl.doubleSlash +
-					uri.host +
-
-					// The pathname must start with a slash if there's a protocol, because you
-					// can't have a protocol followed by a relative path. Also, it's impossible to
-					// calculate absolute URLs from relative ones if the absolute one doesn't have
-					// a leading "/".
-					( ( uri.protocol !== "" && uri.pathname.substring( 0, 1 ) !== "/" ) ?
-						"/" : "" ) +
-					uri.pathname +
-					uri.search +
-					hash;
-			},
-
-			//return the original document url
-			getDocumentUrl: function( asParsedObject ) {
-				return asParsedObject ? $.extend( {}, path.documentUrl ) : path.documentUrl.href;
-			},
-
-			parseLocation: function() {
-				return this.parseUrl( this.getLocation() );
-			},
-
-			//Parse a URL into a structure that allows easy access to
-			//all of the URL components by name.
-			parseUrl: function( url ) {
-				// If we're passed an object, we'll assume that it is
-				// a parsed url object and just return it back to the caller.
-				if ( $.type( url ) === "object" ) {
-					return url;
-				}
-
-				var matches = path.urlParseRE.exec( url || "" ) || [];
-
-					// Create an object that allows the caller to access the sub-matches
-					// by name. Note that IE returns an empty string instead of undefined,
-					// like all other browsers do, so we normalize everything so its consistent
-					// no matter what browser we're running on.
-					return {
-						href:         matches[  0 ] || "",
-						hrefNoHash:   matches[  1 ] || "",
-						hrefNoSearch: matches[  2 ] || "",
-						domain:       matches[  3 ] || "",
-						protocol:     matches[  4 ] || "",
-						doubleSlash:  matches[  5 ] || "",
-						authority:    matches[  6 ] || "",
-						username:     matches[  8 ] || "",
-						password:     matches[  9 ] || "",
-						host:         matches[ 10 ] || "",
-						hostname:     matches[ 11 ] || "",
-						port:         matches[ 12 ] || "",
-						pathname:     matches[ 13 ] || "",
-						directory:    matches[ 14 ] || "",
-						filename:     matches[ 15 ] || "",
-						search:       matches[ 16 ] || "",
-						hash:         matches[ 17 ] || ""
-					};
-			},
-
-			//Turn relPath into an asbolute path. absPath is
-			//an optional absolute path which describes what
-			//relPath is relative to.
-			makePathAbsolute: function( relPath, absPath ) {
-				var absStack,
-					relStack,
-					i, d;
-
-				if ( relPath && relPath.charAt( 0 ) === "/" ) {
-					return relPath;
-				}
-
-				relPath = relPath || "";
-				absPath = absPath ? absPath.replace( /^\/|(\/[^\/]*|[^\/]+)$/g, "" ) : "";
-
-				absStack = absPath ? absPath.split( "/" ) : [];
-				relStack = relPath.split( "/" );
-
-				for ( i = 0; i < relStack.length; i++ ) {
-					d = relStack[ i ];
-					switch ( d ) {
-						case ".":
-							break;
-						case "..":
-							if ( absStack.length ) {
-								absStack.pop();
-							}
-							break;
-						default:
-							absStack.push( d );
-							break;
-					}
-				}
-				return "/" + absStack.join( "/" );
-			},
-
-			//Returns true if both urls have the same domain.
-			isSameDomain: function( absUrl1, absUrl2 ) {
-				return path.parseUrl( absUrl1 ).domain === path.parseUrl( absUrl2 ).domain;
-			},
-
-			//Returns true for any relative variant.
-			isRelativeUrl: function( url ) {
-				// All relative Url variants have one thing in common, no protocol.
-				return path.parseUrl( url ).protocol === "";
-			},
-
-			//Returns true for an absolute url.
-			isAbsoluteUrl: function( url ) {
-				return path.parseUrl( url ).protocol !== "";
-			},
-
-			//Turn the specified realtive URL into an absolute one. This function
-			//can handle all relative variants (protocol, site, document, query, fragment).
-			makeUrlAbsolute: function( relUrl, absUrl ) {
-				if ( !path.isRelativeUrl( relUrl ) ) {
-					return relUrl;
-				}
-
-				if ( absUrl === undefined ) {
-					absUrl = this.documentBase;
-				}
-
-				var relObj = path.parseUrl( relUrl ),
-					absObj = path.parseUrl( absUrl ),
-					protocol = relObj.protocol || absObj.protocol,
-					doubleSlash = relObj.protocol ? relObj.doubleSlash : ( relObj.doubleSlash || absObj.doubleSlash ),
-					authority = relObj.authority || absObj.authority,
-					hasPath = relObj.pathname !== "",
-					pathname = path.makePathAbsolute( relObj.pathname || absObj.filename, absObj.pathname ),
-					search = relObj.search || ( !hasPath && absObj.search ) || "",
-					hash = relObj.hash;
-
-				return protocol + doubleSlash + authority + pathname + search + hash;
-			},
-
-			//Add search (aka query) params to the specified url.
-			addSearchParams: function( url, params ) {
-				var u = path.parseUrl( url ),
-					p = ( typeof params === "object" ) ? $.param( params ) : params,
-					s = u.search || "?";
-				return u.hrefNoSearch + s + ( s.charAt( s.length - 1 ) !== "?" ? "&" : "" ) + p + ( u.hash || "" );
-			},
-
-			convertUrlToDataUrl: function( absUrl ) {
-				var u = path.parseUrl( absUrl );
-				if ( path.isEmbeddedPage( u ) ) {
-					// For embedded pages, remove the dialog hash key as in getFilePath(),
-					// and remove otherwise the Data Url won't match the id of the embedded Page.
-					return u.hash
-						.split( dialogHashKey )[0]
-						.replace( /^#/, "" )
-						.replace( /\?.*$/, "" );
-				} else if ( path.isSameDomain( u, this.documentBase ) ) {
-					return u.hrefNoHash.replace( this.documentBase.domain, "" ).split( dialogHashKey )[0];
-				}
-
-				return window.decodeURIComponent(absUrl);
-			},
-
-			//get path from current hash, or from a file path
-			get: function( newPath ) {
-				if ( newPath === undefined ) {
-					newPath = path.parseLocation().hash;
-				}
-				return path.stripHash( newPath ).replace( /[^\/]*\.[^\/*]+$/, "" );
-			},
-
-			//set location hash to path
-			set: function( path ) {
-				location.hash = path;
-			},
-
-			//test if a given url (string) is a path
-			//NOTE might be exceptionally naive
-			isPath: function( url ) {
-				return ( /\// ).test( url );
-			},
-
-			//return a url path with the window's location protocol/hostname/pathname removed
-			clean: function( url ) {
-				return url.replace( this.documentBase.domain, "" );
-			},
-
-			//just return the url without an initial #
-			stripHash: function( url ) {
-				return url.replace( /^#/, "" );
-			},
-
-			stripQueryParams: function( url ) {
-				return url.replace( /\?.*$/, "" );
-			},
-
-			//remove the preceding hash, any query params, and dialog notations
-			cleanHash: function( hash ) {
-				return path.stripHash( hash.replace( /\?.*$/, "" ).replace( dialogHashKey, "" ) );
-			},
-
-			isHashValid: function( hash ) {
-				return ( /^#[^#]+$/ ).test( hash );
-			},
-
-			//check whether a url is referencing the same domain, or an external domain or different protocol
-			//could be mailto, etc
-			isExternal: function( url ) {
-				var u = path.parseUrl( url );
-				return u.protocol && u.domain !== this.documentUrl.domain ? true : false;
-			},
-
-			hasProtocol: function( url ) {
-				return ( /^(:?\w+:)/ ).test( url );
-			},
-
-			isEmbeddedPage: function( url ) {
-				var u = path.parseUrl( url );
-
-				//if the path is absolute, then we need to compare the url against
-				//both the this.documentUrl and the documentBase. The main reason for this
-				//is that links embedded within external documents will refer to the
-				//application document, whereas links embedded within the application
-				//document will be resolved against the document base.
-				if ( u.protocol !== "" ) {
-					return ( !this.isPath(u.hash) && u.hash && ( u.hrefNoHash === this.documentUrl.hrefNoHash || ( this.documentBaseDiffers && u.hrefNoHash === this.documentBase.hrefNoHash ) ) );
-				}
-				return ( /^#/ ).test( u.href );
-			},
-
-			squash: function( url, resolutionUrl ) {
-				var href, cleanedUrl, search, stateIndex,
-					isPath = this.isPath( url ),
-					uri = this.parseUrl( url ),
-					preservedHash = uri.hash,
-					uiState = "";
-
-				// produce a url against which we can resole the provided path
-				resolutionUrl = resolutionUrl || (path.isPath(url) ? path.getLocation() : path.getDocumentUrl());
-
-				// If the url is anything but a simple string, remove any preceding hash
-				// eg #foo/bar -> foo/bar
-				//    #foo -> #foo
-				cleanedUrl = isPath ? path.stripHash( url ) : url;
-
-				// If the url is a full url with a hash check if the parsed hash is a path
-				// if it is, strip the #, and use it otherwise continue without change
-				cleanedUrl = path.isPath( uri.hash ) ? path.stripHash( uri.hash ) : cleanedUrl;
-
-				// Split the UI State keys off the href
-				stateIndex = cleanedUrl.indexOf( this.uiStateKey );
-
-				// store the ui state keys for use
-				if ( stateIndex > -1 ) {
-					uiState = cleanedUrl.slice( stateIndex );
-					cleanedUrl = cleanedUrl.slice( 0, stateIndex );
-				}
-
-				// make the cleanedUrl absolute relative to the resolution url
-				href = path.makeUrlAbsolute( cleanedUrl, resolutionUrl );
-
-				// grab the search from the resolved url since parsing from
-				// the passed url may not yield the correct result
-				search = this.parseUrl( href ).search;
-
-				// TODO all this crap is terrible, clean it up
-				if ( isPath ) {
-					// reject the hash if it's a path or it's just a dialog key
-					if ( path.isPath( preservedHash ) || preservedHash.replace("#", "").indexOf( this.uiStateKey ) === 0) {
-						preservedHash = "";
-					}
-
-					// Append the UI State keys where it exists and it's been removed
-					// from the url
-					if ( uiState && preservedHash.indexOf( this.uiStateKey ) === -1) {
-						preservedHash += uiState;
-					}
-
-					// make sure that pound is on the front of the hash
-					if ( preservedHash.indexOf( "#" ) === -1 && preservedHash !== "" ) {
-						preservedHash = "#" + preservedHash;
-					}
-
-					// reconstruct each of the pieces with the new search string and hash
-					href = path.parseUrl( href );
-					href = href.protocol + href.doubleSlash + href.host + href.pathname + search +
-						preservedHash;
-				} else {
-					href += href.indexOf( "#" ) > -1 ? uiState : "#" + uiState;
-				}
-
-				return href;
-			},
-
-			isPreservableHash: function( hash ) {
-				return hash.replace( "#", "" ).indexOf( this.uiStateKey ) === 0;
-			},
-
-			// Escape weird characters in the hash if it is to be used as a selector
-			hashToSelector: function( hash ) {
-				var hasHash = ( hash.substring( 0, 1 ) === "#" );
-				if ( hasHash ) {
-					hash = hash.substring( 1 );
-				}
-				return ( hasHash ? "#" : "" ) + hash.replace( /([!"#$%&'()*+,./:;<=>?@[\]^`{|}~])/g, "\\$1" );
-			},
-
-			// return the substring of a filepath before the sub-page key, for making
-			// a server request
-			getFilePath: function( path ) {
-				var splitkey = "&" + $.mobile.subPageUrlKey;
-				return path && path.split( splitkey )[0].split( dialogHashKey )[0];
-			},
-
-			// check if the specified url refers to the first page in the main
-			// application document.
-			isFirstPageUrl: function( url ) {
-				// We only deal with absolute paths.
-				var u = path.parseUrl( path.makeUrlAbsolute( url, this.documentBase ) ),
-
-					// Does the url have the same path as the document?
-					samePath = u.hrefNoHash === this.documentUrl.hrefNoHash ||
-						( this.documentBaseDiffers &&
-							u.hrefNoHash === this.documentBase.hrefNoHash ),
-
-					// Get the first page element.
-					fp = $.mobile.firstPage,
-
-					// Get the id of the first page element if it has one.
-					fpId = fp && fp[0] ? fp[0].id : undefined;
-
-				// The url refers to the first page if the path matches the document and
-				// it either has no hash value, or the hash is exactly equal to the id
-				// of the first page element.
-				return samePath &&
-					( !u.hash ||
-						u.hash === "#" ||
-						( fpId && u.hash.replace( /^#/, "" ) === fpId ) );
-			},
-
-			// Some embedded browsers, like the web view in Phone Gap, allow
-			// cross-domain XHR requests if the document doing the request was loaded
-			// via the file:// protocol. This is usually to allow the application to
-			// "phone home" and fetch app specific data. We normally let the browser
-			// handle external/cross-domain urls, but if the allowCrossDomainPages
-			// option is true, we will allow cross-domain http/https requests to go
-			// through our page loading logic.
-			isPermittedCrossDomainRequest: function( docUrl, reqUrl ) {
-				return $.mobile.allowCrossDomainPages &&
-					(docUrl.protocol === "file:" || docUrl.protocol === "content:") &&
-					reqUrl.search( /^https?:/ ) !== -1;
-			}
-		};
-
-		path.documentUrl = path.parseLocation();
-
-		$base = $( "head" ).find( "base" );
-
-		path.documentBase = $base.length ?
-			path.parseUrl( path.makeUrlAbsolute( $base.attr( "href" ), path.documentUrl.href ) ) :
-			path.documentUrl;
-
-		path.documentBaseDiffers = (path.documentUrl.hrefNoHash !== path.documentBase.hrefNoHash);
-
-		//return the original document base url
-		path.getDocumentBase = function( asParsedObject ) {
-			return asParsedObject ? $.extend( {}, path.documentBase ) : path.documentBase.href;
-		};
-
-		// DEPRECATED as of 1.4.0 - remove in 1.5.0
-		$.extend( $.mobile, {
-
-			//return the original document url
-			getDocumentUrl: path.getDocumentUrl,
-
-			//return the original document base url
-			getDocumentBase: path.getDocumentBase
-		});
-})( jQuery );
-
-
-(function( $, undefined ) {
-
-$.mobile.links = function( target ) {
-
-	//links within content areas, tests included with page
-	$( target )
-		.find( "a" )
-		.jqmEnhanceable()
-		.filter( ":jqmData(rel='popup')[href][href!='']" )
-		.each( function() {
-			// Accessibility info for popups
-			var element = this,
-				idref = element.getAttribute( "href" ).substring( 1 );
-
-			if ( idref ) {
-				element.setAttribute( "aria-haspopup", true );
-				element.setAttribute( "aria-owns", idref );
-				element.setAttribute( "aria-expanded", false );
-			}
-		})
-		.end()
-		.not( ".ui-btn, :jqmData(role='none'), :jqmData(role='nojs')" )
-		.addClass( "ui-link" );
-
-};
-
-})( jQuery );
-
-
-(function( $, undefined ) {
-
-	/*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas. Dual MIT/BSD license */
-	window.matchMedia = window.matchMedia || (function( doc, undefined ) {
-
-		var bool,
-			docElem = doc.documentElement,
-			refNode = docElem.firstElementChild || docElem.firstChild,
-			// fakeBody required for <FF4 when executed in <head>
-			fakeBody = doc.createElement( "body" ),
-			div = doc.createElement( "div" );
-
-		div.id = "mq-test-1";
-		div.style.cssText = "position:absolute;top:-100em";
-		fakeBody.style.background = "none";
-		fakeBody.appendChild(div);
-
-		return function(q){
-
-			div.innerHTML = "&shy;<style media=\"" + q + "\"> #mq-test-1 { width: 42px; }</style>";
-
-			docElem.insertBefore( fakeBody, refNode );
-			bool = div.offsetWidth === 42;
-			docElem.removeChild( fakeBody );
-
-			return {
-				matches: bool,
-				media: q
-			};
-
-		};
-
-	}( document ));
-
-	// $.mobile.media uses matchMedia to return a boolean.
-	$.mobile.media = function( q ) {
-		return window.matchMedia( q ).matches;
-	};
-
-})(jQuery);
-
-(function( $, undefined ) {
-
-$.mobile.nojs = function( target ) {
-	$( ":jqmData(role='nojs')", target ).addClass( "ui-nojs" );
-};
-
-})( jQuery );
 
 (function( $ ) {
 	var	meta = $( "meta[name=viewport]" ),
