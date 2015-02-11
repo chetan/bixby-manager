@@ -2,13 +2,17 @@
 <tr>
   <td><a><%= command_log.command %></a></td>
   <td><%= command_log.host %></td>
-  <td class="text-center">
-    <%? command_log.scheduled_command_id %>
-      <%= _.icon("calendar", null, "Scheduled Job")%>
-    <% } else { %>
-      <%= _.icon("user", null, "Started By User") %>
-    <%/%>
-  </td>
+
+  <%? parent.include_initiator() %>
+    <td class="text-center">
+      <%? command_log.scheduled_command_id %>
+        <%= _.icon("calendar", null, "Scheduled Job")%>
+      <% } else { %>
+        <%= _.icon("user", null, "Started By User") %>
+      <%/%>
+    </td>
+  <%/%>
+
   <td><%= (command_log.user || "n/a") %></td>
   <td><%= command_log.requested_at.format("L HH:mm:ss") %></td>
   <td class="status text-center"><%= status(command_log) %></td>
