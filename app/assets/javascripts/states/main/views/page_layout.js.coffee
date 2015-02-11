@@ -18,7 +18,8 @@ namespace "Bixby.view", (exports, top) ->
       $(document).off("swipedown")
 
     after_render: ->
-      # refresh page when pulling down at top
-      $(document).swipedown (e, info) =>
-        if info.deltaY > 100
-          @state.hard_refresh()
+      if Modernizr.touch # needed to avoid mouseclick fallback
+        # refresh page when pulling down at top
+        $(document).swipedown (e, info) =>
+          if info.deltaY > 100
+            @state.hard_refresh()
