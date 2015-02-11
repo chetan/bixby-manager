@@ -11,13 +11,13 @@ namespace "Bixby.view", (exports, top) ->
       ".tab.inventory a": "inventory"
 
       # monitoring
-      ".tab.monitoring.primary a":         "monitoring_overview"
+      ".tab.monitoring.primary a:first":   "monitoring_overview"
       ".tab.monitoring a.overview":        "monitoring_overview"
       ".tab.monitoring a.check_templates": "mon_check_templates"
       ".tab.monitoring a.schedules":       "mon_oncalls"
 
       # runbooks
-      ".tab.runbooks.primary a":            "runbooks"
+      ".tab.runbooks.primary a:first":      "runbooks"
       ".tab.runbooks a.run":                "runbooks"
       ".tab.runbooks a.scheduled_commands": "scheduled_commands"
       ".tab.runbooks a.logs":               "runbooks_logs"
@@ -49,9 +49,8 @@ namespace "Bixby.view", (exports, top) ->
 
       "click a": (e) ->
         # hide the navbar-toggle on click (only visible on xs or sm screens)
-        e = $(e.target)
-        if !(e.hasClass("dropdown-toggle") or e.parent().hasClass("dropdown-toggle") or e.hasClass("navbar-brand"))
-          @$("button.navbar-toggle:visible").click()
+        if @$(".navbar-collapse.in").length > 0
+          @close_nav()
 
       "click a#logout": (e) ->
         $.ajax "/logout",
@@ -93,9 +92,8 @@ namespace "Bixby.view", (exports, top) ->
 
     # Close nav menu if open
     close_nav: ->
-      if @$(".navbar-collapse.in").length > 0 || @$("li.open").length > 0
-        @$(".navbar-collapse").collapse("hide")
-        @$("li.open").removeClass("open")
+      @$(".navbar-collapse.in").length > 0 && @$(".navbar-collapse").collapse("hide")
+      @$("li.open").length > 0 && @$("li.open").removeClass("open")
 
     impersonate: (user_id) ->
       return if !@true_user.can("impersonate_users")
