@@ -13,3 +13,12 @@ namespace "Bixby.view", (exports, top) ->
           $("div#content").removeClass(@current_tab)
           @current_tab = state.tab
           $("div#content").addClass(@current_tab)
+
+    dispose: ->
+      $(document).off("swipedown")
+
+    after_render: ->
+      # refresh page when pulling down at top
+      $(document).swipedown (e, info) =>
+        if info.deltaY > 100
+          @state.hard_refresh()

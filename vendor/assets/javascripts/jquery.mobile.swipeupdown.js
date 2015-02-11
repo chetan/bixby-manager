@@ -1,3 +1,4 @@
+
 // jQueryMobile-SwipeUpDown
 // ----------------------------------
 //
@@ -48,9 +49,10 @@
 
 
                     // prevent scrolling
-                    if (Math.abs(start.coords[1] - stop.coords[1]) > 10) {
-                        event.preventDefault();
-                    }
+                    // DISABLED BY chetan - we want the normal scrolling action
+                    // if (Math.abs(start.coords[1] - stop.coords[1]) > 10) {
+                    //     event.preventDefault();
+                    // }
                 }
 
                 $this
@@ -58,12 +60,14 @@
                     .one(touchStopEvent, function (event) {
                         $this.unbind(touchMoveEvent, moveHandler);
                         if (start && stop) {
-                            if (stop.time - start.time < 1000 &&
-                                Math.abs(start.coords[1] - stop.coords[1]) > 30 &&
-                                Math.abs(start.coords[0] - stop.coords[0]) < 75) {
+                            var dX = Math.abs(start.coords[0] - stop.coords[0]),
+                                dY = Math.abs(start.coords[1] - stop.coords[1]);
+                            if (stop.time - start.time < 1000 && dY > 30 && dX < 75) {
+                                // ADDED BY chetan - pass info in eventData - function(e, info){}
+                                var info = {start: start, stop: stop, deltaX: dX, deltaY: dY};
                                 start.origin
-                                    .trigger("swipeupdown")
-                                    .trigger(start.coords[1] > stop.coords[1] ? "swipeup" : "swipedown");
+                                    .trigger("swipeupdown", info)
+                                    .trigger(start.coords[1] > stop.coords[1] ? "swipeup" : "swipedown", info);
                             }
                         }
                         start = stop = undefined;

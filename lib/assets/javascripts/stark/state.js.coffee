@@ -199,6 +199,9 @@ class Stark.State
   refresh: ->
     @redraw()
 
+  hard_refresh: ->
+    @app.hard_refresh()
+
   # This is called by Stark when this state becomes active (transitioning TO),
   # after all data has been loaded and views have been rendered.
   #

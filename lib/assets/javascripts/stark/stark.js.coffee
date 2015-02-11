@@ -126,6 +126,14 @@ class Stark.App
     @log "matchRoute()", route.state_name, "params:", params
     @transition route.state_name, { params: params } # transition and pass in params
 
+  # Completely refresh the current state, including all required data
+  hard_refresh: ->
+    path = window.location.pathname
+    if path[0] == "/"
+      path = path.slice(1) # remove leading / for proper routing
+    if window.location.search && window.location.search.length > 0
+      path += "?" + window.location.search
+    @current_state.route.handler(path)
 
   # Transition to another state, optionally with the given data
   #

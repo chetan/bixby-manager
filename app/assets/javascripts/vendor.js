@@ -8,6 +8,7 @@
 //= require "jquery.linedtextarea"
 //= require "jquery.qrcode.min"
 //= require "jquery.mobile"
+//= require "jquery.mobile.swipeupdown"
 //= require "jquery.idle-timer"
 
 //= require "underscore"
