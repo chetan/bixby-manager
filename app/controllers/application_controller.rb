@@ -123,7 +123,7 @@ class ApplicationController < ActionController::Base
   # @param [Object] obj
   # @return [String]
   def to_api(obj, opts=nil)
-    logger.debug { "TO_API " + (obj.respond_to?(:first) ? obj.first.class.name : obj.class.name) }
+    logger.debug { "TO_API " + (obj.respond_to?(:to_a) ? obj.to_a.first.class.name : obj.class.name) }
     ApiView::Engine.render(obj, self, opts).html_safe
   end
 
