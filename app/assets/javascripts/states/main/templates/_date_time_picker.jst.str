@@ -1,4 +1,5 @@
 
+<label class="control-label" for="natural">Enter below or choose using calendar</label>
 <div class="input-group">
   <span class="input-group-btn">
     <button class="btn btn-default calendar" type="button"><%i calendar %></button>
@@ -7,3 +8,4 @@
 </div>
 <div class="valid natural"></div>
 <span class="form-control-feedback natural"></span>
+<p class="help-block">ex: "tomorrow at 10am" or "next tuesday at 3:15pm"</p>
