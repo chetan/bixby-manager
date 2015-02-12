@@ -19,12 +19,15 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           message: "Are you sure you want to delete '#{@check.name}'?",
           hidden_cb: (confirmed) =>
             if confirmed
-              @host.update_check_config()
-              @check.destroy()
-              if @check_group_view == true
-                @transition "mon_view_host", {host: @host}
-              else
-                @state.redraw()
+              @check.destroy
+                succes: =>
+                  @host.update_check_config()
+
+                  if @check_group_view == true
+                    @transition "mon_view_host", {host: @host}
+                  else
+                    @state.redraw()
+
             else
               @$el.modal("show")
         c.render()
