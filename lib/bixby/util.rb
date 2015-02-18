@@ -60,6 +60,7 @@ module Bixby
       v = mod.const_get(k)
       map[k] = v
       map[k.to_s] = v
+      map[k.to_s.upcase] = v
       map[v] = k.to_s if !map.include? v
     end
 
