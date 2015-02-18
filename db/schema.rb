@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204211337) do
+ActiveRecord::Schema.define(version: 20150212194554) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "trigger_id",  limit: 4,     null: false
@@ -314,12 +314,12 @@ ActiveRecord::Schema.define(version: 20150204211337) do
     t.datetime "completed_at"
     t.datetime "deleted_at"
     t.integer  "run_count",       limit: 4,     default: 0,    null: false
-    t.integer  "last_run_log_id", limit: 4
+    t.datetime "last_run_at"
+    t.integer  "last_run_status", limit: 2
   end
 
   add_index "scheduled_commands", ["command_id"], name: "scheduled_commands_command_id_fk", using: :btree
   add_index "scheduled_commands", ["created_by"], name: "scheduled_commands_created_by_fk", using: :btree
-  add_index "scheduled_commands", ["last_run_log_id"], name: "fk_rails_3628effe0d", using: :btree
   add_index "scheduled_commands", ["org_id"], name: "scheduled_commands_org_id_fk", using: :btree
 
   create_table "sessions", force: :cascade do |t|
@@ -487,7 +487,6 @@ ActiveRecord::Schema.define(version: 20150204211337) do
   add_foreign_key "role_permissions", "permissions", name: "role_permissions_permission_id_fk"
   add_foreign_key "role_permissions", "roles", name: "role_permissions_role_id_fk"
   add_foreign_key "roles", "tenants", name: "roles_tenant_id_fk"
-  add_foreign_key "scheduled_commands", "command_logs", column: "last_run_log_id"
   add_foreign_key "scheduled_commands", "commands", name: "scheduled_commands_command_id_fk"
   add_foreign_key "scheduled_commands", "orgs", name: "scheduled_commands_org_id_fk"
   add_foreign_key "scheduled_commands", "users", column: "created_by", name: "scheduled_commands_created_by_fk"

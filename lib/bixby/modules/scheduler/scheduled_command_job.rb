@@ -56,9 +56,20 @@ class Scheduler
         scheduled_command.job_id = nil
       end
 
-      # Fire alerts if necessary
       logs = responses.map{ |r| r.log }
       success = logs.count{ |l| l.success? } == logs.size
+
+      # set status
+      scheduled_command.last_run_at = time_start
+      scheduled_command.last_run_status = if logs.size == pass then
+        1 # all passed
+      elsif pass == 0 then
+        2 # all failed
+      else
+        3 # some failed
+      end
+
+      # Fire alerts if necessary
       if (success && scheduled_command.alert_on_success?) ||
           (!success && scheduled_command.alert_on_error?) then
 

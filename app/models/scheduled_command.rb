@@ -27,12 +27,11 @@
 # **`completed_at`**     | `datetime`         |
 # **`deleted_at`**       | `datetime`         |
 # **`run_count`**        | `integer`          | `default("0"), not null`
-# **`last_run_log_id`**  | `integer`          |
+# **`last_run_at`**      | `datetime`         |
+# **`last_run_status`**  | `integer`          |
 #
 # ### Indexes
 #
-# * `fk_rails_3628effe0d`:
-#     * **`last_run_log_id`**
 # * `scheduled_commands_command_id_fk`:
 #     * **`command_id`**
 # * `scheduled_commands_created_by_fk`:
@@ -43,13 +42,14 @@
 
 class ScheduledCommand < ActiveRecord::Base
 
+  acts_as_paranoid
+
   belongs_to :org
   belongs_to :agent
   belongs_to :command
   belongs_to :owner, :class_name => User, :foreign_key => :created_by
 
-  has_many    :command_logs
-  belongs_to  :last_run, :class_name => CommandLog, :foreign_key => :last_run_log_id
+  has_many   :command_logs
 
   include Bitfields
   bitfield :alert_on,
@@ -64,6 +64,14 @@ class ScheduledCommand < ActiveRecord::Base
     NATURAL = 2
   end
   Bixby::Util.create_const_map(ScheduleType)
+
+  module Status
+    UNKNOWN       = 0
+    SUCCESS       = 1
+    ERROR         = 2
+    PARTIAL_ERROR = 3
+  end
+  Bixby::Util.create_const_map(Status)
 
   def self.for_user(user)
     where(:org_id => user.org.id)
