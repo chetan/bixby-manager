@@ -2,23 +2,22 @@
 class ScheduledCommandPreview < ActionMailer::Preview
 
   def cron_job
-    scheduled_command, logs, time_start, total_elapsed = create_args()
-    ScheduledCommandMailer.alert(scheduled_command, logs, time_start, total_elapsed)
+    ScheduledCommandMailer.alert(*create_args())
   end
 
   def one_time_job
-    scheduled_command, logs, time_start, total_elapsed = create_args()
+    scheduled_command, *args = create_args()
     scheduled_command.schedule_type = 2
     scheduled_command.schedule      = nil
     scheduled_command.scheduled_at  = Time.new
     scheduled_command.run_count     = 1
-    ScheduledCommandMailer.alert(scheduled_command, logs, time_start, total_elapsed)
+    ScheduledCommandMailer.alert(scheduled_command, *args)
   end
 
   def cron_job_one_fail
-    scheduled_command, logs, time_start, total_elapsed = create_args()
+    scheduled_command, logs, *args = create_args()
     logs.first.status = 1
-    ScheduledCommandMailer.alert(scheduled_command, logs, time_start, total_elapsed)
+    ScheduledCommandMailer.alert(scheduled_command, logs, *args)
   end
 
   private
@@ -65,10 +64,11 @@ class ScheduledCommandPreview < ActionMailer::Preview
         })
     end
 
+    time_scheduled = Time.new.utc-1
     time_start = Time.new.utc
     total_elapsed = 0.27
 
-    return [scheduled_command, logs, time_start, total_elapsed]
+    return [scheduled_command, logs, time_scheduled, time_start, total_elapsed]
   end
 
 end

@@ -5,8 +5,8 @@ OWNER:        <%= @scheduled_command.owner.email_address %><% if @scheduled_comm
 RUN ID:       <%= @scheduled_command.run_count %>
 NEXT RUN:     <%= @scheduled_command.scheduled_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %><% end %>
 
-STATUS:       <%= @logs.count{ |l| l.success? } %>/<%= @logs.size %> HOSTS SUCCEEDED<% if @scheduled_command.once? then %>
-SCHEDULED:    <%= @scheduled_command.scheduled_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %><% end %>
+STATUS:       <%= @logs.count{ |l| l.success? } %>/<%= @logs.size %> HOSTS SUCCEEDED
+SCHEDULED:    <%= @time_scheduled.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
 START TIME:   <%= @time_start.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
 ELAPSED TIME: <%= total_time_taken() %>
 

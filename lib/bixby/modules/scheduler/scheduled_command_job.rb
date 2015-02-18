@@ -22,6 +22,7 @@ class Scheduler
 
       scheduled_command.run_count += 1
 
+      time_scheduled = scheduled_command.scheduled_at # preserve for alerting
       time_start = Time.new
       responses = []
       scheduled_command.agents.each do |agent|
@@ -74,7 +75,7 @@ class Scheduler
           (!success && scheduled_command.alert_on_error?) then
 
         total_elapsed = time_end - time_start
-        ScheduledCommandMailer.alert(scheduled_command, logs, time_start, total_elapsed).deliver
+        ScheduledCommandMailer.alert(scheduled_command, logs, time_scheduled, time_start, total_elapsed).deliver
       end
 
       scheduled_command.save

@@ -18,7 +18,7 @@
 <br/>
 <table cellpadding="0" cellspacing="0" border="0">
   <%= render "key_row", :k => "STATUS:", :v => "#{@logs.count{ |l| l.success? }}/#{@logs.size} HOSTS SUCCEEDED" %>
-  <%= render "key_row", :k => "SCHEDULED:", :v => @scheduled_command.scheduled_at.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
+  <%= render "key_row", :k => "SCHEDULED:", :v => @time_scheduled.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
   <%= render "key_row", :k => "START TIME:", :v => @time_start.localtime.strftime("%m/%d/%Y %H:%M:%S %z") %>
   <%= render "key_row", :k => "ELAPSED TIME:", :v => total_time_taken() %>
 </table>

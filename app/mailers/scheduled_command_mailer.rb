@@ -59,9 +59,15 @@ class ScheduledCommandMailer < ActionMailer::Base
 
   helper Helpers
 
-  def alert(scheduled_command, logs, time_start, total_elapsed)
+  # @param [ScheduledCommand] scheduled_command
+  # @param [Array<CommandLog>] logs
+  # @param [Time] time_scheduled             time job was scheduled for
+  # @param [Time] time_start                 time job was actually started
+  # @param [Float] total_elapsed             elapsed time
+  def alert(scheduled_command, logs, time_scheduled, time_start, total_elapsed)
     @scheduled_command = scheduled_command
     @logs = logs
+    @time_scheduled = time_scheduled
     @time_start = time_start
     @total_elapsed = total_elapsed
 
