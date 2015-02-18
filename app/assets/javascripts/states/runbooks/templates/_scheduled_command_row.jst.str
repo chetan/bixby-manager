@@ -5,7 +5,11 @@
   <td class="text-center"><%= schedule_type() %></td>
   <td><%= schedule() %></td>
   <td>
-    <%= date(scheduled_command.last_run) || "" %>  <%= status() %>
+    <%? scheduled_command.is_once() && scheduled_command.get("deleted_at") %>
+      Canceled <%= _.icon("times", "fa-lg warning", "Canceled") %>
+    <%} else { %>
+      <%= date(scheduled_command.last_run_at) || "" %>  <%= status() %>
+    <%/%>
   </td>
 
   <%? state.page_tab !== "history" %>

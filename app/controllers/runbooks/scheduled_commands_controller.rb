@@ -9,10 +9,13 @@ class Runbooks::ScheduledCommandsController < Runbooks::BaseController
   end
 
   def history
-    bootstrap ScheduledCommand.for_user(current_user).
-        where("schedule_type = 2 AND completed_at IS NOT NULL").
-        order(:created_at => :asc).includes(:last_run),
-      :type => "ScheduledCommandHistory", :name => "scheduled_commands"
+    ScheduledCommand.with_deleted do
+      bootstrap ScheduledCommand.for_user(current_user).
+          select("*, coalesce(completed_at, deleted_at, updated_at) as sort_ts").
+          where("(schedule_type = 2 AND (completed_at IS NOT NULL OR deleted_at IS NOT NULL)) OR (schedule_type = 1 AND enabled = 0)").
+          order("sort_ts DESC"),
+        :type => "ScheduledCommandHistory", :name => "scheduled_commands"
+    end
   end
 
   def show

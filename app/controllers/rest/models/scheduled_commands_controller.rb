@@ -8,9 +8,12 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
   end
 
   def history
-    restful ScheduledCommand.for_user(current_user).
-      where("schedule_type = 2 AND completed_at IS NOT NULL").
-      order(:created_at => :desc).includes(:last_run)
+    ScheduledCommand.with_deleted do
+      return ScheduledCommand.for_user(current_user).
+          select("*, coalesce(completed_at, deleted_at, updated_at) as sort_ts").
+          where("(schedule_type = 2 AND (completed_at IS NOT NULL OR deleted_at IS NOT NULL)) OR (schedule_type = 1 AND enabled = 0)").
+          order("sort_ts DESC")
+    end
   end
 
   def show
@@ -104,6 +107,7 @@ class Rest::Models::ScheduledCommandsController < ::Rest::BaseController
     sc = ScheduledCommand.find(_id)
     sc.disable!
     sc.destroy!
+    sc.save!
     true
   end
 
