@@ -85,6 +85,15 @@ Bixby.monitoring.Graph = class
       legend: "never"
     }, opts)
 
+    # set y-axis label, if needed
+    name = metric.display_name()
+    if !opts._disable_ylabel && name? && name.length > 0
+      opts.ylabel = name
+    else if opts._disable_ylabel
+      opts.axisLabelWidth = 30 # to get rid of padding for label
+    else
+      opts.axisLabelWidth = 20
+
     @set_y_ranges(opts, metric)
     @add_mouse_handlers(opts)
     @add_touch_handlers(opts)

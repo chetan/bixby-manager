@@ -17,5 +17,5 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
     after_render: ->
       @metric.graph = new Bixby.monitoring.Graph()
-      if @metric.graph.render(@$("div.metric").first(), @metric)
+      if @metric.graph.render(@$("div.metric").first(), @metric, {_disable_ylabel: true})
         @metric.graph.dygraph._bixby_mode = "pan" # only panning in list view, no zoom
