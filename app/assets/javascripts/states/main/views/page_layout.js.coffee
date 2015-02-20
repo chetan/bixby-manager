@@ -23,3 +23,9 @@ namespace "Bixby.view", (exports, top) ->
         $(document).swipedown (e, info) =>
           if info.deltaY > 100
             @state.hard_refresh()
+
+      # Add CSS helper classes for making elements hidden/visible for touch devices
+      if Modernizr.touch
+        $("body").append "<style type='text/css'>.hidden-touch { display: none !important; } </style>"
+      else
+        $("body").append "<style type='text/css'>.visible-touch { display: none !important; } </style>"

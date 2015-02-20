@@ -1,24 +1,30 @@
 
-<h3>Metrics for <%= host.name() %></h3>
-
-<button type="button" class="btn btn-default btn-sm return_host"><%= _.icon("reply") %> Return to Host</button>
-<button class="btn btn-default btn-sm" id="create_trigger" type="button">Create Trigger</button>
-
 <div class="check">
 
-  <h4><a class="check"><%= check.get("name") %></a></h4>
+  <h3 class="host">
+    <u><%=host.name()%></u>
+  </h3>
+
+  <h4><a class="check"><%= check.get("name") %></a>
+  <button type="button" class="btn btn-default btn-xs return_host"><%i reply %> <span class="hidden-xs">Return to </span>Host</button>
+  </h4>
   <h5><%= metric.display_name() %><%= display_help() %></h5>
 
   <%= include("monitoring/_check_args") %>
 
   <br/>
+  <!-- metric toolbar -->
   <div class="row">
     <div class="graph_controls col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
       <div class="btn-toolbar" role="toolbar">
 
+        <div class="btn-group">
+          <button class="btn btn-default btn-sm" id="create_trigger" type="button"><%i plus %> Trigger</button>
+        </div>
+
         <div class="zoom_level btn-group" title="Zoom Level">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
             <span class="text">Zoom Level</span>
             <span class="caret"></span>
           </button>
@@ -31,33 +37,35 @@
         </div>
 
         <div class="btn-group">
-          <button type="button" id="reset" class="btn btn-default disabled">Reset Zoom</button>
+          <button type="button" id="reset" class="btn btn-sm btn-default disabled">Reset Zoom</button>
         </div>
 
-        <div class="btn-group" data-toggle="buttons">
-          <label class="btn btn-default active zoom" title="Switch to zoom mode">
+        <div class="btn-group hidden-touch" data-toggle="buttons">
+          <label class="btn btn-sm btn-default active zoom" title="Switch to zoom mode">
             <input type="radio"> <%= _.icon("search-plus") %>
           </label>
-          <label class="btn btn-default pan" title="Switch to pan mode">
+          <label class="btn btn-sm btn-default pan" title="Switch to pan mode">
             <input type="radio"><%= _.icon("clock-o") %>
           </label>
         </div>
 
         <div class="btn-group">
-          <button type="button" id="live" class="btn btn-default">Live &nbsp;<span><%i play %></span></button>
+          <button type="button" id="live" class="btn btn-sm btn-default">Live &nbsp;<span><%i play %></span></button>
         </div>
 
         <div class="btn-group btn-fullscreen">
-          <a class="btn btn-default fullscreen" title="View fullscreen"><%= _.icon("arrows-alt") %></a>
+          <a class="btn btn-sm btn-default fullscreen" title="View fullscreen"><%= _.icon("arrows-alt") %></a>
         </div>
 
       </div>
 
     </div>
   </div>
+  <!-- end metric toolbar -->
 
   <br/>
 
+  <!-- graph -->
   <div class="metric detail">
     <div class="graph_container">
       <div class="graph"></div>
