@@ -1,0 +1,41 @@
+
+// Fullscreen graphs
+@media (min-width: $screen-sm-min) {
+  div.btn-group.btn-fullscreen {
+    float: right;
+  }
+}
+
+.fullscreen_div {
+  display:    block;
+  box-sizing: border-box;
+  position:   absolute;
+  bottom:     0;
+  top:        0;
+  left:       0;
+  right:      0;
+  height:     auto;
+  width:      auto;
+}
+
+div.fullscreen {
+  @extend .fullscreen_div;
+  background: none repeat scroll 0 0 white;
+
+  button.return {
+    position: absolute;
+    top:      5px;
+    left:     61px;
+    opacity:  0.7;
+    z-index:  9999999;
+  }
+
+  div.metric {
+    margin: 5px 0 5px 0;
+    float:  none;
+  }
+
+  div.metric, div.graph_container, div.graph {
+    @extend .fullscreen_div;
+  }
+}
