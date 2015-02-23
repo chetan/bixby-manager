@@ -41,8 +41,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       _.each keys, (key) =>
         _.each @metrics, (metric) =>
           return if metric.get("key") != key
-          __out__ += @include_partial(_bvm.SparkLine, {
+          __out__ += @include_partial _bvm.SparkLine,
             host: @host,
             metric: metric,
             metric_label: metric.custom_display_name(true)
-            })
