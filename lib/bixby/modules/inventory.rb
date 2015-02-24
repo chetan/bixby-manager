@@ -35,14 +35,34 @@ class Inventory < API
     opts = (opts||{}).with_indifferent_access
     opts[:port] ||= 18000
 
-    t = Tenant.where(:name => opts[:tenant]).first
-    if t.blank? || !t.test_password(opts[:password]) then
-      if t.blank? then
-        log.warn { "register_agent: tenant '#{opts[:tenant]}' not found" }
+    if !opts[:token].blank? then
+      token = Token.where(:token => opts[:token].strip).first
+      if token.blank? then
+        log.warn "register_agent: invalid token sent"
       else
-        log.warn { "register_agent: tenant auth failed" }
+        token.last_used_at = Time.new
+        token.save
+        t = token.org.tenant
       end
-      raise API::Error, "bad tenant and/or password", caller
+
+    else
+      log.warn { "register_agent: no token given" }
+    end
+
+    if t.blank? && opts[:tenant] && opts[:password] then
+      # support old password-based registration
+      t = Tenant.where(:name => opts[:tenant]).first
+      if t.blank? || !t.test_password(opts[:password]) then
+        if t.blank? then
+          log.warn { "register_agent: tenant '#{opts[:tenant]}' not found" }
+        else
+          log.warn { "register_agent: tenant auth failed" }
+        end
+        raise API::Error, "bad tenant and/or password", caller
+      end
+
+    elsif t.blank?
+      raise API::Error, "invalid agent registration token"
     end
 
     # TODO pass org as param

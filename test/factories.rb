@@ -119,4 +119,11 @@ FactoryGirl.define do
     end
   end
 
+  factory :token do
+    association :user
+    before(:create) do |token|
+      token.org_id = token.user.org_id
+    end
+  end
+
 end

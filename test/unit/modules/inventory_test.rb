@@ -91,6 +91,23 @@ class Test::Modules::Inventory < Bixby::Test::TestCase
     end
   end
 
+  def test_register_with_token
+    user = FactoryGirl.create(:user)
+    token = Token.create(user, "default")
+    opts = {
+      :uuid       => "foo",
+      :public_key => "bar",
+      :hostname   => "blah.foobar.com",
+      :token      => token.token,
+      :version    => "0.5.3"
+    }
+
+    ret = Bixby::Inventory.new.register_agent(opts)
+    host = Host.first
+    assert host
+    assert_equal "foo", host.agent.uuid
+  end
+
   def test_validation_failure
     org = FactoryGirl.create(:org)
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150212194554) do
+ActiveRecord::Schema.define(version: 20150224205640) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "trigger_id",  limit: 4,     null: false
@@ -359,6 +359,19 @@ ActiveRecord::Schema.define(version: 20150212194554) do
     t.text   "private_key", limit: 65535
   end
 
+  create_table "tokens", force: :cascade do |t|
+    t.integer  "org_id",       limit: 4
+    t.integer  "user_id",      limit: 4
+    t.string   "token",        limit: 16
+    t.string   "purpose",      limit: 255
+    t.datetime "created_at"
+    t.datetime "last_used_at"
+    t.datetime "deleted_at"
+  end
+
+  add_index "tokens", ["org_id"], name: "fk_rails_25f1ffe905", using: :btree
+  add_index "tokens", ["user_id"], name: "fk_rails_6096b147cb", using: :btree
+
   create_table "trigger_histories", force: :cascade do |t|
     t.integer  "trigger_id", limit: 4,                            null: false
     t.datetime "created_at"
@@ -491,6 +504,8 @@ ActiveRecord::Schema.define(version: 20150212194554) do
   add_foreign_key "scheduled_commands", "orgs", name: "scheduled_commands_org_id_fk"
   add_foreign_key "scheduled_commands", "users", column: "created_by", name: "scheduled_commands_created_by_fk"
   add_foreign_key "taggings", "tags", name: "fk_taggings_tags1"
+  add_foreign_key "tokens", "orgs"
+  add_foreign_key "tokens", "users"
   add_foreign_key "trigger_histories", "checks", name: "trigger_histories_check_id_fk"
   add_foreign_key "trigger_histories", "metrics", name: "trigger_histories_metric_id_fk"
   add_foreign_key "trigger_histories", "triggers", name: "trigger_histories_trigger_id_fk"
