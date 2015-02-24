@@ -5,7 +5,7 @@ class Runbooks::ScheduledCommandsController < Runbooks::BaseController
   def index
     bootstrap ScheduledCommand.for_user(current_user).
       select("*, coalesce(completed_at, deleted_at, updated_at) AS sort_ts").
-      where("(schedule_type = 1 AND enabled = 1) or (schedule_type = 2 AND completed_at IS NULL)").
+      where("(schedule_type = 1 AND enabled = ?) or (schedule_type = 2 AND completed_at IS NULL)", true).
       order("sort_ts DESC")
   end
 
@@ -13,7 +13,7 @@ class Runbooks::ScheduledCommandsController < Runbooks::BaseController
     ScheduledCommand.with_deleted do
       bootstrap ScheduledCommand.for_user(current_user).
           select("*, coalesce(completed_at, deleted_at, updated_at) as sort_ts").
-          where("(schedule_type = 2 AND (completed_at IS NOT NULL OR deleted_at IS NOT NULL)) OR (schedule_type = 1 AND enabled = 0)").
+          where("(schedule_type = 2 AND (completed_at IS NOT NULL OR deleted_at IS NOT NULL)) OR (schedule_type = 1 AND enabled = ?)", false).
           order("sort_ts DESC"),
         :type => "ScheduledCommandHistory", :name => "scheduled_commands"
     end
