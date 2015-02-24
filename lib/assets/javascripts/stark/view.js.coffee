@@ -126,12 +126,21 @@ class Stark.View extends Backbone.View
   #
   # @return [Bixby.View] returns the view for chaining
   render: ->
+    @before_render()
     @$el.html(@render_html())
     @bind_events()
     return @
 
+  # Actions to perform before rendering the view template (e.g., massage data)
+  #
+  # Default: noop
+  before_render: ->
+    # noop
+
   # Actions to perform after rendering (e.g., attach custom events, jquery
   # plugins, etc)
+  #
+  # Default: noop
   after_render: ->
     # noop
 

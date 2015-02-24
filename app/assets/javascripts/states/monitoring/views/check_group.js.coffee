@@ -22,8 +22,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
         check_editor = @partial(exports.CheckEditor, { check: @check, host: @host, hosts: @hosts, check_group_view: true })
         check_editor.show() # TODO load options here
 
-    after_render: ->
-      super()
+    before_render: ->
+      @metrics = @check.filter_metrics(@metrics)
 
+    after_render: ->
       graphs = @metrics.map (m) -> m.graph
       @sync_helper = new Bixby.monitoring.PanSyncHelper(graphs)
