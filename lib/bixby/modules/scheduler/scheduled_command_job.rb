@@ -62,9 +62,9 @@ class Scheduler
 
       # set status
       scheduled_command.last_run_at = time_start
-      scheduled_command.last_run_status = if logs.size == pass then
+      scheduled_command.last_run_status = if logs.size == success then
         1 # all passed
-      elsif pass == 0 then
+      elsif success == 0 then
         2 # all failed
       else
         3 # some failed
