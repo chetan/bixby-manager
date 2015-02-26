@@ -62,6 +62,8 @@ module Bixby
     # Enable the asset pipeline
     config.assets.enabled = true
     config.assets.initialize_on_precompile = false
+    config.assets.paths << Rails.root.join("app/assets/scripts")
+    config.assets.precompile += ['install.sh']
 
     # disable Rack::Cache middleware
     config.action_dispatch.rack_cache = nil

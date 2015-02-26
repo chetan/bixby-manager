@@ -105,8 +105,7 @@ Bixby::Application.routes.draw do
   # These routes serve up HTML for bootstrapping the app, i.e., on initial
   # navigation to the app.
 
-  # replaced by login resource above
-  # get 'login' => 'sessions#new', :as => :login
+  get '/install', :to => redirect(ApplicationController.helpers.asset_path("install.sh"))
 
   get 'forgot_password' => "application#default_route"
   get 'reset_password'  => "application#default_route"
