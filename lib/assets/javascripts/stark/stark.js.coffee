@@ -11,10 +11,7 @@ class Stark.App
   env: "development"
   current_user: null
   current_state: null
-  states: {}
-
-  # for collecting bootstrapped data
-  data: {}
+  states: null
 
   router: new Stark.Router
   login_route: null
@@ -29,6 +26,9 @@ class Stark.App
     @env = env
     @login_route = login_route
     @default_route = default_route
+
+    @states          = {}
+    @_bootstrap_data = []
 
     # env helpers
     if @env == "development"
@@ -60,19 +60,11 @@ class Stark.App
       if kp and not JST[kp]
         JST[kp] = JST[k]
 
-    if @data?
-      @current_user = @data.current_user
-
-    if !@current_user?
-      @log "not logged in, sending to login page: #{@login_route}"
-      @router.start({silent: true})
-      @router.route(@login_route)
-      return
-
     if !@router.start()
       # router.start() will fire an event which calls the correct controller if a route was matched
       # otherwise we enter here and figure out what to do
       @log "no routes matched"
+      @load_bootstrap_data()
       if @current_user?
         @log "appear to be logged in, using default route: #{@default_route}"
         return @router.route(@default_route)
@@ -176,13 +168,13 @@ class Stark.App
       # return
 
     state_data or= {}
-    if @data?
-      @current_user = @data.current_user
-      _.extend state_data, @data
+    @load_bootstrap_data(state_data)
 
-      # clear any bootstrapped data, but store a backup copy
-      @bootstrap_data = @data
-      @data = null
+    if !@current_user?
+      @log "not logged in, sending to login page: #{@login_route}"
+      @router.start({silent: true})
+      @router.route(@login_route)
+      return
 
     state_data.current_user = @current_user
     @log "got state_data", state_data
@@ -251,8 +243,30 @@ class Stark.App
   #
   # @param [Object] data   Data to boostrap with, hash of models
   bootstrap: (data) ->
-    data or= {}
-    _.extend @data, data
+    if _.isFunction(data)
+      @_bootstrap_data.push data
+    else
+      @_bootstrap_data.push _.extend({}, data)
+
+  load_bootstrap_data: (state_data) ->
+    return if !@_bootstrap_data || @_bootstrap_data.length == 0
+
+    @log "loading bootstrapped data"
+
+    params = state_data.params || state_data
+    data = {}
+    _.each @_bootstrap_data, (d) ->
+      if _.isFunction(d)
+        _.extend data, d.call(@, params)
+      else if _.isObject(d)
+        _.extend data, d
+
+    @current_user = data.current_user
+    _.extend state_data, data
+
+    # clear any bootstrapped data, but store a backup copy
+    @bootstrap_data = data
+    @_bootstrap_data = null
 
   # helper for converting string to function
   locate_model_by_name: (model) ->

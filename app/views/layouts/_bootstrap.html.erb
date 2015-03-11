@@ -1,15 +1,15 @@
   <script type="text/javascript">
-    Bixby.app.bootstrap({
+    Bixby.app.bootstrap(function(url_params){return {
     <%
     @bootstrap.each do |boot|
       if boot[:model] == "Array" then %>
         <%= boot[:name] %>: <%= boot[:data] %>,
       <% elsif boot[:model] =~ /List$/ or boot[:data].kind_of? Array then %>
-        <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>()).reset(<%= boot[:data] %>),
+        <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>(url_params)).reset(<%= boot[:data] %>),
       <% else %>
-        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(<%= boot[:data] %>),
+        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(_.extend(url_params, <%= boot[:data] %>)),
       <%
       end
     end %>
-     });
+     };});
   </script>
