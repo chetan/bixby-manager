@@ -29,7 +29,7 @@ class Runbooks::ScheduledCommandsController < Runbooks::BaseController
         where(:scheduled_command_id => sc.id).
         includes(:command, :agent, :user).
         limit(10)
-      bootstrap logs, :type => "ScheduledCommandLog"
+      bootstrap logs, :type => "ScheduledCommandLog", :name => "command_logs"
     end
   end
 
