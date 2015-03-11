@@ -166,7 +166,7 @@ class Stark.App
       @error "tried to transition to non-existent state ", state_name
       @end_group()
       @stop_timer(timer_name)
-      return
+      return false
 
     if @current_state instanceof target_state
       # TODO - verify params? models? some other way to make sure
@@ -241,6 +241,10 @@ class Stark.App
     finally
       @end_group()
       @stop_timer(timer_name)
+      if !@first_load?
+        time = new Date().getTime() - window.performance.timing.navigationStart
+        @log "first load time: " + time + "ms"
+        @first_load = false
 
   # Method used by Server-side template to bootstrap any models
   # on the first hit. Can be called multiple times
