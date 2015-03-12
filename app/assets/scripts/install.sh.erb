@@ -11,7 +11,7 @@
 BIXBY_TOKEN="$1"
 BIXBY_HOST="<%= Bixby.manager_uri %>"
 BIXBY_INSTALLER="https://get.bixby.io"
-BIXBY_EMAIL="<%= BIXBY_CONFIG[:mailer_email] %>"
+BIXBY_EMAIL="<%= Module.const_defined?(:BIXBY_CONFIG) ? BIXBY_CONFIG[:mailer_email] : '' %>"
 
 tempfiles=( )
 cleanup_tempfiles() {
