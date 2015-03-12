@@ -92,6 +92,8 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   Rails.application.config.action_mailer.default_url_options = url_opts.dup
   Rails.application.routes.default_url_options               = url_opts.dup
 
+  # setup mailers
+  BIXBY_CONFIG[:mailer_email] = BIXBY_CONFIG[:mailer_from] =~ %r{^.*?<(.*?)>$} ? $1 : BIXBY_CONFIG[:mailer_from]
   Rails.application.config.action_mailer.default_options = {
     :from => BIXBY_CONFIG[:mailer_from]
   }

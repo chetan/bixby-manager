@@ -1,3 +1,70 @@
+#!/bin/bash
 
-hi
-<%= "foo" %>
+# a very small installer shim
+#
+# makes sure the next script is downloaded correctly before continuing, [hopefully] avoiding issues
+# with piping a shell script directly into bash.
+#
+# usage:
+# curl -sL https://bixby/install | bash -s <TOKEN>
+
+BIXBY_TOKEN="$1"
+BIXBY_HOST="<%= Bixby.manager_uri %>"
+BIXBY_INSTALLER="https://get.bixby.io"
+BIXBY_EMAIL="<%= BIXBY_CONFIG[:mailer_email] %>"
+
+tempfiles=( )
+cleanup_tempfiles() {
+  rm -f "${tempfiles[@]}"
+}
+trap cleanup_tempfiles EXIT
+
+error_msg() {
+  echo "ERROR: Failed to download installer from $BIXBY_INSTALLER"
+  echo "       See output below for details; contact $BIXBY_EMAIL for additional support"
+  echo
+}
+
+fetch() {
+  if [[ -n `which curl 2>/dev/null` ]]; then
+    \curl -sfL "$1" -o "$2"
+    if [[ $? -ne 0 ]]; then
+      error_msg
+      \curl -fL "$1" -o "$2"
+      exit 1
+    fi
+
+  elif [[ -n `which wget 2>/dev/null` ]]; then
+    \wget -q "$1" -O "$2"
+    if [[ $? -ne 0 ]]; then
+      error_msg
+      \wget "$1" -O "$2"
+      exit 1
+    fi
+
+  else
+    echo "ERROR: neither curl nor wget are available!"
+    echo
+    echo "If you would like to proceed with a manual installation, download a copy of"
+    echo -e "the installer script at\n\n  $BIXBY_INSTALLER\n\nand run it as follows:\n"
+    echo "  \$ /bin/bash bixby-installer.sh -- $BIXBY_HOST <TOKEN>"
+    echo
+    exit 1
+  fi
+}
+
+install_bixby() {
+  temp=$(mktemp -t bixby-installer.XXXXXX)
+  tempfiles+=( "$temp" )
+  rm -f $temp
+
+  fetch $BIXBY_INSTALLER $temp
+  if [[ ! -f "$temp" ]]; then
+    echo "ERROR: Failed to download installer from $BIXBY_INSTALLER"
+    exit 2
+  fi
+
+  /bin/bash $temp -- $BIXBY_HOST $BIXBY_TOKEN
+}
+
+install_bixby;
