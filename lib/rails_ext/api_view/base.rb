@@ -75,12 +75,13 @@ module ApiView
 
     end
 
-    attr_reader :object
+    attr_reader :object, :current_user
     alias_method :obj, :object
 
-    def initialize(object)
+    def initialize(object, current_user=nil)
       super(nil)
       @object = object
+      @current_user = current_user
     end
 
     def collect_attributes

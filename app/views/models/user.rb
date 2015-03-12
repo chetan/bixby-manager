@@ -11,6 +11,12 @@ module Bixby
         self[:org]         = obj.org.name
         self[:tenant]      = obj.org.tenant.name
         self[:permissions] = render(obj.permissions)
+
+        if obj.id == current_user.id then
+          token = Token.where(:user_id => obj.id, :purpose => "default").first
+          self[:install_token] = token.token
+        end
+
         self
       end
 
