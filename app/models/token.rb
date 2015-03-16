@@ -34,7 +34,7 @@ class Token < ActiveRecord::Base
     t.org_id  = user.org_id
     t.user_id = user.id
     t.token   = SecureRandom.hex(8) # 16 chars
-    t.purpose = purpose
+    t.purpose = purpose || "default"
     t.save!
 
     t

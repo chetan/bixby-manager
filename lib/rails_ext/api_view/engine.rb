@@ -20,7 +20,8 @@ module ApiView
       # @return [String]
       def render(obj, scope, options=nil)
 
-        ret = convert(obj, scope.current_user, options)
+        current_user = scope.nil? ? nil : scope.current_user
+        ret = convert(obj, current_user, options)
 
         if ret.kind_of? String then
           return ret # already converted (by default converter, for ex)
@@ -45,7 +46,7 @@ module ApiView
 
         if obj.kind_of?(Hash) then
           ret = {}
-          obj.each{ |k,v| ret[k] = convert(v) }
+          obj.each{ |k,v| ret[k] = convert(v, current_user) }
           return ret
 
         elsif obj.respond_to?(:map) then
