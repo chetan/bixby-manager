@@ -116,6 +116,7 @@ class Stark.Route
 
     # Apply the regular expression
     matches = @regExp.exec path
+    return params if !matches
 
     # Fill the hash using the paramNames and the matches
     for match, index in matches.slice(1)

@@ -61,13 +61,18 @@ class Stark.Router
   # Route a given URL path manually, return whether a route matched
   route: (path) =>
     #console.debug 'Router#route', path, params
+    if handler = @find_handler(path)
+      handler.callback path, changeURL: true
+      return true
+    return false
+
+  find_handler: (path) ->
     # Remove leading hash or slash
     path = path.replace /^(\/#|\/)/, ''
     for handler in Backbone.history.handlers
       if handler.route.test(path)
-        handler.callback path, changeURL: true
-        return true
-    return false
+        return handler
+    return null
 
   # Change the current URL, add a history entry.
   # Do not trigger any routes (which is Backbone’s
