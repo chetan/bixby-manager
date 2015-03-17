@@ -9,6 +9,7 @@
 # curl -sL https://bixby/install | bash -s <TOKEN>
 
 BIXBY_TOKEN="$1"
+BIXBY_TAGS="${@:2}"
 BIXBY_HOST="<%= Bixby.manager_uri %>"
 BIXBY_INSTALLER="https://get.bixby.io"
 BIXBY_EMAIL="<%= Module.const_defined?(:BIXBY_CONFIG) ? BIXBY_CONFIG[:mailer_email] : '' %>"
@@ -64,7 +65,11 @@ install_bixby() {
     exit 2
   fi
 
-  /bin/bash $temp -- $BIXBY_HOST $BIXBY_TOKEN
+  if [[ "$BIXBY_TAGS" == "" ]]; then
+    /bin/bash $temp -- --register $BIXBY_HOST --token $BIXBY_TOKEN
+  else
+    /bin/bash $temp -- --register $BIXBY_HOST --token $BIXBY_TOKEN --tags $BIXBY_TAGS
+  fi
 }
 
 install_bixby;
