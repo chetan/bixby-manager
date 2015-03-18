@@ -65,6 +65,10 @@ install_bixby() {
     exit 2
   fi
 
+  if [[ "$BETA" != "" ]]; then
+    export BETA="1"
+  fi
+
   if [[ "$BIXBY_TAGS" == "" ]]; then
     /bin/bash $temp -- --register $BIXBY_HOST --token $BIXBY_TOKEN
   else
