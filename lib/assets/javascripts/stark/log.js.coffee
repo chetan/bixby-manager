@@ -14,6 +14,10 @@ class Stark.Logger
   create_logger = (level) ->
     return (msgs...) ->
       return if !Stark.Logger.enabled
+      if _.isFunction(msgs[0])
+        msgs = msgs[0]()
+        if !_.isArray(msgs)
+          msgs = [msgs]
       console[level] "[#{@logger}]", msgs...
 
   # create methods for each log level
