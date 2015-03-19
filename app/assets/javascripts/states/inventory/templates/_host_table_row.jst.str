@@ -4,6 +4,7 @@
       <h3>
         <a class="host"><%= host.name() %></a>
         <%= include_partial(Bixby.view.inventory.HostTags, {host: host}) %>
+        <%? !host.is_connected %><%= include("inventory/_host_offline", {host: host}) %><%/%>
         <%? !host.is_active() %>
           <ul class="tags">
             <li><span class="inactive label label-danger" title="<%= last_seen_label() %>">inactive</span></li>

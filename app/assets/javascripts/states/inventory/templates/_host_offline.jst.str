@@ -1,0 +1,1 @@
+<span class="offline label label-danger" title="<%= host.last_seen_at %>">offline</span>
