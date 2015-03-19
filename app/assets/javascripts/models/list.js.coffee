@@ -10,6 +10,12 @@ namespace 'Bixby.model', (exports, top) ->
     url: null
     data: null
 
+    # Get the classname for this instance
+    #
+    # @return [String]
+    getClassName: ->
+      return @constructor.name || /(\w+)\(/.exec(this.constructor.toString())[1]
+
     get: ->
       @data
 
