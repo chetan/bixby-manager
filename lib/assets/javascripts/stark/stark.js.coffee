@@ -226,7 +226,11 @@ class Stark.App
 
     catch ex
       # log and re-raise so it's seen at the top level in the console (not hidden in a group)
-      @log "caught exception"
+      setTimeoutR 0, ->
+        alert "Whoops, looks like something went terribly wrong! Please reload the page and try again."
+
+      @trigger("state:activate", state) # so the progress bar goes away
+      @log "caught exception while changing to state #{state.name}"
       @log ex
       throw ex
 
