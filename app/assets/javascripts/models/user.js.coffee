@@ -9,10 +9,9 @@ namespace 'Bixby.model', (exports, top) ->
     urlRoot: "/rest/users"
 
     @impersonate: (user_id, callback) ->
-      $.ajax @.prototype.urlRoot + "/impersonate?user_id=" + user_id, {
+      $.ajax @.prototype.urlRoot + "/impersonate?user_id=" + user_id,
         dataType: "json"
         success: callback
-      }
 
     get_name: ->
       @get("name") || @get("username")
@@ -56,6 +55,12 @@ namespace 'Bixby.model', (exports, top) ->
     can: (permission) ->
       # TODO implement resource checks as well
       !! _.find @get("permissions"), (p) -> !p.resource? && p.name == permission
+
+    # Format a date/time
+    # TODO according to user's proferences
+    format_datetime: (t) ->
+      return "" if !t
+      return moment(t).format("L HH:mm:ss")
 
   class exports.UserList extends Stark.Collection
     model: exports.User

@@ -1,1 +1,1 @@
-<span class="offline label label-danger" title="<%= host.last_seen_at %>">offline</span>
+<span class="offline label label-danger" title="Last seen <%= format_datetime(host.last_seen_at) %>">offline</span>

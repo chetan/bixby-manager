@@ -25,3 +25,6 @@ _.extend Stark.View.helpers,
       { body: body }
 
     return @include_partial(Bixby.view.Help, opts)
+
+  format_datetime: (t) ->
+    return Bixby.app.current_user.format_datetime(t)
