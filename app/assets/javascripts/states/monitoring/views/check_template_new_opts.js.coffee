@@ -12,12 +12,11 @@ namespace "Bixby.view.monitoring", (exports, top) ->
       $("#submit_check").on "click", null, (e) ->
 
         template = new Bixby.model.CheckTemplate()
-        template.set {
+        template.set
           name: _.val($("#name"))
           mode: _.val($("#mode"))
           tags: _.val($("#tags"))
           items: []
-        }
 
         # create the commands
         _.each view.opts, (cmd) ->
@@ -38,6 +37,9 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
         view.log template
         Backbone.multi_save template, (err, results) ->
-          view.transition "monitoring"
+          view.transition "mon_check_templates"
 
       return {} # return empty event hash to backbone delegateEvents
+
+    after_render: ->
+      $("button#submit_check").text("Create Template")

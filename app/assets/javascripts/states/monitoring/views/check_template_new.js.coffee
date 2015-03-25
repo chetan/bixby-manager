@@ -26,21 +26,18 @@ namespace "Bixby.view.monitoring", (exports, top) ->
 
         if opts.length > 0
           @transition "mon_check_template_new_opts",
-            {
-              tags: @tags
-              opts: opts
-              commands: selected_commands
-              hosts: @state.hosts
-              name: _.val(@$("#name"))
-              mode: _.val(@$("#mode"))
-              selected_tags: _.val(@$("#tags"))
-            }
+            tags: @tags
+            opts: opts
+            commands: selected_commands
+            hosts: @state.hosts
+            name: _.val(@$("#name"))
+            mode: _.val(@$("#mode"))
+            selected_tags: _.val(@$("#tags"))
 
     after_render: ->
       @$("select.mode").select2({minimumResultsForSearch: -1}) # -1 disables search input
       @$("select#mode").select2("val", @mode) if @mode?
 
-      @$("input.tags").select2({
+      @$("input.tags").select2
         tags: @tags.get()
         tokenSeparators: [",", " "]
-      })
