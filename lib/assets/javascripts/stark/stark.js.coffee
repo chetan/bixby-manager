@@ -257,8 +257,13 @@ class Stark.App
 
     @log "loading bootstrapped data"
 
-    params = state_data.params || state_data
+    params = _.clone(state_data.params || state_data)
     data = {}
+
+    # Freeze params object to avoid being modified by Model/Collection init code
+    # Available in EcmaScript 5.1+, supported by all modern browsers
+    Object.freeze(params) if Object.freeze
+
     _.each @_bootstrap_data, (d) ->
       if _.isFunction(d)
         _.extend data, d.call(@, params)
