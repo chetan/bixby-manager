@@ -218,7 +218,7 @@ class Host < ActiveRecord::Base
   # @return [Array<String>] tags
   def self.all_tags(user)
     # ActsAsTaggableOn::Tagging.where(:taggable_type => "Host").includes(:tag).map{ |t| t.tag.name }.sort
-    for_user(user).tag_counts_on(:tags).map{ |t| t.name }.sort
+    for_user(user, true).tag_counts_on(:tags).map{ |t| t.name }.sort
   end
 
   private
