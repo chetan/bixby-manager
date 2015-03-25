@@ -7,7 +7,7 @@
       <% elsif boot[:model] =~ /List$/ or boot[:data].kind_of? Array then %>
         <%= boot[:name] %>: (new Bixby.model.<%= boot[:model] %>(url_params)).reset(<%= boot[:data] %>),
       <% else %>
-        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(_.extend(url_params, <%= boot[:data] %>)),
+        <%= boot[:name] %>: new Bixby.model.<%= boot[:model] %>(_.extend({}, url_params, <%= boot[:data] %>)),
       <%
       end
     end %>
