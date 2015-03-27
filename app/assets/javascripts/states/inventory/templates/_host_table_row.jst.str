@@ -3,9 +3,13 @@
     <div class="body col-xs-12">
       <h3>
         <a class="host"><%= host.name() %></a>
-        <%= include_partial(Bixby.view.inventory.HostTags, {host: host}) %>
-        <%? !host.is_connected %><%= include("inventory/_host_offline", {host: host}) %><%/%>
-        <%? !host.is_active() %><%= include("inventory/_host_inactive", {host: host}) %><%/%>
+        <%= include_partial(Bixby.view.inventory.HostTags) %>
+        <%? host.is_connected %>
+          <%= include("inventory/_host_online") %>
+        <% } else { %>
+          <%= include("inventory/_host_offline") %>
+        <%/%>
+        <%? !host.is_active() %><%= include("inventory/_host_inactive") %><%/%>
         <a class="monitoring btn btn-default btn-xs" role="button"><%= _.icon("bar-chart-o") %> Monitoring</a>
       </h3>
     </div>

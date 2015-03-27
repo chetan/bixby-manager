@@ -82,14 +82,12 @@ class Stark.View extends Backbone.View
 
   # Called from Backbone.View constructor
   initialize: (args) ->
-    @_data = []
+    @_data = {}
     @views = []
     @after_render_hooks = []
     if _.isObject(args)
-      _.extend @, args
-      for v in _.values(args)
-        if v instanceof Stark.Model
-          @_data.push(v)
+      _.extend @, args # copy data directly into view
+      _.extend @_data, args # save copy
 
     # mixin view helpers
     if Stark.View.helpers
@@ -188,7 +186,7 @@ class Stark.View extends Backbone.View
   # @param [String] key
   # @param [Object] val
   set: (key, val) ->
-    @_data.push(val)
+    @_data[key] = val
     @[key] = val
 
 
@@ -306,7 +304,7 @@ class Stark.View extends Backbone.View
 
   # Unbind all models from this view
   unbind_models: ->
-    for m in @_data
+    for m in _.values(@_data)
       @unbind_model(m)
 
   # Unbind the given model from this view
@@ -456,7 +454,7 @@ class Stark.View extends Backbone.View
   create_partial: (clazz, data) ->
 
     # copy state data and override with passed in props
-    data = _.extend({}, @state._data, data)
+    data = _.extend({}, @state._data, @_data, data)
     data.app = @app
     data.state = @state
 
