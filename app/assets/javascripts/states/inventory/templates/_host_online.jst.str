@@ -1,0 +1,3 @@
+<ul class="tags">
+  <li><span class="online label label-success" title="Agent last connected <%= format_datetime(host.last_seen_at) %> (<%= host.last_seen_relative() %>)">online</span></li>
+</ul>

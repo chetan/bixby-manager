@@ -1,3 +1,3 @@
 <ul class="tags">
-  <li><span class="inactive label label-danger" title="<%= host.last_seen_label() %>">inactive</span></li>
+  <li><span class="inactive label label-danger" title="<%= host.last_seen_label() %> (<%= host.last_seen_relative() %>)">inactive</span></li>
 </ul>

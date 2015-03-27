@@ -49,6 +49,9 @@ namespace 'Bixby.model', (exports, top) ->
       else
         "Agent has never connected"
 
+    last_seen_relative: ->
+      moment(@last_seen_at).fromNow()
+
 
     # API methods
 

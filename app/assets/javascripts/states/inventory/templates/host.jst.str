@@ -9,7 +9,11 @@
 
       <div class="tags">
         <%= include_partial(Bixby.view.inventory.HostTags) %>
-        <%? !host.is_connected %><%= include("inventory/_host_offline") %><%/%>
+        <%? host.is_connected %>
+          <%= include("inventory/_host_online") %>
+        <%} else { %>
+          <%= include("inventory/_host_offline") %>
+        <%/%>
         <%? !host.is_active() %><%= include("inventory/_host_inactive") %><%/%>
         <a class="edit btn btn-default btn-xs" role="button"><%= _.icon("edit") %> Edit</a>
         <a class="monitoring btn btn-default btn-xs" role="button"><%= _.icon("bar-chart-o") %> Monitoring</a>
