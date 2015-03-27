@@ -13,6 +13,6 @@ namespace "Bixby.view.inventory", (exports, top) ->
 
     last_seen_label: ->
       if seen = @host.get("last_seen_at")
-        "Agent last seen at " + seen.format()
+        "Agent last seen at " + @format_datetime(seen)
       else
         "Agent has never connected"

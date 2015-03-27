@@ -1,1 +1,3 @@
-<span class="offline label label-danger" title="Last seen <%= format_datetime(host.last_seen_at) %>">offline</span>
+<ul class="tags">
+  <li><span class="offline label label-danger" title="Agent last seen at <%= format_datetime(host.last_seen_at) %>">offline</span></li>
+</ul>
