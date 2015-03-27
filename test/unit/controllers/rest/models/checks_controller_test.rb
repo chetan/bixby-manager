@@ -49,7 +49,7 @@ module Bixby
       end
 
       def test_add_check_with_diff_agent
-        agent2 = FactoryGirl.create(:agent)
+        agent2 = create_agent_without_validation
         args = {:host_id => @agent.host.id, :command_id => @command.id, :runhost_id => agent2.host.id}
         post :create, args
         assert_response 200

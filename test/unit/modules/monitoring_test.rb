@@ -61,13 +61,11 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
       }.
         to_return(:status => 200, :body => cmd_res_json())
 
-    check = FactoryGirl.create(:check)
-
     Provisioning.any_instance.expects(:provision).once.with { |agent, cmd|
-      agent == check.agent and cmd.kind_of?(Array) and cmd.size == 1 and cmd.first.bundle == check.command.bundle.path
+      agent == @check.agent and cmd.kind_of?(Array) and cmd.size == 1 and cmd.first.bundle == @check.command.bundle.path
     }
 
-    ret = Bixby::Monitoring.new.update_check_config(check.agent)
+    ret = Bixby::Monitoring.new.update_check_config(@check.agent)
 
     assert_requested(stub)
     assert_kind_of CommandResponse, ret

@@ -41,6 +41,12 @@ module Bixby
         bundle
       end
 
+      def create_agent_without_validation
+        agent = FactoryGirl.build(:agent)
+        agent.save(:validate => false)
+        agent
+      end
+
     end
 
     module Models

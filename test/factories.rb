@@ -12,7 +12,6 @@ end
 FactoryGirl.define do
 
   sequence(:uuid) { |n| "uuid-#{n}" }
-  sequence(:pubkey) { |n|  }
   sequence(:username) { |n| "chetan#{n}" }
   sequence(:email_id) { |n| "test#{n}@fw2.net" }
   sequence(:tenant_name) { |n| "foo.org #{n}" }

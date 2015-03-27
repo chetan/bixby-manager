@@ -92,7 +92,7 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
     host.add_metadata("foo", "bar")
 
     # create an extra agent/host
-    FactoryGirl.create(:agent).host.tap { |h| h.org = host.org; h.save }
+    create_agent_without_validation.host.tap { |h| h.org = host.org; h.save }
 
     hosts = Host.search("foo=bar", user)
     assert_equal 1, hosts.size
@@ -134,7 +134,7 @@ class Bixby::Test::Models::Host < Bixby::Test::TestCase
 
   def test_for_user
     h = FactoryGirl.create(:agent).host
-    h2 = FactoryGirl.create(:agent).host
+    h2 = create_agent_without_validation.host
     u = FactoryGirl.create(:user)
     u.org = h.org
     u.save

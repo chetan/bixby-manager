@@ -53,6 +53,12 @@ module Bixby
       ApiAuth.sign!(@request, @agent.access_key, @agent.secret_key)
     end
 
+    def create_agent_without_validation
+      agent = FactoryGirl.build(:agent)
+      agent.save(:validate => false)
+      agent
+    end
+
   end
 end
 
