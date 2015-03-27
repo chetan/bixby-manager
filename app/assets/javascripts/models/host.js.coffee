@@ -43,6 +43,12 @@ namespace 'Bixby.model', (exports, top) ->
 
       @set("tags", tags)
 
+    last_seen_label: ->
+      if seen = @get("last_seen_at")
+        "Agent last seen " + Bixby.app.current_user.format_datetime(seen)
+      else
+        "Agent has never connected"
+
 
     # API methods
 
