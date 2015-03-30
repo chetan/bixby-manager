@@ -257,6 +257,7 @@ class Stark.App
 
     @log "loading bootstrapped data"
 
+    state_data ||= {}
     params = _.clone(state_data.params || state_data)
     delete params.changeURL
     delete params.path
