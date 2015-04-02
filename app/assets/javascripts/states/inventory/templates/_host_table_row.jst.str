@@ -3,6 +3,7 @@
     <div class="body col-xs-12">
       <h3>
         <a class="host"><%= host.name() %></a>
+        <br class="visible-xs" />
         <%= include_partial(Bixby.view.inventory.HostTags) %>
         <%? host.is_connected %>
           <%= include("inventory/_host_online") %>
