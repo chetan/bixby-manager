@@ -12,7 +12,7 @@
     <% // display each user, grouped by tenant %>
     <%
     var t = null;
-    _.each(users.sortBy("tenant"), function(user) {
+    _.each(all_users.sortBy("tenant"), function(user) {
       if (user.g("tenant") !== t) {
         if (t !== null) { %></optgroup><% }
         t = user.g("tenant");
