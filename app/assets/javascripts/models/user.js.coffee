@@ -5,6 +5,9 @@ namespace 'Bixby.model', (exports, top) ->
     @key: "user"
     @props
       _strings: ["name", "username", "email", "phone", "org", "tenant"]
+      _dates:   ["created_at", "last_sign_in_at", "invite_created_at", "invite_accepted_at"]
+      _ints:    ["invited_by_id"]
+      _bools:   ["otp_required_for_login"]
 
     urlRoot: "/rest/users"
 
@@ -57,10 +60,10 @@ namespace 'Bixby.model', (exports, top) ->
       !! _.find @get("permissions"), (p) -> !p.resource? && p.name == permission
 
     # Format a date/time
-    # TODO according to user's proferences
+    # TODO according to user's preferences
     format_datetime: (t) ->
       return "" if !t
-      return moment(t).format("L HH:mm:ss")
+      return moment(t).format("L HH:mm:ss Z")
 
   class exports.UserList extends Stark.Collection
     model: exports.User

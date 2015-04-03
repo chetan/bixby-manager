@@ -4,7 +4,8 @@ module Bixby
     class User < ::ApiView::Base
 
       for_model ::User
-      attributes :id, :username, :name, :email, :phone, :otp_required_for_login, :last_sign_in_at,
+      attributes :id, :username, :name, :email, :phone, :otp_required_for_login,
+                 :created_at, :last_sign_in_at,
                  :invite_created_at, :invite_accepted_at, :invited_by_id
 
       def convert
