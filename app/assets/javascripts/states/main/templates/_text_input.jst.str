@@ -9,7 +9,7 @@ this.type        = this.type  || "text";
 this.value       = this.value || null;
 this.help        = (this.help && _.isString(this.help)) ? this.help : null;
 this.icon        = this.icon  || null;
-this.autocomplete= this.autocomplete || false;
+this.autocomplete= this.autocomplete || null;
 this.hide_label  = this.hide_label || false;
 %>
 
@@ -25,7 +25,7 @@ this.hide_label  = this.hide_label || false;
     <%? title %>title="<%= title %>"<%/%>
     <%? value %>value="<%- value %>"<%/%>
     <%? placeholder %>placeholder="<%- placeholder %>"<%/%>
-    <%? autocomplete %>autocomplete="on"<%/%>
+    <%? autocomplete %>autocomplete="<%= (autocomplete === true || autocomplete === "on" ? "on" : "off") %>"<%/%>
     >
   <div class="valid <%= name %>"></div>
 
