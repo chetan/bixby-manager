@@ -16,20 +16,20 @@
     <form autocomplete="off" role="form">
 
       <!-- name -->
-      <%= include("main/_text_input", {name: "name", value: current_user.name}) %>
+      <%= include("main/_text_input", {name: "name", value: current_user.name, autocomplete: "off"}) %>
 
       <!-- username -->
-      <%= include("main/_text_input", {name: "username", value: current_user.username}) %>
+      <%= include("main/_text_input", {name: "username", value: current_user.username, autocomplete: "off"}) %>
 
       <!-- email -->
-      <%= include("main/_text_input", {name: "email", value: current_user.email}) %>
+      <%= include("main/_text_input", {name: "email", value: current_user.email, autocomplete: "off"}) %>
 
       <!-- phone -->
-      <%= include("main/_text_input", {name: "phone", value: current_user.phone}) %>
+      <%= include("main/_text_input", {name: "phone", value: current_user.phone, autocomplete: "off"}) %>
 
       <!-- password -->
-      <%= include("main/_text_input", {name: "password", type: "password"}) %>
-      <%= include("main/_text_input", {name: "password_confirmation", label: "Confirm", type: "password"}) %>
+      <%= include("main/_text_input", {name: "password", type: "password", autocomplete: "off"}) %>
+      <%= include("main/_text_input", {name: "password_confirmation", label: "Confirm", type: "password", autocomplete: "off"}) %>
 
       <!-- submit -->
       <div class="form-group">

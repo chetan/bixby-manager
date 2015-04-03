@@ -5,13 +5,11 @@ class Rest::Models::UsersController < ::Rest::BaseController
                                                      :accept_invite ]
 
   def index
-    users = User.where(:org_id => current_user.org_id)
-    restful users
+    restful User.for_user(current_user)
   end
 
   def show
-    user = User.find(_id)
-    restful user
+    restful User.find(_id)
   end
 
   def valid
@@ -64,7 +62,12 @@ class Rest::Models::UsersController < ::Rest::BaseController
   def update
     user = User.find(_id)
     attrs = pick(:name, :username, :email, :phone, :password, :password_confirmation)
+    if attrs[:password].blank? || attrs[:password_confirmation].blank? then
+      attrs.delete(:password)
+      attrs.delete(:password_confirmation)
+    end
     user.update_attributes(attrs)
+    user.save!
     restful user
   end
 
