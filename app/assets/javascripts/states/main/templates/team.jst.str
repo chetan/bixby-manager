@@ -1,0 +1,18 @@
+
+<h1>Team</h1>
+
+<table class="table table-bordered team">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Status</th>
+      <th>Last Login</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= each_partial(users, "user", Bixby.view.TeamRow) %>
+  </tbody>
+</table>

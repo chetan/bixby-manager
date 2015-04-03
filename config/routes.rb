@@ -117,6 +117,8 @@ Bixby::Application.routes.draw do
   get 'profile/edit'       => "ui#default"
   get 'profile/enable_2fa' => "ui#default"
 
+  get 'team' => "team#index"
+
   get "/inventory" => "inventory/hosts#index"
   namespace :inventory do
     get "/search/:query" => "hosts#index"

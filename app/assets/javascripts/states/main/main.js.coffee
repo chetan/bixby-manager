@@ -52,3 +52,9 @@ Bixby.app.add_states
     validate: ->
       @transition "profile"
       return @password_confirmed == true
+
+  "team":
+    tab:    "user"
+    url:    "team"
+    views:  [ _bv.PageLayout, _bv.Team ]
+    models: { users: _bm.UserList }

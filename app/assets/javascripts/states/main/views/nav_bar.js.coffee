@@ -25,6 +25,7 @@ namespace "Bixby.view", (exports, top) ->
 
       # user menu
       "a#profile":         "profile"
+      "a#team":            "team"
 
     events:
       "click a.run, .tab.runbooks.primary a:first": (e) ->

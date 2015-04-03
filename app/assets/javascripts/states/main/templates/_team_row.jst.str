@@ -1,0 +1,9 @@
+
+<tr>
+  <td><a class="name"></a></td>
+  <td class="username"></td>
+  <td><a class="email" href="mailto:<%= user.email %>"></a></td>
+  <td class="phone"></td>
+  <td class="status"></td>
+  <td class="last_login"></td>
+</tr>

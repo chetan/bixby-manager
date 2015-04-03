@@ -85,6 +85,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Get all users in the same org (TODO tenant?) as the given user
+  def self.for_user(user)
+    where(:org_id => user.org_id)
+  end
+
   # Set of all permissions, either directly assigned or via an active role assignment
   #
   # @return [Array<UserPermission> + Array<RolePermission>]
