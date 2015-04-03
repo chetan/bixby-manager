@@ -67,7 +67,9 @@ class Stark.App
       @load_bootstrap_data()
       if @current_user?
         @log "appear to be logged in, using default route: #{@default_route}"
-        return @router.route(@default_route)
+        # TODO we don't properly pass bootstrapped data into the default route so for now just redir
+        # return @router.route(@default_route)
+        window.location = @default_route
 
       @log "sending to login page: #{@login_route}"
       @router.route(@login_route)
