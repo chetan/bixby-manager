@@ -88,12 +88,27 @@ class UiController < ApplicationController
 
   def authenticate_user!(opts={})
     return if is_logged_in?
-    url = request.original_fullpath
-    if url != "/" && url !~ %r{^/login} then
-      cookies[:return_to] = request.original_fullpath
+
+    if request.xhr? then
+      return render(:text => {:error => "not logged in"}, :as => :json, :status => 401)
     end
-    set_csrf_cookie
-    render :index # let stark handle the redirect to login
+
+    # handle based on mime type
+    respond_to do |format|
+      format.html {
+        # handle unathenticated user requesting an html page
+        url = request.original_fullpath
+        if url != "/" && url !~ %r{^/login} then
+          cookies[:return_to] = request.original_fullpath
+        end
+        set_csrf_cookie
+        render :index # let stark handle the redirect to login
+      }
+
+      # unauthenticated access to REST API endpoint
+      format.any(:xml, :json) { render(:text => {:error => "not logged in"}, :as => :json, :status => 401) }
+    end
+
   end
 
 end

@@ -192,11 +192,11 @@ class Stark.App
 
     # load needed data before continuing
     Backbone.multi_fetch needed, {initial_load: true}, (err, results) =>
-      if err and err.status >= 400 and err.status < 500
+      if err and err.status == 401
         # session timeout
-        @redir = [ state_name, state_data ]
+        url = state.create_url()
         state.dispose() # trash state we were building
-        @redir_to_login()
+        @redir_to_login(url)
         return
 
       @change_state(state, timer_name)
@@ -309,9 +309,12 @@ class Stark.App
 
     return null
 
-  redir_to_login: ->
-    @log "redir_to_login()"
-    window.location = @login_route
+  redir_to_login: (path) ->
+    @log "redir_to_login(#{path})"
+    url = @login_route
+    if path && path != false
+      url += "?return_to=" + encodeURIComponent(path)
+    window.location = url
 
 
   # Setup pub/sub

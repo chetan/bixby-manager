@@ -5,6 +5,11 @@ class SessionsController < ApplicationController
     if is_logged_in? then
       return redirect_to default_url
     end
+    if !params[:return_to].blank? then
+      return_to = params[:return_to]
+      return_to = "/" + return_to if return_to !~ %r{^/}
+      cookies[:return_to] = return_to
+    end
     set_csrf_cookie if set_cookie
     render :index
   end
