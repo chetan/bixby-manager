@@ -3,11 +3,6 @@ namespace "Bixby.view", (exports, top) ->
 
   class exports.TeamRow extends Stark.Partial
     template: "main/_team_row"
-    bindings:
-      ".name":     "name"
-      ".username": "username"
-      ".email":    "email"
-      ".phone":    "phone"
 
     links:
       "a.name":     [ "team_user_view", (el) -> { user: @user } ]
@@ -23,6 +18,8 @@ namespace "Bixby.view", (exports, top) ->
         "Active"
       else if @user.invite_created_at && !@user.invite_accepted_at
         "Invite Pending"
+      else
+        "Never logged in"
       @$(".status").text(status)
 
       @

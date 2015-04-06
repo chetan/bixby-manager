@@ -1,0 +1,39 @@
+
+@media screen and (max-width: $screen-xs-max) {
+
+  table.table.table-bordered.team {
+    border: 0;
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      margin-bottom: 10px;
+      display: block;
+      border: 1px solid #ddd;
+      border-bottom: 3px solid #ccc;
+    }
+
+    td {
+      display: block;
+      text-align: right;
+      // font-size: 13px;
+      border: 0;
+      border-bottom: 1px dotted #ccc;
+    }
+
+    td:last-child {
+      border-bottom: 0;
+    }
+
+    td:before {
+      content: attr(data-label);
+      float: left;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+  }
+
+}

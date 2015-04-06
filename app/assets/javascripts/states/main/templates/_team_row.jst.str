@@ -1,17 +1,21 @@
 
 <tr>
-  <td><a class="name"></a></td>
-  <td><a class="username"></a></td>
-  <td><a class="email" href="mailto:<%= user.email %>"></a></td>
-  <td class="phone"></td>
-  <td class="created_at"><%= format_datetime(user.created_at) %></td>
-  <td class="status"></td>
+  <td data-label="Name">
+    <%? user.name %><a class="name"><%= user.name %></a><%} else {%>&nbsp;<%/%>
+  </td>
+  <td data-label="Username">
+    <%? user.username %><a class="username"><%= user.username %></a><%} else {%>&nbsp;<%/%>
+  </td>
+  <td data-label="Email"><a class="email" href="mailto:<%= user.email %>"><%= user.email %></a></td>
+  <td data-label="Phone"><%= user.phone || "&nbsp;" %></td>
+  <td data-label="Created" class="created_at"><%= format_datetime(user.created_at) %></td>
+  <td data-label="Status" class="status"></td>
 
   <%? user.last_sign_in_at %>
-    <td class="last_login" title="<%= format_datetime(user.last_sign_in_at) %>">
+    <td data-label="Last Login" class="last_login" title="<%= format_datetime(user.last_sign_in_at) %>">
       <%= user.last_sign_in_at.fromNow() %>
     </td>
   <% } else { %>
-    <td class="last_login"></td>
+    <td data-label="Last Login" class="last_login">&nbsp;</td>
   <%/%>
 </tr>
