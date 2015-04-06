@@ -2,8 +2,9 @@
 <div class="row">
   <div class="col-xs-12 col-sm-4 col-md-4">
     <h2>
-      <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
-        <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
+      <a href="https://gravatar.com/emails/" data-toggle="tooltip" data-placement="right" title="Click to change your avatar at gravatar.com">
+        <img class="gravatar" src="<%= current_user.gravatar() %>" alt="Gravatar">
+      </a>
       <span><%= current_user.get_name() %></span>
     </h2>
     <span><%= _.icon("group") %> <%= current_user.tenant %></span><br/><br/><br/>

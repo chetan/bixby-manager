@@ -3,8 +3,9 @@
   <div class="col-md-12">
 
     <h2>
-      <a href="http://gravatar.com/emails/" data-toggle="tooltip" title="Change your avatar at gravatar.com">
-        <img class="gravatar gravatar-profile" src="<%= current_user.gravatar() %>" alt="Gravatar"></a>
+      <a href="https://gravatar.com/emails/" data-toggle="tooltip" data-placement="right" title="Click to change your avatar at gravatar.com">
+        <img class="gravatar gravatar-profile" src="<%= current_user.gravatar() %>" alt="Gravatar">
+      </a>
       <span><%= current_user.get_name() %></span>
       <%? current_user.get_name() !== current_user.username %>
         <small title="your username"><%= current_user.username %></small>
