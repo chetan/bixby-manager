@@ -1,4 +1,12 @@
 
+div.panel.user_card {
+  h2 {
+    margin: 0;
+    span {
+      vertical-align: middle;
+    }
+  }
+}
 @media screen and (max-width: $screen-xs-max) {
 
   table.table.table-bordered.team {

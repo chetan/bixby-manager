@@ -10,6 +10,7 @@ namespace 'Bixby.model', (exports, top) ->
       _bools:   ["otp_required_for_login"]
 
     urlRoot: "/rest/users"
+    params: [ { name: "user", set_id: true } ]
 
     @impersonate: (user_id, callback) ->
       $.ajax @.prototype.urlRoot + "/impersonate?user_id=" + user_id,
@@ -18,6 +19,14 @@ namespace 'Bixby.model', (exports, top) ->
 
     get_name: ->
       @get("name") || @get("username")
+
+    get_status: ->
+      status = if @last_sign_in_at
+        "Active"
+      else if @invite_created_at && !@invite_accepted_at
+        "Invite Pending"
+      else
+        "Never logged in"
 
     gravatar: ->
       if Bixby.app.dev || Bixby.app.env == "integration"

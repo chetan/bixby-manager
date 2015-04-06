@@ -14,12 +14,6 @@ namespace "Bixby.view", (exports, top) ->
       @stickit(@user)
 
       # update status
-      status = if @user.last_sign_in_at
-        "Active"
-      else if @user.invite_created_at && !@user.invite_accepted_at
-        "Invite Pending"
-      else
-        "Never logged in"
-      @$(".status").text(status)
+      @$(".status").text(@user.get_status())
 
       @

@@ -1,0 +1,42 @@
+
+<div class="row">
+  <div class="col-xs-12 col-sm-4 col-md-4">
+    <h2>
+      <img class="gravatar" src="<%= user.gravatar() %>" alt="Gravatar">
+      <span><%= user.get_name() %></span>
+    </h2>
+    <span><%= _.icon("group") %> <%= user.tenant %></span><br/><br/><br/>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+
+    <form autocomplete="off" role="form">
+
+      <!-- name -->
+      <%= include("main/_text_input", {name: "name", value: user.name, autocomplete: "off"}) %>
+
+      <!-- username -->
+      <%= include("main/_text_input", {name: "username", value: user.username, autocomplete: "off"}) %>
+
+      <!-- email -->
+      <%= include("main/_text_input", {name: "email", value: user.email, autocomplete: "off"}) %>
+
+      <!-- phone -->
+      <%= include("main/_text_input", {name: "phone", value: user.phone, autocomplete: "off"}) %>
+
+      <!-- submit -->
+      <br/>
+      <div class="form-group">
+        <button type="button" class="btn btn-primary submit">Save</button>
+        <button type="button" class="btn btn-default cancel">Cancel</button>
+
+        <button type="button" class="btn btn-warning pull-right reset_password"
+                title="An email will be sent to the configured email with a new password">Reset Password</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

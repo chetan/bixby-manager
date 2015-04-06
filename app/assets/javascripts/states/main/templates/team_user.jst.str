@@ -1,0 +1,64 @@
+
+<br/>
+<div class="row">
+  <div class="col-md-4">
+
+    <div class="panel panel-default user_card">
+
+      <div class="panel-heading">
+        <h2>
+          <img class="gravatar gravatar-profile pull-right" src="<%= user.gravatar() %>" alt="Gravatar">
+          <span><%= user.get_name() %></span>
+          <%? user.get_name() !== user.username %>
+            <small title="username"><%= user.username %></small>
+          <%/%>
+        </h2>
+      </div>
+
+      <div class="panel-body">
+        <p>
+          <%= _.icon("group") %> <%= user.tenant %><br>
+
+          <%? user.email %>
+            <%= _.icon("envelope") %> <%= user.email %><br>
+          <%/%>
+
+          <%? user.phone %>
+            <%= _.icon("phone") %> <%= user.phone %><br>
+          <%/%>
+        </p>
+      </div>
+
+      <table class="table table-condensed">
+        <tr>
+          <td>Status:</td>
+          <td><%= user.get_status() %></td>
+        </tr>
+        <tr>
+          <td>Last login:</td>
+          <td>
+            <%? user.last_sign_in_at %>
+              <%= user.last_sign_in_at.fromNow() %>
+            <% } else { %>
+              n/a
+            <%/%>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
+    <p>
+      <button type="button" class="btn btn-xs btn-info btn-edit">Edit</button>
+    </p>
+
+  </div>
+</div>
+
+

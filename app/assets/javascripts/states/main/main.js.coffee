@@ -58,3 +58,15 @@ Bixby.app.add_states
     url:    "team"
     views:  [ _bv.PageLayout, _bv.Team ]
     models: { users: _bm.UserList }
+
+  "team_user_view":
+    tab:    "user"
+    url:    "team/users/:user_id"
+    views:  [ _bv.PageLayout, _bv.TeamUser ]
+    models: { user: _bm.User }
+
+  "team_user_edit":
+    tab:    "user"
+    url:    "team/users/:user_id/edit"
+    views:  [ _bv.PageLayout, _bv.TeamUserEdit ]
+    models: { user: _bm.User }
