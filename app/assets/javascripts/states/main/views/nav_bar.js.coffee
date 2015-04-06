@@ -50,7 +50,7 @@ namespace "Bixby.view", (exports, top) ->
 
       "click a": (e) ->
         # hide the navbar-toggle on click (only visible on xs or sm screens)
-        if @$(".navbar-collapse.in").length > 0
+        if @$(".navbar-collapse.in").length > 0 && !$(e.target).hasClass("dropdown-toggle")
           @close_nav()
 
       "click a#logout": (e) ->
