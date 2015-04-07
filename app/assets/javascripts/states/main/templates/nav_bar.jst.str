@@ -29,7 +29,7 @@
         </li>
 
         <li class="tab monitoring dropdown split hidden-xs">
-          <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
+          <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
             <span class="caret"></span>
             <span class="sr-only">Toggle Monitoring Dropdown</span>
           </button>
@@ -49,7 +49,7 @@
         </li>
 
         <li class="tab runbooks dropdown split hidden-xs">
-          <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
+          <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
             <span class="caret"></span>
             <span class="sr-only">Toggle Runbooks Dropdown</span>
           </button>
