@@ -74,10 +74,28 @@ _.pass = (el, msg) ->
 _.fail = (el, msg) ->
   _.toggle_valid_input(el, msg, false)
 
-# Toggle pass/fail of the given input
-_.toggle_valid_input = (el, msg, valid, clear) ->
-  msg ||= ""
+_.clear_validation = (el) ->
+  _.toggle_valid_input(el, null, null, true)
 
+
+# Show inline validation spinner
+#
+# @param [Event] e             keypress event
+_.wait_valid = (e) ->
+  # skip if not a printable char, allowing backspace and delete (8 and 46)
+  return if (e.which != 8 && e.which != 46) && (e.which < 32 || e.key.length > 1)
+
+  el = $(e.target)
+  [feedback, valid_div, icon_span] = _.valid_els(el)
+  icon_span.removeClass("fa-check fa-times").addClass("fa fa-circle-o-notch fa-spin")
+
+
+# Extract the relevant input validation-related elements from the given el
+#
+# @param [Element|String] el
+#
+# @return [Array<Element>] feedback, valid_div, icon_span
+_.valid_els = (el) ->
   if _.isString(el)
     if el.lastIndexOf(".") >= 0
       el = el.substr(el.lastIndexOf(".")+1)
@@ -85,22 +103,32 @@ _.toggle_valid_input = (el, msg, valid, clear) ->
     icon_span = $("span.form-control-feedback.#{el}")
   else
     valid_div = $(el)
-    icon_span = null
+    icon_span = $(el).parent("div.form-group.has-feedback").find("span.form-control-feedback")
 
   feedback = valid_div.parents("div.has-feedback")
+
+  return [feedback, valid_div, icon_span]
+
+
+# Toggle pass/fail of the given input
+_.toggle_valid_input = (el, msg, valid, clear) ->
+  msg ||= ""
+
+  [feedback, valid_div, icon_span] = _.valid_els(el)
 
   # clear all validations
   if clear
     valid_div.removeClass("pass fail").html("")
-    icon_span.removeClass("fa fa-check fa-times") if icon_span
+    icon_span.removeClass("fa fa-check fa-times fa-spin fa-circle-o-notch") if icon_span
     feedback.removeClass("has-success has-error has-warning")
     return
 
   # set validations
   if valid
-    c = [ "fa fa-check", "fa-times", "pass", "fail", "has-success", "has-error" ]
+    # icon.add, icon.remove, valid.add, valid.remove, feedback.add, feedback.remove
+    c = [ "fa fa-check", "fa-spin fa-circle-o-notch fa-times", "pass", "fail", "has-success", "has-error" ]
   else
-    c = [ "fa fa-times", "fa-check", "fail", "pass", "has-error", "has-success" ]
+    c = [ "fa fa-times", "fa-spin fa-circle-o-notch fa-check", "fail", "pass", "has-error", "has-success" ]
 
   if icon_span
     icon_span.addClass(c.shift()).removeClass(c.shift())

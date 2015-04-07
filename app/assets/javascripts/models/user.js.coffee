@@ -43,8 +43,8 @@ namespace 'Bixby.model', (exports, top) ->
       otp_auth_user = @username + "@bixby"
       return "otpauth://totp/" + otp_auth_user + "?secret=" + @get("gauth_secret")
 
-    is_valid_username: (username, callback) ->
-      $.ajax @urlRoot + "/valid?username=" + username,
+    @is_valid_username: (username, callback) ->
+      $.ajax @prototype.urlRoot + "/valid?username=" + username,
         dataType: "json"
         success: callback
 
