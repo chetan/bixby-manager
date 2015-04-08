@@ -11,7 +11,7 @@ namespace "Bixby.view.monitoring", (exports, top) ->
           hidden_cb: (confirmed) =>
             if confirmed
               @check.destroy
-                succes: =>
+                success: =>
                   @host.update_check_config()
                   @state.redraw()
         c.render()
