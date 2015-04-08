@@ -7,12 +7,12 @@
 
       <h2>Create account</h2>
 
-      <form role="form">
+      <form role="form" autocomplete="off">
         <br/>
-        <%= include("main/_text_input", {name: "name", label: "NAME"}) %>
-        <%= include("main/_text_input", {name: "username", label: "USERNAME"}) %>
-        <%= include("main/_text_input", {name: "password", label: "PASSWORD", type: "password"}) %>
-        <%= include("main/_text_input", {name: "password_confirmation", label: "CONFIRM PASSWORD", type: "password"}) %>
+        <%= include("main/_text_input", {name: "name", label: "NAME", autocomplete: "off"}) %>
+        <%= include("main/_text_input", {name: "username", label: "USERNAME", autocomplete: "off"}) %>
+        <%= include("main/_text_input", {name: "password", label: "PASSWORD", type: "password", autocomplete: "off"}) %>
+        <%= include("main/_text_input", {name: "password_confirmation", label: "CONFIRM PASSWORD", type: "password", autocomplete: "off"}) %>
 
         <div class="form-group">
           <button type="button" class="btn btn-primary" id="create">Sign Up</button>
