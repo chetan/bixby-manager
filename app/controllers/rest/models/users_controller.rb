@@ -139,6 +139,8 @@ class Rest::Models::UsersController < ::Rest::BaseController
     user.invited_by_id = current_user.id
     user.save!
 
+    Token.create(user, "default")
+
     Archie::Mail.invite_user(user, current_user).deliver_later
 
     return render :json => {:success => true}

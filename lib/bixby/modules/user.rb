@@ -66,6 +66,8 @@ class User < API
     u.skip_confirmation!
     u.save!
 
+    Token.create(u, "default")
+
    return u
   end
 
