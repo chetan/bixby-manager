@@ -1,0 +1,38 @@
+
+<h1>Add User</h1>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+
+    <form autocomplete="off" role="form">
+
+      <!-- name -->
+      <%= include("main/_text_input", {name: "name", autocomplete: "off"}) %>
+
+      <!-- username -->
+      <%= include("main/_text_input", {name: "username", autocomplete: "off"}) %>
+
+      <!-- email -->
+      <%= include("main/_text_input", {name: "email", autocomplete: "off"}) %>
+
+      <!-- submit -->
+      <br/>
+      <div class="form-group">
+        <button type="button" class="btn btn-primary submit disabled">Send Invite</button>
+        <button type="button" class="btn btn-default cancel">Cancel</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        An invite email was sent to the email address with further instructions.
+      </div>
+    </div>
+  </div>
+</div>

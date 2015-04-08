@@ -1,8 +1,8 @@
 <p>Hello <%= @user.name || @user.email %>!</p>
 
-<p>Someone has invited you to Bixby, you can accept it through the link below.</p>
+<p><%= @invited_by ? @invited_by.display_name : "Someone" %> invited you to join their team on Bixby. To accept, use the link below.</p>
 
 <p><%= link_to 'Accept invitation', accept_invite_url(:token => @token) %></p>
 
-<p>If you don't want to accept the invitation, please ignore this email.</p>
-<p>Your account won't be created until you access the link above and set your password.</p>
+<p>If you don't want to accept the invitation, simply delete this email.</p>
+<p>Your account won't be activated until you access the link above and set your password.</p>

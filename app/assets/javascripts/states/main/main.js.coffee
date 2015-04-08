@@ -70,3 +70,8 @@ Bixby.app.add_states
     url:    "team/users/:user_id/edit"
     views:  [ _bv.PageLayout, _bv.TeamUserEdit ]
     models: { user: _bm.User }
+
+  "team_user_new":
+    tab:    "user"
+    url:    "team/users/new"
+    views:  [ _bv.PageLayout, _bv.TeamUserNew ]

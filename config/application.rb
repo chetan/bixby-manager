@@ -77,5 +77,10 @@ module Bixby
       g.orm :active_record
     end
 
+    # ActiveJob config
+    config.active_job.queue_adapter        = :sidekiq
+    config.active_job.queue_name_prefix    = ""
+    config.active_job.queue_name_delimiter = "."
+
   end
 end

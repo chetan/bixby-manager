@@ -9,4 +9,7 @@ class TeamController < UiController
     bootstrap User.includes(:org, :roles, :user_permissions).find(_id)
   end
 
+  def new
+  end
+
 end

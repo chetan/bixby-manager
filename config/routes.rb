@@ -69,6 +69,7 @@ Bixby::Application.routes.draw do
         post "assign_2fa_secret"
         post "forgot_password"
         put "reset_password"
+        post "create_invite"
         post "accept_invite"
       end
     end
@@ -118,6 +119,7 @@ Bixby::Application.routes.draw do
   get 'profile/enable_2fa' => "ui#default"
 
   get 'team'                => "team#index"
+  get 'team/users/new'      => "team#new"
   get 'team/users/:id/edit' => "team#show"
   get 'team/users/:id'      => "team#show"
 

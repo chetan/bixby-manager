@@ -17,6 +17,13 @@ namespace 'Bixby.model', (exports, top) ->
         dataType: "json"
         success: callback
 
+    @invite: (name, username, email, callbacks) ->
+      $.ajax "/rest/users/create_invite",
+        type: "POST",
+        data: _.csrf({name: name, username: username, email: email}),
+        error: callbacks.error
+        success: callbacks.success
+
     get_name: ->
       @get("name") || @get("username")
 

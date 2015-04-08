@@ -72,6 +72,8 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles, -> { includes :role_permissions }, :join_table => :users_roles
   has_many :user_permissions, -> { includes :permissions }
   # has_many :permissions, :through => :user_permissions
+  has_many :tokens, :dependent => :destroy
+  belongs_to :invited_by, :foreign_key => :invited_by_id, :class_name => User
 
   belongs_to :org, -> { includes :tenant }
   multi_tenant :via => :org

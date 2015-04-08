@@ -6,3 +6,6 @@ namespace "Bixby.view", (exports, top) ->
     template: "main/team"
 
     events: null
+
+    links:
+      "a.add_user": [ "team_user_new" ]

@@ -126,7 +126,22 @@ class Rest::Models::UsersController < ::Rest::BaseController
     user.password_confirmation = params[:user][:password_confirmation]
     user.save
 
-    return render :json => {:succes => true}
+    return render :json => {:success => true}
+  end
+
+  def create_invite
+    user = User.new
+    user.org_id = current_user.org_id
+    user.email = params[:email]
+    user.username = params[:username] || ""
+    user.invite_token = Archie.generate_token
+    user.invite_sent_at = user.invite_created_at = Time.new
+    user.invited_by_id = current_user.id
+    user.save!
+
+    Archie::Mail.invite_user(user, current_user).deliver_later
+
+    return render :json => {:success => true}
   end
 
   def accept_invite
@@ -147,7 +162,7 @@ class Rest::Models::UsersController < ::Rest::BaseController
     user.invite_accepted_at    = Time.new
     user.save
 
-    return render :json => {:succes => true}
+    return render :json => {:success => true}
   end
 
 end

@@ -1,6 +1,10 @@
 
 <h1>Team</h1>
 
+<p>
+  <a class="btn btn-sm btn-primary add_user" role="button">Add User</a>
+</p>
+
 <table class="table table-bordered team">
   <thead>
     <tr>
