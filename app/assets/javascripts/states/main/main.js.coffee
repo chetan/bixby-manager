@@ -6,6 +6,7 @@ Bixby.app.add_states
   "login":
     url:   "login"
     views: [ _bv.Login ]
+    anon:  true
 
     validate: ->
       # send to home if already logged in
@@ -17,22 +18,27 @@ Bixby.app.add_states
   "login_fail":
     url:   "/login/fail"
     views: [ _bv.Login ]
+    anon:  true
 
   "login_token":
     url:   "/login/verify_token"
     views: [ _bv.LoginToken ]
+    anon:  true
 
   "forgot":
     url:   "forgot_password"
     views: [ _bv.ForgotPassword ]
+    anon:  true
 
   "reset_password":
-    url: "reset_password"
+    url:   "reset_password"
     views: [ _bv.ResetPassword ]
+    anon:  true
 
   "accept_invite":
-    url: "accept_invite"
+    url:   "accept_invite"
     views: [ _bv.AcceptInvite ]
+    anon:  true
 
   "profile":
     tab:   "user"

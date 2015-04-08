@@ -172,8 +172,8 @@ class Stark.App
     state_data or= {}
     @load_bootstrap_data(state_data)
 
-    @login_route_state ||= @router.find_handler(@login_route).route.state_name
-    if !@current_user? && state_name != @login_route_state
+    if !@current_user? && target_state.prototype.anon != true
+      # if no current user and state does not allow anon users, send away
       @log "not logged in, sending to login page: #{@login_route}"
       @router.route(@login_route)
       return
