@@ -8,8 +8,6 @@ _.val = (el) ->
   el = $(el)
   if el.length
     el = $(el[0])
-  else
-    el = $(el)
 
   type = el.prop("type")
   if type == "checkbox" || type == "radio"
@@ -83,7 +81,7 @@ _.clear_validation = (el) ->
 # @param [Event] e             keypress event
 _.wait_valid = (e) ->
   # skip if not a printable char, allowing backspace and delete (8 and 46)
-  return if (e.which != 8 && e.which != 46) && (e.which < 32 || e.key.length > 1)
+  return if (e.which != 8 && e.which != 46) && (e.which < 32 || e.key.length > 1 || e.metaKey)
 
   el = $(e.target)
   [feedback, valid_div, icon_span] = _.valid_els(el)
