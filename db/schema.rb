@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224205640) do
+ActiveRecord::Schema.define(version: 20150409212854) do
 
   create_table "actions", force: :cascade do |t|
     t.integer  "trigger_id",  limit: 4,     null: false
@@ -369,8 +369,8 @@ ActiveRecord::Schema.define(version: 20150224205640) do
     t.datetime "deleted_at"
   end
 
-  add_index "tokens", ["org_id"], name: "fk_rails_25f1ffe905", using: :btree
-  add_index "tokens", ["user_id"], name: "fk_rails_6096b147cb", using: :btree
+  add_index "tokens", ["org_id"], name: "fk_rails_f5a6a8747e", using: :btree
+  add_index "tokens", ["user_id"], name: "fk_rails_77283ebadb", using: :btree
 
   create_table "trigger_histories", force: :cascade do |t|
     t.integer  "trigger_id", limit: 4,                            null: false
@@ -440,6 +440,7 @@ ActiveRecord::Schema.define(version: 20150224205640) do
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
     t.string   "encrypted_otp_secret",      limit: 255
     t.string   "encrypted_otp_secret_iv",   limit: 255
     t.string   "encrypted_otp_secret_salt", limit: 255

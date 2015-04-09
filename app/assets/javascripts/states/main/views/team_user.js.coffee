@@ -8,3 +8,8 @@ namespace "Bixby.view", (exports, top) ->
     events:
       "click .btn-edit": (e) ->
         @transition("team_user_edit", {user: @user})
+
+      "click .btn.delete": (e) ->
+        @user.destroy
+          success: =>
+            @transition("team")

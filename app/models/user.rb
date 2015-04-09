@@ -33,6 +33,7 @@
 # **`locked_at`**                  | `datetime`         |
 # **`created_at`**                 | `datetime`         |
 # **`updated_at`**                 | `datetime`         |
+# **`deleted_at`**                 | `datetime`         |
 # **`encrypted_otp_secret`**       | `string(255)`      |
 # **`encrypted_otp_secret_iv`**    | `string(255)`      |
 # **`encrypted_otp_secret_salt`**  | `string(255)`      |

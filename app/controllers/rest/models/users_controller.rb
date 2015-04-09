@@ -71,6 +71,16 @@ class Rest::Models::UsersController < ::Rest::BaseController
     restful user
   end
 
+  def destroy
+    user = User.find(_id)
+    if user.id == current_user.id then
+      return render :json => {:success => false, :error => "can't delete self"}, :status => 400
+    end
+
+    user.destroy
+    return render :json => {:success => true}
+  end
+
   def assign_2fa_secret
     user = User.find(params['user_id'])
     user.otp_secret = User.generate_otp_secret

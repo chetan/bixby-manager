@@ -4,7 +4,7 @@ namespace 'Bixby.model', (exports, top) ->
   class exports.User extends Stark.Model
     @key: "user"
     @props
-      _strings: ["name", "username", "email", "phone", "org", "tenant"]
+      _strings: ["name", "username", "email", "phone", "org", "tenant", "invited_by"]
       _dates:   ["created_at", "last_sign_in_at", "invite_created_at", "invite_accepted_at"]
       _ints:    ["invited_by_id"]
       _bools:   ["otp_required_for_login"]

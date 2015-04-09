@@ -19,6 +19,10 @@ module Bixby
           self[:install_token] = token.token
         end
 
+        if obj.invited_by then
+          self[:invited_by] = obj.invited_by.display_name
+        end
+
         self
       end
 

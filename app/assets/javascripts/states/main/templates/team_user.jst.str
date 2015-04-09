@@ -44,6 +44,13 @@
             <%/%>
           </td>
         </tr>
+
+        <%? user.invited_by %>
+          <tr>
+            <td>Invited By:</td>
+            <td><%= user.invited_by %></td>
+          </tr>
+        <%/%>
       </table>
 
     </div>
@@ -52,10 +59,18 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-4">
 
     <p>
       <button type="button" class="btn btn-xs btn-info btn-edit">Edit</button>
+
+      <%? user.get_status() == "Invite Pending" %>
+        <button type="button" class="btn btn-xs btn-warning delete pull-right">Cancel Invite</button>
+      <% } else if (user.id !== current_user.id) { %>
+        <button type="button" class="btn btn-xs btn-danger delete pull-right">Delete</button>
+      <%/%>
+
+
     </p>
 
   </div>

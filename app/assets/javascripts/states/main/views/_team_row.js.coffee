@@ -7,6 +7,7 @@ namespace "Bixby.view", (exports, top) ->
     links:
       "a.name":     [ "team_user_view", (el) -> { user: @user } ]
       "a.username": [ "team_user_view", (el) -> { user: @user } ]
+      "a.email":    [ "team_user_view", (el) -> { user: @user } ]
 
     events: null
 

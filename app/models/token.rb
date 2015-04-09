@@ -17,10 +17,10 @@
 #
 # ### Indexes
 #
-# * `fk_rails_25f1ffe905`:
-#     * **`org_id`**
-# * `fk_rails_6096b147cb`:
+# * `fk_rails_77283ebadb`:
 #     * **`user_id`**
+# * `fk_rails_f5a6a8747e`:
+#     * **`org_id`**
 #
 
 class Token < ActiveRecord::Base
