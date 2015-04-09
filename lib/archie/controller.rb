@@ -20,6 +20,12 @@ module Archie
         log_user_in(user)
         return AUTH_SUCCESS
       end
+
+      if user then
+        user.failed_attempts += 1
+        user.save
+      end
+
       return AUTH_ERROR
     end
 

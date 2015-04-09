@@ -38,6 +38,11 @@ module Archie
           Archie::Controller::AUTH_SUCCESS
 
         else
+          # token was not valid, auth failed
+          if user then
+            user.failed_attempts += 1
+            user.save
+          end
           Archie::Controller::AUTH_ERROR
         end
       end
