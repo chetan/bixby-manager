@@ -122,9 +122,11 @@ class Rest::Models::UsersController < ::Rest::BaseController
       return render :json => {:success => false, :error => "token expired"}, :status => 400
     end
 
-    user.password              = params[:user][:password]
-    user.password_confirmation = params[:user][:password_confirmation]
-    user.save
+    user.password               = params[:user][:password]
+    user.password_confirmation  = params[:user][:password_confirmation]
+    user.reset_password_token   = nil
+    user.reset_password_sent_at = nil
+    user.save!
 
     return render :json => {:success => true}
   end
