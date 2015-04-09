@@ -8,4 +8,4 @@
 # 25 threads is default
 :concurrency:  25
 :queues:
-  - ["schedules"]
+  - ["schedules", "mailers"]

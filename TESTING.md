@@ -12,7 +12,7 @@ Each of the following commands should be run in separate terminals (or tabs), in
 $ cd manager
 $ zeus start
 $ zeus s[erver]
-$ sidekiq -c 5 -e development -q schedules
+$ sidekiq -c 5 -e development -q schedules -q mailers
 ```
 
 ### agent:
