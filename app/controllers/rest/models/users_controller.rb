@@ -117,7 +117,7 @@ class Rest::Models::UsersController < ::Rest::BaseController
     user.reset_password_sent_at = Time.new
     user.save
 
-    Archie::Mail.forgot_password(user).deliver
+    Archie::Mail.forgot_password(user).deliver_later
     head 204
   end
 
