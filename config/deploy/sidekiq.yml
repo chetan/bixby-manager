@@ -5,7 +5,13 @@
 :logfile:      /var/www/bixby/shared/log/sidekiq.log
 # t=30 - timeout seconds before force shutdown when TERM is received
 :timeout:      30
-# 25 threads is default
 :concurrency:  25
 :queues:
   - ["schedules", "mailers"]
+
+development:
+  :daemon:  false
+  :concurrency: 5
+  :timeout: 5
+  :pidfile: nil
+  :logfile: nil
