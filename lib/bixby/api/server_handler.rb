@@ -17,7 +17,7 @@ module Bixby
     end
 
     def handle(json_req)
-      logger.debug { "handle(json_req)\n#{json_req.to_s}" }
+      logger.debug { "handle(json_req)\n#{json_req.to_s(false)}" } # change to true if full output is needed
 
       ret = handle_internal(json_req)
       if ret.kind_of? Bixby::JsonResponse or ret.kind_of? Bixby::FileDownload then
