@@ -178,8 +178,12 @@ group :development do
   gem "listen", "~> 2.0"
 
   # deployment
-  gem "capistrano",      "~>2.0", :require => false
-  gem "rvm-capistrano",           :require => false
+  gem "capistrano",      "~>3.0", :require => false
+  gem "capistrano-rails",         :require => false
+  gem "capistrano-bundler",       :require => false
+  gem "rvm1-capistrano3",         :require => false
+  gem "capistrano-friday",        :require => false
+  gem "capistrano-rails-console", :require => false
 
 end
 
