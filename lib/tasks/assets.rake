@@ -45,5 +45,5 @@ begin
     end
   end
 
-rescue LoadError => ex
+rescue LoadError
 end
