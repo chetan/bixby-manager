@@ -1,8 +1,8 @@
 ---
 :verbose:      false
 :daemon:       true
-:pidfile:      /var/www/bixby/shared/pids/sidekiq.pid
-:logfile:      /var/www/bixby/shared/log/sidekiq.log
+:pidfile:      /var/www/bixby/current/tmp/pids/sidekiq.pid
+:logfile:      /var/www/bixby/current/log/sidekiq.log
 # t=30 - timeout seconds before force shutdown when TERM is received
 :timeout:      30
 :concurrency:  25
