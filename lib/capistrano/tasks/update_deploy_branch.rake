@@ -1,5 +1,5 @@
 
-  # after 'deploy:create_symlink', 'deploy:update_deploy_branch'
+  after 'deploy:finished', 'deploy:update_deploy_branch'
 
   namespace :deploy do
     desc "Update the deploy branch"
