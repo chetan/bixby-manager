@@ -7,7 +7,7 @@
         rev   = fetch(:current_revision)
         cmds = ["git checkout -q deploy-#{stage}",
                 "git merge -q --ff-only #{rev}",
-                "git checkout master"]
+                "git checkout -q master"]
 
         if rev.nil? or rev.empty? then
           cmds.each do |cmd|
