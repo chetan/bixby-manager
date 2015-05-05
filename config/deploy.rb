@@ -34,6 +34,7 @@ after "deploy:restart", "deploy:cleanup"
 set :conditionally_migrate, false
 # after 'deploy:update_code', 'deploy:migrate'
 
+after "deploy:assets:precompile", "sidekiq:link_sidekiq_assets"
 after "deploy:published", "bixby:restart"
 
 # namespace :deploy do
