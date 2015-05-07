@@ -52,7 +52,7 @@ class ScheduledCommandMailer < ActionMailer::Base
       if @total_elapsed < 60 then
         sprintf("%0.2f", @total_elapsed) + " sec"
       else
-        ChronicDuration.output(@total_elapsed.to_i, :short)
+        ChronicDuration.output(@total_elapsed.to_i, :format => :short)
       end
     end
   end

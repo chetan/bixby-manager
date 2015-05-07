@@ -112,7 +112,7 @@ class CommandLog < ActiveRecord::Base
     if self.time_taken < 60 then
       sprintf("%0.2f", self.time_taken) + " sec"
     else
-      ChronicDuration.output(self.time_taken.to_i, :short)
+      ChronicDuration.output(self.time_taken.to_i, :format => :short)
     end
   end
 
