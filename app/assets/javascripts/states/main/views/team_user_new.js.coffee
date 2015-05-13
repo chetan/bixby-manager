@@ -30,6 +30,9 @@ namespace "Bixby.view", (exports, top) ->
             $("div#success.modal").modal()
 
 
+      "hidden.bs.modal div#success.modal": (e) ->
+        @transition("team")
+
       "keydown input#username": _.debounceR 50, true, _.wait_valid
 
       "keyup input#username": (e) ->
