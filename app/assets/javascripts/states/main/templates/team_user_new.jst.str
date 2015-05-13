@@ -7,10 +7,10 @@
     <form autocomplete="off" role="form">
 
       <!-- name -->
-      <%= include("main/_text_input", {name: "name", autocomplete: "off"}) %>
+      <%= include("main/_text_input", {name: "name", autocomplete: "off", placeholder: "Optional"}) %>
 
       <!-- username -->
-      <%= include("main/_text_input", {name: "username", autocomplete: "off"}) %>
+      <%= include("main/_text_input", {name: "username", autocomplete: "off", placeholder: "Optional"}) %>
 
       <!-- email -->
       <%= include("main/_text_input", {name: "email", autocomplete: "off"}) %>
