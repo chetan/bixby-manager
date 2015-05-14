@@ -37,10 +37,25 @@ namespace 'Bixby.model', (exports, top) ->
       @schedule_type == 2
 
     alert_on_success: ->
-      return (@alert_on & 1) == 1
+      return @alert_on_x(1)
 
     alert_on_error: ->
-      return (@alert_on & 2) == 2
+      return @alert_on_x(2)
+
+    alert_on_first5: ->
+      return @alert_on_x(4)
+
+    alert_on_stdout: ->
+      return @alert_on_x(8)
+
+    alert_on_stderr: ->
+      return @alert_on_x(16)
+
+    alert_on_output: ->
+      return @alert_on_x(32)
+
+    alert_on_x: (x) ->
+      return (@alert_on & x) == x
 
     command_log: ->
       if last = @get("last_run_log")

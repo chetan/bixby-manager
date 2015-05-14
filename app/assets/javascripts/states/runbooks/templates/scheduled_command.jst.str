@@ -109,6 +109,10 @@
                 <ul class="alert_on">
                   <%? scheduled_command.alert_on_success() %><li>Success</li><%/%>
                   <%? scheduled_command.alert_on_error() %><li>Error (Non-zero exit)</li><%/%>
+                  <%? scheduled_command.alert_on_first5() %><li>First 5 Runs</li><%/%>
+                  <%? scheduled_command.alert_on_stdout() %><li>Output on STDOUT</li><%/%>
+                  <%? scheduled_command.alert_on_stderr() %><li>Output on STDERR</li><%/%>
+                  <%? scheduled_command.alert_on_output() %><li>Any Output</li><%/%>
                 </ul>
               </td>
             </tr>
