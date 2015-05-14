@@ -107,6 +107,7 @@ class ScheduledCommand < ActiveRecord::Base
   end
 
   def get_alert_users
+    return nil if self.alert_users.blank?
     ids = self.alert_users.split(/,/).map{ |s| s.to_i }
     return nil if ids.blank?
     User.where(:id => ids)

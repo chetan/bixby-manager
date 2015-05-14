@@ -34,6 +34,35 @@
       </div>
       <table class="table">
         <tbody>
+
+          <%? scheduled_command.is_cron() %>
+          <tr>
+            <td>Status</td>
+            <td>
+              <%? scheduled_command.enabled %>
+                <span class="success">Enabled</span>
+              <% } else { %>
+                <span class="danger">Disabled</span>
+              <%/%>
+            </td>
+          </tr>
+          <%/%>
+          <tr>
+            <td>Last Run</td>
+            <td><%= date(scheduled_command.last_run_at) || "" %> <%= status() %></td>
+          </tr>
+          <tr>
+            <td>Next Run</td>
+            <td>
+              <%= date(scheduled_command.next_run) || "n/a" %>
+              <%? scheduled_command.next_run %>
+                <%= _.icon("clock-o", "fa-lg warning", "Scheduled") %>
+              <%/%>
+            </td>
+          </tr>
+
+          <tr class="divider"><td></td><td></td></tr>
+
           <tr>
             <td>Owner</td>
             <td><%= scheduled_command.owner %></td>
@@ -66,31 +95,31 @@
               <%/%>
             </td>
           </tr>
-          <tr>
-            <td>Last Run</td>
-            <td><%= date(scheduled_command.last_run) || "" %> <%= status() %></td>
-          </tr>
-          <tr>
-            <td>Next Run</td>
-            <td>
-              <%= date(scheduled_command.next_run) || "n/a" %>
-              <%? scheduled_command.next_run %>
-                <%= _.icon("clock-o", "fa-lg warning", "Pending") %>
-              <%/%>
-            </td>
-          </tr>
 
-          <%? scheduled_command.is_cron() %>
-          <tr>
-            <td>Status</td>
-            <td>
-              <%? scheduled_command.enabled %>
-                <span class="success">Enabled</span>
-              <% } else { %>
-                <span class="danger">Disabled</span>
-              <%/%>
-            </td>
-          </tr>
+          <%? scheduled_command.alert_on === 0 %>
+            <tr>
+              <td>Alert On</td>
+              <td>No alerts configured</td>
+            </tr>
+
+          <%} else {%>
+            <tr>
+              <td>Alert On</td>
+              <td>
+                <ul class="alert_on">
+                  <%? scheduled_command.alert_on_success() %><li>Success</li><%/%>
+                  <%? scheduled_command.alert_on_error() %><li>Error (Non-zero exit)</li><%/%>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>Alert Users</td>
+              <td><%= scheduled_command.alert_user_names || "" %></td>
+            </tr>
+            <tr>
+              <td>Alert Emails</td>
+              <td><%= scheduled_command.alert_emails || "" %></td>
+            </tr>
           <%/%>
 
         </tbody>

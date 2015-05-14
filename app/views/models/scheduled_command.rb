@@ -18,6 +18,11 @@ module Bixby
         self[:owner] = obj.owner.name
         self[:command] = obj.command.display_name
 
+        users = obj.get_alert_users
+        if not users.blank? then
+          self[:alert_user_names] = users.map{ |u| u.display_name }.join(", ")
+        end
+
         if obj.cron? || obj.scheduled_at then
           self[:next_run] = obj.scheduled_at
         end

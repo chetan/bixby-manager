@@ -5,7 +5,7 @@ namespace 'Bixby.model', (exports, top) ->
 
     @key: "scheduled_command"
     @props
-      _strings: ["agent_ids", "owner", "stdin", "args", "schedule", "alert_users", "alert_emails", "command", "hosts", "org", "status"]
+      _strings: ["agent_ids", "owner", "stdin", "args", "schedule", "alert_users", "alert_emails", "command", "hosts", "org", "status", "alert_user_names"]
       _ints:    ["command_id", "created_by", "schedule_type", "alert_on", "run_count", "last_run_status"]
       _dates:   ["created_at", "updated_at", "deleted_at", "scheduled_at", "completed_at", "last_run_at", "next_run"]
       _bools:   ["enabled"]
