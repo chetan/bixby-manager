@@ -70,9 +70,16 @@ class Scheduler
         3 # some failed
       end
 
+      any_stdout = logs.count{ |l| !l.stdout.blank? } > 0
+      any_stderr = logs.count{ |l| !l.stderr.blank? } > 0
+
       # Fire alerts if necessary
-      if (success && scheduled_command.alert_on_success?) ||
-          (!success && scheduled_command.alert_on_error?) then
+      if (success && scheduled_command.alert_on_success?) ||                          # success
+          (!success && scheduled_command.alert_on_error?) ||                          # error
+          (scheduled_command.run_count <= 5 && scheduled_command.alert_on_first5?) || # first 5 runs
+          (any_stdout && scheduled_command.alert_on_stdout?) ||                       # stdout
+          (any_stderr && scheduled_command.alert_on_stderr?) ||                       # stderr
+          ((any_stderr || any_stdout) && scheduled_command.alert_on_output?) then     # any output
 
         total_elapsed = time_end - time_start
         ScheduledCommandMailer.alert(scheduled_command, logs, time_scheduled, time_start, total_elapsed).deliver
