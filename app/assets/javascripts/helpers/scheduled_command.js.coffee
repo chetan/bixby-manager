@@ -17,7 +17,7 @@ namespace 'Bixby.helpers', (exports, top) ->
         when 1
           @scheduled_command.schedule
         when 2
-          @scheduled_command.scheduled_at.format("L HH:mm:ss")
+          @format_datetime(@scheduled_command.scheduled_at)
 
     status: ->
       switch @scheduled_command.status
@@ -27,7 +27,3 @@ namespace 'Bixby.helpers', (exports, top) ->
           return _.icon("times", "fa-lg danger", "Fail")
         else
           ""
-
-    date: (date) ->
-      if date
-        return date.format("L HH:mm:ss")

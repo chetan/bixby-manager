@@ -28,3 +28,7 @@ _.extend Stark.View.helpers,
 
   format_datetime: (t) ->
     return Bixby.app.current_user.format_datetime(t)
+
+  format_relative_time: (t) ->
+    return "" if !t
+    return moment(t).fromNow()

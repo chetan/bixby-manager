@@ -49,12 +49,19 @@
           <%/%>
           <tr>
             <td>Last Run</td>
-            <td><%= date(scheduled_command.last_run_at) || "" %> <%= status() %></td>
+            <td>
+              <span title="<%= format_relative_time(scheduled_command.last_run_at) %>">
+                <%= format_datetime(scheduled_command.last_run_at) || "" %>
+              </span>
+              <%= status() %>
+            </td>
           </tr>
           <tr>
             <td>Next Run</td>
             <td>
-              <%= date(scheduled_command.next_run) || "n/a" %>
+              <span title="<%= format_relative_time(scheduled_command.next_run) %>">
+                <%= format_datetime(scheduled_command.next_run) || "n/a" %>
+              </span>
               <%? scheduled_command.next_run %>
                 <%= _.icon("clock-o", "fa-lg warning", "Scheduled") %>
               <%/%>

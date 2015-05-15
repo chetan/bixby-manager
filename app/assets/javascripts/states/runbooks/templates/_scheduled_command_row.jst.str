@@ -8,13 +8,18 @@
     <%? scheduled_command.is_once() && scheduled_command.get("deleted_at") %>
       Canceled <%= _.icon("times", "fa-lg warning", "Canceled") %>
     <%} else { %>
-      <%= date(scheduled_command.last_run_at) || "" %>  <%= status() %>
+      <span title="<%= format_relative_time(scheduled_command.last_run_at) %>">
+        <%= format_datetime(scheduled_command.last_run_at) || "" %>
+      </span>
+      <%= status() %>
     <%/%>
   </td>
 
   <%? state.page_tab !== "history" %>
   <td>
-    <%= date(scheduled_command.next_run) || "n/a" %>
+    <span title="<%= format_relative_time(scheduled_command.next_run) %>">
+      <%= format_datetime(scheduled_command.next_run) || "n/a" %>
+    </span>
   </td>
   <%/%>
 </tr>
