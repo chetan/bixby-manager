@@ -93,6 +93,9 @@ namespace 'Bixby.model', (exports, top) ->
     @key: "scheduled_commands"
     url: "/rest/scheduled_commands"
 
+    comparator: (cmd) ->
+      cmd.scheduled_at || cmd.id
+
   class exports.ScheduledCommandHistoryList extends Stark.Collection
     model: exports.ScheduledCommand
     @key: "scheduled_commands"
