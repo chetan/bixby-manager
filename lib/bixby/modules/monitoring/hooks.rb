@@ -59,7 +59,7 @@ class Monitoring < API
             if action.alert? then
               # notify
               oncall = OnCall.find(action.target_id)
-              MonitoringMailer.alert(metric, trigger, oncall.current_user).deliver
+              MonitoringMailer.alert(metric, trigger, oncall.current_user).deliver_later
 
             elsif action.exec? then
               # run command
@@ -84,7 +84,7 @@ class Monitoring < API
             if action.alert? then
               # notify
               oncall = OnCall.find(action.target_id)
-              MonitoringMailer.alert(metric, trigger, oncall.current_user).deliver
+              MonitoringMailer.alert(metric, trigger, oncall.current_user).deliver_later
             end
             # we ignore exec actions for now
           end
