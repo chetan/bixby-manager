@@ -58,7 +58,7 @@ class Scheduler
       end
 
       logs = responses.map{ |r| r.log }
-      success = logs.count{ |l| l.success? } == logs.size
+      success = logs.count{ |l| l.success? }
 
       # set status
       scheduled_command.last_run_at = time_start
@@ -74,6 +74,7 @@ class Scheduler
       any_stderr = logs.count{ |l| !l.stderr.blank? } > 0
 
       # Fire alerts if necessary
+      success = (logs.size == success) # get a bool for testing alerts
       if (success && scheduled_command.alert_on_success?) ||                          # success
           (!success && scheduled_command.alert_on_error?) ||                          # error
           (scheduled_command.run_count <= 5 && scheduled_command.alert_on_first5?) || # first 5 runs
