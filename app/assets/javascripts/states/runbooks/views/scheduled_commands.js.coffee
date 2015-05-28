@@ -19,6 +19,9 @@ namespace "Bixby", (exports, top) ->
             "scheduled_commands"
           @transition(new_state)
 
+    links:
+      "a.create": [ "runbooks" ]
+
     after_render: ->
       @tab = @state.page_tab
       @ui.tab[@tab].parent().addClass("active")
