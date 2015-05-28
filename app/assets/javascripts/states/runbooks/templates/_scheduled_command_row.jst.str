@@ -11,7 +11,7 @@
       <span title="<%= format_relative_time(scheduled_command.last_run_at) %>">
         <%= format_datetime(scheduled_command.last_run_at) || "" %>
       </span>
-      <%= status() %>
+      <%= last_run_status() %>
     <%/%>
   </td>
 

@@ -19,11 +19,10 @@ namespace 'Bixby.helpers', (exports, top) ->
         when 2
           @format_datetime(@scheduled_command.scheduled_at)
 
-    status: ->
-      switch @scheduled_command.status
-        when "success"
-          return _.icon("check", "fa-lg success", "Success")
-        when "fail"
-          return _.icon("times", "fa-lg danger", "Fail")
-        else
-          ""
+    last_run_status: ->
+      return "" if !@scheduled_command.last_run_status
+
+      if @scheduled_command.last_run_status == 1
+        return _.icon("check", "fa-lg success", "Success")
+      else
+        return _.icon("times", "fa-lg danger", "Fail")
