@@ -5,6 +5,8 @@ require 'setup/sidekiq_mock_redis'
 module Bixby
 class Test::Modules::Monitoring < Bixby::Test::TestCase
 
+  include ActiveJob::TestHelper
+
   def setup
     super
     Resque.redis = MockRedis.new
@@ -78,8 +80,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     # try again, this should generate an email
     put_check_result()
 
-    refute_empty ActionMailer::Base.deliveries
-    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_enqueued_jobs 1
 
     # check that history was recorded
     th = TriggerHistory.all
@@ -93,9 +94,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     # if we alert again, there should be no state change
     put_check_result()
-
-    refute_empty ActionMailer::Base.deliveries
-    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_enqueued_jobs 1
     assert_equal 1, TriggerHistory.all.size
 
     # now modify the alert so it returns to normal on next put
@@ -103,7 +102,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     t.save!
 
     put_check_result()
-    assert_equal 2, ActionMailer::Base.deliveries.size
+    assert_enqueued_jobs 2
     assert_equal 2, TriggerHistory.all.size
 
     th = TriggerHistory.last
@@ -113,14 +112,14 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     # make sure we don't alert again
     put_check_result()
-    assert_equal 2, ActionMailer::Base.deliveries.size
+    assert_enqueued_jobs 2
     assert_equal 2, TriggerHistory.all.size
   end
 
   def test_alerting_on_status
     setup_trigger()
     put_check_result("CRITICAL")
-    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_enqueued_jobs 1
     assert_equal 1, TriggerHistory.all.size
   end
 
@@ -130,7 +129,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
 
     # now both triggers should fire which means 2 emails?
     put_check_result()
-    assert_equal 2, ActionMailer::Base.deliveries.size
+    assert_enqueued_jobs 2
     assert_equal 2, TriggerHistory.all.size
 
     # only the CRIT should fire when: metric=OK, WARN&CRIT triggers attached
@@ -140,7 +139,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     t2.save!
 
     put_check_result()
-    assert_equal 3, ActionMailer::Base.deliveries.size
+    assert_enqueued_jobs 3
     assert_equal 3, TriggerHistory.all.size
   end
 
