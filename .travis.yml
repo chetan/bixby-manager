@@ -14,8 +14,8 @@ after_script:
   - "bundle exec brakeman -q"
 
 rvm:
-  - 2.1.5
-  - 2.2.0
+  - 2.1.6
+  - 2.2.2
 
 branches:
   only:
