@@ -10,6 +10,8 @@ require "sidekiq/testing/inline"
 module Bixby::Test::Modules::SchedulerDrivers
   class SidekiqDriver < Bixby::Test::TestCase
 
+    include ActiveJob::TestHelper
+
     class Foobar
       def baz(params)
       end
@@ -71,6 +73,15 @@ module Bixby::Test::Modules::SchedulerDrivers
         interval == 30 && job.klass = Foobar && job.method.to_s == "baz"
       }
       Bixby::Scheduler::RecurringJob.perform(*args)
+    end
+
+    def test_scheduled_command_job
+      res = Bixby::CommandResponse.new
+      res.log = CommandLog.new
+      Bixby::RemoteExec.any_instance.expects(:exec).returns(res)
+      sc = FactoryGirl.create(:scheduled_command)
+      Bixby::Scheduler::ScheduledCommandJob.perform(sc)
+      assert_enqueued_jobs 1
     end
 
     def test_models_passed_via_id

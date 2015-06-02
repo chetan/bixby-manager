@@ -83,7 +83,7 @@ class Scheduler
           ((any_stderr || any_stdout) && scheduled_command.alert_on_output?) then     # any output
 
         total_elapsed = time_end - time_start
-        ScheduledCommandMailer.alert(scheduled_command, logs, time_scheduled, time_start, total_elapsed).deliver_later
+        ScheduledCommandMailer.alert(scheduled_command, logs, time_scheduled.to_i, time_start.to_i, total_elapsed).deliver_later
       end
 
       scheduled_command.save

@@ -100,6 +100,17 @@ FactoryGirl.define do
     command "cat"
   end
 
+  factory :scheduled_command do
+    association :org
+    agent_ids { FactoryGirl.create(:agent).id.to_s }
+    association :command
+    association :created_by, :factory => :user
+    schedule_type 2
+    scheduled_at Time.new-1
+    enabled true
+    alert_on 35 # success, error, any output
+    alert_users { User.first.id.to_s }
+  end
 
   factory :tenant do
     password SCrypt::Password.create("test").to_s
@@ -108,7 +119,7 @@ FactoryGirl.define do
   end
 
   factory :user do
-    association :org
+    org { Org.first || FactoryGirl.create(:org) }
     username { generate(:username) }
     email { generate(:email_id) }
     password "foobar123"

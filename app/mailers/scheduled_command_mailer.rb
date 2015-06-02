@@ -71,6 +71,9 @@ class ScheduledCommandMailer < ActionMailer::Base
     @time_start = time_start
     @total_elapsed = total_elapsed
 
+    @time_scheduled = Time.at(@time_scheduled) if @time_scheduled.kind_of? Fixnum
+    @time_start     = Time.at(@time_start)     if @time_start.kind_of? Fixnum
+
     cmd = scheduled_command.command
     @script = "#{cmd.bundle.path}/bin/#{cmd.command}"
     @command_name = !cmd.name.blank? ? cmd.name : @script
