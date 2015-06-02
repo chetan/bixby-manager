@@ -104,12 +104,26 @@ FactoryGirl.define do
     association :org
     agent_ids { FactoryGirl.create(:agent).id.to_s }
     association :command
-    association :created_by, :factory => :user
+    association :owner, :factory => :user
     schedule_type 2
     scheduled_at Time.new-1
     enabled true
     alert_on 35 # success, error, any output
     alert_users { User.first.id.to_s }
+  end
+
+  factory :command_log do
+    org { Org.first || FactoryGirl.create(:org) }
+    user { User.first || create(:user) }
+    agent { Agent.first || create(:agent) }
+    command { Command.first || create(:command) }
+    scheduled_command { ScheduledCommand.first || create(:scheduled_command) }
+    run_id 1
+    exec_status true
+    exec_code nil
+    status 0
+    requested_at Time.new
+    time_taken 10.5
   end
 
   factory :tenant do

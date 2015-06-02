@@ -29,6 +29,7 @@ module Bixby::Test::Modules::SchedulerDrivers
       super
       toggle_inline_testing(false)
       Sidekiq.redis{ |r| r.flushdb }
+      ActionMailer::Base.deliveries.clear
     end
 
     def test_schedule_at
@@ -76,12 +77,18 @@ module Bixby::Test::Modules::SchedulerDrivers
     end
 
     def test_scheduled_command_job
-      res = Bixby::CommandResponse.new
-      res.log = CommandLog.new
-      Bixby::RemoteExec.any_instance.expects(:exec).returns(res)
       sc = FactoryGirl.create(:scheduled_command)
+      res = Bixby::CommandResponse.new
+      res.log = FactoryGirl.create(:command_log)
+
+      Bixby::RemoteExec.any_instance.expects(:exec).times(2).returns(res)
       Bixby::Scheduler::ScheduledCommandJob.perform(sc)
       assert_enqueued_jobs 1
+
+      perform_enqueued_jobs do
+        Bixby::Scheduler::ScheduledCommandJob.perform(sc)
+        assert_equal 1, ActionMailer::Base.deliveries.size
+      end
     end
 
     def test_models_passed_via_id

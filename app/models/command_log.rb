@@ -52,6 +52,7 @@ class CommandLog < ActiveRecord::Base
   belongs_to :user
   belongs_to :agent
   belongs_to :command
+  belongs_to :scheduled_command
 
   serialize :env, JSONColumn.new
 
