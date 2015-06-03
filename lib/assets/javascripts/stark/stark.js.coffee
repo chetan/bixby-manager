@@ -70,6 +70,7 @@ class Stark.App
         # TODO we don't properly pass bootstrapped data into the default route so for now just redir
         # return @router.route(@default_route)
         window.location = @default_route
+        return # avoid race condition
 
       @log "sending to login page: #{@login_route}"
       @router.route(@login_route)
@@ -277,6 +278,8 @@ class Stark.App
 
     @current_user = data.current_user
     _.extend state_data, data
+
+    # @log "loaded bootstrapped data", data
 
     # clear any bootstrapped data, but store a backup copy
     @bootstrap_data = data
