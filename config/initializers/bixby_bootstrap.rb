@@ -1,5 +1,4 @@
 
-
 # Rails.logger.info "$0: #{$0}"
 
 # this (IF statement) is mainly to skip loading bixby-related coded when using
@@ -9,11 +8,14 @@
 # and our actual processes are forked from there. don't bootstrap for slaves!
 is_zeus_slave = ($0 =~ /zeus slave/)
 
+is_rake       = ($0 =~ /rake/)
+# is_sidekiq    = (!Sidekiq.server?.nil?)
+
 if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
   not(Module.const_defined?(:Spork))) then
 
   # Disable logging to STDOUT when running rake commands
-  if $0 =~ /rake/ then # && ARGV.find{ |a| a =~ /(bixby|\-T)/ } then
+  if is_rake then # && ARGV.find{ |a| a =~ /(bixby|\-T)/ } then
     logger = Logging.logger.root
     old_log_appenders = logger.appenders
     logger.clear_appenders
@@ -100,6 +102,8 @@ if !is_zeus_slave && (Rails.env != "test" or ENV["BOOTSTRAPNOW"] or
 
   # Start EventMachine/pubsub server
   if ENV["BIXBY_SKIP_EM"] != "1" then
+    # Started for all processes because even if not running in the webserver-context,
+    # we still receive replies to exec requests via this channel.
     Bixby::AgentRegistry.redis_channel.start!
   end
 

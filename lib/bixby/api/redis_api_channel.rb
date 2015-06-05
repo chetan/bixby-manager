@@ -59,6 +59,8 @@ module Bixby
         return
       end
 
+      logger.info "Starting Agent PubSub Channel"
+
       if EM.reactor_running? then
         logger.debug "EM already running, starting pubsub on next tick"
         EM.next_tick {
