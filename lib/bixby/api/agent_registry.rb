@@ -82,7 +82,7 @@ module Bixby
       #
       # @return [String] host the agent is on
       def find(agent)
-        agent_host = Sidekiq.redis { |c| c.hget("bixby:agents", agent_id(agent)) }
+        return Sidekiq.redis { |c| c.hget("bixby:agents", agent_id(agent)) }
       end
 
       # Execute a JsonRequest on the given Agent via the given Host. Returns
