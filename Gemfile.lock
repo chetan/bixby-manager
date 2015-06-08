@@ -138,7 +138,7 @@ GEM
       debug_inspector (>= 0.0.1)
     bitfields (0.5.2)
     bixby-auth (0.1.1)
-    bixby-common (0.6.4)
+    bixby-common (0.6.5)
       bixby-auth (~> 0.1)
       faye-websocket (~> 0.7)
       httpi (~> 2.1)
