@@ -106,7 +106,12 @@ Bixby::Application.routes.draw do
   # These routes serve up HTML for bootstrapping the app, i.e., on initial
   # navigation to the app.
 
-  get '/install', :to => redirect(ApplicationController.helpers.asset_path("install.sh"))
+  begin
+    get '/install', :to => redirect(ApplicationController.helpers.asset_path("install.sh"))
+  rescue Sprockets::Rails::Helper::AssetAliasUsed => ex
+    # should only get thrown in dev when running under zeus
+    get '/install', :to => redirect(ApplicationController.helpers.asset_path("install.sh.txt"))
+  end
 
   get 'forgot_password' => "application#default_route"
   get 'reset_password'  => "application#default_route"
