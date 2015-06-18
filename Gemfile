@@ -120,7 +120,6 @@ group :assets do
   gem 'haml_assets'
   gem 'uglifier'
   gem 'font-awesome-rails'
-  gem 'sprockets-font_compressor', :require => false
   gem 'zopfli-bin'
 
   # execjs prefers ruby racer (needed by uglifier and coffee-script)

@@ -491,9 +491,6 @@ GEM
       ffi
     sprockets (3.2.0)
       rack (~> 1.0)
-    sprockets-font_compressor (1.1.3)
-      rails (~> 4.0)
-      rake-hooks
     sprockets-jst-str (1.0.0)
       sprockets (>= 2.0.3)
       tilt (>= 1.3.3)
@@ -663,7 +660,6 @@ DEPENDENCIES
   simplecov-console!
   simplecov-html
   sinatra
-  sprockets-font_compressor
   sprockets-jst-str
   sprockets-rails
   sqlite3
