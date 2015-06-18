@@ -311,7 +311,7 @@ GEM
     mime-types (2.6.1)
     mini_portile (0.6.2)
     minitest (5.7.0)
-    mixlib-shellout (2.0.1)
+    mixlib-shellout (2.1.0)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mock_redis (0.14.0)
@@ -542,7 +542,7 @@ GEM
     websocket-extensions (0.1.2)
     xray (1.1)
     yard (0.8.7.6)
-    zopfli-bin (0.1.0)
+    zopfli-bin (0.2.0)
       mixlib-shellout
 
 PLATFORMS
