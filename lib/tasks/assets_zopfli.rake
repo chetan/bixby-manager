@@ -30,10 +30,6 @@ begin
     end
   end
 
-  after 'assets:precompile' do
-    compress_with_zopfli()
-  end
-
   namespace :assets do
     desc "[re-]compress assets using the zopfli compressor"
     task :zopfli do

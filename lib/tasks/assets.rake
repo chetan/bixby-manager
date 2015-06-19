@@ -1,8 +1,8 @@
 
-begin
-  require 'sprockets-font_compressor'
-  require 'rake/hooks'
+# Customize js & sass compressors
 
+begin
+  require 'rake/hooks'
 
   before 'assets:precompile' do
     # remove all comments
@@ -25,24 +25,6 @@ begin
     Uglifier::DEFAULTS[:output][:ascii_only] = true
     # further fix for select2
     Uglifier::DEFAULTS[:output][:quote_keys] = true
-  end
-
-  # create non-digest versions of files just in case
-  after 'assets:precompile' do
-    logger = Module.const_defined?("Logging".to_sym) ? ::Logging.logger["Assets::PreCompile"] : Rails.logger
-
-    asset_path = File.join(Rails.root, "public", Rails.application.config.assets.prefix)
-    manifest = File.join(asset_path, "manifest.json")
-
-    files = Dir.glob(File.join(asset_path, "**/**"))
-    files.each do |f|
-      if f =~ /(\-[a-z0-9]{32})/ then
-        fn = f.gsub(/(\-[a-z0-9]{32})/, '')
-        next if fn == manifest
-        logger.info "Writing #{fn}"
-        FileUtils.copy_file(f, fn)
-      end
-    end
   end
 
 rescue LoadError

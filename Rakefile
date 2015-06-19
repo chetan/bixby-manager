@@ -7,3 +7,9 @@ require 'rake'
 require "ext/rake_disable_logging"
 
 Bixby::Application.load_tasks
+
+# create non-digest versions of files just in case
+after 'assets:precompile' do
+  Rake::Task["assets:zopfli"].invoke
+  Rake::Task["assets:shorten_filenames"].invoke
+end
