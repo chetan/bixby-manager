@@ -11,7 +11,6 @@ set :default_stage, "staging"
 set :deploy_to, "/var/www/#{fetch(:application)}"
 set :deploy_via, :remote_cache
 set :bundle_without, [:development, :test]
-set :bundle_dir, "/var/www/bixby/shared/gems/#{fetch(:rvm_ruby_string)}"
 set :rails_env, "production"
 
 set :format, :pretty
@@ -27,7 +26,7 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
 
 
 # cleanup on every deploy
-set :keep_releases, 10
+set :keep_releases, 5
 after "deploy:restart", "deploy:cleanup"
 
 # always run migrations
