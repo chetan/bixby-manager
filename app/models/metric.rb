@@ -39,7 +39,7 @@ class Metric < ActiveRecord::Base
     mem.usage
     fs.disk.usage
     net.rx.bytes net.tx.bytes
-  }
+  }.inject({}){ |m, k| m[k] = 1; m }
 
   module Status
     UNKNOWN  = 0
@@ -168,6 +168,13 @@ class Metric < ActiveRecord::Base
 
   def timeout?
     self.status == Status::TIMEOUT
+  end
+
+  def self.overview_filter
+    cutoff = 2.days.ago
+    proc { |m|
+      !(Metric::OVERVIEW.include?(m.key) && (m.key !~ /^fs/ || m.updated_at > cutoff))
+    }
   end
 
 

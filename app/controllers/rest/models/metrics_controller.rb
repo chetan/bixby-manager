@@ -31,17 +31,13 @@ class Rest::Models::MetricsController < ::Rest::BaseController
     if params[:host_id]
       # pull summary metrics for this host
       host = Host.find(_id(:host_id))
-      metrics = Metric.metrics_for_host(host) do |m|
-        !Metric::OVERVIEW.include?(m.key)
-      end
+      metrics = Metric.metrics_for_host(host, &Metric.overview_filter)
 
     else
       # pull summary metrics for all hosts
       hosts = Host.for_user(current_user)
       checks = Check.where(:host_id => hosts)
-      metrics = Bixby::Metrics.new.get_for_checks(checks, Time.new-86400, Time.new, {}, "sum", "1h-avg") do |m|
-        !Metric::OVERVIEW.include?(m.key)
-      end
+      metrics = Bixby::Metrics.new.get_for_checks(checks, Time.new-86400, Time.new, {}, "sum", "1h-avg", &Metric.overview_filter) 
     end
 
     restful metrics

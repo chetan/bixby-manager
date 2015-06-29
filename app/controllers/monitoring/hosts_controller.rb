@@ -8,9 +8,7 @@ class Monitoring::HostsController < Monitoring::BaseController
   def show
     # by default, only load a subset of metrics
     host = Host.find(_id)
-    metrics = Metric.metrics_for_host(host) do |m|
-      !Metric::OVERVIEW.include?(m.key)
-    end
+    metrics = Metric.metrics_for_host(host, &Metric.overview_filter)
 
     bootstrap host
     bootstrap metrics, :type => Metric
