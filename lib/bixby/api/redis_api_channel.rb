@@ -4,8 +4,12 @@ module Bixby
 
     def initialize
       @responses = {}
-      @started = false
+      @started = @connected = false
       @thread_pool = Bixby::ThreadPool.new(:min_size => 1, :max_size => 8)
+    end
+
+    def connected?
+      @connected
     end
 
     # Execute the given JsonRequest via some other host using Redis PubSub
@@ -61,6 +65,8 @@ module Bixby
 
       logger.info "Starting Agent PubSub Channel"
 
+      EM::Hiredis.reconnect_timeout = 1
+
       if EM.reactor_running? then
         logger.debug "EM already running, starting pubsub on next tick"
         EM.next_tick {
@@ -82,6 +88,7 @@ module Bixby
         end
       end
 
+      @started = true
     end # start!
 
 
@@ -90,12 +97,14 @@ module Bixby
     def start_pubsub
 
       begin
-        (host, port) = BIXBY_CONFIG["redis"].split(/:/)
+        redis_host = BIXBY_CONFIG["redis"]
+        (host, port) = redis_host.split(/:/)
         port ||= 6379
         @client = EM::Hiredis::PubsubClient.new(host, port.to_i)
 
         # subscribe to our channel when connected
         @client.on(:connected) do
+          @connected = true
           logger.debug { "connected to redis; subscribing to redis api channel #{AgentRegistry.hostname}" }
           @client.subscribe(host_key(AgentRegistry.hostname)) do |msg|
 
@@ -114,6 +123,19 @@ module Bixby
               logger.error ex
             end
 
+          end
+        end
+
+        @client.on(:disconnected) do
+          @connected = false
+          logger.warn "lost connection to redis server #{redis_host}; reconnecting..."
+        end
+
+        @client.on(:reconnect_failed) do |fail_count|
+          if fail_count % 30 == 0 then
+            logger.warn "still trying to reconnect to #{redis_host} (#{fail_count} attempts so far)..."
+          elsif @connected == false && fail_count == 1 then
+            logger.warn "failed to connect to redis server #{redis_host}; retrying..."
           end
         end
 

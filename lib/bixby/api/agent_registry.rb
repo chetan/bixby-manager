@@ -19,12 +19,17 @@ module Bixby
       #
       # @param [Agent] agent
       # @param [Bixby::WebSocket::APIChannel] api
+      #
+      # @return [Boolean] whether or not the agent was successfully added
       def add(agent, api)
+        return false if !redis_channel.connected?
+
         agents[agent.id] = api
         # TODO don't piggyback sidekiq connection, just convenient for now
         Sidekiq.redis { |c| c.hset("bixby:agents", agent.id, hostname) }
         touch_agent(agent, true)
         logger.debug { "added agent #{agent.id}; now: #{agents.keys.inspect}" }
+        true
       end
 
       # Remove the given channel (and agent) from the registry

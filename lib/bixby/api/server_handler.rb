@@ -38,7 +38,10 @@ module Bixby
       end
 
       @current_user = @agent
-      Bixby::AgentRegistry.add(@agent, api)
+      if ! Bixby::AgentRegistry.add(@agent, api) then
+        return JsonResponse.new("fail", "server unavailable", nil, 503)
+      end
+
       true
     end
 
