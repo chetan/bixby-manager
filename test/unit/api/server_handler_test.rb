@@ -24,7 +24,7 @@ module Bixby
         signed_req = SignedJsonRequest.new(json_req, @agent.access_key, @agent.secret_key)
         connect_req = Bixby::WebSocket::Request.new(signed_req, id, "connect")
 
-        Bixby::AgentRegistry.expects(:add).with(@agent, @chan)
+        Bixby::AgentRegistry.expects(:add).with(@agent, @chan).returns(true)
 
         # convert to string & back
         msg = Bixby::WebSocket::Message.from_wire(connect_req.to_wire)
