@@ -49,6 +49,25 @@ module Bixby
         logger.debug { "removed agent; now: #{agents.keys.inspect}" }
       end
 
+      # Disconnect all agents
+      #
+      # In the event that redis becomes unavailable, we must disconnect all
+      # connected agents so we can handle requests properly when it comes back
+      def dump_all
+        logger.debug { "dumping all agent connections" }
+        agents.delete_if do |id, api|
+          begin
+            api.ws.close()
+            api.close(nil)
+            Sidekiq.redis { |c| c.hdel("bixby:agents", key) }
+          rescue Exception => ex
+            # ignore since redis is probably down
+          end
+          touch_agent(id, false)
+          true
+        end
+      end
+
       # Get an APIChannel for the given Agent
       #
       # @param [Agent] agent
