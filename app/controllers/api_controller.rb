@@ -21,8 +21,8 @@ class ApiController < ApplicationController
       return render(:json => Bixby::JsonResponse.new(:success, nil, ret).to_json)
 
     rescue Exception => ex
-      logger.warn { ex }
-      return render(:json => Bixby::JsonResponse.new(:fail, ex.message, ex, 500).to_json)
+      logger.warn { Bixby::Log.clean_ex_for_console(ex, logger) }
+      return render(:json => Bixby::JsonResponse.new(:fail, ex.message, nil, 500).to_json)
     end
 
   end # handle
