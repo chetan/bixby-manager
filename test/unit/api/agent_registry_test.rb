@@ -61,11 +61,11 @@ module Bixby
       private
 
       def add
-        AgentRegistry.add(@agent, @chan)
+        AgentRegistry.redis_channel.expects(:connected?).returns(true)
+        assert AgentRegistry.add(@agent, @chan)
       end
 
     end
 
   end
 end
-
