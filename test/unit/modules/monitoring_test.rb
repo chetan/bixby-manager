@@ -75,6 +75,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
   end
 
   def test_alerting_on_metrics
+
     (m, t, a) = setup_trigger()
 
     # try again, this should generate an email
@@ -123,7 +124,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     assert_equal 1, TriggerHistory.all.size
   end
 
-  def test_multiple_triggers
+  def test_alert_multiple_triggers
     (m, t, a)    = setup_trigger()
     (m2, t2, a2) = setup_trigger(m) # re-use metric for second trigger
 
@@ -193,8 +194,14 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
           "timestamp" => 1329775841,
           "metrics" => [
             {
+              # create 4 Metrics
               "metrics"  => { "size"=>297, "used"=>202, "free"=>94, "usage"=>69 },
               "metadata" => { "mount"=>"/", "type"=>"hfs" }
+            },
+            {
+              # will create another 4 Metrics with the same check_id
+              "metrics"  => { "size"=>297, "used"=>202, "free"=>94, "usage"=>69 },
+              "metadata" => { "mount"=>"/Volume/foobar", "type"=>"hfs" }
             }
           ],
           "errors"   => [],
@@ -204,7 +211,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     }
 
     Continuum::OpenTSDB.any_instance.expects(:metric).with { |n,v,t|
-      n =~ /^hardware/ && t.to_i == 1329775841 }.times(4)
+      n =~ /^hardware/ && t.to_i == 1329775841 }.times(8)
 
     Bixby::Metrics.new.put_check_result(m)
   end
@@ -219,6 +226,7 @@ class Test::Modules::Monitoring < Bixby::Test::TestCase
     end
 
     t = Trigger.new
+    t.check_id = m.check_id
     t.metric = m
     t.severity = Trigger::Severity::CRITICAL
     t.threshold = 280

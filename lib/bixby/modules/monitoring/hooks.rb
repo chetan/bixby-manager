@@ -22,9 +22,13 @@ class Monitoring < API
       all_triggers = get_all_triggers(metrics)
       metrics.each do |metric|
 
-        triggers = all_triggers.find_all { |a|
-          a.metric_id == metric.id or a.check_id == metric.check_id
+        triggers = all_triggers.find_all { |t|
+          # get triggers which are:
+          # * tied directly to this metric
+          # * attached at the check level, but not any specific metric (rare)
+          t.metric_id == metric.id || (t.check_id == metric.check_id && t.metric_id.nil?)
         }
+
         next if triggers.blank?
 
         triggered = []
