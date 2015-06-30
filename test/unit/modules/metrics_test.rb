@@ -14,6 +14,17 @@ hardware.storage.disk.free 1336748470 86 org_id=1 host_id=3 host=127.0.0.1 mount
 EOF
     Bixby::Metrics.driver = Bixby::Metrics::OpenTSDB
     Bixby::Metrics.driver.configure(BIXBY_CONFIG)
+
+    # We create a temporary hook in our tests below, so we need to make sure
+    # that it doesn't get kept around after our test is done
+    @_old_hooks = {}
+    Bixby::Metrics.hooks.each do |k,v|
+      @_old_hooks[k] = v.dup
+    end
+  end
+
+  def teardown
+    Bixby::Metrics.hooks.clear.merge!(@_old_hooks)
   end
 
   def test_require_class
