@@ -37,7 +37,7 @@ class Rest::Models::MetricsController < ::Rest::BaseController
       # pull summary metrics for all hosts
       hosts = Host.for_user(current_user)
       checks = Check.where(:host_id => hosts)
-      metrics = Bixby::Metrics.new.get_for_checks(checks, Time.new-86400, Time.new, {}, "sum", "1h-avg", &Metric.overview_filter) 
+      metrics = Bixby::Metrics.new.get_for_checks(checks, Time.new-86400, Time.new, {}, "sum", "1h-avg", &Metric.overview_filter)
     end
 
     restful metrics
