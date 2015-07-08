@@ -50,6 +50,19 @@ nav {
     }
   }
 
+  // default search input is too small, make it a bit bigger
+  form.nav_search {
+    input.form-control {
+      @include transition(width 0.1s ease);
+      width: 250px;
+    }
+    input.form-control:focus {
+      @include transition(width 0.2s ease);
+      @media (min-width: $screen-md-min) { width: 400px; }
+      @media (min-width: $screen-lg-min) { width: 400px; }
+    }
+  }
+
   .navbar-right {
     margin-right: 0;
   }
@@ -116,4 +129,3 @@ div.progress-bar.loaded {
   @include transition(width 0.2s ease);
   width: 100% !important;
 }
-
