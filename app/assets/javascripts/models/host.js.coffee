@@ -75,7 +75,7 @@ namespace 'Bixby.model', (exports, top) ->
     url: ->
       s = "/rest/hosts"
       if @query
-        s += "?q=" + @query.replace(/#/, "%23")
+        s += "?q=" + encodeURIComponent(@query.replace(/#/, "%23"))
       return s
 
     comparator: (host) ->
