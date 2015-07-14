@@ -1,5 +1,6 @@
 
 ## Dependencies:
+
 * a running database (mysql, postgres)
 * redis
 * metrics store (kairos+hbase or mongodb)
@@ -33,3 +34,11 @@ $ BIXBY_LOG=debug bin/bixby run mon_d start --ontop
 * restore: ``pg_restore --clean --no-owner --dbname bixby_prod bixby-production-20140609.150219.pgsql``
 * check:   ``RAILS_ENV=migration rake db:migrate:status``
 * test:    ``RAILS_ENV=migration rake db:migrate``
+
+## Getting a console for a production environment
+
+From a development env with access to the prod db:
+
+```bash
+$ RACK_ENV=production RAILS_GROUPS=development bundle exec rails c
+```
