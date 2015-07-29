@@ -192,7 +192,9 @@ class Stark.App
       return true
 
     # load needed data before continuing
+    @start_timer("fetching_data")
     Backbone.multi_fetch needed, {initial_load: true}, (err, results) =>
+      @stop_timer("fetching_data")
       if err and err.status == 401
         # session timeout
         url = state.create_url()
