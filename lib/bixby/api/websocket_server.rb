@@ -4,7 +4,7 @@ require 'faye/websocket'
 module Bixby
   class WebSocketServer
 
-    extend Bixby::Log
+    include Bixby::Log
 
     def initialize
       @thread_pool = Bixby::ThreadPool.new(:min_size => 1, :max_size => 8)
@@ -15,7 +15,7 @@ module Bixby
       if not Faye::WebSocket.websocket?(env) then
         # Redirect the client to the Rails application, if the request
         # is not a WebSocket
-        [301, { 'Location' => '/'}, []]
+        return [301, { 'Location' => '/'}, []]
       end
 
       ws = Faye::WebSocket.new(env)
