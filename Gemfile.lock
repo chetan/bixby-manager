@@ -7,6 +7,13 @@ GIT
       net-http-persistent
 
 GIT
+  remote: git://github.com/chetan/bixby-bench.git
+  revision: 488754f5ae88b4e3345b45590b63d77159891b57
+  specs:
+    bixby-bench (0.1.0)
+      allocation_stats
+
+GIT
   remote: git://github.com/chetan/continuum.git
   revision: 1b4a491c3e6233da6d19199e6c958ef267793533
   specs:
@@ -117,6 +124,7 @@ GEM
     acts_as_tree (2.1.0)
       activerecord (>= 3.0.0)
     addressable (2.3.6)
+    allocation_stats (0.1.5)
     annotate (2.6.5)
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
@@ -332,15 +340,13 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.2)
-    newrelic-middleware (1.1.0)
-      newrelic_rpm
     newrelic-redis (1.5.0)
       newrelic_rpm (~> 3.0)
       redis (< 4.0)
     newrelic_moped (0.0.12)
       moped
       newrelic_rpm (~> 3.0, >= 3.7)
-    newrelic_rpm (3.9.9.275)
+    newrelic_rpm (3.12.1.298)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     nokogiri (1.6.6.2-java)
@@ -444,6 +450,7 @@ GEM
       rails (>= 3.0, < 4.3)
       roadie (~> 3.0)
     rotp (2.1.0)
+    ruby-prof (0.15.8)
     ruby-termios (0.9.6)
     ruby2ruby (2.1.3)
       ruby_parser (~> 3.1)
@@ -566,6 +573,7 @@ DEPENDENCIES
   bitfields (~> 0.5)
   bixby-api_pool!
   bixby-auth
+  bixby-bench!
   bixby-common
   bootstrap-sass (~> 3.3)
   brakeman
@@ -617,7 +625,6 @@ DEPENDENCIES
   mongoid (~> 4.0)
   multi_json
   mysql2
-  newrelic-middleware
   newrelic-redis
   newrelic_moped
   newrelic_rpm
@@ -647,6 +654,7 @@ DEPENDENCIES
   roadie (~> 3.0)
   roadie-rails (~> 1.0)
   rotp (~> 2.0)
+  ruby-prof
   ruby-termios
   rvm1-capistrano3
   sass

@@ -107,7 +107,6 @@ gem 'bixby-api_pool', :github => 'chetan/bixby-api_pool'
 # warning: you *really* shouldn't use this in production
 # gem 'mongoid', "~> 4.0"
 
-
 group :assets do
   # asset related gems
   gem 'sprockets-rails'
@@ -155,11 +154,12 @@ group :development do
   gem "xray", :require => "xray/thread_dump_signal_handler"
   gem "quiet_assets"
 
-  # newrelic - don't require any gems, loaded in initializers/newrelic.rb
-  gem 'newrelic_rpm', :require => false
-  gem 'newrelic-redis', :require => false
-  gem 'newrelic_moped', :require => false
-  gem 'newrelic-middleware', :require => false
+  # performance
+  gem 'ruby-prof', :require => false
+  gem 'newrelic_rpm'
+  gem 'newrelic-redis'
+  gem 'newrelic_moped'
+  gem "bixby-bench", :github => "chetan/bixby-bench", :require => false
 
   # docs
   gem "yard"

@@ -86,4 +86,7 @@ Bixby::Application.configure do
     # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
   end
 
+  # Enable benchmarking middleware
+  # require "bixby/bench"
+  # config.middleware.insert_before "Rack::Sendfile", "Bixby::Bench::Middleware", nil, "_benchmark"
 end
