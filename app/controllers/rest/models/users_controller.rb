@@ -5,7 +5,7 @@ class Rest::Models::UsersController < ::Rest::BaseController
                                                      :accept_invite ]
 
   def index
-    restful User.for_user(current_user)
+    restful User.for_user(current_user).includes(:org, :user_permissions, :roles, :invited_by)
   end
 
   def show

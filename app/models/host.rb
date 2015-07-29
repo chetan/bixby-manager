@@ -96,7 +96,7 @@ class Host < ActiveRecord::Base
   # @return [Array<Host>]
   def self.for_user(user, include_inactive=false)
     return nil if user.nil?
-    hosts = where(:org_id => user.org).includes(:agent)
+    hosts = where(:org_id => user.org).includes(:agent, :org)
 
     if !include_inactive then
       # filter out inactive ones
