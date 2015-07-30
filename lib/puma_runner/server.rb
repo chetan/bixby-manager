@@ -135,9 +135,19 @@ module PumaRunner
 
     private
 
+    # In lieu of a proper shutdown hook, let's run some cleanup here
+    def do_app_cleanup
+      ::Logging::Logger[self].warn "running cleanup on server shutdown"
+      Bixby::AgentRegistry.shutdown!
+      ::Logging::Logger[self].warn "cleanup finished; exiting"
+    end
+
     # Stop
     def do_stop
       $0 = "puma: server (stopping)"
+
+      do_app_cleanup()
+
       # stop puma
       server.stop(true)
 
@@ -182,6 +192,7 @@ module PumaRunner
       $0 = "puma: server (winding down)"
       # sleep 5
 
+      do_app_cleanup()
       server.begin_restart
       server.thread.join
 

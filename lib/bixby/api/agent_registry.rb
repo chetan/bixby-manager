@@ -7,12 +7,43 @@ module Bixby
 
     class << self
 
+      def active?
+        @active = true if @active.nil? # starting to wish I used a singleton here instead
+        redis_channel.connected? && @active
+      end
+
       def agents
         @agents ||= {}
       end
 
       def hostname
         @hostname ||= generate_hostname()
+      end
+
+      # Shut down the registry
+      #
+      # Do not allow further connections to be added and drop all existing agents
+      def shutdown!
+        return if !active?
+        @active = false
+        dump_all
+      end
+
+      # In development mode, we trap the INT signal (^C) in order to properly cleanup agent
+      # connections before exiting
+      def trap_signals
+        return if @trapped || !Rails.env.development?
+
+        Bixby::Signal.trap("INT") do
+          # we dump all connections here *before* exiting because otherwise Rails will rollback
+          # our transactions when it sees that Threads are in the process of aborting/exiting.
+          logger.warn "running cleanup on SIGINT"
+          shutdown!
+          logger.warn "cleanup finished; exiting"
+          exit
+        end
+
+        @trapped = true
       end
 
       # Add an Agent to the registry
@@ -22,7 +53,11 @@ module Bixby
       #
       # @return [Boolean] whether or not the agent was successfully added
       def add(agent, api)
-        return false if !redis_channel.connected?
+        return false if !active?
+
+        # we setup our trap now so we can make sure we are not overriden by rails/puma
+        # we need this signal to properly cleanup before shutdown
+        trap_signals()
 
         agents[agent.id] = api
         # TODO don't piggyback sidekiq connection, just convenient for now
@@ -54,6 +89,7 @@ module Bixby
       # In the event that redis becomes unavailable, we must disconnect all
       # connected agents so we can handle requests properly when it comes back
       def dump_all
+        return if agents.empty?
         logger.debug { "dumping all agent connections" }
         agents.delete_if do |id, api|
           begin
@@ -66,6 +102,7 @@ module Bixby
           touch_agent(id, false)
           true
         end
+        logger.debug { "dumped all agents" }
       end
 
       # Get an APIChannel for the given Agent

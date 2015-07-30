@@ -129,10 +129,10 @@ module Bixby
         @client.on(:disconnected) do
           if @connected then
             # we need to disconnect any connected agents
-            AgentRegistry.dump_all
+            AgentRegistry.shutdown!
           end
           @connected = false
-          logger.warn "lost connection to redis server #{redis_host}; reconnecting..."
+          logger.warn "lost connection to redis server #{redis_host}" + (Thread.current.status == "run" ? "; reconnecting..." : "")
         end
 
         @client.on(:reconnect_failed) do |fail_count|
