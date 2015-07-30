@@ -21,7 +21,12 @@ stdout_redirect '/var/www/bixby/current/log/puma.log', '/var/www/bixby/current/l
 # Min, Max threads
 threads 8, 32
 
-bind 'tcp://127.0.0.1:9292'
+if (ENV["RAILS_ENV"] || "production") == "development"
+  bind 'tcp://127.0.0.1:3000'
+else
+  bind 'tcp://127.0.0.1:9292'
+end
+
 
 # Code to run before doing a restart. This code should
 # close log files, database connections, etc.
