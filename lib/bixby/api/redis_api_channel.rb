@@ -104,6 +104,7 @@ module Bixby
 
         # subscribe to our channel when connected
         @client.on(:connected) do
+          AgentRegistry.start!
           @connected = true
           logger.debug { "connected to redis; subscribing to redis api channel #{AgentRegistry.hostname}" }
           @client.subscribe(host_key(AgentRegistry.hostname)) do |msg|

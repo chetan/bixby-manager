@@ -8,7 +8,6 @@ module Bixby
     class << self
 
       def active?
-        @active = true if @active.nil? # starting to wish I used a singleton here instead
         redis_channel.connected? && @active
       end
 
@@ -18,6 +17,11 @@ module Bixby
 
       def hostname
         @hostname ||= generate_hostname()
+      end
+
+      def start!
+        logger.debug "Started AgentRegistry"
+        @active = true # starting to wish I used a singleton here instead
       end
 
       # Shut down the registry
