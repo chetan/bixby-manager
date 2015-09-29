@@ -231,12 +231,14 @@ class Metrics < API
           # update last_value for all metrics
           metric["metrics"].each do |k,v|
             key = "#{base}#{k}"
-            m = Metric.for(check, key, metadata)
-            m.last_value  = v
-            m.last_status = status
-            m.updated_at  = time
-            m.save!
-            metrics << m
+            Metric.transaction(requires_new: true) do
+              m = Metric.lock.for(check, key, metadata)
+              m.last_value  = v
+              m.last_status = status
+              m.updated_at  = time
+              m.save!
+              metrics << m
+            end
           end
 
           # save each metric
